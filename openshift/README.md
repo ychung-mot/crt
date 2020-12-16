@@ -20,7 +20,7 @@ You will need a Redhat image pull service account before you can continue. Refer
 
 CRT uses two Redhat Docker images and they will be imported into the `tools` namespace as part of the build pipeline. This requires you to have the correct Redhat service account configured.
 
-1. [dotnet-31-rhel7](https://access.redhat.com/containers/?tab=images#/registry.access.redhat.com/dotnet/dotnet-31-rhel7)
+1. [rhel8/dotnet-50](https://catalog.redhat.com/software/containers/rhel8/dotnet-50/5f6278e017452dea0fe47bae?container-tabs=gti&gti-tabs=get-the-source)
 2. [rhel8/nginx-116](https://access.redhat.com/containers/#/registry.access.redhat.com/rhel8/nginx-116)
 
 ### Github Personal Access Token
@@ -63,7 +63,7 @@ data:
   appClientId: <app-client-id>
   clientId: <service-client-id>
   clientSecret: <service-client-secret>
-  host: <sso-dev.pathfinder.gov.bc.ca>
+  host: <dev.ocid.gov.bc.ca>
   realmId: <realm-id>
 kind: Secret
 metadata:
