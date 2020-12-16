@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: "true"
+objects:
+  - apiVersion: v1
+    data:
+      appsettings.json: |-
+        {
+            "AllowedHosts": "*",
+            "Constants": {
+                "Version": "1.0.0.0",
+                "SwaggerApiUrl": "/swagger/v1/swagger.json"
+            },
+            "Serilog": {
+                "MinimumLevel": {
+                "Default": "Information",
+                "Override": {
+                    "Microsoft": "Warning",
+                    "System": "Warning"
+                  }
+                },
+                "WriteTo": [
+                  {
+                      "Name": "Async",
+                      "Args": {
+                          "configure": [
+                              { "Name": "Console" }
+                          ]
+                      }
+                  },
+                  {
+                      "Name": "CrtPostgreSql",
+                      "Args": {
+                          "connectionString": "serilog",
+                          "tableName": "crt",
+                          "needAutoCreateTable": true
+                      }
+                  }
+                ],
+                "Enrich": [
+                  "FromLogContext",
+                  "WithMachineName"
+                ]
+            },  
+            "ConnectionStrings": {
+                "CRT": "Server=(localdb)\\mssqllocaldb;Database=HMR_DEV;Trusted_Connection=True;MultipleActiveResultSets=true"
+            },
+            "Hangfire": {
+                "EnableServer": false,
+                "WorkerCount": 1
+            },
+            "CHRIS": {
+                "MapUrl": "https://prd-maps.th.gov.bc.ca",
+                "MapPath": "geoV05/wfs?",
+                "OASUrl": "https://prdoas2.apps.th.gov.bc.ca",
+                "OASPath": "ogs-geoV06/wfs?",
+                "ExportUrl": "${EXPORT_URL}",
+                "WFSExportPath": "ogs-geoV06/ows?service=WFS&version=2.0.0&request=GetFeature",
+                "KMLExportPath": "ogs-geoV06/wms/kml?mode=download&styles=HMR_GENERIC_FOR_KML"
+            },
+            "JWT": {
+                "Authority": "https://sso-dev.pathfinder.gov.bc.ca/auth/realms/<realmid>",
+                "Audience": "<app-id>"
+            },
+            "ServiceAccount": {
+                "User": "<ServiceAccount:User>",
+                "Password": "<ServiceAccount:Password>",
+                "Server": "<Server>",
+                "Port": "<Port>"
+            },
+        }
+    kind: ConfigMap
+    metadata:
+      name: api-appsettings-${ENV}
+      labels:
+        shared: "true"
+parameters:
+  - description: Deployment environment (dev, test, uat, prod)
+    displayName: ENV
+    name: ENV
+    required: true
+    value: "dev"
+  - description: GeoServer Report Export URL
+    displayName: EXPORT_URL
+    name: EXPORT_URL
+    required: true
+    value: "https://devoas1.apps.th.gov.bc.ca"
