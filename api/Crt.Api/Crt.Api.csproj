@@ -7,7 +7,7 @@
     <IsPackable>false</IsPackable>
     <Authors>Ministry of Transportation and Infrastructure</Authors>
     <Company>Ministry of Transportation and Infrastructure</Company>
-    <Description>The API server for the CRT</Description>
+    <Description>The API server for CRT (Capital Rehabilitation Project Tracking)</Description>
     <Copyright>Copyright© 2020, Province of British Columbia.</Copyright>
   </PropertyGroup>
 
