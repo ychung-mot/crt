@@ -7,8 +7,8 @@
     <IsPackable>false</IsPackable>
     <Authors>Ministry of Transportation and Infrastructure</Authors>
     <Company>Ministry of Transportation and Infrastructure</Company>
-    <Description>The Hangfire server for the Highway Maintenance Contract Reporting System</Description>
-    <Copyright>Copyright© 2019, Province of British Columbia.</Copyright>
+    <Description>Hangfire server for CRT (Capital Rehabilitation Project Tracking)</Description>
+    <Copyright>Copyright© 2020, Province of British Columbia.</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
