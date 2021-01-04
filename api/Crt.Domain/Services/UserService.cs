@@ -262,7 +262,7 @@ namespace Crt.Domain.Services
                 UserGuid = new Guid(entry.GetAttribute("bcgovGUID").StringValue),
                 FirstName = entry.GetAttribute("givenName").StringValue,
                 LastName = entry.GetAttribute("sn").StringValue,
-                Email = entry.GetAttribute("mail").StringValue,
+                Email = entry.GetAttributeSet().Any(x => x.Key == "mail") ? entry.GetAttribute("mail").StringValue : "",
                 DisplayName = entry.GetAttribute("displayName").StringValue
             };
         }
