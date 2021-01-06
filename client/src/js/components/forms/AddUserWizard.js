@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import PageSpinner from '../ui/PageSpinner';
 import MultiSelect from '../ui/MultiSelect';
-import { FormInput, FormRow } from './FormInputs';
+import { FormInput, FormRow, FormCheckboxInput } from './FormInputs';
 import SubmitButton from '../ui/SubmitButton';
 
 import { showValidationErrorDialog, hideErrorDialog } from '../../redux/actions';
@@ -24,6 +24,7 @@ const WIZARD_STATE = {
 const defaultValues = {
   username: '',
   userRoleIds: [],
+  userProgramManager: false,
   active: true,
   endDate: null,
 };
@@ -147,6 +148,7 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState }) => {
             <p>First Name* {data.firstName}</p>
             <p>Last Name* {data.lastName}</p>
             <p>Email* {data.email}</p>
+            <FormCheckboxInput name="userProgramManager" label="Program Manager" />
             <p>
               <strong>Select roles for the new user</strong>
             </p>
