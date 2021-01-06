@@ -24,6 +24,7 @@ const WIZARD_STATE = {
 const defaultValues = {
   username: '',
   userRoleIds: [],
+  userRegions: [],
   userProgramManager: false,
   active: true,
   endDate: null,
@@ -122,6 +123,13 @@ const AddUserSearchResult = ({ status, data, setWizardState }) => {
 
 const AddUserSetupUser = ({ values, data, submitting, setWizardState }) => {
   const [roles, setRoles] = useState([]);
+  //temporary hard code regions until API is set up
+  const [regions, setRegions] = useState([
+    { id: 'HQ', name: 'Headquarters' },
+    { id: 'NR', name: 'Nothern Region' },
+    { id: 'SR', name: 'Southern Region' },
+    { id: 'SCR', name: 'Southern Coast Region' },
+  ]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -154,6 +162,9 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState }) => {
             </p>
             <FormRow name="userRoleIds" label="User Roles*">
               <MultiSelect items={roles} name="userRoleIds" />
+            </FormRow>
+            <FormRow name="userRegions" label="MoTI Region*">
+              <MultiSelect items={regions} name="userRegions" showSelectAll={true} />
             </FormRow>
           </React.Fragment>
         )}
