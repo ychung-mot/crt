@@ -119,7 +119,7 @@ const AddUserSearchResult = ({ status, data, setWizardState }) => {
   );
 };
 
-const AddUserSetupUser = ({ values, submitting, setWizardState }) => {
+const AddUserSetupUser = ({ values, data, submitting, setWizardState }) => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -143,6 +143,10 @@ const AddUserSetupUser = ({ values, submitting, setWizardState }) => {
           <PageSpinner />
         ) : (
           <React.Fragment>
+            <p>User ID* {data.username}</p>
+            <p>First Name* {data.firstName}</p>
+            <p>Last Name* {data.lastName}</p>
+            <p>Email* {data.email}</p>
             <p>
               <strong>Select roles for the new user</strong>
             </p>
@@ -229,7 +233,9 @@ const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDia
       case WIZARD_STATE.SEARCH_FAIL:
         return <AddUserSearchResult setWizardState={setWizardState} data={adAccount} status={wizardState} />;
       case WIZARD_STATE.USER_SETUP:
-        return <AddUserSetupUser setWizardState={setWizardState} values={values} submitting={submitting} />;
+        return (
+          <AddUserSetupUser setWizardState={setWizardState} data={adAccount} values={values} submitting={submitting} />
+        );
       case WIZARD_STATE.USER_SETUP_CONFIRM:
         return <AddUserSetupUserSuccess toggle={toggle} />;
       case WIZARD_STATE.SEARCH:
