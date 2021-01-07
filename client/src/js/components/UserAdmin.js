@@ -50,7 +50,7 @@ const validationSchema = Yup.object({
   userRoleIds: Yup.array().required('Require at least one role'),
 });
 
-const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
+const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -145,8 +145,9 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
     <React.Fragment>
       <MaterialCard>
         <UIHeader>User Management</UIHeader>
+        {/* temporary fix adding userregions into intiial values for formik until search function is complete */}
         <Formik
-          initialValues={searchInitialValues}
+          initialValues={{ ...searchInitialValues, userRegions: [] }}
           enableReinitialize={true}
           onSubmit={(values) => handleSearchFormSubmit(values)}
           onReset={handleSearchFormReset}
@@ -154,6 +155,9 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
           {(formikProps) => (
             <Form>
               <Row form>
+                <Col>
+                  <MultiDropdownField {...formikProps} items={userRegions} name="userRegions" title="Regions" />
+                </Col>
                 <Col>
                   <Field
                     type="text"
@@ -222,6 +226,13 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
 const mapStateToProps = (state) => {
   return {
     userStatuses: Object.values(state.user.statuses),
+    //hard coded regions for now until API is set up. state.user.regions
+    userRegions: [
+      { id: 'HQ', name: 'Headquarters' },
+      { id: 'NR', name: 'Nothern Region' },
+      { id: 'SR', name: 'Southern Region' },
+      { id: 'SCR', name: 'Southern Coast Region' },
+    ],
   };
 };
 
