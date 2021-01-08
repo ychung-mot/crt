@@ -28,12 +28,14 @@ import { buildStatusIdArray } from '../utils';
 const defaultSearchFormValues = {
   searchText: '',
   statusId: [Constants.ACTIVE_STATUS.ACTIVE],
+  userRegions: [],
 };
 
 const defaultSearchOptions = {
   searchText: '',
   isActive: true,
   dataPath: Constants.API_PATHS.USER,
+  userRegions: [],
 };
 
 const tableColumns = [
@@ -41,7 +43,7 @@ const tableColumns = [
   { heading: 'Last Name', key: 'lastName' },
   { heading: 'User ID', key: 'username' },
   { heading: 'Email', key: 'email' },
-  { heading: 'Region', key: 'region' },
+  { heading: 'Regions', key: 'regions' },
   { heading: 'Active', key: 'isActive', nosort: true },
 ];
 
@@ -85,7 +87,6 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
     if (values.statusId.length === 1) {
       isActive = values.statusId[0] === 'ACTIVE';
     }
-
     const options = {
       ...searchData.searchOptions,
       isActive,
@@ -145,9 +146,8 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
     <React.Fragment>
       <MaterialCard>
         <UIHeader>User Management</UIHeader>
-        {/* temporary fix adding userregions into intiial values for formik until search function is complete */}
         <Formik
-          initialValues={{ ...searchInitialValues, userRegions: [] }}
+          initialValues={{ ...searchInitialValues }}
           enableReinitialize={true}
           onSubmit={(values) => handleSearchFormSubmit(values)}
           onReset={handleSearchFormReset}
@@ -226,13 +226,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
 const mapStateToProps = (state) => {
   return {
     userStatuses: Object.values(state.user.statuses),
-    //hard coded regions for now until API is set up. state.user.regions
-    userRegions: [
-      { id: 'HQ', name: 'Headquarters' },
-      { id: 'NR', name: 'Nothern Region' },
-      { id: 'SR', name: 'Southern Region' },
-      { id: 'SCR', name: 'Southern Coast Region' },
-    ],
+    userRegions: Object.values(state.user.regions),
   };
 };
 

@@ -64,6 +64,14 @@ const DataTableControl = ({
                     style.maxWidth = column.maxWidth;
                   }
 
+                  if (column.key === 'regions') {
+                    return (
+                      <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
+                        {'use regions.number'}
+                      </td>
+                    );
+                  }
+
                   return (
                     <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
                       {item[column.key]}

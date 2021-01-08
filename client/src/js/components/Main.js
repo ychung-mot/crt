@@ -10,6 +10,7 @@ import {
   fetchMaintenanceTypes,
   fetchUnitOfMeasures,
   fetchFeatureTypes,
+  fetchUserRegions,
 } from '../redux/actions';
 
 const Main = ({
@@ -20,6 +21,7 @@ const Main = ({
   fetchMaintenanceTypes,
   fetchUnitOfMeasures,
   fetchFeatureTypes,
+  fetchUserRegions,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +32,7 @@ const Main = ({
       fetchMaintenanceTypes(),
       fetchUnitOfMeasures(),
       fetchFeatureTypes(),
+      fetchUserRegions(),
     ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -54,4 +57,5 @@ export default connect(mapStateToProps, {
   fetchMaintenanceTypes,
   fetchUnitOfMeasures,
   fetchFeatureTypes,
+  fetchUserRegions,
 })(Main);

@@ -5,11 +5,18 @@ import moment from 'moment';
 import MultiSelect from '../ui/MultiSelect';
 import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput } from './FormInputs';
+import { FormRow, FormInput, FormCheckboxInput } from './FormInputs';
 
 import * as api from '../../Api';
 
-const EditUserFormFields = ({ setInitialValues, formValues, setValidationSchema, userId, validationSchema }) => {
+const EditUserFormFields = ({
+  setInitialValues,
+  formValues,
+  setValidationSchema,
+  userId,
+  validationSchema,
+  userRegions,
+}) => {
   const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState([]);
 
@@ -21,6 +28,8 @@ const EditUserFormFields = ({ setInitialValues, formValues, setValidationSchema,
       .then((response) => {
         setInitialValues({
           ...response.data,
+          userRegions: [], //line 31 and 32 added until api provides a set of regions and program manager
+          userProjectManager: false,
           endDate: response.data.endDate ? moment(response.data.endDate) : null,
         });
 
@@ -44,8 +53,12 @@ const EditUserFormFields = ({ setInitialValues, formValues, setValidationSchema,
       <FormRow name="username" label="User Id*">
         <FormInput type="text" name="username" placeholder="User Id" disabled />
       </FormRow>
+      <FormCheckboxInput name="userProjectManager" label="Project Manager" />
       <FormRow name="userRoleIds" label="User Roles*">
         <MultiSelect items={roles} name="userRoleIds" />
+      </FormRow>
+      <FormRow name="userRegions" label="MoTI Region*">
+        <MultiSelect items={userRegions} name="userRegions" showSelectAll={true} />
       </FormRow>
       <FormRow name="endDate" label="End Date">
         <SingleDateField name="endDate" placeholder="End Date" />
@@ -55,7 +68,9 @@ const EditUserFormFields = ({ setInitialValues, formValues, setValidationSchema,
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    userRegions: Object.values(state.user.regions),
+  };
 };
 
 export default connect(mapStateToProps, null)(EditUserFormFields);

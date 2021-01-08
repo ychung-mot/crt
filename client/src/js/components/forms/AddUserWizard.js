@@ -25,7 +25,7 @@ const defaultValues = {
   username: '',
   userRoleIds: [],
   userRegions: [],
-  userProgramManager: false,
+  userProjectManager: false,
   active: true,
   endDate: null,
 };
@@ -121,15 +121,8 @@ const AddUserSearchResult = ({ status, data, setWizardState }) => {
   );
 };
 
-const AddUserSetupUser = ({ values, data, submitting, setWizardState }) => {
+const AddUserSetupUser = ({ values, data, submitting, setWizardState, userRegions }) => {
   const [roles, setRoles] = useState([]);
-  //temporary hard code regions until API is set up
-  const [regions, setRegions] = useState([
-    { id: 'HQ', name: 'Headquarters' },
-    { id: 'NR', name: 'Nothern Region' },
-    { id: 'SR', name: 'Southern Region' },
-    { id: 'SCR', name: 'Southern Coast Region' },
-  ]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -156,7 +149,7 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState }) => {
             <p>First Name* {data.firstName}</p>
             <p>Last Name* {data.lastName}</p>
             <p>Email* {data.email}</p>
-            <FormCheckboxInput name="userProgramManager" label="Program Manager" />
+            <FormCheckboxInput name="userProjectManager" label="Project Manager" />
             <p>
               <strong>Select roles for the new user</strong>
             </p>
@@ -164,7 +157,7 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState }) => {
               <MultiSelect items={roles} name="userRoleIds" />
             </FormRow>
             <FormRow name="userRegions" label="MoTI Region*">
-              <MultiSelect items={regions} name="userRegions" showSelectAll={true} />
+              <MultiSelect items={userRegions} name="userRegions" showSelectAll={true} />
             </FormRow>
           </React.Fragment>
         )}
@@ -204,7 +197,14 @@ const AddUserSetupUserSuccess = ({ toggle }) => {
   );
 };
 
-const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDialog, validationSchema }) => {
+const AddUserWizard = ({
+  isOpen,
+  toggle,
+  showValidationErrorDialog,
+  hideErrorDialog,
+  validationSchema,
+  userRegions,
+}) => {
   const [wizardState, setWizardState] = useState(WIZARD_STATE.SEARCH);
   const [submitting, setSubmitting] = useState(false);
   const [adAccount, setAdAccount] = useState(null);
@@ -247,7 +247,13 @@ const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDia
         return <AddUserSearchResult setWizardState={setWizardState} data={adAccount} status={wizardState} />;
       case WIZARD_STATE.USER_SETUP:
         return (
-          <AddUserSetupUser setWizardState={setWizardState} data={adAccount} values={values} submitting={submitting} />
+          <AddUserSetupUser
+            setWizardState={setWizardState}
+            data={adAccount}
+            values={values}
+            submitting={submitting}
+            userRegions={userRegions}
+          />
         );
       case WIZARD_STATE.USER_SETUP_CONFIRM:
         return <AddUserSetupUserSuccess toggle={toggle} />;
@@ -270,7 +276,9 @@ const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDia
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    userRegions: Object.values(state.user.regions),
+  };
 };
 
 export default connect(mapStateToProps, { showValidationErrorDialog, hideErrorDialog })(AddUserWizard);
