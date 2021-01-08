@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\api\Crt.Data\Crt.Data.csproj" />
-    <ProjectReference Include="..\api\Crt.Domain\Crt.Domain.csproj" />
-    <ProjectReference Include="..\api\Crt.Model\Crt.Model.csproj" />
+    <ProjectReference Include="..\Crt.Data\Crt.Data.csproj" />
+    <ProjectReference Include="..\Crt.Domain\Crt.Domain.csproj" />
+    <ProjectReference Include="..\Crt.Model\Crt.Model.csproj" />
   </ItemGroup>
 
 </Project>

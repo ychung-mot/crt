@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Crt.Model.Dtos.Role
@@ -10,7 +11,9 @@ namespace Crt.Model.Dtos.Role
         {
             Permissions = new List<decimal>();
         }
+        [StringLength(30)]
         public string Name { get; set; }
+        [StringLength(150)]
         public string Description { get; set; }
         public DateTime? EndDate { get; set; }
 
