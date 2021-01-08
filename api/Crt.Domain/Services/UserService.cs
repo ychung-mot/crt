@@ -154,7 +154,7 @@ namespace Crt.Domain.Services
             var entityName = Entities.User;
             var errors = new Dictionary<string, List<string>>();
 
-            _validator.Validate(entityName, user, errors);
+            errors = _validator.Validate(entityName, user, errors);
 
             var roleCount = await _roleRepo.CountActiveRoleIdsAsync(user.UserRoleIds);
             if (roleCount != user.UserRoleIds.Count)
