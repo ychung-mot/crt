@@ -38,17 +38,11 @@ namespace Crt.Domain.Services
         private IFieldValidatorService _validator;
         private IMapper _mapper;
         private ILogger _logger;
-        private IConfiguration _config;
-
-        private string _userId;
-        private string _password;
-        private string _server;
-        private int _port;
+        private ILdapService _ldap;
 
         public UserService(IUserRepository userRepo, IRoleRepository roleRepo,
             IUnitOfWork unitOfWork, CrtCurrentUser currentUser, IFieldValidatorService validator, IMapper mapper, 
-            IConfiguration config,
-            ILogger<UserService> logger)
+            ILdapService ldap, ILogger<UserService> logger)
         {
             _userRepo = userRepo;
             _roleRepo = roleRepo;
@@ -57,13 +51,7 @@ namespace Crt.Domain.Services
             _validator = validator;
             _mapper = mapper;
             _logger = logger;
-            _config = config;
-
-            _userId = config.GetValue<string>("ServiceAccount:User");
-            _password = config.GetValue<string>("ServiceAccount:Password");
-            _server = config.GetValue<string>("ServiceAccount:Server");
-            _port = config.GetValue<int>("ServiceAccount:Port");
-
+            _ldap = ldap;
         }
 
         public async Task<UserCurrentDto> GetCurrentUserAsync()
@@ -88,7 +76,9 @@ namespace Crt.Domain.Services
 
         public async Task<AdAccountDto> GetAdAccountAsync(string username)
         {
-            var account = await LdapSearch(LdapAttrs.SamAccountName, username);
+            await Task.CompletedTask;
+
+            var account = _ldap.LdapSearch(LdapAttrs.SamAccountName, username);
 
             if (account != null)
             {
@@ -100,7 +90,7 @@ namespace Crt.Domain.Services
 
         public async Task<(decimal SystemUserId, Dictionary<string, List<string>> Errors)> CreateUserAsync(UserCreateDto user)
         {
-            var account = await LdapSearch(LdapAttrs.SamAccountName, user.Username);
+            var account = _ldap.LdapSearch(LdapAttrs.SamAccountName, user.Username);
 
             if (account == null)
             {
@@ -216,7 +206,7 @@ namespace Crt.Domain.Services
 
         public async Task<int> UpdateUserFromAdAsync(string username, long concurrencyControlNumber)
         {
-            var account = await LdapSearch(LdapAttrs.SamAccountName, username);
+            var account = _ldap.LdapSearch(LdapAttrs.SamAccountName, username);
 
             if (account != null)
             {
@@ -224,47 +214,6 @@ namespace Crt.Domain.Services
             }
 
             return 0;
-        }
-
-        private async Task<AdAccount> LdapSearch(string filterAttr, string value)
-        {
-            await Task.CompletedTask;
-
-            using var conn = new LdapConnection() { SecureSocketLayer = false };
-            conn.Connect(_server, _port);
-
-            conn.UserDefinedServerCertValidationDelegate += (sender, certificate, chain, sslPolicyErrors) =>
-            {
-                if (sslPolicyErrors == SslPolicyErrors.None)
-                    return true;
-
-                if (chain.ChainElements == null)
-                    return false;
-
-                return true;
-            };
-
-            conn.StartTls();
-
-            conn.Bind(@$"IDIR\{_userId}", _password);
-
-            var filter = $"(&(objectCategory=person)(objectClass=user)({filterAttr}={value}))";
-            var search = conn.Search("OU=BCGOV,DC=idir,DC=BCGOV", LdapConnection.ScopeSub, filter, new string[] { "sAMAccountName", "bcgovGUID", "givenName", "sn", "mail", "displayName" }, false);
-
-            var entry = search.FirstOrDefault();
-
-            if (entry == null)
-                return null;
-
-            return new AdAccount
-            {
-                Username = entry.GetAttribute("sAMAccountName").StringValue,
-                UserGuid = new Guid(entry.GetAttribute("bcgovGUID").StringValue),
-                FirstName = entry.GetAttribute("givenName").StringValue,
-                LastName = entry.GetAttribute("sn").StringValue,
-                Email = entry.GetAttributeSet().Any(x => x.Key == "mail") ? entry.GetAttribute("mail").StringValue : "",
-                DisplayName = entry.GetAttribute("displayName").StringValue
-            };
         }
     }
 }
