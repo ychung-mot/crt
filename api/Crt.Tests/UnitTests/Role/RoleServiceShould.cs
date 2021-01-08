@@ -14,7 +14,7 @@ namespace Crt.Tests.Role
     {
         [Theory]        
         [AutoMoqData]
-        public void CreateRoleSucceedsWhenValid(RoleCreateDto role,
+        public void CreateRoleSuccessfullyWhenValid(RoleCreateDto role,
             //IFixture fixture, 
             [Frozen] Mock<IRoleRepository> mockRoleRepo, 
             //[Frozen] Mock<IUserRoleRepository> mockUserRoleRepo,
@@ -36,7 +36,7 @@ namespace Crt.Tests.Role
 
         [Theory]
         [AutoMoqData]
-        public void CreateRoleFailsWhenFieldsAreInvalid(RoleCreateDto role,
+        public void FailInCreatingRoleWhenFieldsAreInvalid(RoleCreateDto role,
             //IFixture fixture, 
             [Frozen] Mock<IRoleRepository> mockRoleRepo,
             //[Frozen] Mock<IUserRoleRepository> mockUserRoleRepo,
@@ -66,7 +66,7 @@ namespace Crt.Tests.Role
 
         [Theory]
         [AutoMoqData]
-        public void CreateRoleFailsWhenRoleExists(RoleCreateDto role,
+        public void FailInCreatingRoleWhenRoleExists(RoleCreateDto role,
             //IFixture fixture, 
             [Frozen] Mock<IRoleRepository> mockRoleRepo,
             //[Frozen] Mock<IUserRoleRepository> mockUserRoleRepo,
@@ -89,7 +89,7 @@ namespace Crt.Tests.Role
 
         [Theory]
         [AutoMoqData]
-        public void CreateRoleFailsWhenInActivePermissionExists(RoleCreateDto role,
+        public void FailInCreatingRoleWhenInActivePermissionExists(RoleCreateDto role,
             //IFixture fixture, 
             [Frozen] Mock<IRoleRepository> mockRoleRepo,
             //[Frozen] Mock<IUserRoleRepository> mockUserRoleRepo,
