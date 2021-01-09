@@ -10,8 +10,8 @@ namespace Crt.Domain.Services
 {
     public interface IFieldValidatorService
     {
-        void Validate<T>(string entityName, string fieldName, T value, Dictionary<string, List<string>> errors, int rowNum = 0);
-        void Validate<T>(string entityName, T entity, Dictionary<string, List<string>> errors, int rowNum = 0, params string[] fieldsToSkip);
+        Dictionary<string, List<string>> Validate<T>(string entityName, string fieldName, T value, Dictionary<string, List<string>> errors, int rowNum = 0);
+        Dictionary<string, List<string>> Validate<T>(string entityName, T entity, Dictionary<string, List<string>> errors, int rowNum = 0, params string[] fieldsToSkip);
         IEnumerable<CodeLookupCache> CodeLookup { get; set; }
     }
     public class FieldValidatorService : IFieldValidatorService
@@ -48,7 +48,7 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.Role, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
 
-        public void Validate<T>(string entityName, T entity, Dictionary<string, List<string>> errors, int rowNum = 0, params string[] fieldsToSkip)
+        public Dictionary<string, List<string>> Validate<T>(string entityName, T entity, Dictionary<string, List<string>> errors, int rowNum = 0, params string[] fieldsToSkip)
         {
             var fields = typeof(T).GetProperties();
 
@@ -59,14 +59,16 @@ namespace Crt.Domain.Services
 
                 Validate(entityName, field.Name, field.GetValue(entity), errors, rowNum);
             }
+
+            return errors;
         }
 
-        public void Validate<T>(string entityName, string fieldName, T val, Dictionary<string, List<string>> errors, int rowNum = 0)
+        public Dictionary<string, List<string>> Validate<T>(string entityName, string fieldName, T val, Dictionary<string, List<string>> errors, int rowNum = 0)
         {
             var rule = _rules.FirstOrDefault(r => r.EntityName == entityName && r.FieldName == fieldName);
 
             if (rule == null)
-                return;
+                return errors;
 
             var messages = new List<string>();
 
@@ -89,6 +91,8 @@ namespace Crt.Domain.Services
                     errors.AddItem(rule.FieldName, message);
                 }
             }
+
+            return errors;
         }
 
         private List<string> ValidateStringField<T>(FieldValidationRule rule, T val, int rowNum = 0)

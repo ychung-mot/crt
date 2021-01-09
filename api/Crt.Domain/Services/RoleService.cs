@@ -72,7 +72,7 @@ namespace Crt.Domain.Services
         {
             var errors = new Dictionary<string, List<string>>();
 
-            _validator.Validate(Entities.Role, role, errors);
+            errors = _validator.Validate(Entities.Role, role, errors);
 
             var permissionCount = await _permRepo.CountActivePermissionIdsAsnyc(role.Permissions);
             if (permissionCount != role.Permissions.Count)
@@ -94,7 +94,7 @@ namespace Crt.Domain.Services
 
             var errors = new Dictionary<string, List<string>>();
 
-            _validator.Validate(Entities.Role, role, errors);
+            errors = _validator.Validate(Entities.Role, role, errors);
 
             if (errors.Count > 0)
             {
