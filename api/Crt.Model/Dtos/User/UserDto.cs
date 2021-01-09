@@ -9,6 +9,7 @@ namespace Crt.Model.Dtos.User
         public UserDto()
         {
             UserRoleIds = new List<decimal>();
+            UserRegionIds = new List<decimal>();
         }
 
         [JsonPropertyName("id")]
@@ -17,8 +18,9 @@ namespace Crt.Model.Dtos.User
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string BusinessLegalName { get; set; }
         public DateTime? EndDate { get; set; }
+        public bool IsProductManager { get; set; }
         public virtual IList<decimal> UserRoleIds { get; set; }
+        public virtual IList<decimal> UserRegionIds { get; set; }
     }
 }
