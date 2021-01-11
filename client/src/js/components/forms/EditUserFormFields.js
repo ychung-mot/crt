@@ -26,9 +26,10 @@ const EditUserFormFields = ({
     api
       .getUser(userId)
       .then((response) => {
+        console.log(response);
         setInitialValues({
           ...response.data,
-          userRegions: [], //line 31 and 32 added until api provides a set of regions and program manager
+          userRegions: [], //temporary fix line 31 and 32 added until api provides a set of regions and program manager
           userProjectManager: false,
           endDate: response.data.endDate ? moment(response.data.endDate) : null,
         });
@@ -53,7 +54,9 @@ const EditUserFormFields = ({
       <FormRow name="username" label="User Id*">
         <FormInput type="text" name="username" placeholder="User Id" disabled />
       </FormRow>
-      <FormCheckboxInput name="userProjectManager" label="Project Manager" />
+      <FormRow>
+        <FormCheckboxInput name="userProjectManager" label="Project Manager" />
+      </FormRow>
       <FormRow name="userRoleIds" label="User Roles*">
         <MultiSelect items={roles} name="userRoleIds" />
       </FormRow>

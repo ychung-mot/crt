@@ -145,11 +145,21 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState, userRegion
           <PageSpinner />
         ) : (
           <React.Fragment>
-            <p>User ID* {data.username}</p>
-            <p>First Name* {data.firstName}</p>
-            <p>Last Name* {data.lastName}</p>
-            <p>Email* {data.email}</p>
-            <FormCheckboxInput name="userProjectManager" label="Project Manager" />
+            <FormRow name="username" label="User Id*">
+              <FormInput type="text" name="username" placeholder={data.username} disabled />
+            </FormRow>
+            <FormRow name="firstName" label="First Name*">
+              <FormInput type="text" name="firstName" placeholder={data.firstName} disabled />
+            </FormRow>
+            <FormRow name="lastName" label="Last Name*">
+              <FormInput type="text" name="lastName" placeholder={data.lastName} disabled />
+            </FormRow>
+            <FormRow name="email" label="Email*">
+              <FormInput type="text" name="email" placeholder={data.email} disabled />
+            </FormRow>
+            <FormRow>
+              <FormCheckboxInput name="userProjectManager" label="Project Manager" />
+            </FormRow>
             <p>
               <strong>Select roles for the new user</strong>
             </p>
