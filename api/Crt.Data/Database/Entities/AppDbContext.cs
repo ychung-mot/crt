@@ -33,7 +33,7 @@ namespace Crt.Data.Database.Entities
         public virtual DbSet<CrtSystemUserHist> CrtSystemUserHists { get; set; }
         public virtual DbSet<CrtUserRole> CrtUserRoles { get; set; }
         public virtual DbSet<CrtUserRoleHist> CrtUserRoleHists { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CrtDistrict>(entity =>
@@ -213,14 +213,6 @@ namespace Crt.Data.Database.Entities
                     .IsUnicode(false)
                     .HasColumnName("NAME")
                     .HasComment("Business name for a permission");
-
-                entity.Property(e => e.RoleId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("ROLE_ID");
-
-                entity.Property(e => e.RolePermissionId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("ROLE_PERMISSION_ID");
             });
 
             modelBuilder.Entity<CrtPermissionHist>(entity =>

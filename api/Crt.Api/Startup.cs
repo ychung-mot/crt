@@ -54,8 +54,7 @@ namespace Crt.Api
             app.UseCrtEndpoints();
             app.UseCrtSwagger(env, Configuration.GetSection("Constants:SwaggerApiUrl").Value);
 
-            //TODO: uncomment below when CodeLookup table is generated
-            //validator.CodeLookup = codeLookupRepo.LoadCodeLookupCache();
+            validator.CodeLookup = codeLookupRepo.LoadCodeLookupCache();
         }
     }
 }
