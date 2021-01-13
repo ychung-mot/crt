@@ -16,7 +16,7 @@ export const fetchUserStatuses = () => (dispatch) => {
   });
 };
 
-//temporary hard code to grab user regions information
+//temporary hard code to grab user regions information eventually use api.getUserRegions()
 export const fetchUserRegions = () => (dispatch) => {
   let data = [
     { id: 0, number: 0, name: 'Headquarters' },

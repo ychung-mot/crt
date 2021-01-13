@@ -26,7 +26,6 @@ const useSearchData = (defaultSearchOptions) => {
   const updateSearchOptions = (options) => {
     if (!options.pageNumber) options.pageNumber = 1;
     if (!options.pageSize) options.pageSize = Constants.DEFAULT_PAGE_SIZE;
-
     setSearchOptions(options);
   };
 

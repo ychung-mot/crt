@@ -35,7 +35,7 @@ const defaultSearchOptions = {
   searchText: '',
   isActive: true,
   dataPath: Constants.API_PATHS.USER,
-  userRegions: [],
+  regions: '',
 };
 
 const tableColumns = [
@@ -50,6 +50,7 @@ const tableColumns = [
 const validationSchema = Yup.object({
   username: Yup.string().required('Required').max(32).trim(),
   userRoleIds: Yup.array().required('Require at least one role'),
+  userRegions: Yup.array().required('Need to select at least one region'),
 });
 
 const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => {
@@ -82,15 +83,18 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
 
   const handleSearchFormSubmit = (values) => {
     const searchText = values.searchText.trim() || null;
-
     let isActive = null;
     if (values.statusId.length === 1) {
       isActive = values.statusId[0] === 'ACTIVE';
     }
+
+    let regions = values.userRegions.join(',') || null;
+
     const options = {
       ...searchData.searchOptions,
       isActive,
       searchText,
+      regions,
       pageNumber: 1,
     };
     searchData.updateSearchOptions(options);

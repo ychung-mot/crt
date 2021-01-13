@@ -239,7 +239,6 @@ const AddUserWizard = ({
   const handleFinalFormSubmit = (values) => {
     if (!submitting) {
       setSubmitting(true);
-
       api
         .postUser(values)
         .then(() => setWizardState(WIZARD_STATE.USER_SETUP_CONFIRM))

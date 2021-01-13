@@ -26,6 +26,7 @@ instance.interceptors.response.use(
 export const getCurrentUser = () => instance.get(Constants.API_PATHS.USER_CURRENT);
 export const getUser = (id) => instance.get(`${Constants.API_PATHS.USER}/${id}`);
 export const getUserStatuses = () => instance.get(Constants.API_PATHS.USER_STATUSES);
+export const getUserRegions = () => instance.get(Constants.API_PATHS.USER_REGIONS);
 export const postUser = (userData) => instance.post(Constants.API_PATHS.USER, userData);
 export const putUser = (id, userData) => instance.put(`${Constants.API_PATHS.USER}/${id}`, userData);
 export const deleteUser = (id, endDate) =>

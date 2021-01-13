@@ -26,7 +26,6 @@ const EditUserFormFields = ({
     api
       .getUser(userId)
       .then((response) => {
-        console.log(response);
         setInitialValues({
           ...response.data,
           userRegions: [], //temporary fix line 31 and 32 added until api provides a set of regions and program manager

@@ -46,6 +46,9 @@ export const updateQueryParamsFromHistory = (history, newParam, overwrite) => {
   // remove empty searchText
   if (!newParam.searchText) processedParams = _.omit(processedParams, ['searchText']);
 
+  // remove empty regions
+  if (!newParam.regions) processedParams = _.omit(processedParams, ['regions']);
+
   return queryString.stringify(processedParams);
 };
 
