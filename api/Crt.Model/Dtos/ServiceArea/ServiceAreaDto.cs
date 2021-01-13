@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.ServiceArea
 {
-    class ServiceAreaDto
+    public class ServiceAreaDto
     {
         [JsonPropertyName("id")]
         public decimal ServiceAreaId { get; set; }
@@ -15,8 +15,6 @@ namespace Crt.Model.Dtos.ServiceArea
         [JsonPropertyName("name")]
         public string ServiceAreaName { get; set; }
         public decimal DistrictNumber { get; set; }
-        public decimal ServiceAreaUserId { get; set; }
-        public decimal RegionUserId { get; set; }
         public decimal RegionNumber { get; set; }
 
     }

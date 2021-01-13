@@ -13,6 +13,8 @@ namespace Crt.Data.Database.Entities
         }
 
         public decimal PermissionId { get; set; }
+        public decimal RoleId { get; set; }
+        public decimal RolePermissionId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime? EndDate { get; set; }
@@ -20,11 +22,9 @@ namespace Crt.Data.Database.Entities
         public string AppCreateUserid { get; set; }
         public DateTime AppCreateTimestamp { get; set; }
         public Guid AppCreateUserGuid { get; set; }
-        public string AppCreateUserDirectory { get; set; }
         public string AppLastUpdateUserid { get; set; }
         public DateTime AppLastUpdateTimestamp { get; set; }
         public Guid AppLastUpdateUserGuid { get; set; }
-        public string AppLastUpdateUserDirectory { get; set; }
         public string DbAuditCreateUserid { get; set; }
         public DateTime DbAuditCreateTimestamp { get; set; }
         public string DbAuditLastUpdateUserid { get; set; }

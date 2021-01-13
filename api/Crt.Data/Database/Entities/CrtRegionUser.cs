@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace Crt.Data.Database.Entities
 {
-    public partial class CrtUserRole
+    public partial class CrtRegionUser
     {
-        public decimal UserRoleId { get; set; }
-        public decimal RoleId { get; set; }
+        public decimal RegionUserId { get; set; }
+        public decimal RegionNumber { get; set; }
         public decimal SystemUserId { get; set; }
         public DateTime? EndDate { get; set; }
         public long ConcurrencyControlNumber { get; set; }
@@ -23,7 +23,7 @@ namespace Crt.Data.Database.Entities
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
-        public virtual CrtRole Role { get; set; }
+        public virtual CrtRegion RegionNumberNavigation { get; set; }
         public virtual CrtSystemUser SystemUser { get; set; }
     }
 }

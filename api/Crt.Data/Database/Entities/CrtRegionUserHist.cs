@@ -5,12 +5,15 @@ using System.Collections.Generic;
 
 namespace Crt.Data.Database.Entities
 {
-    public partial class CrtUserRole
+    public partial class CrtRegionUserHist
     {
-        public decimal UserRoleId { get; set; }
-        public decimal RoleId { get; set; }
+        public long RegionUserHistId { get; set; }
+        public decimal RegionUserId { get; set; }
         public decimal SystemUserId { get; set; }
+        public decimal RegionNumber { get; set; }
+        public DateTime EffectiveDateHist { get; set; }
         public DateTime? EndDate { get; set; }
+        public DateTime? EndDateHist { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }
         public DateTime AppCreateTimestamp { get; set; }
@@ -22,8 +25,5 @@ namespace Crt.Data.Database.Entities
         public DateTime DbAuditCreateTimestamp { get; set; }
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
-
-        public virtual CrtRole Role { get; set; }
-        public virtual CrtSystemUser SystemUser { get; set; }
     }
 }

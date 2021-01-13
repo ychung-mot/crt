@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.District
 {
-    class DistrictDto
+    public class DistrictDto
     {
         [JsonPropertyName("id")]
         public decimal DistrictId { get; set; }

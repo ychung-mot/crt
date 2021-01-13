@@ -7,6 +7,9 @@ using Crt.Model.Dtos.Role;
 using Crt.Model.Dtos.RolePermission;
 using Crt.Model.Dtos.User;
 using Crt.Model.Dtos.UserRole;
+using Crt.Model.Dtos.ServiceArea;
+using Crt.Model.Dtos.Region;
+using Crt.Model.Dtos.District;
 
 namespace Crt.Data.Mappings
 {
@@ -37,6 +40,11 @@ namespace Crt.Data.Mappings
             CreateMap<CrtUserRole, UserRoleDto>();
 
             CreateMap<CrtCodeLookup, CodeLookupDto>();
+
+            CreateMap<CrtRegionUser, RegionUserDto>();
+            CreateMap<CrtServiceArea, ServiceAreaDto>();
+            CreateMap<CrtRegion, RegionDto>();
+            CreateMap<CrtDistrict, DistrictDto>();
         }
     }
 }
