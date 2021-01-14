@@ -24,13 +24,23 @@ namespace Crt.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RegionDto>>> GetAllRegionsAsync()
         {
-            return Ok(await _regionService.GetAllRegionsAsync());
+            var result = await _regionService.GetAllRegionsAsync();
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
 
         [HttpGet("{id}", Name = "GetRegion")]
         public async Task<ActionResult<RegionDto>> GetRegionByIdAsync(decimal id)
         {
-            return Ok(await _regionService.GetRegionByRegionId(id));
+            var result = await _regionService.GetRegionByRegionId(id);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result); 
         }
     }
 }

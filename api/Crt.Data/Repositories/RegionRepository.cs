@@ -46,7 +46,7 @@ namespace Crt.Data.Repositories
         {
             var entity = await DbSet.AsNoTracking()
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
-                .FirstAsync(r => r.RegionId == id);
+                .FirstOrDefaultAsync(r => r.RegionId == id);
 
             return Mapper.Map<RegionDto>(entity);
         }
@@ -55,7 +55,7 @@ namespace Crt.Data.Repositories
         {
             var entity = await DbSet.AsNoTracking()
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
-                .FirstAsync(r => r.RegionNumber == number);
+                .FirstOrDefaultAsync(r => r.RegionNumber == number);
 
             return Mapper.Map<RegionDto>(entity);
         }

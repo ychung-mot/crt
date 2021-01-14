@@ -38,16 +38,16 @@ namespace Crt.Data.Repositories
         {
             var entity = await DbSet.AsNoTracking()
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
-                .FirstAsync(d => d.DistrictId == id);
+                .FirstOrDefaultAsync(d => d.DistrictId == id);
 
             return Mapper.Map<DistrictDto>(entity);
         }
-
+         
         public async Task<DistrictDto> GetDistrictByDistrictNumberAsync(decimal number)
         {
             var entity = await DbSet.AsNoTracking()
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
-                .FirstAsync(d => d.DistrictNumber == number);
+                .FirstOrDefaultAsync(d => d.DistrictNumber == number);
 
             return Mapper.Map<DistrictDto>(entity);
         }
