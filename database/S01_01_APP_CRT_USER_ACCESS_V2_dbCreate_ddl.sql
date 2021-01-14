@@ -1,28 +1,20 @@
 /* ---------------------------------------------------------------------- */
 /* Script generated with: DeZign for Databases 12.1.0                     */
 /* Target DBMS:           MS SQL Server 2017                              */
-/* Project file:          1_APP_CRT_USER_ACCESS_S1_V1.dez                 */
+/* Project file:          1_APP_CRT_USER_ACCESS_S1_V2.dez                 */
 /* Project name:          Capital Rehabilitation Tracking Reporting       */
 /* Author:                Ayodeji Kuponiyi                                */
 /* Script type:           Database creation script                        */
-/* Created on:            2021-01-12 13:29                                */
+/* Created on:            2021-01-14 03:03                                */
 /* ---------------------------------------------------------------------- */
+
+USE [CRT_DEV];
+GO
 
 
 /* ---------------------------------------------------------------------- */
 /* Add sequences                                                          */
 /* ---------------------------------------------------------------------- */
-
-CREATE SEQUENCE [dbo].[CRT_LOCATION_CODE_H_ID_SEQ]
-  AS bigint 
-  START WITH 1
-  INCREMENT BY 1 
-  MINVALUE  1
-  MAXVALUE  2147483647 
-  NO CYCLE
-  CACHE 50
-GO
-
 
 CREATE SEQUENCE [dbo].[CRT_DIST_ID_SEQ]
   AS bigint 
@@ -69,17 +61,6 @@ GO
 
 
 CREATE SEQUENCE [dbo].[SYS_USR_ID_SEQ]
-  AS bigint 
-  START WITH 1
-  INCREMENT BY 1 
-  MINVALUE  1
-  MAXVALUE  999999999 
-  NO CYCLE
-  CACHE 50
-GO
-
-
-CREATE SEQUENCE [dbo].[SYS_VLD_ID_SEQ]
   AS bigint 
   START WITH 1
   INCREMENT BY 1 
@@ -167,17 +148,6 @@ CREATE SEQUENCE [dbo].[CRT_RL_PERM_ID_SEQ]
 GO
 
 
-CREATE SEQUENCE [dbo].[CRT_CODE_LKUP_ID_SEQ]
-  AS bigint 
-  START WITH 1
-  INCREMENT BY 1 
-  MINVALUE  1
-  MAXVALUE  999999999 
-  NO CYCLE
-  CACHE 50
-GO
-
-
 CREATE SEQUENCE [dbo].[CRT_REGION_USR_ID_SEQ]
   AS BIGINT 
   START WITH 1
@@ -211,12 +181,56 @@ CREATE SEQUENCE [dbo].[CRT_REGION_USER_H_ID_SEQ]
 GO
 
 
-CREATE SEQUENCE [dbo].[CRT_SERVICE_AREA_H_ID_SEQ]
+CREATE SEQUENCE [dbo].[CRT_REG_DIST_ID_SEQ]
+  AS BIGINT 
+  START WITH 1
+  INCREMENT BY 1 
+  MINVALUE  1
+  MAXVALUE  9999999999 
+  NO CYCLE
+  CACHE 50
+GO
+
+
+CREATE SEQUENCE [dbo].[CRT_REG_DIST_H_ID_SEQ]
+  AS BIGINT 
+  START WITH 1
+  INCREMENT BY 1 
+  MINVALUE  1
+  MAXVALUE  9999999999 
+  NO CYCLE
+  CACHE 50
+GO
+
+
+CREATE SEQUENCE [dbo].[CRT_CODE_LKUP_ID_SEQ]
   AS BIGINT 
   START WITH 1
   INCREMENT BY 1 
   MINVALUE  1
   MAXVALUE  999999999 
+  NO CYCLE
+  CACHE 50
+GO
+
+
+CREATE SEQUENCE [dbo].[CRT_CODE_LOOKUP_H_ID_SEQ]
+  AS BIGINT 
+  START WITH 1
+  INCREMENT BY 1 
+  MINVALUE  1
+  MAXVALUE  9999999999 
+  NO CYCLE
+  CACHE 50
+GO
+
+
+CREATE SEQUENCE [dbo].[CRT_SERVICE_AREA_H_ID_SEQ]
+  AS BIGINT 
+  START WITH 1
+  INCREMENT BY 1 
+  MINVALUE  1
+  MAXVALUE  9999999999 
   NO CYCLE
   CACHE 50
 GO
@@ -232,8 +246,6 @@ GO
 
 CREATE TABLE [dbo].[CRT_PERMISSION] (
     [PERMISSION_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_PERM_ID_SEQ] NOT NULL,
-    [ROLE_ID] NUMERIC(9) NOT NULL,
-    [ROLE_PERMISSION_ID] NUMERIC(9) NOT NULL,
     [NAME] VARCHAR(30) NOT NULL,
     [DESCRIPTION] VARCHAR(150),
     [END_DATE] DATE,
@@ -632,7 +644,7 @@ CREATE TABLE [dbo].[CRT_REGION] (
     [DB_AUDIT_CREATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
     [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
     [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
-    CONSTRAINT [CRT_REGION_PK] PRIMARY KEY CLUSTERED ([REGION_NUMBER]),
+    CONSTRAINT [CRT_REGION_PK] PRIMARY KEY CLUSTERED ([REGION_ID]),
     CONSTRAINT [CRT_REG_NO_NAME_UK] UNIQUE ([REGION_NUMBER], [REGION_NAME], [END_DATE])
 )
 GO
@@ -642,7 +654,7 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'Ministry Region lookup value
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'A ministry organizational unit responsible for an exclusive geographic area within the province.  ', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION', 'COLUMN', N'REGION_ID'
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for Ministry region', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION', 'COLUMN', N'REGION_ID'
 GO
 
 
@@ -686,14 +698,13 @@ CREATE TABLE [dbo].[CRT_DISTRICT] (
     [DISTRICT_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_DIST_ID_SEQ] NOT NULL,
     [DISTRICT_NUMBER] NUMERIC(2) NOT NULL,
     [DISTRICT_NAME] VARCHAR(40) NOT NULL,
-    [REGION_NUMBER] NUMERIC(2) NOT NULL,
     [END_DATE] DATE,
     [CONCURRENCY_CONTROL_NUMBER] BIGINT DEFAULT 1 NOT NULL,
     [DB_AUDIT_CREATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
     [DB_AUDIT_CREATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
     [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
     [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
-    CONSTRAINT [CRT_DISTRICT_PK] PRIMARY KEY CLUSTERED ([DISTRICT_NUMBER]),
+    CONSTRAINT [CRT_DISTRICT_PK] PRIMARY KEY CLUSTERED ([DISTRICT_ID]),
     CONSTRAINT [CRT_DIST_NO_NAME_UK] UNIQUE ([DISTRICT_NUMBER], [DISTRICT_NAME], [END_DATE])
 )
 GO
@@ -712,10 +723,6 @@ GO
 
 
 EXECUTE sp_addextendedproperty N'MS_Description', N'The name of the District', 'SCHEMA', N'dbo', 'TABLE', N'CRT_DISTRICT', 'COLUMN', N'DISTRICT_NAME'
-GO
-
-
-EXECUTE sp_addextendedproperty N'MS_Description', N'Parent REGION containing the DISTRICT', 'SCHEMA', N'dbo', 'TABLE', N'CRT_DISTRICT', 'COLUMN', N'REGION_NUMBER'
 GO
 
 
@@ -1147,8 +1154,8 @@ GO
 CREATE TABLE [dbo].[CRT_REGION_USER_HIST] (
     [REGION_USER_HIST_ID] BIGINT DEFAULT NEXT VALUE FOR [CRT_REGION_USER_H_ID_SEQ] NOT NULL,
     [REGION_USER_ID] NUMERIC(9) NOT NULL,
+    [REGION_ID] NUMERIC(9) NOT NULL,
     [SYSTEM_USER_ID] NUMERIC(9) NOT NULL,
-    [REGION_NUMBER] NUMERIC(2) NOT NULL,
     [EFFECTIVE_DATE_HIST] DATETIME DEFAULT getutcdate() NOT NULL,
     [END_DATE] DATETIME,
     [END_DATE_HIST] DATETIME,
@@ -1178,6 +1185,10 @@ GO
 
 
 EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for REGION', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_USER_HIST', 'COLUMN', N'REGION_USER_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'identifier for REGION', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_USER_HIST', 'COLUMN', N'REGION_ID'
 GO
 
 
@@ -1241,8 +1252,8 @@ CREATE TABLE [dbo].[CRT_ROLE_PERMISSION_HIST] (
     [ROLE_PERMISSION_HIST_ID] BIGINT DEFAULT NEXT VALUE FOR [CRT_ROLE_PERMISSION_H_ID_SEQ] NOT NULL,
     [ROLE_PERMISSION_ID] NUMERIC(9) NOT NULL,
     [ROLE_ID] NUMERIC(9) NOT NULL,
-    [EFFECTIVE_DATE_HIST] DATETIME DEFAULT getutcdate() NOT NULL,
     [PERMISSION_ID] NUMERIC(9) NOT NULL,
+    [EFFECTIVE_DATE_HIST] DATETIME DEFAULT getutcdate() NOT NULL,
     [END_DATE] DATE,
     [END_DATE_HIST] DATETIME,
     [CONCURRENCY_CONTROL_NUMBER] BIGINT NOT NULL,
@@ -1441,7 +1452,7 @@ CREATE TABLE [dbo].[CRT_SERVICE_AREA_HIST] (
     [SERVICE_AREA_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_SRV_ARA_ID_SEQ] NOT NULL,
     [SERVICE_AREA_NUMBER] NUMERIC(9) NOT NULL,
     [SERVICE_AREA_NAME] VARCHAR(60) NOT NULL,
-    [DISTRICT_NUMBER] NUMERIC(2) NOT NULL,
+    [DISTRICT_ID] NUMERIC(9) NOT NULL,
     [EFFECTIVE_DATE_HIST] DATETIME DEFAULT getutcdate() NOT NULL,
     [END_DATE] DATE,
     [END_DATE_HIST] DATETIME,
@@ -1476,7 +1487,7 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'Name of the service area', '
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for DISTRICT.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_SERVICE_AREA_HIST', 'COLUMN', N'DISTRICT_NUMBER'
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for DISTRICT.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_SERVICE_AREA_HIST', 'COLUMN', N'DISTRICT_ID'
 GO
 
 
@@ -1505,12 +1516,247 @@ GO
 
 
 /* ---------------------------------------------------------------------- */
+/* Add table "dbo.CRT_REGION_DISTRICT"                                    */
+/* ---------------------------------------------------------------------- */
+
+CREATE TABLE [dbo].[CRT_REGION_DISTRICT] (
+    [REGION_DISTRICT_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_REG_DIST_ID_SEQ] NOT NULL,
+    [REGION_ID] NUMERIC(9) NOT NULL,
+    [DISTRICT_ID] NUMERIC(9) NOT NULL,
+    [END_DATE] DATE,
+    [CONCURRENCY_CONTROL_NUMBER] BIGINT DEFAULT 1 NOT NULL,
+    [DB_AUDIT_CREATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_CREATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
+    CONSTRAINT [CRT_REGION_DISTR_PK] PRIMARY KEY CLUSTERED ([REGION_DISTRICT_ID]),
+    CONSTRAINT [CRT_REG_DIS_NO_NAME_UK] UNIQUE ([END_DATE], [REGION_ID], [DISTRICT_ID])
+)
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Ministry Region District lookup values', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', NULL, NULL
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'REGION_DISTRICT_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'unique identifier for Ministry region', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'REGION_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'unique identifier for Ministry district', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'DISTRICT_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date the entity ends or changes', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'END_DATE'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'CONCURRENCY_CONTROL_NUMBER'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Named database user who created record', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'DB_AUDIT_CREATE_USERID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date and time record created in the database', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'DB_AUDIT_CREATE_TIMESTAMP'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Named database user who last updated record', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'DB_AUDIT_LAST_UPDATE_USERID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date and time record was last updated in the database.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT', 'COLUMN', N'DB_AUDIT_LAST_UPDATE_TIMESTAMP'
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Add table "dbo.CRT_REGION_DISTRICT_HIST"                               */
+/* ---------------------------------------------------------------------- */
+
+CREATE TABLE [dbo].[CRT_REGION_DISTRICT_HIST] (
+    [REGION_DISTRICT_HIST_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_REG_DIST_H_ID_SEQ] NOT NULL,
+    [REGION_DISTRICT_ID] NUMERIC(9) NOT NULL,
+    [REGION_ID] NUMERIC(2) NOT NULL,
+    [DISTRICT_ID] NUMERIC(2) NOT NULL,
+    [EFFECTIVE_DATE_HIST] DATETIME DEFAULT getutcdate() NOT NULL,
+    [END_DATE] DATE,
+    [END_DATE_HIST] DATETIME,
+    [CONCURRENCY_CONTROL_NUMBER] BIGINT NOT NULL,
+    [DB_AUDIT_CREATE_USERID] VARCHAR(30) NOT NULL,
+    [DB_AUDIT_CREATE_TIMESTAMP] DATETIME NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME NOT NULL,
+    CONSTRAINT [CRT_REGION_DISTR_H_PK] PRIMARY KEY CLUSTERED ([REGION_DISTRICT_HIST_ID]),
+    CONSTRAINT [CRT_REG_DIS_H_NO_NAME_UK] UNIQUE ([REGION_DISTRICT_HIST_ID], [END_DATE_HIST])
+)
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Ministry Region lookup values', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', NULL, NULL
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'REGION_DISTRICT_HIST_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'REGION_DISTRICT_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'unique identifier for Ministry region', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'REGION_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'unique identifier for Ministry district', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'DISTRICT_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date the entity ends or changes', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'END_DATE'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'CONCURRENCY_CONTROL_NUMBER'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Named database user who created record', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'DB_AUDIT_CREATE_USERID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date and time record created in the database', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'DB_AUDIT_CREATE_TIMESTAMP'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Named database user who last updated record', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'DB_AUDIT_LAST_UPDATE_USERID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date and time record was last updated in the database.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_DISTRICT_HIST', 'COLUMN', N'DB_AUDIT_LAST_UPDATE_TIMESTAMP'
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Add table "dbo.CRT_CODE_LOOKUP"                                        */
+/* ---------------------------------------------------------------------- */
+
+CREATE TABLE [dbo].[CRT_CODE_LOOKUP] (
+    [CODE_LOOKUP_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_CODE_LKUP_ID_SEQ] NOT NULL,
+    [CODE_SET] VARCHAR(20),
+    [CODE_NAME] VARCHAR(255),
+    [CODE_VALUE_TEXT] VARCHAR(20),
+    [CODE_VALUE_NUM] NUMERIC(9),
+    [CODE_VALUE_FORMAT] VARCHAR(12),
+    [DISPLAY_ORDER] NUMERIC(3),
+    [END_DATE] DATETIME,
+    [CONCURRENCY_CONTROL_NUMBER] BIGINT DEFAULT 1 NOT NULL,
+    [DB_AUDIT_CREATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_CREATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
+    CONSTRAINT [CRT_CODE_LKUP_PK] PRIMARY KEY CLUSTERED ([CODE_LOOKUP_ID]),
+    CONSTRAINT [CRT_CODE_LKUP_VAL_NUM_UC] UNIQUE ([CODE_SET], [CODE_VALUE_NUM], [CODE_NAME]),
+    CONSTRAINT [CRT_CODE_LKUP_VAL_TXT_UC] UNIQUE ([CODE_SET], [CODE_VALUE_TEXT], [CODE_NAME])
+)
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'A range of lookup values used to decipher codes used in submissions to business legible values for reporting purposes.  As many code lookups share this table, views are available to join for reporting purposes.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', NULL, NULL
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for a record.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'CODE_LOOKUP_ID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for a group of lookup codes.  A database view is available for each group for use in analytics.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'CODE_SET'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Display name or business name for a submission value.  These values are for display in analytical reporting.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'CODE_NAME'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Look up code values provided in submissions.   These values are used for validating submissions and for display of CODE NAMES in analytical reporting.  Values must be unique per CODE SET.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'CODE_VALUE_TEXT'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N' Numeric enumeration values provided in submissions.   These values are used for validating submissions and for display of CODE NAMES in analytical reporting.  Values must be unique per CODE SET.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'CODE_VALUE_NUM'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Specifies if the code value is text or numeric.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'CODE_VALUE_FORMAT'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'When displaying list of values, value can be used to present list in desired order.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'DISPLAY_ORDER'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'The latest date submissions will be accepted.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'END_DATE'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'CONCURRENCY_CONTROL_NUMBER'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Named database user who created record', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'DB_AUDIT_CREATE_USERID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date and time record created in the database', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'DB_AUDIT_CREATE_TIMESTAMP'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Named database user who last updated record', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'DB_AUDIT_LAST_UPDATE_USERID'
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Date and time record was last updated in the database.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_CODE_LOOKUP', 'COLUMN', N'DB_AUDIT_LAST_UPDATE_TIMESTAMP'
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Add table "dbo.CRT_CODE_LOOKUP_HIST"                                   */
+/* ---------------------------------------------------------------------- */
+
+CREATE TABLE [dbo].[CRT_CODE_LOOKUP_HIST] (
+    [CODE_LOOKUP_HIST_ID] BIGINT DEFAULT NEXT VALUE FOR [CRT_CODE_LOOKUP_H_ID_SEQ] NOT NULL,
+    [EFFECTIVE_DATE_HIST] DATETIME DEFAULT getutcdate() NOT NULL,
+    [END_DATE_HIST] DATETIME,
+    [CODE_LOOKUP_ID] NUMERIC(18) NOT NULL,
+    [CODE_SET] VARCHAR(20),
+    [CODE_NAME] VARCHAR(255),
+    [CODE_VALUE_TEXT] VARCHAR(20),
+    [CODE_VALUE_NUM] NUMERIC(18),
+    [CODE_VALUE_FORMAT] VARCHAR(12),
+    [DISPLAY_ORDER] NUMERIC(18),
+    [END_DATE] DATETIME,
+    [CONCURRENCY_CONTROL_NUMBER] BIGINT NOT NULL,
+    [DB_AUDIT_CREATE_USERID] VARCHAR(30) NOT NULL,
+    [DB_AUDIT_CREATE_TIMESTAMP] DATETIME NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME NOT NULL,
+    CONSTRAINT [CRT_CODE__H_PK] PRIMARY KEY CLUSTERED ([CODE_LOOKUP_HIST_ID]),
+    CONSTRAINT [CRT_CODE__H_UK] UNIQUE ([CODE_LOOKUP_HIST_ID], [END_DATE_HIST])
+)
+GO
+
+
+/* ---------------------------------------------------------------------- */
 /* Add table "dbo.CRT_REGION_USER"                                        */
 /* ---------------------------------------------------------------------- */
 
 CREATE TABLE [dbo].[CRT_REGION_USER] (
     [REGION_USER_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_REGION_USR_ID_SEQ] NOT NULL,
-    [REGION_NUMBER] NUMERIC(2) NOT NULL,
+    [REGION_ID] NUMERIC(9) NOT NULL,
     [SYSTEM_USER_ID] NUMERIC(9) NOT NULL,
     [END_DATE] DATETIME,
     [CONCURRENCY_CONTROL_NUMBER] BIGINT DEFAULT 1 NOT NULL,
@@ -1541,7 +1787,7 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for REGION
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'identifier for REGION', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_USER', 'COLUMN', N'REGION_NUMBER'
+EXECUTE sp_addextendedproperty N'MS_Description', N'identifier for REGION', 'SCHEMA', N'dbo', 'TABLE', N'CRT_REGION_USER', 'COLUMN', N'REGION_ID'
 GO
 
 
@@ -1605,14 +1851,14 @@ CREATE TABLE [dbo].[CRT_SERVICE_AREA] (
     [SERVICE_AREA_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_SRV_ARA_ID_SEQ] NOT NULL,
     [SERVICE_AREA_NUMBER] NUMERIC(9) NOT NULL,
     [SERVICE_AREA_NAME] VARCHAR(60) NOT NULL,
-    [DISTRICT_NUMBER] NUMERIC(2) NOT NULL,
+    [DISTRICT_ID] NUMERIC(9) NOT NULL,
     [END_DATE] DATE,
     [CONCURRENCY_CONTROL_NUMBER] BIGINT DEFAULT 1 NOT NULL,
     [DB_AUDIT_CREATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
     [DB_AUDIT_CREATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
     [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
     [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
-    CONSTRAINT [CRT_SERVICE_AREA_PK] PRIMARY KEY CLUSTERED ([SERVICE_AREA_NUMBER]),
+    CONSTRAINT [CRT_SERVICE_AREA_PK] PRIMARY KEY CLUSTERED ([SERVICE_AREA_ID]),
     CONSTRAINT [CRT_SRV_ARA_UK] UNIQUE ([SERVICE_AREA_NUMBER], [SERVICE_AREA_NAME], [END_DATE])
 )
 GO
@@ -1634,7 +1880,7 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'Name of the service area', '
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for DISTRICT.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_SERVICE_AREA', 'COLUMN', N'DISTRICT_NUMBER'
+EXECUTE sp_addextendedproperty N'MS_Description', N'Unique identifier for DISTRICT.', 'SCHEMA', N'dbo', 'TABLE', N'CRT_SERVICE_AREA', 'COLUMN', N'DISTRICT_ID'
 GO
 
 
@@ -1682,17 +1928,12 @@ GO
 
 
 ALTER TABLE [dbo].[CRT_REGION_USER] ADD CONSTRAINT [CRT_REGION_CRT_REGION_USER] 
-    FOREIGN KEY ([REGION_NUMBER]) REFERENCES [dbo].[CRT_REGION] ([REGION_NUMBER])
+    FOREIGN KEY ([REGION_ID]) REFERENCES [dbo].[CRT_REGION] ([REGION_ID])
 GO
 
 
 ALTER TABLE [dbo].[CRT_SERVICE_AREA] ADD CONSTRAINT [CRT_DISTRICT_CRT_SERVICE_AREA] 
-    FOREIGN KEY ([DISTRICT_NUMBER]) REFERENCES [dbo].[CRT_DISTRICT] ([DISTRICT_NUMBER])
-GO
-
-
-ALTER TABLE [dbo].[CRT_DISTRICT] ADD CONSTRAINT [CRT_REGION_CRT_DISTRICT] 
-    FOREIGN KEY ([REGION_NUMBER]) REFERENCES [dbo].[CRT_REGION] ([REGION_NUMBER])
+    FOREIGN KEY ([DISTRICT_ID]) REFERENCES [dbo].[CRT_DISTRICT] ([DISTRICT_ID])
 GO
 
 
@@ -1703,6 +1944,16 @@ GO
 
 ALTER TABLE [dbo].[CRT_ROLE_PERMISSION] ADD CONSTRAINT [CRT_PERMISSION_CRT_ROLE_PERMISSION] 
     FOREIGN KEY ([PERMISSION_ID]) REFERENCES [dbo].[CRT_PERMISSION] ([PERMISSION_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_REGION_DISTRICT] ADD CONSTRAINT [CRT_REGION_CRT_REGION_DISTRICT] 
+    FOREIGN KEY ([REGION_ID]) REFERENCES [dbo].[CRT_REGION] ([REGION_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_REGION_DISTRICT] ADD CONSTRAINT [CRT_DISTRICT_CRT_REGION_DISTRICT] 
+    FOREIGN KEY ([DISTRICT_ID]) REFERENCES [dbo].[CRT_DISTRICT] ([DISTRICT_ID])
 GO
 
 
@@ -1798,7 +2049,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -1833,7 +2084,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -2160,8 +2411,8 @@ SET @curr_date = getutcdate();
     update CRT_REGION_USER_HIST set END_DATE_HIST = @curr_date where REGION_USER_ID in (select REGION_USER_ID from deleted) and END_DATE_HIST is null;
 
   IF EXISTS(SELECT * FROM inserted)
-    insert into CRT_REGION_USER_HIST ([REGION_USER_ID], [REGION_NUMBER], [SYSTEM_USER_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], REGION_USER_HIST_ID, END_DATE_HIST, EFFECTIVE_DATE_HIST)
-      select [REGION_USER_ID], [REGION_NUMBER], [SYSTEM_USER_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_REGION_USER_H_ID_SEQ]) as [REGION_USER_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
+    insert into CRT_REGION_USER_HIST ([REGION_USER_ID], [REGION_ID], [SYSTEM_USER_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], REGION_USER_HIST_ID, END_DATE_HIST, EFFECTIVE_DATE_HIST)
+      select [REGION_USER_ID], [REGION_ID], [SYSTEM_USER_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_REGION_USER_H_ID_SEQ]) as [REGION_USER_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
 
 END TRY
 BEGIN CATCH
@@ -2179,7 +2430,7 @@ BEGIN TRY
 
 
   insert into CRT_REGION_USER ("REGION_USER_ID",
-      "REGION_NUMBER",
+      "REGION_ID",
       "SYSTEM_USER_ID",
       "END_DATE",
       "CONCURRENCY_CONTROL_NUMBER",
@@ -2190,7 +2441,7 @@ BEGIN TRY
       "APP_LAST_UPDATE_TIMESTAMP",
       "APP_LAST_UPDATE_USER_GUID")
     select "REGION_USER_ID",
-      "REGION_NUMBER",
+      "REGION_ID",
       "SYSTEM_USER_ID",
       "END_DATE",
       "CONCURRENCY_CONTROL_NUMBER",
@@ -2224,7 +2475,7 @@ BEGIN TRY
   -- update statement
   update CRT_REGION_USER
     set "REGION_USER_ID" = inserted."REGION_USER_ID",
-      "REGION_NUMBER" = inserted."REGION_NUMBER",
+      "REGION_ID" = inserted."REGION_ID",
       "SYSTEM_USER_ID" = inserted."SYSTEM_USER_ID",
       "END_DATE" = inserted."END_DATE",
       "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER",
@@ -2240,7 +2491,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -2317,13 +2568,13 @@ SET @curr_date = getutcdate();
     update CRT_SERVICE_AREA_HIST set END_DATE_HIST = @curr_date where SERVICE_AREA_NUMBER in (select SERVICE_AREA_NUMBER from deleted) and END_DATE_HIST is null;
 
   IF EXISTS(SELECT * FROM inserted)
-    insert into CRT_SERVICE_AREA_HIST ([SERVICE_AREA_ID], [SERVICE_AREA_NUMBER], [SERVICE_AREA_NAME], [DISTRICT_NUMBER], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], SERVICE_AREA_HIST_ID, END_DATE_HIST, EFFECTIVE_DATE_HIST)
-      select [SERVICE_AREA_ID], [SERVICE_AREA_NUMBER], [SERVICE_AREA_NAME], [DISTRICT_NUMBER], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_SERVICE_AREA_H_ID_SEQ]) as [SERVICE_AREA_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
+    insert into CRT_SERVICE_AREA_HIST ([SERVICE_AREA_ID], [SERVICE_AREA_NUMBER], [SERVICE_AREA_NAME], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], SERVICE_AREA_HIST_ID, END_DATE_HIST, EFFECTIVE_DATE_HIST)
+      select [SERVICE_AREA_ID], [SERVICE_AREA_NUMBER], [SERVICE_AREA_NAME], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_SERVICE_AREA_H_ID_SEQ]) as [SERVICE_AREA_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
 
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -2338,13 +2589,13 @@ BEGIN TRY
   insert into CRT_SERVICE_AREA ("SERVICE_AREA_ID",
       "SERVICE_AREA_NUMBER",
       "SERVICE_AREA_NAME",
-      "DISTRICT_NUMBER", 
+      "DISTRICT_ID", 
       "END_DATE",
       "CONCURRENCY_CONTROL_NUMBER")
     select "SERVICE_AREA_ID",
       "SERVICE_AREA_NUMBER",
       "SERVICE_AREA_NAME",
-      "DISTRICT_NUMBER", 
+      "DISTRICT_ID", 
       "END_DATE",
       "CONCURRENCY_CONTROL_NUMBER"
     from inserted;
@@ -2352,7 +2603,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -2373,7 +2624,7 @@ BEGIN TRY
     set "SERVICE_AREA_ID" = inserted."SERVICE_AREA_ID",
       "SERVICE_AREA_NUMBER" = inserted."SERVICE_AREA_NUMBER",
       "SERVICE_AREA_NAME" = inserted."SERVICE_AREA_NAME",
-      "DISTRICT_NUMBER" = inserted."DISTRICT_NUMBER",    
+      "DISTRICT_ID" = inserted."DISTRICT_ID",    
       "END_DATE" = inserted."END_DATE",
       "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER"
     , DB_AUDIT_LAST_UPDATE_TIMESTAMP = getutcdate()
@@ -2385,7 +2636,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -2400,13 +2651,11 @@ BEGIN TRY
   insert into CRT_DISTRICT ("DISTRICT_ID",
       "DISTRICT_NUMBER",
       "DISTRICT_NAME",
-      "REGION_NUMBER",
       "END_DATE",
       "CONCURRENCY_CONTROL_NUMBER")
     select "DISTRICT_ID",
       "DISTRICT_NUMBER",
       "DISTRICT_NAME",
-      "REGION_NUMBER",
       "END_DATE",
       "CONCURRENCY_CONTROL_NUMBER"
     from inserted;
@@ -2414,7 +2663,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -2435,7 +2684,6 @@ BEGIN TRY
     set "DISTRICT_ID" = inserted."DISTRICT_ID",
       "DISTRICT_NUMBER" = inserted."DISTRICT_NUMBER",
       "DISTRICT_NAME" = inserted."DISTRICT_NAME",
-      "REGION_NUMBER" = inserted."REGION_NUMBER",
       "END_DATE" = inserted."END_DATE",
       "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER"
     , DB_AUDIT_LAST_UPDATE_TIMESTAMP = getutcdate()
@@ -2447,7 +2695,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -2541,6 +2789,184 @@ BEGIN TRY
     from CRT_ROLE_PERMISSION
     inner join inserted
     on (CRT_ROLE_PERMISSION.ROLE_PERMISSION_ID = inserted.ROLE_PERMISSION_ID);
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH;
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_RGN_D_I_S_I_TR] ON CRT_REGION_DISTRICT INSTEAD OF INSERT AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM inserted)
+    RETURN;
+
+
+  insert into CRT_REGION_DISTRICT ("REGION_DISTRICT_ID",
+      "REGION_ID",
+      "DISTRICT_ID", 
+      "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER")
+    select "REGION_DISTRICT_ID",
+      "REGION_ID",
+      "DISTRICT_ID",
+      "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER"
+    from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH;
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_RGN_D_I_S_U_TR] ON CRT_REGION_DISTRICT INSTEAD OF UPDATE AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+  -- validate concurrency control
+  if exists (select 1 from inserted, deleted where inserted.CONCURRENCY_CONTROL_NUMBER != deleted.CONCURRENCY_CONTROL_NUMBER+1 AND inserted.REGION_ID = deleted.REGION_ID)
+    raiserror('CONCURRENCY FAILURE.',16,1)
+
+
+  -- update statement
+  update CRT_REGION_DISTRICT
+    set "REGION_DISTRICT_ID" = inserted."REGION_DISTRICT_ID",
+      "REGION_ID" = inserted."REGION_ID",
+      "DISTRICT_ID" = inserted."DISTRICT_ID",
+      "END_DATE" = inserted."END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER"
+    , DB_AUDIT_LAST_UPDATE_TIMESTAMP = getutcdate()
+    , DB_AUDIT_LAST_UPDATE_USERID = user_name()
+    from CRT_REGION_DISTRICT
+    inner join inserted
+    on (CRT_REGION_DISTRICT.REGION_ID = inserted.REGION_ID);
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH;
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_RGN_DIST_A_S_IUD_TR] ON CRT_REGION_DISTRICT FOR INSERT, UPDATE, DELETE AS
+SET NOCOUNT ON
+BEGIN TRY
+DECLARE @curr_date datetime;
+SET @curr_date = getutcdate();
+  IF NOT EXISTS(SELECT * FROM inserted) AND NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+  -- historical
+  IF EXISTS(SELECT * FROM deleted)
+    update CRT_REGION_DISTRICT_HIST set END_DATE_HIST = @curr_date where REGION_DISTRICT_ID in (select REGION_DISTRICT_ID from deleted) and END_DATE_HIST is null;
+
+  IF EXISTS(SELECT * FROM inserted)
+    insert into CRT_REGION_DISTRICT_HIST ([REGION_DISTRICT_ID], [REGION_ID], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], REGION_DISTRICT_HIST_ID, END_DATE_HIST, EFFECTIVE_DATE_HIST)
+      select [REGION_DISTRICT_ID], [REGION_ID], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_REG_DIST_ID_SEQ]) as [REGION_DISTRICT_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
+                                                                   
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH;
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_CODE_LKUP_A_S_IUD_TR] ON CRT_CODE_LOOKUP FOR INSERT, UPDATE, DELETE AS
+SET NOCOUNT ON
+BEGIN TRY
+DECLARE @curr_date datetime;
+SET @curr_date = getutcdate();
+  IF NOT EXISTS(SELECT * FROM inserted) AND NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+  -- historical
+  IF EXISTS(SELECT * FROM deleted)
+    update CRT_CODE_LOOKUP_HIST set END_DATE_HIST = @curr_date where CODE_LOOKUP_ID in (select CODE_LOOKUP_ID from deleted) and END_DATE_HIST is null;
+
+  IF EXISTS(SELECT * FROM inserted)
+    insert into CRT_CODE_LOOKUP_HIST ([CODE_LOOKUP_ID], [CODE_SET], [CODE_NAME], [CODE_VALUE_TEXT], [CODE_VALUE_NUM], [CODE_VALUE_FORMAT], [DISPLAY_ORDER], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], CODE_LOOKUP_HIST_ID, END_DATE_HIST, EFFECTIVE_DATE_HIST)
+      select [CODE_LOOKUP_ID], [CODE_SET], [CODE_NAME], [CODE_VALUE_TEXT], [CODE_VALUE_NUM], [CODE_VALUE_FORMAT], [DISPLAY_ORDER], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_CODE_LOOKUP_H_ID_SEQ]) as [CODE_LOOKUP_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH;
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_CODE_LKUP_I_S_I_TR] ON CRT_CODE_LOOKUP INSTEAD OF INSERT AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM inserted)
+    RETURN;
+
+
+  insert into CRT_CODE_LOOKUP ("CODE_LOOKUP_ID",
+      "CODE_SET",
+      "CODE_NAME",
+      "CODE_VALUE_TEXT",
+      "CODE_VALUE_NUM",
+      "CODE_VALUE_FORMAT",
+      "DISPLAY_ORDER",
+      "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER")
+    select "CODE_LOOKUP_ID",
+      "CODE_SET",
+      "CODE_NAME",
+      "CODE_VALUE_TEXT",
+      "CODE_VALUE_NUM",
+      "CODE_VALUE_FORMAT",
+      "DISPLAY_ORDER",
+      "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER"
+    from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH;
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_CODE_LKUP_I_S_U_TR] ON CRT_CODE_LOOKUP INSTEAD OF UPDATE AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+  -- validate concurrency control
+  if exists (select 1 from inserted, deleted where inserted.CONCURRENCY_CONTROL_NUMBER != deleted.CONCURRENCY_CONTROL_NUMBER+1 AND inserted.CODE_LOOKUP_ID = deleted.CODE_LOOKUP_ID)
+    raiserror('CONCURRENCY FAILURE.',16,1)
+
+
+  -- update statement
+  update CRT_CODE_LOOKUP
+    set "CODE_LOOKUP_ID" = inserted."CODE_LOOKUP_ID",
+      "CODE_SET" = inserted."CODE_SET",
+      "CODE_NAME" = inserted."CODE_NAME",
+      "CODE_VALUE_TEXT" = inserted."CODE_VALUE_TEXT",
+      "CODE_VALUE_NUM" = inserted."CODE_VALUE_NUM",
+      "CODE_VALUE_FORMAT" = inserted."CODE_VALUE_FORMAT",
+      "DISPLAY_ORDER" = inserted."DISPLAY_ORDER",
+      "END_DATE" = inserted."END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER"
+    , DB_AUDIT_LAST_UPDATE_TIMESTAMP = getutcdate()
+    , DB_AUDIT_LAST_UPDATE_USERID = user_name()
+    from CRT_CODE_LOOKUP
+    inner join inserted
+    on (CRT_CODE_LOOKUP.CODE_LOOKUP_ID = inserted.CODE_LOOKUP_ID);
 
 END TRY
 BEGIN CATCH
