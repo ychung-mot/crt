@@ -12,7 +12,8 @@ namespace Crt.Data.Repositories
     {
         IEnumerable<DistrictDto> GetAllDistricts();
         Task<IEnumerable<DistrictDto>> GetAllDistrictsAsync();
-        Task<DistrictDto> GetDistrictByDistrictNumber(decimal districtNumber);
+        Task<DistrictDto> GetDistrictByDistrictId(decimal id);
+        Task<DistrictDto> GetDistrictByDistrictNumber(decimal number);
     }
 
     public class DistrictRepository : CrtRepositoryBase<CrtDistrict>, IDistrictRepository
@@ -31,10 +32,18 @@ namespace Crt.Data.Repositories
             return await GetAllAsync<DistrictDto>();
         }
 
-        public async Task<DistrictDto> GetDistrictByDistrictNumber(decimal districtNumber)
+        public async Task<DistrictDto> GetDistrictByDistrictId(decimal id)
         {
             var entity = await DbSet.AsNoTracking()
-                .FirstAsync(d => d.DistrictNumber == districtNumber);
+                .FirstAsync(d => d.DistrictId == id);
+
+            return Mapper.Map<DistrictDto>(entity);
+        }
+
+        public async Task<DistrictDto> GetDistrictByDistrictNumber(decimal number)
+        {
+            var entity = await DbSet.AsNoTracking()
+                .FirstAsync(d => d.DistrictNumber == number);
 
             return Mapper.Map<DistrictDto>(entity);
         }

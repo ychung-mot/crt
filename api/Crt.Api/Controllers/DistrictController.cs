@@ -27,10 +27,10 @@ namespace Crt.Api.Controllers
             return Ok(await _districtService.GetAllDistrictsAsync());
         }
 
-        [HttpGet("{number}", Name = "GetDistrict")]
-        public async Task<ActionResult<DistrictDto>> GetDistrictByNumberAsync(decimal number)
+        [HttpGet("{id}", Name = "GetDistrict")]
+        public async Task<ActionResult<DistrictDto>> GetDistrictByIdAsync(decimal id)
         {
-            return Ok(await _districtService.GetDistrictByDistrictNumber(number));
+            return Ok(await _districtService.GetDistrictByDistrictId(id));
         }
     }
 }

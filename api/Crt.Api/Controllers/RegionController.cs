@@ -27,10 +27,10 @@ namespace Crt.Api.Controllers
             return Ok(await _regionService.GetAllRegionsAsync());
         }
 
-        [HttpGet("{number}", Name = "GetRegion")]
-        public async Task<ActionResult<RegionDto>> GetRegionByNumberAsync(decimal number)
+        [HttpGet("{id}", Name = "GetRegion")]
+        public async Task<ActionResult<RegionDto>> GetRegionByIdAsync(decimal id)
         {
-            return Ok(await _regionService.GetRegionByRegionNumber(number));
+            return Ok(await _regionService.GetRegionByRegionId(id));
         }
     }
 }

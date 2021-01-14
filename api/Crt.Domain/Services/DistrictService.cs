@@ -12,7 +12,7 @@ namespace Crt.Domain.Services
     {
         IEnumerable<DistrictDto> GetAllDistricts();
         Task<IEnumerable<DistrictDto>> GetAllDistrictsAsync();
-        Task<DistrictDto> GetDistrictByDistrictNumber(decimal districtNumber);
+        Task<DistrictDto> GetDistrictByDistrictId(decimal id);
     }
 
     public class DistrictService : IDistrictService
@@ -34,9 +34,9 @@ namespace Crt.Domain.Services
             return await _districtRepo.GetAllDistrictsAsync();
         }
 
-        public async Task<DistrictDto> GetDistrictByDistrictNumber(decimal districtNumber)
+        public async Task<DistrictDto> GetDistrictByDistrictId(decimal id)
         {
-            return await _districtRepo.GetDistrictByDistrictNumber(districtNumber);
+            return await _districtRepo.GetDistrictByDistrictId(id);
         }
     }
 }

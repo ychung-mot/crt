@@ -12,7 +12,7 @@ namespace Crt.Domain.Services
     {
         IEnumerable<RegionDto> GetAllRegions();
         Task<IEnumerable<RegionDto>> GetAllRegionsAsync();
-        Task<RegionDto> GetRegionByRegionNumber(decimal regionNumber);
+        Task<RegionDto> GetRegionByRegionId(decimal id);
     }
 
     public class RegionService : IRegionService
@@ -34,9 +34,9 @@ namespace Crt.Domain.Services
             return await _regionRepo.GetAllRegionsAsync();
         }
 
-        public async Task<RegionDto> GetRegionByRegionNumber(decimal regionNumber)
+        public async Task<RegionDto> GetRegionByRegionId(decimal id)
         {
-            return await _regionRepo.GetRegionByRegionNumber(regionNumber);
+            return await _regionRepo.GetRegionByRegionId(id);
         }
     }
 }

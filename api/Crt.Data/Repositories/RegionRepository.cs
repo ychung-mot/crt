@@ -13,6 +13,7 @@ namespace Crt.Data.Repositories
         IEnumerable<RegionDto> GetAllRegions();
         Task<IEnumerable<RegionDto>> GetAllRegionsAsync();
         Task<RegionDto> GetRegionByRegionNumber(decimal regionNumber);
+        Task<RegionDto> GetRegionByRegionId(decimal id);
     }
 
     public class RegionRepository : CrtRepositoryBase<CrtRegion>, IRegionRepository
@@ -31,10 +32,18 @@ namespace Crt.Data.Repositories
             return await GetAllAsync<RegionDto>();
         }
 
-        public async Task<RegionDto> GetRegionByRegionNumber(decimal regionNumber)
+        public async Task<RegionDto> GetRegionByRegionId(decimal id)
         {
             var entity = await DbSet.AsNoTracking()
-                .FirstAsync(r => r.RegionNumber == regionNumber);
+                .FirstAsync(r => r.RegionId == id);
+
+            return Mapper.Map<RegionDto>(entity);
+        }
+
+        public async Task<RegionDto> GetRegionByRegionNumber(decimal number)
+        {
+            var entity = await DbSet.AsNoTracking()
+                .FirstAsync(r => r.RegionNumber == number);
 
             return Mapper.Map<RegionDto>(entity);
         }

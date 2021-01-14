@@ -9,7 +9,7 @@ namespace Crt.Model.Dtos.District
 {
     public class DistrictDto
     {
-        [JsonPropertyName("id")]
+        [JsonPropertyName("id")] 
         public decimal DistrictId { get; set; }
         public decimal DistrictNumber { get; set; }
         [JsonPropertyName("name")]
