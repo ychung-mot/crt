@@ -5,11 +5,10 @@ using System.Collections.Generic;
 
 namespace Crt.Data.Database.Entities
 {
-    public partial class CrtServiceArea
+    public partial class CrtRegionDistrict
     {
-        public decimal ServiceAreaId { get; set; }
-        public decimal ServiceAreaNumber { get; set; }
-        public string ServiceAreaName { get; set; }
+        public decimal RegionDistrictId { get; set; }
+        public decimal RegionId { get; set; }
         public decimal DistrictId { get; set; }
         public DateTime? EndDate { get; set; }
         public long ConcurrencyControlNumber { get; set; }
@@ -19,5 +18,6 @@ namespace Crt.Data.Database.Entities
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
         public virtual CrtDistrict District { get; set; }
+        public virtual CrtRegion Region { get; set; }
     }
 }

@@ -17,10 +17,14 @@ namespace Crt.Data.Database.Entities
         {
         }
 
+        public virtual DbSet<CrtCodeLookup> CrtCodeLookups { get; set; }
+        public virtual DbSet<CrtCodeLookupHist> CrtCodeLookupHists { get; set; }
         public virtual DbSet<CrtDistrict> CrtDistricts { get; set; }
         public virtual DbSet<CrtPermission> CrtPermissions { get; set; }
         public virtual DbSet<CrtPermissionHist> CrtPermissionHists { get; set; }
         public virtual DbSet<CrtRegion> CrtRegions { get; set; }
+        public virtual DbSet<CrtRegionDistrict> CrtRegionDistricts { get; set; }
+        public virtual DbSet<CrtRegionDistrictHist> CrtRegionDistrictHists { get; set; }
         public virtual DbSet<CrtRegionUser> CrtRegionUsers { get; set; }
         public virtual DbSet<CrtRegionUserHist> CrtRegionUserHists { get; set; }
         public virtual DbSet<CrtRole> CrtRoles { get; set; }
@@ -36,22 +40,55 @@ namespace Crt.Data.Database.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CrtDistrict>(entity =>
+            modelBuilder.Entity<CrtCodeLookup>(entity =>
             {
-                entity.HasKey(e => e.DistrictNumber)
-                    .HasName("CRT_DISTRICT_PK");
+                entity.HasKey(e => e.CodeLookupId)
+                    .HasName("CRT_CODE_LKUP_PK");
 
-                entity.ToTable("CRT_DISTRICT");
+                entity.ToTable("CRT_CODE_LOOKUP");
 
-                entity.HasComment("Ministry Districts lookup values.");
+                entity.HasComment("A range of lookup values used to decipher codes used in submissions to business legible values for reporting purposes.  As many code lookups share this table, views are available to join for reporting purposes.");
 
-                entity.HasIndex(e => new { e.DistrictNumber, e.DistrictName, e.EndDate }, "CRT_DIST_NO_NAME_UK")
+                entity.HasIndex(e => new { e.CodeSet, e.CodeValueNum, e.CodeName }, "CRT_CODE_LKUP_VAL_NUM_UC")
                     .IsUnique();
 
-                entity.Property(e => e.DistrictNumber)
-                    .HasColumnType("numeric(2, 0)")
-                    .HasColumnName("DISTRICT_NUMBER")
-                    .HasComment("Number assigned to represent the District");
+                entity.HasIndex(e => new { e.CodeSet, e.CodeValueText, e.CodeName }, "CRT_CODE_LKUP_VAL_TXT_UC")
+                    .IsUnique();
+
+                entity.Property(e => e.CodeLookupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("CODE_LOOKUP_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_CODE_LKUP_ID_SEQ])")
+                    .HasComment("Unique identifier for a record.");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_NAME")
+                    .HasComment("Display name or business name for a submission value.  These values are for display in analytical reporting.");
+
+                entity.Property(e => e.CodeSet)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_SET")
+                    .HasComment("Unique identifier for a group of lookup codes.  A database view is available for each group for use in analytics.");
+
+                entity.Property(e => e.CodeValueFormat)
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_VALUE_FORMAT")
+                    .HasComment("Specifies if the code value is text or numeric.");
+
+                entity.Property(e => e.CodeValueNum)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("CODE_VALUE_NUM")
+                    .HasComment(" Numeric enumeration values provided in submissions.   These values are used for validating submissions and for display of CODE NAMES in analytical reporting.  Values must be unique per CODE SET.");
+
+                entity.Property(e => e.CodeValueText)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_VALUE_TEXT")
+                    .HasComment("Look up code values provided in submissions.   These values are used for validating submissions and for display of CODE NAMES in analytical reporting.  Values must be unique per CODE SET.");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
@@ -86,11 +123,149 @@ namespace Crt.Data.Database.Entities
                     .HasDefaultValueSql("(user_name())")
                     .HasComment("Named database user who last updated record");
 
+                entity.Property(e => e.DisplayOrder)
+                    .HasColumnType("numeric(3, 0)")
+                    .HasColumnName("DISPLAY_ORDER")
+                    .HasComment("When displaying list of values, value can be used to present list in desired order.");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("The latest date submissions will be accepted.");
+            });
+
+            modelBuilder.Entity<CrtCodeLookupHist>(entity =>
+            {
+                entity.HasKey(e => e.CodeLookupHistId)
+                    .HasName("CRT_CODE__H_PK");
+
+                entity.ToTable("CRT_CODE_LOOKUP_HIST");
+
+                entity.HasIndex(e => new { e.CodeLookupHistId, e.EndDateHist }, "CRT_CODE__H_UK")
+                    .IsUnique();
+
+                entity.Property(e => e.CodeLookupHistId)
+                    .HasColumnName("CODE_LOOKUP_HIST_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_CODE_LOOKUP_H_ID_SEQ])");
+
+                entity.Property(e => e.CodeLookupId)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("CODE_LOOKUP_ID");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_NAME");
+
+                entity.Property(e => e.CodeSet)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_SET");
+
+                entity.Property(e => e.CodeValueFormat)
+                    .HasMaxLength(12)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_VALUE_FORMAT");
+
+                entity.Property(e => e.CodeValueNum)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("CODE_VALUE_NUM");
+
+                entity.Property(e => e.CodeValueText)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE_VALUE_TEXT");
+
+                entity.Property(e => e.ConcurrencyControlNumber).HasColumnName("CONCURRENCY_CONTROL_NUMBER");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID");
+
+                entity.Property(e => e.DisplayOrder)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("DISPLAY_ORDER");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+            });
+
+            modelBuilder.Entity<CrtDistrict>(entity =>
+            {
+                entity.HasKey(e => e.DistrictId)
+                    .HasName("CRT_DISTRICT_PK");
+
+                entity.ToTable("CRT_DISTRICT");
+
+                entity.HasComment("Ministry Districts lookup values.");
+
+                entity.HasIndex(e => new { e.DistrictNumber, e.DistrictName, e.EndDate }, "CRT_DIST_NO_NAME_UK")
+                    .IsUnique();
+
                 entity.Property(e => e.DistrictId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("DISTRICT_ID")
                     .HasDefaultValueSql("(NEXT VALUE FOR [CRT_DIST_ID_SEQ])")
                     .HasComment("Unique identifier for district records");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
 
                 entity.Property(e => e.DistrictName)
                     .IsRequired()
@@ -99,21 +274,15 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("DISTRICT_NAME")
                     .HasComment("The name of the District");
 
+                entity.Property(e => e.DistrictNumber)
+                    .HasColumnType("numeric(2, 0)")
+                    .HasColumnName("DISTRICT_NUMBER")
+                    .HasComment("Number assigned to represent the District");
+
                 entity.Property(e => e.EndDate)
                     .HasColumnType("date")
                     .HasColumnName("END_DATE")
                     .HasComment("Date the entity ends or changes");
-
-                entity.Property(e => e.RegionNumber)
-                    .HasColumnType("numeric(2, 0)")
-                    .HasColumnName("REGION_NUMBER")
-                    .HasComment("Parent REGION containing the DISTRICT");
-
-                entity.HasOne(d => d.RegionNumberNavigation)
-                    .WithMany(p => p.CrtDistricts)
-                    .HasForeignKey(d => d.RegionNumber)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("CRT_REGION_CRT_DISTRICT");
             });
 
             modelBuilder.Entity<CrtPermission>(entity =>
@@ -326,7 +495,7 @@ namespace Crt.Data.Database.Entities
 
             modelBuilder.Entity<CrtRegion>(entity =>
             {
-                entity.HasKey(e => e.RegionNumber)
+                entity.HasKey(e => e.RegionId)
                     .HasName("CRT_REGION_PK");
 
                 entity.ToTable("CRT_REGION");
@@ -336,10 +505,11 @@ namespace Crt.Data.Database.Entities
                 entity.HasIndex(e => new { e.RegionNumber, e.RegionName, e.EndDate }, "CRT_REG_NO_NAME_UK")
                     .IsUnique();
 
-                entity.Property(e => e.RegionNumber)
-                    .HasColumnType("numeric(2, 0)")
-                    .HasColumnName("REGION_NUMBER")
-                    .HasComment("Number assigned to the Ministry region");
+                entity.Property(e => e.RegionId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_REG_ID_SEQ])")
+                    .HasComment("Unique identifier for Ministry region");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
@@ -379,18 +549,172 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("END_DATE")
                     .HasComment("Date the entity ends or changes");
 
-                entity.Property(e => e.RegionId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("REGION_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_REG_ID_SEQ])")
-                    .HasComment("A ministry organizational unit responsible for an exclusive geographic area within the province.  ");
-
                 entity.Property(e => e.RegionName)
                     .IsRequired()
                     .HasMaxLength(40)
                     .IsUnicode(false)
                     .HasColumnName("REGION_NAME")
                     .HasComment("Name of the Ministry region");
+
+                entity.Property(e => e.RegionNumber)
+                    .HasColumnType("numeric(2, 0)")
+                    .HasColumnName("REGION_NUMBER")
+                    .HasComment("Number assigned to the Ministry region");
+            });
+
+            modelBuilder.Entity<CrtRegionDistrict>(entity =>
+            {
+                entity.HasKey(e => e.RegionDistrictId)
+                    .HasName("CRT_REGION_DISTR_PK");
+
+                entity.ToTable("CRT_REGION_DISTRICT");
+
+                entity.HasComment("Ministry Region District lookup values");
+
+                entity.HasIndex(e => new { e.EndDate, e.RegionId, e.DistrictId }, "CRT_REG_DIS_NO_NAME_UK")
+                    .IsUnique();
+
+                entity.Property(e => e.RegionDistrictId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_DISTRICT_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_REG_DIST_ID_SEQ])")
+                    .HasComment("Unique identifier");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.DistrictId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("DISTRICT_ID")
+                    .HasComment("unique identifier for Ministry district");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("date")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the entity ends or changes");
+
+                entity.Property(e => e.RegionId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_ID")
+                    .HasComment("unique identifier for Ministry region");
+
+                entity.HasOne(d => d.District)
+                    .WithMany(p => p.CrtRegionDistricts)
+                    .HasForeignKey(d => d.DistrictId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_DISTRICT_CRT_REGION_DISTRICT");
+
+                entity.HasOne(d => d.Region)
+                    .WithMany(p => p.CrtRegionDistricts)
+                    .HasForeignKey(d => d.RegionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_REGION_CRT_REGION_DISTRICT");
+            });
+
+            modelBuilder.Entity<CrtRegionDistrictHist>(entity =>
+            {
+                entity.HasKey(e => e.RegionDistrictHistId)
+                    .HasName("CRT_REGION_DISTR_H_PK");
+
+                entity.ToTable("CRT_REGION_DISTRICT_HIST");
+
+                entity.HasComment("Ministry Region lookup values");
+
+                entity.HasIndex(e => new { e.RegionDistrictHistId, e.EndDateHist }, "CRT_REG_DIS_H_NO_NAME_UK")
+                    .IsUnique();
+
+                entity.Property(e => e.RegionDistrictHistId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_DISTRICT_HIST_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_REG_DIST_H_ID_SEQ])")
+                    .HasComment("Unique identifier");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.DistrictId)
+                    .HasColumnType("numeric(2, 0)")
+                    .HasColumnName("DISTRICT_ID")
+                    .HasComment("unique identifier for Ministry district");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("date")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the entity ends or changes");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+
+                entity.Property(e => e.RegionDistrictId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_DISTRICT_ID")
+                    .HasComment("Unique identifier");
+
+                entity.Property(e => e.RegionId)
+                    .HasColumnType("numeric(2, 0)")
+                    .HasColumnName("REGION_ID")
+                    .HasComment("unique identifier for Ministry region");
             });
 
             modelBuilder.Entity<CrtRegionUser>(entity =>
@@ -480,9 +804,9 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("END_DATE")
                     .HasComment("Date reflecting when a user can no longer transmit submissions.");
 
-                entity.Property(e => e.RegionNumber)
-                    .HasColumnType("numeric(2, 0)")
-                    .HasColumnName("REGION_NUMBER")
+                entity.Property(e => e.RegionId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_ID")
                     .HasComment("identifier for REGION");
 
                 entity.Property(e => e.SystemUserId)
@@ -490,9 +814,9 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("SYSTEM_USER_ID")
                     .HasComment("Unique identifier of related user");
 
-                entity.HasOne(d => d.RegionNumberNavigation)
+                entity.HasOne(d => d.Region)
                     .WithMany(p => p.CrtRegionUsers)
-                    .HasForeignKey(d => d.RegionNumber)
+                    .HasForeignKey(d => d.RegionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_REGION_CRT_REGION_USER");
 
@@ -594,9 +918,10 @@ namespace Crt.Data.Database.Entities
                     .HasColumnType("datetime")
                     .HasColumnName("END_DATE_HIST");
 
-                entity.Property(e => e.RegionNumber)
-                    .HasColumnType("numeric(2, 0)")
-                    .HasColumnName("REGION_NUMBER");
+                entity.Property(e => e.RegionId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_ID")
+                    .HasComment("identifier for REGION");
 
                 entity.Property(e => e.RegionUserId)
                     .HasColumnType("numeric(9, 0)")
@@ -1043,7 +1368,7 @@ namespace Crt.Data.Database.Entities
 
             modelBuilder.Entity<CrtServiceArea>(entity =>
             {
-                entity.HasKey(e => e.ServiceAreaNumber)
+                entity.HasKey(e => e.ServiceAreaId)
                     .HasName("CRT_SERVICE_AREA_PK");
 
                 entity.ToTable("CRT_SERVICE_AREA");
@@ -1053,10 +1378,11 @@ namespace Crt.Data.Database.Entities
                 entity.HasIndex(e => new { e.ServiceAreaNumber, e.ServiceAreaName, e.EndDate }, "CRT_SRV_ARA_UK")
                     .IsUnique();
 
-                entity.Property(e => e.ServiceAreaNumber)
+                entity.Property(e => e.ServiceAreaId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("SERVICE_AREA_NUMBER")
-                    .HasComment("Assigned number of the Service Area");
+                    .HasColumnName("SERVICE_AREA_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_SRV_ARA_ID_SEQ])")
+                    .HasComment("Unique idenifier for table records");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
@@ -1091,21 +1417,15 @@ namespace Crt.Data.Database.Entities
                     .HasDefaultValueSql("(user_name())")
                     .HasComment("Named database user who last updated record");
 
-                entity.Property(e => e.DistrictNumber)
-                    .HasColumnType("numeric(2, 0)")
-                    .HasColumnName("DISTRICT_NUMBER")
+                entity.Property(e => e.DistrictId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("DISTRICT_ID")
                     .HasComment("Unique identifier for DISTRICT.");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnType("date")
                     .HasColumnName("END_DATE")
                     .HasComment("Date the entity ends or changes");
-
-                entity.Property(e => e.ServiceAreaId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("SERVICE_AREA_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_SRV_ARA_ID_SEQ])")
-                    .HasComment("Unique idenifier for table records");
 
                 entity.Property(e => e.ServiceAreaName)
                     .IsRequired()
@@ -1114,9 +1434,14 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("SERVICE_AREA_NAME")
                     .HasComment("Name of the service area");
 
-                entity.HasOne(d => d.DistrictNumberNavigation)
+                entity.Property(e => e.ServiceAreaNumber)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("SERVICE_AREA_NUMBER")
+                    .HasComment("Assigned number of the Service Area");
+
+                entity.HasOne(d => d.District)
                     .WithMany(p => p.CrtServiceAreas)
-                    .HasForeignKey(d => d.DistrictNumber)
+                    .HasForeignKey(d => d.DistrictId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_DISTRICT_CRT_SERVICE_AREA");
             });
@@ -1171,9 +1496,9 @@ namespace Crt.Data.Database.Entities
                     .HasDefaultValueSql("(user_name())")
                     .HasComment("Named database user who last updated record");
 
-                entity.Property(e => e.DistrictNumber)
-                    .HasColumnType("numeric(2, 0)")
-                    .HasColumnName("DISTRICT_NUMBER")
+                entity.Property(e => e.DistrictId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("DISTRICT_ID")
                     .HasComment("Unique identifier for DISTRICT.");
 
                 entity.Property(e => e.EffectiveDateHist)
@@ -1693,13 +2018,13 @@ namespace Crt.Data.Database.Entities
                 .HasMin(1)
                 .HasMax(999999999);
 
+            modelBuilder.HasSequence("CRT_CODE_LOOKUP_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(9999999999);
+
             modelBuilder.HasSequence("CRT_DIST_ID_SEQ")
                 .HasMin(1)
                 .HasMax(999999999);
-
-            modelBuilder.HasSequence("CRT_LOCATION_CODE_H_ID_SEQ")
-                .HasMin(1)
-                .HasMax(2147483647);
 
             modelBuilder.HasSequence("CRT_PERM_ID_SEQ")
                 .HasMin(1)
@@ -1708,6 +2033,14 @@ namespace Crt.Data.Database.Entities
             modelBuilder.HasSequence("CRT_PERMISSION_H_ID_SEQ")
                 .HasMin(1)
                 .HasMax(2147483647);
+
+            modelBuilder.HasSequence("CRT_REG_DIST_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(9999999999);
+
+            modelBuilder.HasSequence("CRT_REG_DIST_ID_SEQ")
+                .HasMin(1)
+                .HasMax(9999999999);
 
             modelBuilder.HasSequence("CRT_REG_ID_SEQ")
                 .HasMin(1)
@@ -1737,10 +2070,6 @@ namespace Crt.Data.Database.Entities
                 .HasMin(1)
                 .HasMax(2147483647);
 
-            modelBuilder.HasSequence("CRT_SERVICE_AREA_H_ID_SEQ")
-                .HasMin(1)
-                .HasMax(999999999);
-
             modelBuilder.HasSequence("CRT_SRV_ARA_ID_SEQ")
                 .HasMin(1)
                 .HasMax(9999999999);
@@ -1758,10 +2087,6 @@ namespace Crt.Data.Database.Entities
                 .HasMax(999999999);
 
             modelBuilder.HasSequence("SYS_USR_ID_SEQ")
-                .HasMin(1)
-                .HasMax(999999999);
-
-            modelBuilder.HasSequence("SYS_VLD_ID_SEQ")
                 .HasMin(1)
                 .HasMax(999999999);
 

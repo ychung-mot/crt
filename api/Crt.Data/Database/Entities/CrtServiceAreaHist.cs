@@ -11,7 +11,7 @@ namespace Crt.Data.Database.Entities
         public decimal ServiceAreaId { get; set; }
         public decimal ServiceAreaNumber { get; set; }
         public string ServiceAreaName { get; set; }
-        public decimal DistrictNumber { get; set; }
+        public decimal DistrictId { get; set; }
         public DateTime EffectiveDateHist { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? EndDateHist { get; set; }

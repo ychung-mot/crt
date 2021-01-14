@@ -9,8 +9,8 @@ namespace Crt.Data.Database.Entities
     {
         public long RegionUserHistId { get; set; }
         public decimal RegionUserId { get; set; }
+        public decimal RegionId { get; set; }
         public decimal SystemUserId { get; set; }
-        public decimal RegionNumber { get; set; }
         public DateTime EffectiveDateHist { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? EndDateHist { get; set; }

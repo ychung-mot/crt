@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.Region
 {
-    public class RegionUserDto
+    public class RegionDistrictDto
     {
-        public decimal RegionUserId { get; set; }
+        public decimal RegionDistrictId { get; set; }
         public decimal RegionId { get; set; }
-        public decimal SystemUserId { get; set; }
+        public decimal DistrictId { get; set; }
         public DateTime? EndDate { get; set; }
     }
 }

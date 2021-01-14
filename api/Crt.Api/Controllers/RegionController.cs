@@ -28,9 +28,9 @@ namespace Crt.Api.Controllers
         }
 
         [HttpGet("{number}", Name = "GetRegion")]
-        public async Task<ActionResult<RegionDto>> GetRegionByNumberAsync(decimal regionNumber)
+        public async Task<ActionResult<RegionDto>> GetRegionByNumberAsync(decimal number)
         {
-            return Ok(await _regionService.GetRegionByRegionNumber(regionNumber));
+            return Ok(await _regionService.GetRegionByRegionNumber(number));
         }
     }
 }

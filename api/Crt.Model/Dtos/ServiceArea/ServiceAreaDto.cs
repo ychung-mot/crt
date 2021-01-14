@@ -14,8 +14,8 @@ namespace Crt.Model.Dtos.ServiceArea
         public decimal ServiceAreaNumber { get; set; }
         [JsonPropertyName("name")]
         public string ServiceAreaName { get; set; }
-        public decimal DistrictNumber { get; set; }
-        public decimal RegionNumber { get; set; }
+        public decimal DistrictId { get; set; }
+        public DateTime? EndDate { get; set; }
 
     }
 }

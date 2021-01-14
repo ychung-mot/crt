@@ -10,8 +10,8 @@ namespace Crt.Data.Database.Entities
         public long RolePermissionHistId { get; set; }
         public decimal RolePermissionId { get; set; }
         public decimal RoleId { get; set; }
-        public DateTime EffectiveDateHist { get; set; }
         public decimal PermissionId { get; set; }
+        public DateTime EffectiveDateHist { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? EndDateHist { get; set; }
         public long ConcurrencyControlNumber { get; set; }
