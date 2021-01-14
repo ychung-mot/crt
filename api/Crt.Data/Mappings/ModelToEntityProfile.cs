@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Model.Dtos.CodeLookup;
+using Crt.Model.Dtos.District;
 using Crt.Model.Dtos.Permission;
+using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.Role;
 using Crt.Model.Dtos.RolePermission;
+using Crt.Model.Dtos.ServiceArea;
 using Crt.Model.Dtos.User;
 using Crt.Model.Dtos.UserRole;
 
@@ -36,6 +39,11 @@ namespace Crt.Data.Mappings
             CreateMap<UserRoleDto, CrtUserRole>();
 
             CreateMap<CodeLookupDto, CrtCodeLookup>();
+
+            CreateMap<CrtRegionUser, RegionUserDto>();
+            CreateMap<CrtServiceArea, ServiceAreaDto>();
+            CreateMap<CrtRegion, RegionDto>();
+            CreateMap<CrtDistrict, DistrictDto>();
         }
     }
 }

@@ -12,11 +12,9 @@ namespace Crt.Data.Database.Entities
     {
         private const string ConcurrencyControlNumber = "ConcurrencyControlNumber";
         private const string AppCreateUserid = "AppCreateUserid";
-        private const string AppCreateUserDirectory = "AppCreateUserDirectory";
         private const string AppCreateUserGuid = "AppCreateUserGuid";
         private const string AppCreateTimestamp = "AppCreateTimestamp";
         private const string AppLastUpdateUserid = "AppLastUpdateUserid";
-        private const string AppLastUpdateUserDirectory = "AppLastUpdateUserDirectory";
         private const string AppLastUpdateUserGuid = "AppLastUpdateUserGuid";
         private const string AppLastUpdateTimestamp = "AppLastUpdateTimestamp";
 
@@ -71,14 +69,12 @@ namespace Crt.Data.Database.Entities
                 if (entry.Members.Any(m => m.Metadata.Name == AppCreateUserGuid)) //auditable entity
                 {
                     entry.Member(AppLastUpdateUserid).CurrentValue = _currentUser.Username;
-                    entry.Member(AppLastUpdateUserDirectory).CurrentValue = Constants.AuthDir;
                     entry.Member(AppLastUpdateUserGuid).CurrentValue = _currentUser.UserGuid;
                     entry.Member(AppLastUpdateTimestamp).CurrentValue = currentTime; 
 
                     if (entry.State == EntityState.Added)
                     {
                         entry.Member(AppCreateUserid).CurrentValue = _currentUser.Username;
-                        entry.Member(AppCreateUserDirectory).CurrentValue = Constants.AuthDir;
                         entry.Member(AppCreateUserGuid).CurrentValue = _currentUser.UserGuid;
                         entry.Member(AppCreateTimestamp).CurrentValue = currentTime;
                         entry.Member(ConcurrencyControlNumber).CurrentValue = (long)1;
