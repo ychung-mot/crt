@@ -36,7 +36,7 @@ namespace Crt.Domain.Services
 
         public async Task<DistrictDto> GetDistrictByDistrictId(decimal id)
         {
-            return await _districtRepo.GetDistrictByDistrictId(id);
+            return await _districtRepo.GetDistrictByDistrictIdAsync(id);
         }
     }
 }

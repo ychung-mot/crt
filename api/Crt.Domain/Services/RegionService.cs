@@ -36,7 +36,7 @@ namespace Crt.Domain.Services
 
         public async Task<RegionDto> GetRegionByRegionId(decimal id)
         {
-            return await _regionRepo.GetRegionByRegionId(id);
+            return await _regionRepo.GetRegionByRegionIdAsync(id);
         }
     }
 }

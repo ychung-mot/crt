@@ -3,7 +3,9 @@ using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
 using Crt.Model.Dtos.District;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Data.Repositories
@@ -12,8 +14,8 @@ namespace Crt.Data.Repositories
     {
         IEnumerable<DistrictDto> GetAllDistricts();
         Task<IEnumerable<DistrictDto>> GetAllDistrictsAsync();
-        Task<DistrictDto> GetDistrictByDistrictId(decimal id);
-        Task<DistrictDto> GetDistrictByDistrictNumber(decimal number);
+        Task<DistrictDto> GetDistrictByDistrictIdAsync(decimal id);
+        Task<DistrictDto> GetDistrictByDistrictNumberAsync(decimal number);
     }
 
     public class DistrictRepository : CrtRepositoryBase<CrtDistrict>, IDistrictRepository
@@ -32,17 +34,19 @@ namespace Crt.Data.Repositories
             return await GetAllAsync<DistrictDto>();
         }
 
-        public async Task<DistrictDto> GetDistrictByDistrictId(decimal id)
+        public async Task<DistrictDto> GetDistrictByDistrictIdAsync(decimal id)
         {
             var entity = await DbSet.AsNoTracking()
+                .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .FirstAsync(d => d.DistrictId == id);
 
             return Mapper.Map<DistrictDto>(entity);
         }
 
-        public async Task<DistrictDto> GetDistrictByDistrictNumber(decimal number)
+        public async Task<DistrictDto> GetDistrictByDistrictNumberAsync(decimal number)
         {
             var entity = await DbSet.AsNoTracking()
+                .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .FirstAsync(d => d.DistrictNumber == number);
 
             return Mapper.Map<DistrictDto>(entity);

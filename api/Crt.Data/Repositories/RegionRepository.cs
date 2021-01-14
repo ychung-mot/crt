@@ -3,7 +3,9 @@ using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
 using Crt.Model.Dtos.Region;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Data.Repositories
@@ -12,8 +14,8 @@ namespace Crt.Data.Repositories
     {
         IEnumerable<RegionDto> GetAllRegions();
         Task<IEnumerable<RegionDto>> GetAllRegionsAsync();
-        Task<RegionDto> GetRegionByRegionNumber(decimal regionNumber);
-        Task<RegionDto> GetRegionByRegionId(decimal id);
+        Task<RegionDto> GetRegionByRegionNumberAsync(decimal regionNumber);
+        Task<RegionDto> GetRegionByRegionIdAsync(decimal id);
     }
 
     public class RegionRepository : CrtRepositoryBase<CrtRegion>, IRegionRepository
@@ -24,25 +26,35 @@ namespace Crt.Data.Repositories
 
         public IEnumerable<RegionDto> GetAllRegions()
         {
-            return GetAll<RegionDto>();
+            var regions = DbSet.AsNoTracking()
+                .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
+                .ToList();
+
+            return Mapper.Map<IEnumerable<RegionDto>>(regions);
         }
 
         public async Task<IEnumerable<RegionDto>> GetAllRegionsAsync()
         {
-            return await GetAllAsync<RegionDto>();
+            var regions = await DbSet.AsNoTracking()
+                .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
+                .ToListAsync();
+
+            return Mapper.Map<IEnumerable<RegionDto>>(regions);
         }
 
-        public async Task<RegionDto> GetRegionByRegionId(decimal id)
+        public async Task<RegionDto> GetRegionByRegionIdAsync(decimal id)
         {
             var entity = await DbSet.AsNoTracking()
+                .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .FirstAsync(r => r.RegionId == id);
 
             return Mapper.Map<RegionDto>(entity);
         }
 
-        public async Task<RegionDto> GetRegionByRegionNumber(decimal number)
+        public async Task<RegionDto> GetRegionByRegionNumberAsync(decimal number)
         {
             var entity = await DbSet.AsNoTracking()
+                .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .FirstAsync(r => r.RegionNumber == number);
 
             return Mapper.Map<RegionDto>(entity);
