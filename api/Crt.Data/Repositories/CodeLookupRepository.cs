@@ -25,20 +25,18 @@ namespace Crt.Data.Repositories
 
         public IEnumerable<CodeLookupCache> LoadCodeLookupCache()
         {
-            //return DbSet.AsNoTracking()
-            //    .Where(x => x.EndDate == null || DateTime.Today < x.EndDate)
-            //    .Select(x =>
-            //        new CodeLookupCache
-            //        {
-            //            CodeSet = x.CodeSet,
-            //            CodeValue = x.CodeValueFormat == "NUMBER" ? x.CodeValueNum.ToString() : x.CodeValueText,
-            //            CodeName = x.CodeName,
-            //            CodeValueNum = x.CodeValueNum
-            //        }
-            //    )
-            //    .ToArray();
-
-            return new List<CodeLookupCache>();
+            return DbSet.AsNoTracking()
+                .Where(x => x.EndDate == null || DateTime.Today < x.EndDate)
+                .Select(x =>
+                    new CodeLookupCache
+                    {
+                        CodeSet = x.CodeSet,
+                        CodeValue = x.CodeValueFormat == "NUMBER" ? x.CodeValueNum.ToString() : x.CodeValueText,
+                        CodeName = x.CodeName,
+                        CodeValueNum = x.CodeValueNum
+                    }
+                )
+                .ToArray();
         }
     }
 }
