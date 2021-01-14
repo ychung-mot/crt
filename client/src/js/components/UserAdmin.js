@@ -163,12 +163,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
                   <MultiDropdownField {...formikProps} items={userRegions} name="userRegions" title="Regions" />
                 </Col>
                 <Col>
-                  <Field
-                    type="text"
-                    name="searchText"
-                    placeholder="User Id/Name/Organization"
-                    className="form-control"
-                  />
+                  <Field type="text" name="searchText" placeholder="User Id/Name/Email" className="form-control" />
                 </Col>
                 <Col>
                   <MultiDropdownField {...formikProps} items={userStatuses} name="statusId" title="User Status" />
