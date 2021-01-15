@@ -28,8 +28,6 @@ const EditUserFormFields = ({
       .then((response) => {
         setInitialValues({
           ...response.data,
-          userRegions: [], //temporary fix line 31 and 32 added until api provides a set of regions and program manager
-          userProjectManager: false,
           endDate: response.data.endDate ? moment(response.data.endDate) : null,
         });
 
@@ -54,13 +52,13 @@ const EditUserFormFields = ({
         <FormInput type="text" name="username" placeholder="User Id" disabled />
       </FormRow>
       <FormRow>
-        <FormCheckboxInput name="userProjectManager" label="Project Manager" />
+        <FormCheckboxInput name="isProjectManager" label="Project Manager" />
       </FormRow>
       <FormRow name="userRoleIds" label="User Roles*">
         <MultiSelect items={roles} name="userRoleIds" />
       </FormRow>
-      <FormRow name="userRegions" label="MoTI Region*">
-        <MultiSelect items={userRegions} name="userRegions" showSelectAll={true} />
+      <FormRow name="userRegionIds" label="MoTI Region*">
+        <MultiSelect items={userRegions} name="userRegionIds" showSelectAll={true} />
       </FormRow>
       <FormRow name="endDate" label="End Date">
         <SingleDateField name="endDate" placeholder="End Date" />

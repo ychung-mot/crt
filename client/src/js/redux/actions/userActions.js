@@ -18,11 +18,8 @@ export const fetchUserStatuses = () => (dispatch) => {
 
 //temporary hard code to grab user regions information eventually use api.getUserRegions()
 export const fetchUserRegions = () => (dispatch) => {
-  let data = [
-    { id: 0, number: 0, name: 'Headquarters' },
-    { id: 1, number: 1, name: 'Nothern Region' },
-    { id: 2, number: 2, name: 'Southern Region' },
-    { id: 3, number: 3, name: 'Southern Coast Region' },
-  ];
-  return dispatch({ type: FETCH_USER_REGIONS, payload: data });
+  return api.getUserRegions().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_USER_REGIONS, payload: data });
+  });
 };

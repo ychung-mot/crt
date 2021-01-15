@@ -11,7 +11,7 @@ export const API_PATHS = {
   USER: '/users',
   USER_CURRENT: '/users/current',
   USER_STATUSES: '/users/userstatus',
-  USER_REGIONS: '/users/regions',
+  USER_REGIONS: '/regions',
   USER_AD_ACCOUNT: '/users/adaccount',
   MAINTENANCE_TYPES: `${CODE_LOOKUP}/maintenancetypes`,
   UNIT_OF_MEASURES: `${CODE_LOOKUP}/unitofmeasures`,
