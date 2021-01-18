@@ -24,7 +24,7 @@ const WIZARD_STATE = {
 const defaultValues = {
   username: '',
   userRoleIds: [],
-  userRegions: [],
+  regions: [],
   isProjectMgr: false,
   active: true,
   endDate: null,
@@ -121,7 +121,7 @@ const AddUserSearchResult = ({ status, data, setWizardState }) => {
   );
 };
 
-const AddUserSetupUser = ({ values, data, submitting, setWizardState, userRegions }) => {
+const AddUserSetupUser = ({ values, data, submitting, setWizardState, regions }) => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -166,8 +166,8 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState, userRegion
             <FormRow name="userRoleIds" label="User Roles*">
               <MultiSelect items={roles} name="userRoleIds" />
             </FormRow>
-            <FormRow name="userRegions" label="MoTI Region*">
-              <MultiSelect items={userRegions} name="userRegions" showSelectAll={true} />
+            <FormRow name="regions" label="MoTI Region*">
+              <MultiSelect items={regions} name="regions" showSelectAll={true} />
             </FormRow>
           </React.Fragment>
         )}
@@ -207,14 +207,7 @@ const AddUserSetupUserSuccess = ({ toggle }) => {
   );
 };
 
-const AddUserWizard = ({
-  isOpen,
-  toggle,
-  showValidationErrorDialog,
-  hideErrorDialog,
-  validationSchema,
-  userRegions,
-}) => {
+const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDialog, validationSchema, regions }) => {
   const [wizardState, setWizardState] = useState(WIZARD_STATE.SEARCH);
   const [submitting, setSubmitting] = useState(false);
   const [adAccount, setAdAccount] = useState(null);
@@ -261,7 +254,7 @@ const AddUserWizard = ({
             data={adAccount}
             values={values}
             submitting={submitting}
-            userRegions={userRegions}
+            regions={regions}
           />
         );
       case WIZARD_STATE.USER_SETUP_CONFIRM:
@@ -286,7 +279,7 @@ const AddUserWizard = ({
 
 const mapStateToProps = (state) => {
   return {
-    userRegions: Object.values(state.user.regions),
+    regions: Object.values(state.regions.regions),
   };
 };
 

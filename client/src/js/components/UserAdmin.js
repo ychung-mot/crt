@@ -28,7 +28,7 @@ import { buildStatusIdArray } from '../utils';
 const defaultSearchFormValues = {
   searchText: '',
   statusId: [Constants.ACTIVE_STATUS.ACTIVE],
-  userRegions: [],
+  regions: [],
 };
 
 const defaultSearchOptions = {
@@ -50,10 +50,10 @@ const tableColumns = [
 const validationSchema = Yup.object({
   username: Yup.string().required('Required').max(32).trim(),
   userRoleIds: Yup.array().required('Require at least one role'),
-  userRegions: Yup.array().required('Need to select at least one region'),
+  regions: Yup.array().required('Need to select at least one region'),
 });
 
-const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => {
+const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -88,13 +88,11 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
       isActive = values.statusId[0] === 'ACTIVE';
     }
 
-    let regions = values.userRegions.join(',') || null;
-
     const options = {
       ...searchData.searchOptions,
       isActive,
       searchText,
-      regions,
+      regions: values.regions.join(',') || null,
       pageNumber: 1,
     };
     searchData.updateSearchOptions(options);
@@ -160,7 +158,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
             <Form>
               <Row form>
                 <Col>
-                  <MultiDropdownField {...formikProps} items={userRegions} name="userRegions" title="Regions" />
+                  <MultiDropdownField {...formikProps} items={regions} name="regions" title="Regions" />
                 </Col>
                 <Col>
                   <Field type="text" name="searchText" placeholder="User Id/Name/Email" className="form-control" />
@@ -225,7 +223,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, userRegions }) => 
 const mapStateToProps = (state) => {
   return {
     userStatuses: Object.values(state.user.statuses),
-    userRegions: Object.values(state.user.regions),
+    regions: Object.values(state.regions.regions),
   };
 };
 

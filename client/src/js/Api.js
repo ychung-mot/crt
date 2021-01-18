@@ -26,7 +26,6 @@ instance.interceptors.response.use(
 export const getCurrentUser = () => instance.get(Constants.API_PATHS.USER_CURRENT);
 export const getUser = (id) => instance.get(`${Constants.API_PATHS.USER}/${id}`);
 export const getUserStatuses = () => instance.get(Constants.API_PATHS.USER_STATUSES);
-export const getUserRegions = () => instance.get(Constants.API_PATHS.USER_REGIONS);
 export const postUser = (userData) => instance.post(Constants.API_PATHS.USER, userData);
 export const putUser = (id, userData) => instance.put(`${Constants.API_PATHS.USER}/${id}`, userData);
 export const deleteUser = (id, endDate) =>
@@ -43,6 +42,8 @@ export const deleteRole = (id, endDate) =>
   instance.delete(`${Constants.API_PATHS.ROLE}/${id}`, { data: { id, endDate } });
 
 export const getPermissions = () => instance.get(Constants.API_PATHS.PERMISSIONS);
+
+export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 
 export const getMaintenanceTypes = () => instance.get(Constants.API_PATHS.MAINTENANCE_TYPES);
 export const getUnitOfMeasures = () => instance.get(Constants.API_PATHS.UNIT_OF_MEASURES);

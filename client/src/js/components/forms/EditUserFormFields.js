@@ -15,7 +15,7 @@ const EditUserFormFields = ({
   setValidationSchema,
   userId,
   validationSchema,
-  userRegions,
+  regions,
 }) => {
   const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState([]);
@@ -58,7 +58,7 @@ const EditUserFormFields = ({
         <MultiSelect items={roles} name="userRoleIds" />
       </FormRow>
       <FormRow name="userRegionIds" label="MoTI Region*">
-        <MultiSelect items={userRegions} name="userRegionIds" showSelectAll={true} />
+        <MultiSelect items={regions} name="userRegionIds" showSelectAll={true} />
       </FormRow>
       <FormRow name="endDate" label="End Date">
         <SingleDateField name="endDate" placeholder="End Date" />
@@ -69,7 +69,7 @@ const EditUserFormFields = ({
 
 const mapStateToProps = (state) => {
   return {
-    userRegions: Object.values(state.user.regions),
+    regions: Object.values(state.regions.regions),
   };
 };
 
