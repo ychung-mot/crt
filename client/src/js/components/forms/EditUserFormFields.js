@@ -52,7 +52,7 @@ const EditUserFormFields = ({
         <FormInput type="text" name="username" placeholder="User Id" disabled />
       </FormRow>
       <FormRow>
-        <FormCheckboxInput name="isProjectManager" label="Project Manager" />
+        <FormCheckboxInput name="isProjectMgr" label="Project Manager" />
       </FormRow>
       <FormRow name="userRoleIds" label="User Roles*">
         <MultiSelect items={roles} name="userRoleIds" />
