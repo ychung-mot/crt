@@ -139,11 +139,16 @@ namespace Crt.Domain.Services
 
             if (rule.CodeSet != null)
             {
-                var exists = rule.LookupItem == LookupItem.Value ?
-                    CodeLookup.Any(x => x.CodeSet == rule.CodeSet && x.CodeValue.ToLowerInvariant() == value.ToLowerInvariant()) :
-                    CodeLookup.Any(x => x.CodeSet == rule.CodeSet && x.CodeName.ToLowerInvariant() == value.ToLowerInvariant());
+                if (decimal.TryParse(value, out decimal numValue))
+                {
+                    var exists = CodeLookup.Any(x => x.CodeSet == rule.CodeSet && x.CodeLookupId == numValue);
 
-                if (!exists)
+                    if (!exists)
+                    {
+                        messages.Add($"{rowNumPrefix}Invalid value. [{value}] doesn't exist in the code set {rule.CodeSet}.");
+                    }
+                }
+                else
                 {
                     messages.Add($"{rowNumPrefix}Invalid value. [{value}] doesn't exist in the code set {rule.CodeSet}.");
                 }

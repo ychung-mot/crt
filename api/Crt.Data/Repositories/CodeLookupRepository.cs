@@ -31,9 +31,8 @@ namespace Crt.Data.Repositories
                     new CodeLookupCache
                     {
                         CodeSet = x.CodeSet,
-                        CodeValue = x.CodeValueFormat == "NUMBER" ? x.CodeValueNum.ToString() : x.CodeValueText,
+                        CodeLookupId = x.CodeLookupId,
                         CodeName = x.CodeName,
-                        CodeValueNum = x.CodeValueNum
                     }
                 )
                 .ToArray();
