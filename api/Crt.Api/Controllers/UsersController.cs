@@ -59,6 +59,7 @@ namespace Crt.Api.Controllers
         /// <summary>
         /// Search users
         /// </summary>
+        /// <param name="regions">Region IDs</param>
         /// <param name="searchText">Search text for first name, last name, orgnization name, username</param>
         /// <param name="isActive">True or false</param>
         /// <param name="pageSize">Page size</param>
