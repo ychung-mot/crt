@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crt.Model.Dtos.Region;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -21,7 +22,7 @@ namespace Crt.Model.Dtos.User
         public bool IsSystemAdmin { get; set; }
         public bool IsProjectMgr { get; set; }
 
-        public virtual IList<string> Regions { get; set; }
+        public virtual IList<RegionDto> Regions { get; set; }
         public virtual IList<string> Permissions { get; set; }
     }
 }
