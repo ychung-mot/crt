@@ -6,7 +6,7 @@ const defaultState = {
   regions: {},
 };
 
-const regionsReducer = (state = defaultState, action) => {
+const lookupsReducer = (state = defaultState, action) => {
   switch (action.type) {
     case FETCH_REGIONS:
       return { ...state, regions: { ...state.regions, ..._.mapKeys(action.payload, 'id') } };
@@ -15,4 +15,4 @@ const regionsReducer = (state = defaultState, action) => {
   }
 };
 
-export default regionsReducer;
+export default lookupsReducer;

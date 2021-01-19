@@ -223,7 +223,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
 const mapStateToProps = (state) => {
   return {
     userStatuses: Object.values(state.user.statuses),
-    regions: Object.values(state.regions.regions),
+    regions: Object.values(state.lookups.regions),
   };
 };
 

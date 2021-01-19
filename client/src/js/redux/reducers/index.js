@@ -3,11 +3,11 @@ import { combineReducers } from 'redux';
 import codeLookupsReducer from './codeLookupsReducer';
 import errorDialogReducer from './errorDialogReducer';
 import userReducer from './userReducer';
-import regionsReducer from './regionsReducer';
+import lookupsReducer from './lookupsReducer';
 
 export default combineReducers({
   codeLookups: codeLookupsReducer,
   errorDialog: errorDialogReducer,
   user: userReducer,
-  regions: regionsReducer,
+  lookups: lookupsReducer,
 });
