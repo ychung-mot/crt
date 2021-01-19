@@ -69,7 +69,7 @@ const EditUserFormFields = ({
 
 const mapStateToProps = (state) => {
   return {
-    regions: Object.values(state.regions.regions),
+    regions: Object.values(state.lookups.regions),
   };
 };
 

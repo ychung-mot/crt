@@ -24,7 +24,7 @@ const WIZARD_STATE = {
 const defaultValues = {
   username: '',
   userRoleIds: [],
-  regions: [],
+  userRegionIds: [],
   isProjectMgr: false,
   active: true,
   endDate: null,
@@ -166,8 +166,8 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState, regions })
             <FormRow name="userRoleIds" label="User Roles*">
               <MultiSelect items={roles} name="userRoleIds" />
             </FormRow>
-            <FormRow name="regions" label="MoTI Region*">
-              <MultiSelect items={regions} name="regions" showSelectAll={true} />
+            <FormRow name="userRegionIds" label="MoTI Region*">
+              <MultiSelect items={regions} name="userRegionIds" showSelectAll={true} />
             </FormRow>
           </React.Fragment>
         )}
@@ -279,7 +279,7 @@ const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDia
 
 const mapStateToProps = (state) => {
   return {
-    regions: Object.values(state.regions.regions),
+    regions: Object.values(state.lookups.regions),
   };
 };
 
