@@ -43,7 +43,7 @@ const tableColumns = [
   { heading: 'Last Name', key: 'lastName' },
   { heading: 'User ID', key: 'username' },
   { heading: 'Email', key: 'email' },
-  { heading: 'Regions', key: 'regions' },
+  { heading: 'Regions', key: 'regionNumbers' },
   { heading: 'Active', key: 'isActive', nosort: true },
 ];
 
