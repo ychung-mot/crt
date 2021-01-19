@@ -114,16 +114,17 @@ namespace Crt.Data.Repositories
                     : query.Where(u => u.EndDate != null && u.EndDate <= DateTime.Today);
             }
 
-            query = query.Include(u => u.CrtRegionUsers);
+            query = query.Include(u => u.CrtRegionUsers)
+                        .ThenInclude(u => u.Region);
 
             var pagedEntity = await Page<CrtSystemUser, CrtSystemUser>(query, pageSize, pageNumber, orderBy, direction);
 
             var users = Mapper.Map<IEnumerable<UserSearchDto>>(pagedEntity.SourceList);
-            var userRegion = pagedEntity.SourceList.SelectMany(u => u.CrtRegionUsers).ToLookup(u => u.SystemUserId);
+            var userRegions = pagedEntity.SourceList.SelectMany(u => u.CrtRegionUsers).ToLookup(u => u.SystemUserId);
 
             foreach (var user in users)
             {
-                user.Regions = string.Join(",", userRegion[user.SystemUserId].Select(x => x.RegionId).OrderBy(x => x));
+                user.RegionNumbers = string.Join(",", userRegions[user.SystemUserId].Select(x => x.Region?.RegionNumber).OrderBy(x => x));
                 user.HasLogInHistory = pagedEntity.SourceList.Any(u => u.SystemUserId == user.SystemUserId && u.UserGuid != null);
             }
 
@@ -184,6 +185,15 @@ namespace Crt.Data.Repositories
                 EndDate = user.EndDate,
             };
 
+            foreach (var regionId in user.UserRegionIds)
+            {
+                userEntity.CrtRegionUsers
+                    .Add(new CrtRegionUser
+                    {
+                        RegionId = regionId
+                    });
+            }
+
             foreach (var roleId in user.UserRoleIds)
             {
                 userEntity.CrtUserRoles
@@ -205,11 +215,14 @@ namespace Crt.Data.Repositories
 
             var userEntity = await DbSet
                     .Include(x => x.CrtUserRoles)
+                    .Include(x => x.CrtRegionUsers)
                     .FirstAsync(u => u.SystemUserId == userDto.SystemUserId);
 
             Mapper.Map(userDto, userEntity);
 
             SyncRoles(userDto, userEntity);
+
+            SyncRegions(userDto, userEntity);
 
         }
 
@@ -233,6 +246,31 @@ namespace Crt.Data.Repositories
                     .Add(new CrtUserRole
                     {
                         RoleId = roleId,
+                        SystemUserId = userEntity.SystemUserId
+                    });
+            }
+        }
+
+        private void SyncRegions(UserUpdateDto userDto, CrtSystemUser userEntity)
+        {
+            var regionsToDelete =
+                userEntity.CrtRegionUsers.Where(s => !userDto.UserRegionIds.Contains(s.RegionId)).ToList();
+
+            for (var i = regionsToDelete.Count() - 1; i >= 0; i--)
+            {
+                DbContext.Remove(regionsToDelete[i]);
+            }
+
+            var existingRegions = userEntity.CrtRegionUsers.Select(s => s.RegionId);
+
+            var newRegionIds = userDto.UserRegionIds.Where(r => !existingRegions.Contains(r));
+
+            foreach (var regionId in newRegionIds)
+            {
+                userEntity.CrtRegionUsers
+                    .Add(new CrtRegionUser
+                    {
+                        RegionId = regionId,
                         SystemUserId = userEntity.SystemUserId
                     });
             }

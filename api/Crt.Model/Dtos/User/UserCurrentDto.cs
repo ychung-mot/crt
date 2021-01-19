@@ -19,6 +19,7 @@ namespace Crt.Model.Dtos.User
         public string Email { get; set; }
         public DateTime? EndDate { get; set; }
         public bool IsSystemAdmin { get; set; }
+        public bool IsProjectMgr { get; set; }
 
         public virtual IList<string> Permissions { get; set; }       
     }

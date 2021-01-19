@@ -67,6 +67,7 @@ namespace Crt.Model
         public const string EndDate = "EndDate";
 
         public const string RoleId = "RoleId";
+        public const string RegionId = "RegionId";
         public const string Name = "Name";
         public const string Description = "Description";
 

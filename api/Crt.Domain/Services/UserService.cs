@@ -33,6 +33,7 @@ namespace Crt.Domain.Services
     {
         private IUserRepository _userRepo;
         private IRoleRepository _roleRepo;
+        private IRegionRepository _regionRepo;
         private IUnitOfWork _unitOfWork;
         private CrtCurrentUser _currentUser;
         private IFieldValidatorService _validator;
@@ -40,12 +41,13 @@ namespace Crt.Domain.Services
         private ILogger _logger;
         private ILdapService _ldap;
 
-        public UserService(IUserRepository userRepo, IRoleRepository roleRepo,
+        public UserService(IUserRepository userRepo, IRoleRepository roleRepo, IRegionRepository regionRepo,
             IUnitOfWork unitOfWork, CrtCurrentUser currentUser, IFieldValidatorService validator, IMapper mapper, 
             ILdapService ldap, ILogger<UserService> logger)
         {
             _userRepo = userRepo;
             _roleRepo = roleRepo;
+            _regionRepo = regionRepo;
             _unitOfWork = unitOfWork;
             _currentUser = currentUser;
             _validator = validator;
@@ -145,6 +147,12 @@ namespace Crt.Domain.Services
             var errors = new Dictionary<string, List<string>>();
 
             errors = _validator.Validate(entityName, user, errors);
+
+            var regionCount = await _regionRepo.CountRegionsAsync(user.UserRegionIds);
+            if (regionCount != user.UserRegionIds.Count)
+            {
+                errors.AddItem(Fields.RegionId, $"Some of the user's region IDs are invalid.");
+            }
 
             var roleCount = await _roleRepo.CountActiveRoleIdsAsync(user.UserRoleIds);
             if (roleCount != user.UserRoleIds.Count)
