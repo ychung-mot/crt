@@ -19,7 +19,7 @@ namespace Crt.Model.Dtos.User
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool IsProductManager { get; set; }
+        public bool IsProjectManager { get; set; }
         public virtual IList<decimal> UserRoleIds { get; set; }
         public virtual IList<decimal> UserRegionIds { get; set; }
     }

@@ -114,12 +114,16 @@ namespace Crt.Data.Repositories
                     : query.Where(u => u.EndDate != null && u.EndDate <= DateTime.Today);
             }
 
+            query = query.Include(u => u.CrtRegionUsers);
+
             var pagedEntity = await Page<CrtSystemUser, CrtSystemUser>(query, pageSize, pageNumber, orderBy, direction);
 
             var users = Mapper.Map<IEnumerable<UserSearchDto>>(pagedEntity.SourceList);
+            var userRegion = pagedEntity.SourceList.SelectMany(u => u.CrtRegionUsers).ToLookup(u => u.SystemUserId);
 
             foreach (var user in users)
             {
+                user.Regions = string.Join(",", userRegion[user.SystemUserId].Select(x => x.RegionId).OrderBy(x => x));
                 user.HasLogInHistory = pagedEntity.SourceList.Any(u => u.SystemUserId == user.SystemUserId && u.UserGuid != null);
             }
 
@@ -140,6 +144,7 @@ namespace Crt.Data.Repositories
         {
             var userEntity = await DbSet.AsNoTracking()
                     .Include(x => x.CrtUserRoles)
+                    .Include(x => x.CrtRegionUsers)
                     .FirstOrDefaultAsync(u => u.SystemUserId == systemUserId);
 
             if (userEntity == null)
@@ -156,6 +161,9 @@ namespace Crt.Data.Repositories
 
             user.UserRoleIds = roleIds;
 
+            var userRegions = userEntity.CrtRegionUsers.Select(r => r.RegionId).ToList();
+            user.UserRegionIds = userRegions;
+            
             return user;
         }
 
