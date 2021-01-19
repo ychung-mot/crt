@@ -18,7 +18,7 @@ namespace Crt.Data.Repositories
     public interface IUserRepository : ICrtRepositoryBase<CrtSystemUser>
     {
         Task<UserCurrentDto> GetCurrentUserAsync();
-        Task<PagedDto<UserSearchDto>> GetUsersAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
+        Task<PagedDto<UserSearchDto>> GetUsersAsync(decimal[]? regionIds, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
         Task<UserDto> GetUserAsync(decimal systemUserId);
         Task<CrtSystemUser> CreateUserAsync(UserCreateDto user, AdAccount account);
         Task<bool> DoesUsernameExistAsync(string username);
@@ -95,16 +95,21 @@ namespace Crt.Data.Repositories
             return await DbContext.Database.ExecuteSqlRawAsync(sql.ToString(), user.Username, user.FirstName, user.LastName, user.Email, user.UserGuid, concurrencyControlNumber);
         }
 
-        public async Task<PagedDto<UserSearchDto>> GetUsersAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction)
+        public async Task<PagedDto<UserSearchDto>> GetUsersAsync(decimal[]? regionIds, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction)
         {
             var query = DbSet.AsNoTracking();
+
+            if (regionIds != null && regionIds.Length > 0)
+            {
+                query = query.Where(u => u.CrtRegionUsers.Any(s => regionIds.Contains(s.RegionId)));
+            }
 
             if (searchText.IsNotEmpty())
             {
                 searchText = searchText.Trim();
 
                 query = query
-                    .Where(u => u.Username.Contains(searchText) || u.FirstName.Contains(searchText) || (u.FirstName + " " + u.LastName).Contains(searchText) || u.LastName.Contains(searchText));
+                    .Where(u => u.Username.Contains(searchText) || u.FirstName.Contains(searchText) || (u.FirstName + " " + u.LastName).Contains(searchText) || u.LastName.Contains(searchText) || u.Email.Contains(searchText));
             }
 
             if (isActive != null)
