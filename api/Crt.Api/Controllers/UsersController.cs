@@ -69,10 +69,11 @@ namespace Crt.Api.Controllers
         [HttpGet]
         [RequiresPermission(Permissions.UserRead)]
         public async Task<ActionResult<PagedDto<UserSearchDto>>> GetUsersAsync(
+            [FromQuery]string? regions,
             [FromQuery]string searchText, [FromQuery]bool? isActive,
             [FromQuery]int pageSize, [FromQuery]int pageNumber, [FromQuery]string orderBy = "username", [FromQuery]string direction = "")
         {
-            return Ok(await _userService.GetUsersAsync(searchText, isActive, pageSize, pageNumber, orderBy, direction));
+            return Ok(await _userService.GetUsersAsync(regions.ToDecimalArray(), searchText, isActive, pageSize, pageNumber, orderBy, direction));
         }
 
         [HttpGet("{id}", Name = "GetUser")]

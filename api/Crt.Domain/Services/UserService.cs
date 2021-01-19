@@ -20,7 +20,7 @@ namespace Crt.Domain.Services
     public interface IUserService
     {
         Task<UserCurrentDto> GetCurrentUserAsync();
-        Task<PagedDto<UserSearchDto>> GetUsersAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
+        Task<PagedDto<UserSearchDto>> GetUsersAsync(decimal[]? regionIds, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
         Task<UserDto> GetUserAsync(decimal systemUserId);
         Task<AdAccountDto> GetAdAccountAsync(string username);
         Task<(decimal SystemUserId, Dictionary<string, List<string>> Errors)> CreateUserAsync(UserCreateDto user);
@@ -66,9 +66,9 @@ namespace Crt.Domain.Services
             return await _userRepo.GetActiveUserEntityAsync(userGuid);
         }
 
-        public async Task<PagedDto<UserSearchDto>> GetUsersAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction)
+        public async Task<PagedDto<UserSearchDto>> GetUsersAsync(decimal[]? regionIds, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction)
         {
-            return await _userRepo.GetUsersAsync(searchText, isActive, pageSize, pageNumber, orderBy, direction);
+            return await _userRepo.GetUsersAsync(regionIds, searchText, isActive, pageSize, pageNumber, orderBy, direction);
         }
 
         public async Task<UserDto> GetUserAsync(decimal systemUserId)
