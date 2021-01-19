@@ -37,11 +37,11 @@ const AddUserSearch = ({ submitting, toggle, values, handleSubmit }) => {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="username">User Id</Label>
+              <Label for="username">IDIR</Label>
               <FormInput
                 type="text"
                 name="username"
-                placeholder="User Id"
+                placeholder="IDIR"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && values.username) {
                     e.preventDefault();
@@ -88,7 +88,7 @@ const AddUserSearchResult = ({ status, data, setWizardState }) => {
         <Alert color={status === WIZARD_STATE.SEARCH_SUCCESS ? 'success' : 'danger'}>
           <strong>User {status !== WIZARD_STATE.SEARCH_SUCCESS && 'Not'} Found</strong>
           <hr />
-          {displayRow('User ID', data.username)}
+          {displayRow('IDIR', data.username)}
           {status === WIZARD_STATE.SEARCH_SUCCESS && (
             <React.Fragment>
               {displayRow('First Name', data.firstName)}
@@ -145,7 +145,7 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState, regions })
           <PageSpinner />
         ) : (
           <React.Fragment>
-            <FormRow name="username" label="User Id*">
+            <FormRow name="username" label="IDIR*">
               <FormInput type="text" name="username" placeholder={data.username} disabled />
             </FormRow>
             <FormRow name="firstName" label="First Name*">
