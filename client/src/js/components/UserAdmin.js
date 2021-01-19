@@ -50,7 +50,7 @@ const tableColumns = [
 const validationSchema = Yup.object({
   username: Yup.string().required('Required').max(32).trim(),
   userRoleIds: Yup.array().required('Require at least one role'),
-  regions: Yup.array().required('Need to select at least one region'),
+  userRegionIds: Yup.array().required('Need to select at least one region'),
 });
 
 const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
