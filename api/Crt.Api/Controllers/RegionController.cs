@@ -24,12 +24,7 @@ namespace Crt.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RegionDto>>> GetAllRegionsAsync()
         {
-            var result = await _regionService.GetAllRegionsAsync();
-
-            if (result == null)
-                return NotFound();
-
-            return Ok(result);
+            return Ok(await _regionService.GetAllRegionsAsync());
         }
 
         [HttpGet("{id}", Name = "GetRegion")]
