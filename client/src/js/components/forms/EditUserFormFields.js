@@ -5,11 +5,18 @@ import moment from 'moment';
 import MultiSelect from '../ui/MultiSelect';
 import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput } from './FormInputs';
+import { FormRow, FormInput, FormCheckboxInput } from './FormInputs';
 
 import * as api from '../../Api';
 
-const EditUserFormFields = ({ setInitialValues, formValues, setValidationSchema, userId, validationSchema }) => {
+const EditUserFormFields = ({
+  setInitialValues,
+  formValues,
+  setValidationSchema,
+  userId,
+  validationSchema,
+  regions,
+}) => {
   const [loading, setLoading] = useState(true);
   const [roles, setRoles] = useState([]);
 
@@ -44,8 +51,14 @@ const EditUserFormFields = ({ setInitialValues, formValues, setValidationSchema,
       <FormRow name="username" label="User Id*">
         <FormInput type="text" name="username" placeholder="User Id" disabled />
       </FormRow>
+      <FormRow>
+        <FormCheckboxInput name="isProjectMgr" label="Project Manager" />
+      </FormRow>
       <FormRow name="userRoleIds" label="User Roles*">
         <MultiSelect items={roles} name="userRoleIds" />
+      </FormRow>
+      <FormRow name="userRegionIds" label="MoTI Region*">
+        <MultiSelect items={regions} name="userRegionIds" showSelectAll={true} />
       </FormRow>
       <FormRow name="endDate" label="End Date">
         <SingleDateField name="endDate" placeholder="End Date" />
@@ -55,7 +68,9 @@ const EditUserFormFields = ({ setInitialValues, formValues, setValidationSchema,
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    regions: Object.values(state.regions.regions),
+  };
 };
 
 export default connect(mapStateToProps, null)(EditUserFormFields);

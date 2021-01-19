@@ -11,10 +11,12 @@ export const API_PATHS = {
   USER: '/users',
   USER_CURRENT: '/users/current',
   USER_STATUSES: '/users/userstatus',
+  USER_REGIONS: '/regions', //temporary fix remove when regions confirmed works.
   USER_AD_ACCOUNT: '/users/adaccount',
   MAINTENANCE_TYPES: `${CODE_LOOKUP}/maintenancetypes`,
   UNIT_OF_MEASURES: `${CODE_LOOKUP}/unitofmeasures`,
   FEATURE_TYPES: `${CODE_LOOKUP}/featuretypes`,
+  REGIONS: '/regions',
   SUPPORTED_FORMATS: '/exports/supportedformats',
   VERSION: '/version',
 };

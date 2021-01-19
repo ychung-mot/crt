@@ -28,27 +28,32 @@ import { buildStatusIdArray } from '../utils';
 const defaultSearchFormValues = {
   searchText: '',
   statusId: [Constants.ACTIVE_STATUS.ACTIVE],
+  regions: [],
 };
 
 const defaultSearchOptions = {
   searchText: '',
   isActive: true,
   dataPath: Constants.API_PATHS.USER,
+  regions: '',
 };
 
 const tableColumns = [
   { heading: 'First Name', key: 'firstName' },
   { heading: 'Last Name', key: 'lastName' },
   { heading: 'User ID', key: 'username' },
+  { heading: 'Email', key: 'email' },
+  { heading: 'Regions', key: 'regions' },
   { heading: 'Active', key: 'isActive', nosort: true },
 ];
 
 const validationSchema = Yup.object({
   username: Yup.string().required('Required').max(32).trim(),
   userRoleIds: Yup.array().required('Require at least one role'),
+  regions: Yup.array().required('Need to select at least one region'),
 });
 
-const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
+const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -78,7 +83,6 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
 
   const handleSearchFormSubmit = (values) => {
     const searchText = values.searchText.trim() || null;
-
     let isActive = null;
     if (values.statusId.length === 1) {
       isActive = values.statusId[0] === 'ACTIVE';
@@ -88,6 +92,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
       ...searchData.searchOptions,
       isActive,
       searchText,
+      regions: values.regions.join(',') || null,
       pageNumber: 1,
     };
     searchData.updateSearchOptions(options);
@@ -144,7 +149,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
       <MaterialCard>
         <UIHeader>User Management</UIHeader>
         <Formik
-          initialValues={searchInitialValues}
+          initialValues={{ ...searchInitialValues }}
           enableReinitialize={true}
           onSubmit={(values) => handleSearchFormSubmit(values)}
           onReset={handleSearchFormReset}
@@ -153,12 +158,10 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
             <Form>
               <Row form>
                 <Col>
-                  <Field
-                    type="text"
-                    name="searchText"
-                    placeholder="User Id/Name/Organization"
-                    className="form-control"
-                  />
+                  <MultiDropdownField {...formikProps} items={regions} name="regions" title="Regions" />
+                </Col>
+                <Col>
+                  <Field type="text" name="searchText" placeholder="User Id/Name/Email" className="form-control" />
                 </Col>
                 <Col>
                   <MultiDropdownField {...formikProps} items={userStatuses} name="statusId" title="User Status" />
@@ -220,6 +223,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog }) => {
 const mapStateToProps = (state) => {
   return {
     userStatuses: Object.values(state.user.statuses),
+    regions: Object.values(state.regions.regions),
   };
 };
 

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import PageSpinner from '../ui/PageSpinner';
 import MultiSelect from '../ui/MultiSelect';
-import { FormInput, FormRow } from './FormInputs';
+import { FormInput, FormRow, FormCheckboxInput } from './FormInputs';
 import SubmitButton from '../ui/SubmitButton';
 
 import { showValidationErrorDialog, hideErrorDialog } from '../../redux/actions';
@@ -24,6 +24,8 @@ const WIZARD_STATE = {
 const defaultValues = {
   username: '',
   userRoleIds: [],
+  regions: [],
+  isProjectMgr: false,
   active: true,
   endDate: null,
 };
@@ -119,7 +121,7 @@ const AddUserSearchResult = ({ status, data, setWizardState }) => {
   );
 };
 
-const AddUserSetupUser = ({ values, submitting, setWizardState }) => {
+const AddUserSetupUser = ({ values, data, submitting, setWizardState, regions }) => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -143,11 +145,29 @@ const AddUserSetupUser = ({ values, submitting, setWizardState }) => {
           <PageSpinner />
         ) : (
           <React.Fragment>
+            <FormRow name="username" label="User Id*">
+              <FormInput type="text" name="username" placeholder={data.username} disabled />
+            </FormRow>
+            <FormRow name="firstName" label="First Name*">
+              <FormInput type="text" name="firstName" placeholder={data.firstName} disabled />
+            </FormRow>
+            <FormRow name="lastName" label="Last Name*">
+              <FormInput type="text" name="lastName" placeholder={data.lastName} disabled />
+            </FormRow>
+            <FormRow name="email" label="Email*">
+              <FormInput type="text" name="email" placeholder={data.email} disabled />
+            </FormRow>
+            <FormRow>
+              <FormCheckboxInput name="isProjectMgr" label="Project Manager" />
+            </FormRow>
             <p>
               <strong>Select roles for the new user</strong>
             </p>
             <FormRow name="userRoleIds" label="User Roles*">
               <MultiSelect items={roles} name="userRoleIds" />
+            </FormRow>
+            <FormRow name="regions" label="MoTI Region*">
+              <MultiSelect items={regions} name="regions" showSelectAll={true} />
             </FormRow>
           </React.Fragment>
         )}
@@ -187,7 +207,7 @@ const AddUserSetupUserSuccess = ({ toggle }) => {
   );
 };
 
-const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDialog, validationSchema }) => {
+const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDialog, validationSchema, regions }) => {
   const [wizardState, setWizardState] = useState(WIZARD_STATE.SEARCH);
   const [submitting, setSubmitting] = useState(false);
   const [adAccount, setAdAccount] = useState(null);
@@ -212,7 +232,6 @@ const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDia
   const handleFinalFormSubmit = (values) => {
     if (!submitting) {
       setSubmitting(true);
-
       api
         .postUser(values)
         .then(() => setWizardState(WIZARD_STATE.USER_SETUP_CONFIRM))
@@ -229,7 +248,15 @@ const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDia
       case WIZARD_STATE.SEARCH_FAIL:
         return <AddUserSearchResult setWizardState={setWizardState} data={adAccount} status={wizardState} />;
       case WIZARD_STATE.USER_SETUP:
-        return <AddUserSetupUser setWizardState={setWizardState} values={values} submitting={submitting} />;
+        return (
+          <AddUserSetupUser
+            setWizardState={setWizardState}
+            data={adAccount}
+            values={values}
+            submitting={submitting}
+            regions={regions}
+          />
+        );
       case WIZARD_STATE.USER_SETUP_CONFIRM:
         return <AddUserSetupUserSuccess toggle={toggle} />;
       case WIZARD_STATE.SEARCH:
@@ -251,7 +278,9 @@ const AddUserWizard = ({ isOpen, toggle, showValidationErrorDialog, hideErrorDia
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    regions: Object.values(state.regions.regions),
+  };
 };
 
 export default connect(mapStateToProps, { showValidationErrorDialog, hideErrorDialog })(AddUserWizard);
