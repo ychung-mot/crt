@@ -46,6 +46,8 @@ namespace Crt.Data.Repositories
                                     .ThenInclude(x => x.Role)
                                         .ThenInclude(x => x.CrtRolePermissions)
                                             .ThenInclude(x => x.Permission)
+                                .Include(x => x.CrtRegionUsers)
+                                    .ThenInclude(x => x.Region)
                                 .FirstAsync(u => u.UserGuid == _currentUser.UserGuid);
 
             var currentUser = Mapper.Map<UserCurrentDto>(userEntity);
@@ -187,6 +189,7 @@ namespace Crt.Data.Repositories
                 FirstName = account.FirstName,
                 LastName = account.LastName,
                 Email = account.Email,
+                IsProjectMgr = user.IsProjectMgr,
                 EndDate = user.EndDate,
             };
 

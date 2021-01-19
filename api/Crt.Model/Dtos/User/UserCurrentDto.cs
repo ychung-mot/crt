@@ -21,6 +21,7 @@ namespace Crt.Model.Dtos.User
         public bool IsSystemAdmin { get; set; }
         public bool IsProjectMgr { get; set; }
 
-        public virtual IList<string> Permissions { get; set; }       
+        public virtual IList<string> Regions { get; set; }
+        public virtual IList<string> Permissions { get; set; }
     }
 }
