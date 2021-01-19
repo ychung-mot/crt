@@ -16,6 +16,7 @@ namespace Crt.Data.Repositories
         Task<IEnumerable<RegionDto>> GetAllRegionsAsync();
         Task<RegionDto> GetRegionByRegionNumberAsync(decimal regionNumber);
         Task<RegionDto> GetRegionByRegionIdAsync(decimal id);
+        Task<int> CountRegionsAsync(IEnumerable<decimal> regionIds);
     }
 
     public class RegionRepository : CrtRepositoryBase<CrtRegion>, IRegionRepository
@@ -58,6 +59,11 @@ namespace Crt.Data.Repositories
                 .FirstOrDefaultAsync(r => r.RegionNumber == number);
 
             return Mapper.Map<RegionDto>(entity);
+        }
+
+        public async Task<int> CountRegionsAsync(IEnumerable<decimal> regionIds)
+        {
+            return await DbSet.CountAsync(s => regionIds.Contains(s.RegionId));
         }
     }
 }
