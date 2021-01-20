@@ -3,6 +3,7 @@ using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
 using Crt.Model;
 using Crt.Model.Dtos;
+using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.User;
 using Crt.Model.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,13 @@ namespace Crt.Data.Repositories
                 .ToList();
 
             currentUser.Permissions = permissions;
+
+            var regions =
+                userEntity
+                .CrtRegionUsers
+                .Select(s => s.Region);
+
+            currentUser.Regions = new List<RegionDto>(Mapper.Map<IEnumerable<RegionDto>>(regions));
 
             currentUser.IsSystemAdmin = userEntity.CrtUserRoles.Any(x => x.Role.Name == Constants.SystemAdmin);
 
