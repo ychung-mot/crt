@@ -41,7 +41,7 @@ const defaultSearchOptions = {
 const tableColumns = [
   { heading: 'First Name', key: 'firstName' },
   { heading: 'Last Name', key: 'lastName' },
-  { heading: 'User ID', key: 'username' },
+  { heading: 'IDIR', key: 'username' },
   { heading: 'Email', key: 'email' },
   { heading: 'Regions', key: 'regionNumbers', nosort: true },
   { heading: 'Active', key: 'isActive', nosort: true },
@@ -161,7 +161,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
                   <MultiDropdownField {...formikProps} items={regions} name="regions" title="Regions" />
                 </Col>
                 <Col>
-                  <Field type="text" name="searchText" placeholder="User Id/Name/Email" className="form-control" />
+                  <Field type="text" name="searchText" placeholder="IDIR/Name/Email" className="form-control" />
                 </Col>
                 <Col>
                   <MultiDropdownField {...formikProps} items={userStatuses} name="statusId" title="User Status" />

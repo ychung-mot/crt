@@ -45,10 +45,6 @@ export const getPermissions = () => instance.get(Constants.API_PATHS.PERMISSIONS
 
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 
-export const getMaintenanceTypes = () => instance.get(Constants.API_PATHS.MAINTENANCE_TYPES);
-export const getUnitOfMeasures = () => instance.get(Constants.API_PATHS.UNIT_OF_MEASURES);
-export const getFeatureTypes = () => instance.get(Constants.API_PATHS.FEATURE_TYPES);
-
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);
 export const resetApiClientSecret = () => instance.post(`${Constants.API_PATHS.USER}/api-client/secret`);
