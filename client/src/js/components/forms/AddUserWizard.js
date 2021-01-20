@@ -37,7 +37,7 @@ const AddUserSearch = ({ submitting, toggle, values, handleSubmit }) => {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="username">IDIR</Label>
+              <Label for="username">Search by IDIR</Label>
               <FormInput
                 type="text"
                 name="username"
