@@ -10,6 +10,7 @@ using Crt.Model.Dtos.UserRole;
 using Crt.Model.Dtos.ServiceArea;
 using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.District;
+using Crt.Model.Dtos.Note;
 
 namespace Crt.Data.Mappings
 {
@@ -45,6 +46,11 @@ namespace Crt.Data.Mappings
             CreateMap<CrtServiceArea, ServiceAreaDto>();
             CreateMap<CrtRegion, RegionDto>();
             CreateMap<CrtDistrict, DistrictDto>();
+
+            //uncomment when CrtNote is ready
+            //CreateMap<CrtNote, NoteDto>()
+            //    .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.LastUpdateUserid))
+            //    .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.LastUpdateTimestamp));
         }
     }
 }

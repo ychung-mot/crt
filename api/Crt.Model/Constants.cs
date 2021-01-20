@@ -43,6 +43,9 @@ namespace Crt.Model
         public const string UserRead = "USER_R";
         public const string RoleWrite = "ROLE_W";
         public const string RoleRead = "ROLE_R";
+        public const string ExportRead = "EXPORT_R";
+        public const string ProjectRead = "PROJECT_R";
+        public const string ProjectWrite = "PROJECT_W";
     }
 
     public static class Entities

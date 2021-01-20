@@ -13,7 +13,7 @@ namespace Crt.Data.Repositories
 {
     public interface ICodeLookupRepository
     {
-        IEnumerable<CodeLookupCache> LoadCodeLookupCache();
+        IEnumerable<CodeLookupDto> GetCodeLookups();
     }
 
     public class CodeLookupRepository : CrtRepositoryBase<CrtCodeLookup>, ICodeLookupRepository
@@ -23,19 +23,9 @@ namespace Crt.Data.Repositories
         {
         }
 
-        public IEnumerable<CodeLookupCache> LoadCodeLookupCache()
+        public IEnumerable<CodeLookupDto> GetCodeLookups()
         {
-            return DbSet.AsNoTracking()
-                .Where(x => x.EndDate == null || DateTime.Today < x.EndDate)
-                .Select(x =>
-                    new CodeLookupCache
-                    {
-                        CodeSet = x.CodeSet,
-                        CodeLookupId = x.CodeLookupId,
-                        CodeName = x.CodeName,
-                    }
-                )
-                .ToArray();
+            return GetAllNoTrack<CodeLookupDto>(x => x.EndDate == null || DateTime.Today < x.EndDate);
         }
     }
 }

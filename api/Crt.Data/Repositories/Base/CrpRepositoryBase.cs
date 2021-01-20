@@ -135,6 +135,11 @@ namespace Crt.Data.Repositories.Base
             return Mapper.Map<IEnumerable<TDto>>(await DbSet.AsNoTracking().Where(where).ToListAsync());
         }
 
+        public virtual IEnumerable<TDto> GetAllNoTrack<TDto>(Expression<Func<TEntity, bool>> where)
+        {
+            return Mapper.Map<IEnumerable<TDto>>(DbSet.AsNoTracking().Where(where).ToList());
+        }
+
         public async Task<TDto> GetFirstOrDefaultAsync<TDto>(Expression<Func<TEntity, bool>> where)
         {
             return Mapper.Map<TDto>(await DbSet.Where(where).FirstOrDefaultAsync<TEntity>());

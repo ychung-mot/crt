@@ -21,19 +21,19 @@ namespace Crt.Api.Controllers
         }
 
         [HttpGet ("maintenancetypes")]
-        public ActionResult<IEnumerable<CodeLookupCache>> GetMaintenanceTypes()
+        public ActionResult<IEnumerable<CodeLookupDto>> GetMaintenanceTypes()
         {
            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.WrkRptMaintType));
         }
 
         [HttpGet ("unitofmeasures")]
-        public ActionResult<IEnumerable<CodeLookupCache>> GetUnitOfMeasures()
+        public ActionResult<IEnumerable<CodeLookupDto>> GetUnitOfMeasures()
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.UnitOfMeasure));
         }
 
         [HttpGet("featuretypes")]
-        public ActionResult<IEnumerable<CodeLookupCache>> GetFeatureTypes()
+        public ActionResult<IEnumerable<CodeLookupDto>> GetFeatureTypes()
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.FeatureType));
         }
