@@ -2,7 +2,9 @@
 using Crt.Data.Database.Entities;
 using Crt.Model.Dtos.CodeLookup;
 using Crt.Model.Dtos.District;
+using Crt.Model.Dtos.Note;
 using Crt.Model.Dtos.Permission;
+using Crt.Model.Dtos.Project;
 using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.Role;
 using Crt.Model.Dtos.RolePermission;
@@ -43,7 +45,15 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRegionUser, RegionUserDto>();
             CreateMap<CrtServiceArea, ServiceAreaDto>();
             CreateMap<CrtRegion, RegionDto>();
+            CreateMap<CrtRegionDistrict, RegionDistrictDto>();
             CreateMap<CrtDistrict, DistrictDto>();
+
+            CreateMap<ProjectDto, CrtProject>();
+            CreateMap<ProjectCreateDto, CrtProject>();
+            CreateMap<ProjectUpdateDto, CrtProject>();
+            CreateMap<ProjectDeleteDto, CrtProject>();
+
+            CreateMap<NoteDto, CrtNote>();
         }
     }
 }

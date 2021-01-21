@@ -1,8 +1,4 @@
-﻿using Crt.Model.Dtos.CodeLookup;
-using Crt.Model.Dtos.Note;
-using Crt.Model.Dtos.Region;
-using Crt.Model.Dtos.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.Project
 {
-    public class ProjectDto
+    public class ProjectUpdateDto
     {
         public decimal ProjectId { get; set; }
         public string ProjectNumber { get; set; }
@@ -23,12 +19,5 @@ namespace Crt.Model.Dtos.Project
         public decimal? RcLkupId { get; set; }
         public decimal? ProjectMgrId { get; set; }
         public decimal? NearstTwnLkupId { get; set; }
-
-        public CodeLookupDto CapIndx { get; set; }
-        public CodeLookupDto Rcl { get; set; }
-        public CodeLookupDto NearstTwn { get; set; }
-        public RegionDto Region { get; set; }
-        public  UserSearchDto ProjectMgr { get; set; }
-        public IList<NoteDto> Notes { get; set; }
     }
 }

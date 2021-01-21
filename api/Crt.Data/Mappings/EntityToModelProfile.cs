@@ -11,6 +11,7 @@ using Crt.Model.Dtos.ServiceArea;
 using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.District;
 using Crt.Model.Dtos.Note;
+using Crt.Model.Dtos.Project;
 
 namespace Crt.Data.Mappings
 {
@@ -35,6 +36,7 @@ namespace Crt.Data.Mappings
             CreateMap<CrtSystemUser, UserSearchDto>();
             CreateMap<CrtSystemUser, UserUpdateDto>();
             CreateMap<CrtSystemUser, UserDeleteDto>();
+            CreateMap<CrtSystemUser, UserManagerDto>();
 
             CreateMap<AdAccount, AdAccountDto>();
 
@@ -45,12 +47,18 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRegionUser, RegionUserDto>();
             CreateMap<CrtServiceArea, ServiceAreaDto>();
             CreateMap<CrtRegion, RegionDto>();
+            CreateMap<CrtRegionDistrict, RegionDistrictDto>();
             CreateMap<CrtDistrict, DistrictDto>();
 
-            //uncomment when CrtNote is ready
-            //CreateMap<CrtNote, NoteDto>()
-            //    .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.LastUpdateUserid))
-            //    .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.LastUpdateTimestamp));
+            CreateMap<CrtProject, ProjectDto>();
+            CreateMap<CrtProject, ProjectCreateDto>();
+            CreateMap<CrtProject, ProjectUpdateDto>();
+            CreateMap<CrtProject, ProjectDeleteDto>();
+            CreateMap<CrtProject, ProjectSearchDto>();
+
+            CreateMap <CrtNote, NoteDto>()
+                  .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
+                  .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.AppCreateTimestamp));
         }
     }
 }

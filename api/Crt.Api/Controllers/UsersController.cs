@@ -164,6 +164,13 @@ namespace Crt.Api.Controllers
             return NoContent();
         }
 
+        [HttpGet ("managers")]
+        [RequiresPermission(Permissions.CodeRead)]
+        public async Task<ActionResult<IEnumerable<UserManagerDto>>> GetManagers()
+        {
+            return Ok(await _userService.GetManagersAsync());
+        }
+
         #region API Client
         [HttpGet("api-client", Name = "GetUserKeycloakClient")]
         public async Task<ActionResult<KeycloakClientDto>> GetUserKeycloakClient()

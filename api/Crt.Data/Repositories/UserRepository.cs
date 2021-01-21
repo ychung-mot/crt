@@ -28,6 +28,7 @@ namespace Crt.Data.Repositories
         Task<CrtSystemUser> GetActiveUserEntityAsync(Guid userGuid);
         Task<int> UpdateUserFromAdAsync(AdAccount user, long concurrencyControlNumber);
         Task UpdateUserApiClientId(string clientId);
+        Task<IEnumerable<UserManagerDto>> GetManagersAsync();
     }
 
     public class UserRepository : CrtRepositoryBase<CrtSystemUser>, IUserRepository
@@ -49,6 +50,7 @@ namespace Crt.Data.Repositories
                                             .ThenInclude(x => x.Permission)
                                 .Include(x => x.CrtRegionUsers)
                                     .ThenInclude(x => x.Region)
+                                        .ThenInclude(x => x.CrtRegionDistricts)
                                 .FirstAsync(u => u.UserGuid == _currentUser.UserGuid);
 
             var currentUser = Mapper.Map<UserCurrentDto>(userEntity);
@@ -308,6 +310,11 @@ namespace Crt.Data.Repositories
             var userEntity = await DbSet.FirstAsync(u => u.UserGuid == _currentUser.UserGuid);
 
             userEntity.ApiClientId = apiClientId;
+        }
+
+        public async Task<IEnumerable<UserManagerDto>> GetManagersAsync()
+        {
+            return await GetAllNoTrackAsync<UserManagerDto>(u => u.IsProjectMgr == true && (u.EndDate == null || u.EndDate > DateTime.Today));
         }
     }
 }
