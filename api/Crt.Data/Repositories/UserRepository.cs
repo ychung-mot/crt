@@ -49,6 +49,7 @@ namespace Crt.Data.Repositories
                                             .ThenInclude(x => x.Permission)
                                 .Include(x => x.CrtRegionUsers)
                                     .ThenInclude(x => x.Region)
+                                        .ThenInclude(x => x.CrtRegionDistricts)
                                 .FirstAsync(u => u.UserGuid == _currentUser.UserGuid);
 
             var currentUser = Mapper.Map<UserCurrentDto>(userEntity);

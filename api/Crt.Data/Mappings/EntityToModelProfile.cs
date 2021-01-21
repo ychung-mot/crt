@@ -45,6 +45,7 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRegionUser, RegionUserDto>();
             CreateMap<CrtServiceArea, ServiceAreaDto>();
             CreateMap<CrtRegion, RegionDto>();
+            CreateMap<CrtRegionDistrict, RegionDistrictDto>();
             CreateMap<CrtDistrict, DistrictDto>();
 
             //uncomment when CrtNote is ready
