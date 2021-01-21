@@ -48,10 +48,9 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRegionDistrict, RegionDistrictDto>();
             CreateMap<CrtDistrict, DistrictDto>();
 
-            //uncomment when CrtNote is ready
-            //CreateMap<CrtNote, NoteDto>()
-            //    .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.LastUpdateUserid))
-            //    .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.LastUpdateTimestamp));
+            CreateMap <CrtNote, NoteDto>()
+                  .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
+                  .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.AppCreateTimestamp));
         }
     }
 }

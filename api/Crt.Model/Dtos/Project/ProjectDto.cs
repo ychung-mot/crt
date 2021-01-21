@@ -25,11 +25,10 @@ namespace Crt.Model.Dtos.Project
         public decimal? NearstTwnLkupId { get; set; }
 
         public CodeLookupDto CapIndx { get; set; }
-        public RegionDto Region { get; set; }
         public CodeLookupDto Rcl { get; set; }
-        public  UserSearchDto ProjectMgr { get; set; }
         public CodeLookupDto NearstTwn { get; set; }
+        public RegionDto Region { get; set; }
+        public  UserSearchDto ProjectMgr { get; set; }
         public IList<NoteDto> Notes { get; set; }
-
     }
 }
