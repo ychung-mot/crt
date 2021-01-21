@@ -149,5 +149,72 @@ namespace Crt.Api.Controllers
             #endregion
         }
 
+        [HttpPost]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<ProjectCreateDto>> CreateUser(ProjectCreateDto project)
+        {
+            throw new NotImplementedException();
+
+            //var response = await _projectService.CreateUserAsync(project);
+
+            //if (response.Errors.Count > 0)
+            //{
+            //    return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            //}
+
+            //return CreatedAtRoute("GetProject", new { id = response.ProjectId }, await _projectService.GetProjectAsync(response.ProjectId));
+        }
+
+        [HttpPut("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> UpdateProject(decimal id, ProjectUpdateDto project)
+        {
+            throw new NotImplementedException();
+
+            //if (id != project.ProjectId)
+            //{
+            //    throw new Exception($"The project ID from the query string does not match that of the body.");
+            //}
+
+            //var response = await _projectService.UpdateUserAsync(project);
+
+            //if (response.NotFound)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (response.Errors.Count > 0)
+            //{
+            //    return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            //}
+
+            //return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> DeleteProject(decimal id, ProjectDeleteDto project)
+        {
+            throw new NotImplementedException();
+
+            //if (id != project.SystemProjectId)
+            //{
+            //    throw new Exception($"The system project ID from the query string does not match that of the body.");
+            //}
+
+            //var response = await _projectService.DeleteProjectAsync(project);
+
+            //if (response.NotFound)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (response.Errors.Count > 0)
+            //{
+            //    return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            //}
+
+            //return NoContent();
+        }
     }
 }

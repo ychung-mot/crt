@@ -86,9 +86,9 @@ namespace Crt.Model
 
     public static class CodeSet
     {
-        public const string WrkRptMaintType = "WRK_RPT_MAINT_TYPE";
-        public const string UnitOfMeasure = "UOM";
-        public const string FeatureType = "FEATURE_TYPE";
+        public const string CapIndx = "CAP_INDX";
+        public const string Rc = "RC";
+        public const string NearstTwn = "NEARST_TWN";
     }
 
     public static class CrtEnvironments
