@@ -15,6 +15,7 @@ import Footer from './components/fragments/Footer';
 import Header from './components/fragments/Header';
 import UserAdmin from './components/UserAdmin';
 import RoleAdmin from './components/RoleAdmin';
+import Projects from './components/Projects';
 import Version from './components/Version';
 import ApiAccess from './components/ApiAccess';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -104,8 +105,17 @@ const AdminRoutes = (currentUser) => {
       <AuthorizedRoute path={Constants.PATHS.ADMIN_ROLES} requires={Constants.PERMISSIONS.ROLE_R}>
         <Route path={Constants.PATHS.ADMIN_ROLES} exact component={RoleAdmin} />
       </AuthorizedRoute>
+      {ProjectRoutes()}
       {CommonRoutes()}
     </Switch>
+  );
+};
+
+const ProjectRoutes = (currentUser) => {
+  return (
+    <AuthorizedRoute path={Constants.PATHS.PROJECTS} requires={Constants.PERMISSIONS.PROJECT_R}>
+      <Route path={Constants.PATHS.PROJECTS} exact component={Projects} />
+    </AuthorizedRoute>
   );
 };
 

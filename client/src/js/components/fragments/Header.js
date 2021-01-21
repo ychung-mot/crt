@@ -87,6 +87,9 @@ const Header = ({ currentUser }) => {
                     text="Roles and Permissions"
                   />
                 </Authorize>
+                <Authorize requires={Constants.PERMISSIONS.PROJECT_R}>
+                  <NavLinkWithMatch hideNavbar={hideNavbar} to={Constants.PATHS.PROJECTS} text="Projects" />
+                </Authorize>
               </React.Fragment>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
