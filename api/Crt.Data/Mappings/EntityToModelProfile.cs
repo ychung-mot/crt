@@ -50,8 +50,10 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRegionDistrict, RegionDistrictDto>();
             CreateMap<CrtDistrict, DistrictDto>();
 
+            CreateMap<CrtProject, ProjectDto>();
             CreateMap<CrtProject, ProjectCreateDto>();
             CreateMap<CrtProject, ProjectUpdateDto>();
+            CreateMap<CrtProject, ProjectDeleteDto>();
             CreateMap<CrtProject, ProjectSearchDto>();
 
             CreateMap <CrtNote, NoteDto>()
