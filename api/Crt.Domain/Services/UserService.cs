@@ -28,6 +28,7 @@ namespace Crt.Domain.Services
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteUserAsync(UserDeleteDto user);
         Task<CrtSystemUser> GetActiveUserEntityAsync(Guid userGuid);
         Task<int> UpdateUserFromAdAsync(string username, long concurrencyControlNumber);
+        Task<IEnumerable<UserManagerDto>> GetManagersAsync();
     }
     public class UserService : IUserService
     {
@@ -222,6 +223,11 @@ namespace Crt.Domain.Services
             }
 
             return 0;
+        }
+
+        public async Task<IEnumerable<UserManagerDto>> GetManagersAsync()
+        {
+            return await _userRepo.GetManagersAsync();
         }
     }
 }
