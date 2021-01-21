@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Crt.Api.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("api/projects")]
+    [Route("api/notes")]
     [ApiController]
     public class NoteController : CrtControllerBase
     {
