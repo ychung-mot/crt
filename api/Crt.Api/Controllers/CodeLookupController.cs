@@ -20,22 +20,22 @@ namespace Crt.Api.Controllers
             _validator = validator;
         }
 
-        [HttpGet ("maintenancetypes")]
-        public ActionResult<IEnumerable<CodeLookupDto>> GetMaintenanceTypes()
+        [HttpGet ("capitalindexes")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetCapitalIndexes()
         {
-           return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.WrkRptMaintType));
+           return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.CapIndx));
         }
 
-        [HttpGet ("unitofmeasures")]
-        public ActionResult<IEnumerable<CodeLookupDto>> GetUnitOfMeasures()
+        [HttpGet ("rcnumbers")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetRcNumbers()
         {
-            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.UnitOfMeasure));
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Rc));
         }
 
-        [HttpGet("featuretypes")]
-        public ActionResult<IEnumerable<CodeLookupDto>> GetFeatureTypes()
+        [HttpGet("nearesttowns")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetNearestTowns()
         {
-            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.FeatureType));
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.NearstTwn));
         }
     }
 }

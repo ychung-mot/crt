@@ -11,6 +11,7 @@ using Crt.Model.Dtos.ServiceArea;
 using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.District;
 using Crt.Model.Dtos.Note;
+using Crt.Model.Dtos.Project;
 
 namespace Crt.Data.Mappings
 {
@@ -48,6 +49,10 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRegion, RegionDto>();
             CreateMap<CrtRegionDistrict, RegionDistrictDto>();
             CreateMap<CrtDistrict, DistrictDto>();
+
+            CreateMap<CrtProject, ProjectCreateDto>();
+            CreateMap<CrtProject, ProjectUpdateDto>();
+            CreateMap<CrtProject, ProjectSearchDto>();
 
             CreateMap <CrtNote, NoteDto>()
                   .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
