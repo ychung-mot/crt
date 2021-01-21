@@ -35,6 +35,7 @@ namespace Crt.Data.Mappings
             CreateMap<CrtSystemUser, UserSearchDto>();
             CreateMap<CrtSystemUser, UserUpdateDto>();
             CreateMap<CrtSystemUser, UserDeleteDto>();
+            CreateMap<CrtSystemUser, UserManagerDto>();
 
             CreateMap<AdAccount, AdAccountDto>();
 
