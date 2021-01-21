@@ -28,6 +28,7 @@ namespace Crt.Data.Repositories
         public IEnumerable<RegionDto> GetAllRegions()
         {
             var regions = DbSet.AsNoTracking()
+                .Include(r => r.CrtRegionDistricts)
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .ToList();
 
@@ -37,6 +38,7 @@ namespace Crt.Data.Repositories
         public async Task<IEnumerable<RegionDto>> GetAllRegionsAsync()
         {
             var regions = await DbSet.AsNoTracking()
+                .Include(r => r.CrtRegionDistricts)
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .ToListAsync();
 
@@ -46,6 +48,7 @@ namespace Crt.Data.Repositories
         public async Task<RegionDto> GetRegionByRegionIdAsync(decimal id)
         {
             var entity = await DbSet.AsNoTracking()
+                .Include(r => r.CrtRegionDistricts)
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .FirstOrDefaultAsync(r => r.RegionId == id);
 
@@ -55,6 +58,7 @@ namespace Crt.Data.Repositories
         public async Task<RegionDto> GetRegionByRegionNumberAsync(decimal number)
         {
             var entity = await DbSet.AsNoTracking()
+                .Include(r => r.CrtRegionDistricts)
                 .Where(r => r.EndDate == null || r.EndDate > DateTime.Today)
                 .FirstOrDefaultAsync(r => r.RegionNumber == number);
 

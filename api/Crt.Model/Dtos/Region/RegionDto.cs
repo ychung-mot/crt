@@ -16,5 +16,6 @@ namespace Crt.Model.Dtos.Region
         public DateTime? EndDate { get; set; }
         [JsonPropertyName("name")]
         public string Description { get => $"{RegionNumber}-{RegionName}"; }
+        public virtual ICollection<RegionDistrictDto> CrtRegionDistricts { get; set; }
     }
 }

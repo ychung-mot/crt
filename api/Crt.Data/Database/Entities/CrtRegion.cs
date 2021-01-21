@@ -9,6 +9,7 @@ namespace Crt.Data.Database.Entities
     {
         public CrtRegion()
         {
+            CrtProjects = new HashSet<CrtProject>();
             CrtRegionDistricts = new HashSet<CrtRegionDistrict>();
             CrtRegionUsers = new HashSet<CrtRegionUser>();
         }
@@ -23,6 +24,7 @@ namespace Crt.Data.Database.Entities
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
+        public virtual ICollection<CrtProject> CrtProjects { get; set; }
         public virtual ICollection<CrtRegionDistrict> CrtRegionDistricts { get; set; }
         public virtual ICollection<CrtRegionUser> CrtRegionUsers { get; set; }
     }
