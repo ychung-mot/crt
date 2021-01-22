@@ -39,6 +39,8 @@ namespace Crt.Api.Controllers
                 ProjectId = 1,
                 ProjectNumber = "P1",
                 ProjectName = "Test Project - Road rehabilitation 1",
+                RegionNumber = 1,
+                RegionName = "South Coast",
                 EndDate = null
             };
 
@@ -47,6 +49,8 @@ namespace Crt.Api.Controllers
                 ProjectId = 2,
                 ProjectNumber = "P2",
                 ProjectName = "Test Project - Road rehabilitation 2",
+                RegionNumber = 0,
+                RegionName = "Headquarters",
                 EndDate = null
             };
 
@@ -55,6 +59,8 @@ namespace Crt.Api.Controllers
                 ProjectId = 3,
                 ProjectNumber = "P3",
                 ProjectName = "Test Project - Road rehabilitation 3",
+                RegionNumber = 1,
+                RegionName = "South Coast",
                 EndDate = null
             };
 
