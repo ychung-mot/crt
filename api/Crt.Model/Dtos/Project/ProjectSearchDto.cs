@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Crt.Model.Dtos.Project
 {
     public class ProjectSearchDto
     {
+        [JsonPropertyName("id")]
         public decimal ProjectId { get; set; }
         public decimal RegionNumber { get; set; }
         public string RegionName { get; set; }

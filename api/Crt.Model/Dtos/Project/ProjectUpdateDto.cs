@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Crt.Model.Dtos.Project
 {
     public class ProjectUpdateDto
     {
+        [JsonPropertyName("id")]
         public decimal ProjectId { get; set; }
         public string ProjectNumber { get; set; }
         public string ProjectName { get; set; }

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Crt.Model.Dtos.Note
 {
     public class NoteDto
     {
+        [JsonPropertyName("id")]
         public decimal NoteId { get; set; }
         public string NoteType { get; set; }
         public string Comment { get; set; }
