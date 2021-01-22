@@ -52,10 +52,10 @@ namespace Crt.Data.Database.Entities
 
                 entity.HasComment("A range of lookup values used to decipher codes used in submissions to business legible values for reporting purposes.  As many code lookups share this table, views are available to join for reporting purposes.");
 
-                entity.HasIndex(e => new { e.CodeSet, e.CodeValueNum, e.CodeName }, "CRT_CODE_LKUP_VAL_NUM_UC")
+                entity.HasIndex(e => new { e.CodeSet, e.CodeValueNum, e.CodeName, e.DisplayOrder }, "CRT_CODE_LKUP_VAL_NUM_UC")
                     .IsUnique();
 
-                entity.HasIndex(e => new { e.CodeSet, e.CodeValueText, e.CodeName }, "CRT_CODE_LKUP_VAL_TXT_UC")
+                entity.HasIndex(e => new { e.CodeSet, e.CodeValueText, e.CodeName, e.DisplayOrder }, "CRT_CODE_LKUP_VAL_TXT_UC")
                     .IsUnique();
 
                 entity.Property(e => e.CodeLookupId)
@@ -701,8 +701,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
 
                 entity.Property(e => e.NearstTwnLkupId)
-                    .HasMaxLength(9)
-                    .IsUnicode(false)
+                    .HasColumnType("numeric(9, 0)")
                     .HasColumnName("NEARST_TWN_LKUP_ID")
                     .HasComment("Nearest town lookup ID is associated with nearest town to the project location. The ID maps to the lookup table");
 
@@ -741,10 +740,26 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("SCOPE")
                     .HasComment("Scope of the project ");
 
+                entity.HasOne(d => d.CapIndxLkup)
+                    .WithMany(p => p.CrtProjectCapIndxLkups)
+                    .HasForeignKey(d => d.CapIndxLkupId)
+                    .HasConstraintName("CRT_CODE_LOOKUP_PROJECT_CAP_INDX_FK");
+
+                entity.HasOne(d => d.NearstTwnLkup)
+                    .WithMany(p => p.CrtProjectNearstTwnLkups)
+                    .HasForeignKey(d => d.NearstTwnLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_PROJECT_NRST_TWN_FK");
+
                 entity.HasOne(d => d.ProjectMgr)
                     .WithMany(p => p.CrtProjects)
                     .HasForeignKey(d => d.ProjectMgrId)
                     .HasConstraintName("SYSTEM_USER_PROJECT_FK");
+
+                entity.HasOne(d => d.RcLkup)
+                    .WithMany(p => p.CrtProjectRcLkups)
+                    .HasForeignKey(d => d.RcLkupId)
+                    .HasConstraintName("CRT_CODE_LOOKUP_PROJECT_RC_NUM_FK");
 
                 entity.HasOne(d => d.Region)
                     .WithMany(p => p.CrtProjects)
