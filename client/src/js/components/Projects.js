@@ -36,7 +36,7 @@ const tableColumns = [
   { heading: 'Planning Targets^', key: 'planningTargets' },
   { heading: 'Tender Details', key: 'tenderDetails' },
   { heading: 'Location and Ratios^', key: 'locationRation' },
-  { heading: '', key: 'isInProgress', nosort: true },
+  { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
 const formikInitialValues = {

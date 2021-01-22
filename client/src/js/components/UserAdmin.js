@@ -44,7 +44,7 @@ const tableColumns = [
   { heading: 'IDIR', key: 'username' },
   { heading: 'Email', key: 'email' },
   { heading: 'Regions', key: 'regionNumbers', nosort: true },
-  { heading: 'Active', key: 'isActive', nosort: true },
+  { heading: 'Active', key: 'isActive', nosort: true, badge: { active: 'Active', inactive: 'Inactive' } },
 ];
 
 const validationSchema = Yup.object({

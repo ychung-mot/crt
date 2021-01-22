@@ -33,7 +33,7 @@ const defaultSearchOptions = {
 const tableColumns = [
   { heading: 'Role Name', key: 'name' },
   { heading: 'Role Description', key: 'description' },
-  { heading: 'Active', key: 'isActive', nosort: true },
+  { heading: 'Active', key: 'isActive', nosort: true, badge: { active: 'Active', inactive: 'Inactive' } },
 ];
 
 const RoleAdmin = ({ showValidationErrorDialog }) => {

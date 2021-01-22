@@ -48,13 +48,13 @@ const DataTableControl = ({
             return (
               <tr key={index}>
                 {tableColumns.map((column) => {
-                  if (column.key === 'isActive')
+                  if (column.badge)
                     return (
                       <td key={column.key}>
                         {item[column.key] ? (
-                          <Badge color="success">Active</Badge>
+                          <Badge color="success">{column.badge.active}</Badge>
                         ) : (
-                          <Badge color="danger">Inactive</Badge>
+                          <Badge color="danger">{column.badge.inactive}</Badge>
                         )}
                       </td>
                     );

@@ -29,6 +29,11 @@ DataTableWithPaginaionControl.propTypes = {
       heading: PropTypes.string.isRequired,
       key: PropTypes.string.isRequired,
       nosort: PropTypes.bool,
+      badge: PropTypes.shape({
+        //badge will show active/inactive string based on boolean value
+        active: PropTypes.string,
+        inactive: PropTypes.string,
+      }),
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,
