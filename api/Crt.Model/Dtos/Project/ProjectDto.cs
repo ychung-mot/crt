@@ -4,14 +4,13 @@ using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.User;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Crt.Model.Dtos.Project
 {
     public class ProjectDto
     {
+        [JsonPropertyName("id")]
         public decimal ProjectId { get; set; }
         public string ProjectNumber { get; set; }
         public string ProjectName { get; set; }
