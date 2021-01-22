@@ -1,15 +1,12 @@
 /* ---------------------------------------------------------------------- */
 /* Script generated with: DeZign for Databases 12.1.0                     */
 /* Target DBMS:           MS SQL Server 2017                              */
-/* Project file:          S02_01_APP_CRT_USER_ACCESS_V1.dez               */
+/* Project file:          S02_01_APP_CRT_V1.dez                           */
 /* Project name:          Capital Rehabilitation Tracking Reporting       */
 /* Author:                Ayodeji Kuponiyi                                */
 /* Script type:           Alter database script                           */
-/* Created on:            2021-01-21 22:14                                */
+/* Created on:            2021-01-22 08:49                                */
 /* ---------------------------------------------------------------------- */
-
-USE CRT_DEV;
-GO
 
 
 /* ---------------------------------------------------------------------- */
@@ -202,7 +199,7 @@ CREATE TABLE [dbo].[CRT_PROJECT] (
     [SCOPE] VARCHAR(2000),
     [REGION_ID] NUMERIC(9) NOT NULL,
     [CAP_INDX_LKUP_ID] NUMERIC(9),
-    [NEARST_TWN_LKUP_ID] NUMERIC(9) NOT NULL,
+    [NEARST_TWN_LKUP_ID] NUMERIC(9),
     [RC_LKUP_ID] NUMERIC(9),
     [PROJECT_MGR_ID] NUMERIC(9),
     [END_DATE] DATETIME,
