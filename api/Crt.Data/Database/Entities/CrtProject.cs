@@ -18,8 +18,8 @@ namespace Crt.Data.Database.Entities
         public string Description { get; set; }
         public string Scope { get; set; }
         public decimal RegionId { get; set; }
-        public decimal CapIndxLkupId { get; set; }
-        public string NearstTwnLkupId { get; set; }
+        public decimal? CapIndxLkupId { get; set; }
+        public decimal NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
         public decimal? ProjectMgrId { get; set; }
         public DateTime? EndDate { get; set; }
@@ -35,7 +35,10 @@ namespace Crt.Data.Database.Entities
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
+        public virtual CrtCodeLookup CapIndxLkup { get; set; }
+        public virtual CrtCodeLookup NearstTwnLkup { get; set; }
         public virtual CrtSystemUser ProjectMgr { get; set; }
+        public virtual CrtCodeLookup RcLkup { get; set; }
         public virtual CrtRegion Region { get; set; }
         public virtual ICollection<CrtNote> CrtNotes { get; set; }
     }

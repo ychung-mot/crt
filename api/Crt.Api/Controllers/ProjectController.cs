@@ -93,8 +93,8 @@ namespace Crt.Api.Controllers
                 RegionId = 1,
                 RcLkupId = null,
                 ProjectMgrId = 1,
-                NearstTwnLkupId = null,
-                CapIndx = new CodeLookupDto
+                NearstTwnLkupId = 1,
+                CapIndxLkup = new CodeLookupDto
                 {
                     CodeLookupId = 15,
                     CodeSet = "CAPINDX",
@@ -109,7 +109,7 @@ namespace Crt.Api.Controllers
                     RegionName = "South Coast",
                     EndDate = null
                 },
-                Rcl = null,
+                RcLkup = null,
                 ProjectMgr = new UserSearchDto
                 {
                     SystemUserId = 1,

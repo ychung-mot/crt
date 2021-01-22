@@ -17,18 +17,18 @@ namespace Crt.Model.Dtos.Project
         public string ProjectName { get; set; }
         public string Description { get; set; }
         public string Scope { get; set; }
-        public decimal CapIndxLkupId { get; set; }
-        public DateTime? EndDate { get; set; }
         public decimal RegionId { get; set; }
+        public decimal? CapIndxLkupId { get; set; }
+        public decimal? NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
         public decimal? ProjectMgrId { get; set; }
-        public decimal? NearstTwnLkupId { get; set; }
+        public DateTime? EndDate { get; set; }
 
-        public CodeLookupDto CapIndx { get; set; }
-        public CodeLookupDto Rcl { get; set; }
-        public CodeLookupDto NearstTwn { get; set; }
+        public CodeLookupDto CapIndxLkup { get; set; }
+        public CodeLookupDto NearstTwnLkup { get; set; }
+        public UserSearchDto ProjectMgr { get; set; }
+        public CodeLookupDto RcLkup { get; set; }
         public RegionDto Region { get; set; }
-        public  UserSearchDto ProjectMgr { get; set; }
         public IList<NoteDto> Notes { get; set; }
     }
 }

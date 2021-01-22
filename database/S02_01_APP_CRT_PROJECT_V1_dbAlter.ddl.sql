@@ -1,12 +1,15 @@
 /* ---------------------------------------------------------------------- */
 /* Script generated with: DeZign for Databases 12.1.0                     */
 /* Target DBMS:           MS SQL Server 2017                              */
-/* Project file:          S02_01_APP_CRT_USER_ACCESS_V3.dez               */
+/* Project file:          S02_01_APP_CRT_USER_ACCESS_V1.dez               */
 /* Project name:          Capital Rehabilitation Tracking Reporting       */
 /* Author:                Ayodeji Kuponiyi                                */
 /* Script type:           Alter database script                           */
-/* Created on:            2021-01-20 14:56                                */
+/* Created on:            2021-01-21 22:14                                */
 /* ---------------------------------------------------------------------- */
+
+USE CRT_DEV;
+GO
 
 
 /* ---------------------------------------------------------------------- */
@@ -98,7 +101,7 @@ GO
 /* ---------------------------------------------------------------------- */
 
 CREATE SEQUENCE [dbo].[PROJECT_ID_SEQ]
-  AS BIGINT 
+  AS bigint 
   START WITH 1
   INCREMENT BY 1 
   MINVALUE  1
@@ -109,7 +112,7 @@ GO
 
 
 CREATE SEQUENCE [dbo].[CRT_NOTE_ID_SEQ]
-  AS BIGINT 
+  AS bigint 
   START WITH 1
   INCREMENT BY 1 
   MINVALUE  1
@@ -120,7 +123,7 @@ GO
 
 
 CREATE SEQUENCE [dbo].[PROJECT_ID_HIST_SEQ]
-  AS BIGINT 
+  AS bigint 
   START WITH 1
   INCREMENT BY 1 
   MINVALUE  1
@@ -157,6 +160,37 @@ GO
 
 
 /* ---------------------------------------------------------------------- */
+/* Alter table "dbo.CRT_CODE_LOOKUP"                                      */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_CODE_LOOKUP] DROP CONSTRAINT [CRT_CODE_LKUP_PK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_CODE_LOOKUP] DROP CONSTRAINT [CRT_CODE_LKUP_VAL_NUM_UC]
+GO
+
+
+ALTER TABLE [dbo].[CRT_CODE_LOOKUP] DROP CONSTRAINT [CRT_CODE_LKUP_VAL_TXT_UC]
+GO
+
+
+ALTER TABLE [dbo].[CRT_CODE_LOOKUP] ADD CONSTRAINT [CRT_CODE_LKUP_PK] 
+    PRIMARY KEY CLUSTERED ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_CODE_LOOKUP] ADD CONSTRAINT [CRT_CODE_LKUP_VAL_NUM_UC] 
+    UNIQUE ([CODE_SET], [CODE_VALUE_NUM], [CODE_NAME], [DISPLAY_ORDER])
+GO
+
+
+ALTER TABLE [dbo].[CRT_CODE_LOOKUP] ADD CONSTRAINT [CRT_CODE_LKUP_VAL_TXT_UC] 
+    UNIQUE ([CODE_SET], [CODE_VALUE_TEXT], [CODE_NAME], [DISPLAY_ORDER])
+GO
+
+
+/* ---------------------------------------------------------------------- */
 /* Add table "dbo.CRT_PROJECT"                                            */
 /* ---------------------------------------------------------------------- */
 
@@ -167,8 +201,8 @@ CREATE TABLE [dbo].[CRT_PROJECT] (
     [DESCRIPTION] VARCHAR(2000),
     [SCOPE] VARCHAR(2000),
     [REGION_ID] NUMERIC(9) NOT NULL,
-    [CAP_INDX_LKUP_ID] NUMERIC(9) NOT NULL,
-    [NEARST_TWN_LKUP_ID] VARCHAR(9),
+    [CAP_INDX_LKUP_ID] NUMERIC(9),
+    [NEARST_TWN_LKUP_ID] NUMERIC(9) NOT NULL,
     [RC_LKUP_ID] NUMERIC(9),
     [PROJECT_MGR_ID] NUMERIC(9),
     [END_DATE] DATETIME,
@@ -188,7 +222,7 @@ CREATE TABLE [dbo].[CRT_PROJECT] (
 GO
 
 
-CREATE  INDEX [CRT_PROJECT_FK_I] ON [dbo].[CRT_PROJECT] ([PROJECT_NUMBER],[CAP_INDX_LKUP_ID],[NEARST_TWN_LKUP_ID],[RC_LKUP_ID],[PROJECT_MGR_ID])
+CREATE NONCLUSTERED INDEX [CRT_PROJECT_FK_I] ON [dbo].[CRT_PROJECT] ([PROJECT_NUMBER] ASC,[CAP_INDX_LKUP_ID] ASC,[NEARST_TWN_LKUP_ID] ASC,[RC_LKUP_ID] ASC,[PROJECT_MGR_ID] ASC)
 GO
 
 
@@ -309,7 +343,7 @@ CREATE TABLE [dbo].[CRT_NOTE] (
 GO
 
 
-CREATE  INDEX [CRT_NOTE_FK_I] ON [dbo].[CRT_NOTE] ([PROJECT_ID])
+CREATE NONCLUSTERED INDEX [CRT_NOTE_FK_I] ON [dbo].[CRT_NOTE] ([PROJECT_ID] ASC)
 GO
 
 
@@ -547,6 +581,21 @@ ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [SYSTEM_USER_PROJECT_FK]
 GO
 
 
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_CAP_INDX_FK] 
+    FOREIGN KEY ([CAP_INDX_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_NRST_TWN_FK] 
+    FOREIGN KEY ([NEARST_TWN_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_RC_NUM_FK] 
+    FOREIGN KEY ([RC_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
 ALTER TABLE [dbo].[CRT_NOTE] ADD CONSTRAINT [CRT_PROJECT_CRT_NOTE] 
     FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
 GO
@@ -566,6 +615,10 @@ ALTER TABLE [dbo].[CRT_REGION_DISTRICT] ADD CONSTRAINT [CRT_REGION_CRT_REGION_DI
     FOREIGN KEY ([REGION_ID]) REFERENCES [dbo].[CRT_REGION] ([REGION_ID])
 GO
 
+
+/* ---------------------------------------------------------------------- */
+/* Repair/add triggers                                                    */
+/* ---------------------------------------------------------------------- */
 
 /* ---------------------------------------------------------------------- */
 /* Repair/add triggers                                                    */
@@ -594,7 +647,7 @@ SET @curr_date = getutcdate();
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -995,58 +1048,6 @@ END CATCH
 GO
 
 
-CREATE TRIGGER [dbo].[CRT_PROJECTI_S_I_TR] ON CRT_PROJECT INSTEAD OF INSERT AS
-SET NOCOUNT ON
-BEGIN TRY
-  IF NOT EXISTS(SELECT * FROM inserted)
-    RETURN;
-        
-  insert into CRT_PROJECT ("PROJECT_ID",
-	  "PROJECT_NUMBER",
-	  "PROJECT_NAME", 
-	  "DESCRIPTION", 
-	  "SCOPE",
-	  "REGION_ID",
-	  "CAP_INDX_LKUP_ID",
-	  "NEARST_TWN_LKUP_ID", 
-	  "RC_LKUP_ID", 
-	  "PROJECT_MGR_ID", 
-	  "END_DATE",
-      "CONCURRENCY_CONTROL_NUMBER",
-      "APP_CREATE_USERID",
-      "APP_CREATE_TIMESTAMP",
-      "APP_CREATE_USER_GUID",
-      "APP_LAST_UPDATE_USERID",
-      "APP_LAST_UPDATE_TIMESTAMP",
-      "APP_LAST_UPDATE_USER_GUID")
-    select "PROJECT_ID",
-	  "PROJECT_NUMBER",
-	  "PROJECT_NAME", 
-	  "DESCRIPTION", 
-	  "SCOPE",
-	  "REGION_ID", 
-	  "CAP_INDX_LKUP_ID",
-	  "NEARST_TWN_LKUP_ID", 
-	  "RC_LKUP_ID", 
-	  "PROJECT_MGR_ID",
-	  "END_DATE",
-      "CONCURRENCY_CONTROL_NUMBER",
-      "APP_CREATE_USERID",
-      "APP_CREATE_TIMESTAMP",
-      "APP_CREATE_USER_GUID",
-      "APP_LAST_UPDATE_USERID",
-      "APP_LAST_UPDATE_TIMESTAMP",
-      "APP_LAST_UPDATE_USER_GUID"
-    from inserted;
-
-END TRY
-BEGIN CATCH
-   IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
-END CATCH
-GO
-
-
 CREATE TRIGGER [dbo].[CRT_PROJECT_I_S_U_TR] ON CRT_PROJECT INSTEAD OF UPDATE AS
 SET NOCOUNT ON
 BEGIN TRY
@@ -1062,13 +1063,13 @@ BEGIN TRY
   update CRT_PROJECT
     set "PROJECT_ID" = inserted."PROJECT_ID",
 	  "PROJECT_NUMBER" = inserted."PROJECT_NUMBER",
-	  "PROJECT_NAME" = inserted."PROJECT_NAME", 
-	  "DESCRIPTION" = inserted."DESCRIPTION", 
+	  "PROJECT_NAME" = inserted."PROJECT_NAME",
+	  "DESCRIPTION" = inserted."DESCRIPTION",
 	  "SCOPE" = inserted."SCOPE",
-	  "REGION_ID" = inserted."REGION_ID", 
+	  "REGION_ID" = inserted."REGION_ID",
 	  "CAP_INDX_LKUP_ID" = inserted."CAP_INDX_LKUP_ID",
-	  "NEARST_TWN_LKUP_ID" = inserted."NEARST_TWN_LKUP_ID", 
-	  "RC_LKUP_ID" = inserted."RC_LKUP_ID", 
+	  "NEARST_TWN_LKUP_ID" = inserted."NEARST_TWN_LKUP_ID",
+	  "RC_LKUP_ID" = inserted."RC_LKUP_ID",
 	  "PROJECT_MGR_ID" = inserted."PROJECT_MGR_ID",
 	  "END_DATE" = inserted."END_DATE",
       "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER",
@@ -1085,6 +1086,58 @@ END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
    EXEC crt_error_handling
+END CATCH
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_PROJECTI_S_I_TR] ON CRT_PROJECT INSTEAD OF INSERT AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM inserted)
+    RETURN;
+
+  insert into CRT_PROJECT ("PROJECT_ID",
+	  "PROJECT_NUMBER",
+	  "PROJECT_NAME",
+	  "DESCRIPTION",
+	  "SCOPE",
+	  "REGION_ID",
+	  "CAP_INDX_LKUP_ID",
+	  "NEARST_TWN_LKUP_ID",
+	  "RC_LKUP_ID",
+	  "PROJECT_MGR_ID",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID")
+    select "PROJECT_ID",
+	  "PROJECT_NUMBER",
+	  "PROJECT_NAME",
+	  "DESCRIPTION",
+	  "SCOPE",
+	  "REGION_ID",
+	  "CAP_INDX_LKUP_ID",
+	  "NEARST_TWN_LKUP_ID",
+	  "RC_LKUP_ID",
+	  "PROJECT_MGR_ID",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID"
+    from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC CRT_error_handling
 END CATCH
 GO
 

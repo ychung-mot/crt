@@ -7,6 +7,13 @@ namespace Crt.Data.Database.Entities
 {
     public partial class CrtCodeLookup
     {
+        public CrtCodeLookup()
+        {
+            CrtProjectCapIndxLkups = new HashSet<CrtProject>();
+            CrtProjectNearstTwnLkups = new HashSet<CrtProject>();
+            CrtProjectRcLkups = new HashSet<CrtProject>();
+        }
+
         public decimal CodeLookupId { get; set; }
         public string CodeSet { get; set; }
         public string CodeName { get; set; }
@@ -20,5 +27,9 @@ namespace Crt.Data.Database.Entities
         public DateTime DbAuditCreateTimestamp { get; set; }
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
+
+        public virtual ICollection<CrtProject> CrtProjectCapIndxLkups { get; set; }
+        public virtual ICollection<CrtProject> CrtProjectNearstTwnLkups { get; set; }
+        public virtual ICollection<CrtProject> CrtProjectRcLkups { get; set; }
     }
 }
