@@ -175,6 +175,7 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
               editable
+              deletable
               editPermissionName={Constants.PERMISSIONS.ROLE_W}
               onEditClicked={onEditClicked}
               onDeleteClicked={onDeleteClicked}

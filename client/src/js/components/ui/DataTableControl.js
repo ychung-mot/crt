@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Badge } from 'reactstrap';
 
+import { Link } from 'react-router-dom';
+
 import Authorize from '../fragments/Authorize';
 import FontAwesomeButton from './FontAwesomeButton';
 import DeleteButton from './DeleteButton';
@@ -10,6 +12,7 @@ const DataTableControl = ({
   dataList,
   tableColumns,
   editable,
+  deletable,
   editPermissionName,
   onEditClicked,
   onDeleteClicked,
@@ -63,30 +66,37 @@ const DataTableControl = ({
                   if (column.maxWidth) {
                     style.maxWidth = column.maxWidth;
                   }
-
                   return (
                     <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
-                      {item[column.key]}
+                      {column.link ? (
+                        <Link to={`${column.link.path}/${item[column.link?.idKey] ?? ''}`}>{item[column.key]}</Link>
+                      ) : (
+                        item[column.key]
+                      )}
                     </td>
                   );
                 })}
-                {editable && (
+                {(editable || deletable) && (
                   <Authorize requires={editPermissionName}>
                     <td style={{ width: '1%', whiteSpace: 'nowrap' }}>
-                      <FontAwesomeButton
-                        icon="edit"
-                        className="mr-1"
-                        onClick={() => handleEditClicked(item.id)}
-                        title="Edit Record"
-                      />
-                      <DeleteButton
-                        itemId={item.id}
-                        buttonId={`item_${item.id}_delete`}
-                        defaultEndDate={item.endDate}
-                        onDeleteClicked={onDeleteClicked}
-                        permanentDelete={item.canDelete}
-                        title={item.canDelete ? 'Delete Record' : 'Disable Record'}
-                      ></DeleteButton>
+                      {editable && (
+                        <FontAwesomeButton
+                          icon="edit"
+                          className="mr-1"
+                          onClick={() => handleEditClicked(item.id)}
+                          title="Edit Record"
+                        />
+                      )}
+                      {deletable && (
+                        <DeleteButton
+                          itemId={item.id}
+                          buttonId={`item_${item.id}_delete`}
+                          defaultEndDate={item.endDate}
+                          onDeleteClicked={onDeleteClicked}
+                          permanentDelete={item.canDelete}
+                          title={item.canDelete ? 'Delete Record' : 'Disable Record'}
+                        ></DeleteButton>
+                      )}
                     </td>
                   </Authorize>
                 )}

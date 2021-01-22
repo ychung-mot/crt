@@ -199,6 +199,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
               editable
+              deletable
               editPermissionName={Constants.PERMISSIONS.USER_W}
               onEditClicked={onEditClicked}
               onDeleteClicked={onDeleteClicked}

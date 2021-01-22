@@ -31,12 +31,18 @@ DataTableWithPaginaionControl.propTypes = {
       nosort: PropTypes.bool,
       badge: PropTypes.shape({
         //badge will show active/inactive string based on boolean value
-        active: PropTypes.string,
-        inactive: PropTypes.string,
+        active: PropTypes.string.isRequired,
+        inactive: PropTypes.string.isRequired,
+      }),
+      link: PropTypes.shape({
+        //will render link to path and optional :id path using table column key
+        path: PropTypes.string.isRequired,
+        idKey: PropTypes.string,
       }),
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,
+  deletable: PropTypes.bool.isRequired,
   editPermissionName: PropTypes.string,
   searchPagination: PropTypes.shape({
     pageNumber: PropTypes.number.isRequired,
@@ -55,6 +61,7 @@ DataTableWithPaginaionControl.propTypes = {
 
 DataTableWithPaginaionControl.defaultProps = {
   editable: false,
+  deletable: false,
 };
 
 export default DataTableWithPaginaionControl;

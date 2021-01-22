@@ -31,8 +31,8 @@ const defaultSearchOptions = {
 };
 
 const tableColumns = [
-  { heading: 'Region^', key: 'region' },
-  { heading: 'Project^', key: 'projectName' },
+  { heading: 'Region^', key: 'regionName' },
+  { heading: 'Project^', key: 'projectName', link: { path: '/projects', idKey: 'projectId' } },
   { heading: 'Planning Targets^', key: 'planningTargets' },
   { heading: 'Tender Details', key: 'tenderDetails' },
   { heading: 'Location and Ratios^', key: 'locationRation' },
@@ -169,7 +169,7 @@ const Projects = ({ currentUser }) => {
               searchPagination={searchData.pagination}
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
-              editable
+              deletable
               editPermissionName={Constants.PERMISSIONS.USER_W}
               //   onDeleteClicked={onDeleteClicked}
               onHeadingSortClicked={searchData.handleHeadingSortClicked}
