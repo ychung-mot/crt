@@ -20,6 +20,7 @@ import useSearchData from './hooks/useSearchData';
 import { showValidationErrorDialog } from '../redux/actions';
 
 import * as Constants from '../Constants';
+import * as api from '../Api';
 
 const defaultSearchFormValues = { searchText: '', regions: [], projectMgr: [], isInProgress: [] };
 
@@ -32,7 +33,7 @@ const defaultSearchOptions = {
 
 const tableColumns = [
   { heading: 'Region^', key: 'regionName' },
-  { heading: 'Project^', key: 'projectName', link: { path: '/projects', idKey: 'projectId' } },
+  { heading: 'Project^', key: 'projectName', link: { path: '/projects', idKey: 'id' } },
   { heading: 'Planning Targets^', key: 'planningTargets' },
   { heading: 'Tender Details', key: 'tenderDetails' },
   { heading: 'Location and Ratios^', key: 'locationRation' },
@@ -77,8 +78,6 @@ const Projects = ({ currentUser }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //handle search form submit goes here
-
   const handleSearchFormSubmit = (values) => {
     const searchText = values.searchText.trim() || null;
     let isInProgress = null;
@@ -100,6 +99,10 @@ const Projects = ({ currentUser }) => {
   const handleSearchFormReset = () => {
     setSearchInitialValues(defaultSearchFormValues);
     searchData.refresh(true);
+  };
+
+  const onDeleteClicked = (projectId, endDate) => {
+    api.deleteProject(projectId, endDate).then(() => searchData.refresh());
   };
 
   const data = Object.values(searchData.data).map((projects) => ({
@@ -170,8 +173,8 @@ const Projects = ({ currentUser }) => {
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
               deletable
-              editPermissionName={Constants.PERMISSIONS.USER_W}
-              //   onDeleteClicked={onDeleteClicked}
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              onDeleteClicked={onDeleteClicked}
               onHeadingSortClicked={searchData.handleHeadingSortClicked}
             />
           )}

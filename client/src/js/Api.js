@@ -43,9 +43,11 @@ export const deleteRole = (id, endDate) =>
 
 export const getPermissions = () => instance.get(Constants.API_PATHS.PERMISSIONS);
 
+//Projects
+export const deleteProject = (id, endDate) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${id}`, { data: { id, endDate } });
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
-
 //Code Lookups
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
 export const getRCNumbers = () => instance.get(Constants.API_PATHS.RC_NUMBERS);
