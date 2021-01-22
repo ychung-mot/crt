@@ -2,7 +2,13 @@ export const FETCH_CURRENT_USER = 'FETCH_CURRENT_USER';
 export const FETCH_USER_TYPES = 'FETCH_USER_TYPES';
 export const FETCH_USER_STATUSES = 'FETCH_USER_STATUSES';
 
+//lookups
 export const FETCH_REGIONS = 'FETCH_REGIONS';
+
+//code table lookups
+export const FETCH_CAPITAL_INDEXES = 'FETCH_CAPITAL_INDEXES';
+export const FETCH_RC_NUMBERS = 'FETCH_RC_NUMBERS';
+export const FETCH_NEAREST_TOWNS = 'FETCH_NEAREST_TOWNS';
 
 // Global Error Dialog
 export const SHOW_ERROR_DIALOG_MODAL = 'SHOW_ERROR_DIALOG_MODAL';

@@ -15,7 +15,7 @@ import DataTableWithPaginaionControl from './ui/DataTableWithPaginaionControl';
 import SubmitButton from './ui/SubmitButton';
 import PageSpinner from './ui/PageSpinner';
 import useSearchData from './hooks/useSearchData';
-import useFormModal from './hooks/useFormModal';
+//import useFormModal from './hooks/useFormModal';
 
 import { showValidationErrorDialog } from '../redux/actions';
 
@@ -34,6 +34,7 @@ const tableColumns = [
   { heading: 'Region^', key: 'region' },
   { heading: 'Project^', key: 'projectName' },
   { heading: 'Planning Targets^', key: 'planningTargets' },
+  { heading: 'Tender Details', key: 'tenderDetails' },
   { heading: 'Location and Ratios^', key: 'locationRation' },
   { heading: '', key: 'isInProgress', nosort: true },
 ];
@@ -101,6 +102,10 @@ const Projects = ({ currentUser }) => {
     searchData.refresh(true);
   };
 
+  const data = Object.values(searchData.data).map((projects) => ({
+    ...projects,
+  }));
+
   return (
     <React.Fragment>
       <MaterialCard>
@@ -154,6 +159,25 @@ const Projects = ({ currentUser }) => {
           </Col>
         </Row>
       </Authorize>
+      {searchData.loading && <PageSpinner />}
+      {!searchData.loading && (
+        <MaterialCard>
+          {data.length > 0 && (
+            <DataTableWithPaginaionControl
+              dataList={data}
+              tableColumns={tableColumns}
+              searchPagination={searchData.pagination}
+              onPageNumberChange={searchData.handleChangePage}
+              onPageSizeChange={searchData.handleChangePageSize}
+              editable
+              editPermissionName={Constants.PERMISSIONS.USER_W}
+              //   onDeleteClicked={onDeleteClicked}
+              onHeadingSortClicked={searchData.handleHeadingSortClicked}
+            />
+          )}
+          {searchData.data.length <= 0 && <div>No records found</div>}
+        </MaterialCard>
+      )}
     </React.Fragment>
   );
 };

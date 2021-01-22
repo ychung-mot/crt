@@ -6,6 +6,9 @@ const CODE_LOOKUP = '/codelookup';
 
 export const API_PATHS = {
   CODE_LOOKUP: CODE_LOOKUP,
+  CAPITAL_INDEXES: `${CODE_LOOKUP}/capitalindexes`,
+  RC_NUMBERS: `${CODE_LOOKUP}/rcnumbers`,
+  NEAREST_TOWNS: `${CODE_LOOKUP}/nearesttowns`,
   PERMISSIONS: '/permissions',
   ROLE: '/roles',
   USER: '/users',

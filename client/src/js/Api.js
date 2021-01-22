@@ -43,7 +43,13 @@ export const deleteRole = (id, endDate) =>
 
 export const getPermissions = () => instance.get(Constants.API_PATHS.PERMISSIONS);
 
+//Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
+
+//Code Lookups
+export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
+export const getRCNumbers = () => instance.get(Constants.API_PATHS.RC_NUMBERS);
+export const getNearestTowns = () => instance.get(Constants.API_PATHS.NEAREST_TOWNS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);
