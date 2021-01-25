@@ -32,7 +32,7 @@ const defaultSearchOptions = {
 };
 
 const tableColumns = [
-  { heading: 'Region^', key: 'regionName' },
+  { heading: 'Region^', key: 'regionName', nosort: true },
   { heading: 'Project^', key: 'projectName', link: { path: '/projects', idKey: 'id' } },
   { heading: 'Planning Targets^', key: 'planningTargets' },
   { heading: 'Tender Details', key: 'tenderDetails' },
@@ -53,7 +53,7 @@ const isInProgress = [
   { id: 'complete', name: 'Completed' },
 ];
 
-const Projects = ({ currentUser }) => {
+const Projects = ({ currentUser, projectMgr }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -130,12 +130,7 @@ const Projects = ({ currentUser }) => {
                 </Col>
                 <Col>
                   {/* Temporary fix, wait for projectManager api and change items */}
-                  <MultiDropdownField
-                    {...formikProps}
-                    items={currentUser.regions}
-                    name="projectMgr"
-                    title="Project Manager"
-                  />
+                  <MultiDropdownField {...formikProps} items={projectMgr} name="projectMgr" title="Project Manager" />
                 </Col>
                 <Col>
                   <MultiDropdownField {...formikProps} items={isInProgress} name="isInProgress" title="Status" />
@@ -188,6 +183,7 @@ const Projects = ({ currentUser }) => {
 const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
+    projectMgr: Object.values(state.user.projectMgr),
   };
 };
 

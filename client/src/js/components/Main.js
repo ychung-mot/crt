@@ -11,6 +11,7 @@ import {
   fetchCapitalIndexes,
   fetchRCNumbers,
   fetchNearestTowns,
+  fetchProjectManagers,
 } from '../redux/actions';
 
 const Main = ({
@@ -22,6 +23,7 @@ const Main = ({
   fetchCapitalIndexes,
   fetchRCNumbers,
   fetchNearestTowns,
+  fetchProjectManagers,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +35,7 @@ const Main = ({
       fetchCapitalIndexes(),
       fetchRCNumbers(),
       fetchNearestTowns(),
+      fetchProjectManagers(),
     ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -58,4 +61,5 @@ export default connect(mapStateToProps, {
   fetchCapitalIndexes,
   fetchRCNumbers,
   fetchNearestTowns,
+  fetchProjectManagers,
 })(Main);

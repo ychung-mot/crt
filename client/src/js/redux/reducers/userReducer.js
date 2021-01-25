@@ -1,11 +1,12 @@
 import _ from 'lodash';
 
-import { FETCH_CURRENT_USER, FETCH_USER_TYPES, FETCH_USER_STATUSES } from '../actions/types';
+import { FETCH_CURRENT_USER, FETCH_USER_TYPES, FETCH_USER_STATUSES, FETCH_PROJECT_MANAGERS } from '../actions/types';
 
 const defaultState = {
   types: {},
   statuses: {},
   current: {},
+  projectMgr: {},
 };
 
 const userReducer = (state = defaultState, action) => {
@@ -16,6 +17,8 @@ const userReducer = (state = defaultState, action) => {
       return { ...state, types: { ...state.types, ..._.mapKeys(action.payload, 'id') } };
     case FETCH_USER_STATUSES:
       return { ...state, statuses: { ...state.statuses, ..._.mapKeys(action.payload, 'id') } };
+    case FETCH_PROJECT_MANAGERS:
+      return { ...state, projectMgr: { ...state.projectMgr, ..._.mapKeys(action.payload, 'id') } };
     default:
       return state;
   }

@@ -19,6 +19,7 @@ export const API_PATHS = {
   SUPPORTED_FORMATS: '/exports/supportedformats',
   VERSION: '/version',
   PROJECTS: '/projects',
+  PROJECT_MANAGERS: '/users/managers',
 };
 
 export const PATHS = {
