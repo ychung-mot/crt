@@ -1,8 +1,7 @@
 import React from 'react';
 import { CustomInput, Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 import { useField } from 'formik';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import MouseoverTooltip from '../ui/MouseoverTooltip';
 
 export const FormRow = ({ name, label, children, helper }) => {
   return (
@@ -12,7 +11,7 @@ export const FormRow = ({ name, label, children, helper }) => {
           {label}
         </Label>
         {/* temporary implementation. Will add tooltip functionaity when project core functions are complete */}
-        {helper && <FontAwesomeIcon className="ml-1" icon={faQuestionCircle} />}
+        {helper && <MouseoverTooltip id={helper.id}>{helper.text}</MouseoverTooltip>}
       </Col>
       <Col sm={9}>{children}</Col>
     </FormGroup>

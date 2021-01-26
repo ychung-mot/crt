@@ -106,8 +106,32 @@ const Projects = ({ currentUser, projectMgr }) => {
     api.deleteProject(projectId, endDate).then(() => searchData.refresh());
   };
 
-  const handleAddProjectFormSubmit = (values) => {
-    alert('ADDING');
+  const handleAddProjectFormSubmit = (values, formType) => {
+    if (!formModal.submitting) {
+      formModal.setSubmitting(true);
+
+      if (formType === Constants.FORM_TYPE.ADD) {
+        debugger;
+        api
+          .postProject(values)
+          .then(() => {
+            formModal.closeForm();
+            searchData.refresh();
+          })
+          .catch((error) => showValidationErrorDialog(error.response.data))
+          .finally(() => formModal.setSubmitting(false));
+      } else if (formType === Constants.FORM_TYPE.EDIT) {
+        //edit function to be implemented
+        // api
+        //   .putRole(values.id, values)
+        //   .then(() => {
+        //     formModal.closeForm();
+        //     searchData.refresh();
+        //   })
+        //   .catch((error) => showValidationErrorDialog(error.response.data))
+        //   .finally(() => formModal.setSubmitting(false));
+      }
+    }
   };
 
   const formModal = useFormModal('Project', <EditProjectFormFields />, handleAddProjectFormSubmit, true);

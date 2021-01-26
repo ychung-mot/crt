@@ -12,7 +12,7 @@ import { FormRow, FormInput } from './FormInputs';
 import * as Constants from '../../Constants';
 
 const defaultValues = {
-  projectNumber: null,
+  projectNumber: undefined,
   projectName: '',
   description: '',
   scope: '',
@@ -56,7 +56,7 @@ const EditProjectFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="projectNumber" label="Project Number*">
+      <FormRow name="projectNumber" label="Project Number*" helper={{ id: 'projectNumber', text: 'placeholder' }}>
         <FormInput type="number" name="projectNumber" placeholder="To be assigned" disabled={true} />
       </FormRow>
       <FormRow name="projectName" label="Project Name*">
@@ -77,8 +77,8 @@ const EditProjectFormFields = ({
       <FormRow name="projectMgrId" label="Project Manager">
         <SingleDropdownField items={projectMgr} name="projectMgrId" />
       </FormRow>
-      <FormRow name="nearestTowns" label="Nearest Town">
-        <SingleDropdownField items={nearestTowns} name="nearestTown" />
+      <FormRow name="nearstTwnLkupId" label="Nearest Town">
+        <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" />
       </FormRow>
       <FormRow name="rcLkupId" label="RC Number">
         <SingleDropdownField items={rcNumbers} name="rcLkupId" />

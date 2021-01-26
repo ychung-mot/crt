@@ -47,6 +47,8 @@ export const getPermissions = () => instance.get(Constants.API_PATHS.PERMISSIONS
 export const deleteProject = (id, endDate) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${id}`, { data: { id, endDate } });
 export const getProjectManagers = () => instance.get(`${Constants.API_PATHS.PROJECT_MANAGERS}`);
+export const postProject = (projectData) => instance.post(Constants.API_PATHS.PROJECTS, projectData);
+export const getProject = (id) => instance.get(`${Constants.API_PATHS.PROJECTS}/${id}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
