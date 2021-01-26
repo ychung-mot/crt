@@ -10,10 +10,9 @@ import PageSpinner from '../ui/PageSpinner';
 import { FormRow, FormInput } from './FormInputs';
 
 import * as Constants from '../../Constants';
-import { yupToFormErrors } from 'formik';
 
 const defaultValues = {
-  projectNumber: 0,
+  projectNumber: null,
   projectName: '',
   description: '',
   scope: '',
@@ -26,7 +25,6 @@ const defaultValues = {
 };
 
 const validationSchema = Yup.object({
-  projectNumber: Yup.number().required('Project number required'),
   projectName: Yup.string().required('Project name required'),
   regionId: Yup.number().required('Region required'),
 });
@@ -59,7 +57,7 @@ const EditProjectFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="projectNumber" label="Project Number*">
-        <FormInput type="number" name="projectNumber" placeholder="Project Number" />
+        <FormInput type="number" name="projectNumber" placeholder="To be assigned" disabled={true} />
       </FormRow>
       <FormRow name="projectName" label="Project Name*">
         <FormInput type="text" name="projectName" placeholder="Project Name" />

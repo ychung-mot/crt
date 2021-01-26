@@ -110,7 +110,7 @@ const Projects = ({ currentUser, projectMgr }) => {
     alert('ADDING');
   };
 
-  const formModal = useFormModal('Project', <EditProjectFormFields />, handleAddProjectFormSubmit);
+  const formModal = useFormModal('Project', <EditProjectFormFields />, handleAddProjectFormSubmit, true);
 
   const data = Object.values(searchData.data).map((projects) => ({
     ...projects,

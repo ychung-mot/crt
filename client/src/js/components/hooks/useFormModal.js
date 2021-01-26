@@ -8,7 +8,7 @@ import SubmitButton from '../ui/SubmitButton';
 
 import * as Constants from '../../Constants';
 
-const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit) => {
+const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveCheck = false) => {
   // This is needed until Formik fixes its own setSubmitting function
   const [submitting, setSubmitting] = useState(false);
   const [initialValues, setInitialValues] = useState(null);
@@ -79,7 +79,12 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit) => {
                 <SubmitButton size="sm" submitting={submitting} disabled={submitting || !dirty}>
                   Submit
                 </SubmitButton>
-                <Button id="popover_cancel" color="secondary" size="sm" onClick={() => toggleWithCheck(dirty)}>
+                <Button
+                  id="popover_cancel"
+                  color="secondary"
+                  size="sm"
+                  onClick={saveCheck ? () => toggleWithCheck(dirty) : toggle}
+                >
                   Cancel
                 </Button>
                 <Popover
@@ -89,18 +94,17 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit) => {
                   toggle={() => togglePopover}
                   trigger="legacy"
                 >
-                  <PopoverHeader>
-                    You have unsaved changes. If the screen is closed before saving these changes, they will be lost. Do
-                    you want to continue without saving?
-                  </PopoverHeader>
+                  <PopoverHeader>You have unsaved changes.</PopoverHeader>
                   <PopoverBody>
-                    <div className="text-right mt-3">
+                    If the screen is closed before saving these changes, they will be lost. Do you want to continue
+                    without saving?
+                    <div className="text-right">
                       <ButtonGroup>
-                        <Button color="danger" size="sm" onClick={togglePopover}>
-                          No
-                        </Button>
-                        <Button color="secondary" size="sm" onClick={handleConfirmLeave}>
+                        <Button color="danger" size="sm" onClick={handleConfirmLeave}>
                           Yes
+                        </Button>
+                        <Button color="secondary" size="sm" onClick={togglePopover}>
+                          No
                         </Button>
                       </ButtonGroup>
                     </div>
