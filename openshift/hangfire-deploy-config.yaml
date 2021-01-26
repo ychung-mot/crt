@@ -74,18 +74,13 @@ objects:
                 - name: ServiceAccount__User
                   valueFrom:
                     secretKeyRef:
-                      name: service-account
+                      name: service-account-${ENV}
                       key: SERVICE_USER
                 - name: ServiceAccount__Password
                   valueFrom:
                     secretKeyRef:
-                      name: service-account
+                      name: service-account-${ENV}
                       key: SERVICE_PASSWORD
-                - name: Smtp__Thumbprint
-                  valueFrom:
-                    secretKeyRef:
-                      name: email-service
-                      key: SMTP_THUMBPRINT
                 - name: ASPNETCORE_ENVIRONMENT
                   value: ${ASPNETCORE_ENVIRONMENT}
               volumeMounts:
