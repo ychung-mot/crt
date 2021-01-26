@@ -50,9 +50,11 @@ There are a few secret objects that must be created manually in the `dev`, `test
 
 You can use the following templates to create the secret objects. Make sure to replace the parameter variables with actual values encoded to base64.
 
-- [sso-secrets.yaml](secrets/sso-secrets.yaml)
-- [service-account-secrets.yaml](secrets/service-account-secrets.yaml)
 - [database-secrets.yaml](secrets/database-secrets.yaml)
+- [keycloak-service-account-secrets.yaml](secrets/keycloak-service-account-secrets.yaml)
+- [logdb-postgresql-secrets.yaml](secrets/logdb-postgresql-secrets.yaml)
+- [service-account-secrets.yaml](secrets/service-account-secrets.yaml)
+- [sso-secrets.yaml](secrets/sso-secrets.yaml)
 
 #### Optional Step
 
@@ -68,7 +70,7 @@ data:
   realmId: <realm-id>
 kind: Secret
 metadata:
-  name: keycloak-service-client
+  name: keycloak-service-account
 type: Opaque
 ```
 
