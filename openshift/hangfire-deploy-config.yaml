@@ -65,7 +65,7 @@ objects:
                   valueFrom:
                     secretKeyRef:
                       name: api-connections-${ENV}
-                      key: hmr.db
+                      key: crt.db
                 - name: ConnectionStrings__serilog
                   valueFrom:
                     secretKeyRef:

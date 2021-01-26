@@ -18,10 +18,11 @@ This document will not go into the details of how to use BCDK and pipeline-cli. 
 
 You will need a Redhat image pull service account before you can continue. Refer to [this document](docs/RedhatServiceAccount.md) on how to create a Redhat image pull service account.
 
-CRT uses two Redhat Docker images and they will be imported into the `tools` namespace as part of the build pipeline. This requires you to have the correct Redhat service account configured.
+CRT uses two Redhat Docker images and they will be imported as part of the build pipeline. This requires you to have the correct Redhat service account configured.
 
 1. [rhel8/dotnet-50](https://catalog.redhat.com/software/containers/rhel8/dotnet-50/5f6278e017452dea0fe47bae?container-tabs=gti&gti-tabs=get-the-source)
-2. [rhel8/nginx-116](https://access.redhat.com/containers/#/registry.access.redhat.com/rhel8/nginx-116)
+2. [rhel8/nginx-116](https://catalog.redhat.com/software/containers/rhel8/nginx-116/5d400ae7bed8bd3809910782)
+3. [postgresql-10-rhel8](https://catalog.redhat.com/software/containers/rhel8/postgresql-10/5ba0ae0ddd19c70b45cbf4cd)
 
 ### Github Personal Access Token
 
