@@ -17,7 +17,7 @@ const defaultState = {
 const codeLookupsReducer = (state = defaultState, action) => {
   switch (action.type) {
     case FETCH_CAPITAL_INDEXES:
-      return { ...state, capitalIndexes: _.orderBy(action.payload, ['name']) };
+      return { ...state, capitalIndexes: _.orderBy(action.payload, ['id'], ['desc']) };
     case FETCH_RC_NUMBERS:
       return { ...state, rcNumbers: _.orderBy(action.payload, ['name']) };
     case FETCH_NEAREST_TOWNS:

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+//for popover
+import { Popover, PopoverHeader, PopoverBody, ButtonGroup } from 'reactstrap';
 import { Formik, Form } from 'formik';
 
 import SubmitButton from '../ui/SubmitButton';
@@ -14,8 +16,27 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit) => {
   const [formType, setFormType] = useState(Constants.FORM_TYPE.ADD);
   const [formOptions, setFormOptions] = useState({});
   const [validationSchema, setValidationSchema] = useState({});
+  //popover states:
+  const [popoverOpen, setPopoverOpen] = useState(false);
 
   const toggle = () => setIsOpen(false);
+
+  const toggleWithCheck = (dirty) => {
+    if (dirty) {
+      togglePopover();
+    } else {
+      toggle();
+    }
+  };
+
+  const togglePopover = () => {
+    setPopoverOpen(!popoverOpen);
+  };
+
+  const handleConfirmLeave = () => {
+    setPopoverOpen(false);
+    toggle();
+  };
 
   const openForm = (formType, options) => {
     setFormType(formType);
@@ -58,9 +79,33 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit) => {
                 <SubmitButton size="sm" submitting={submitting} disabled={submitting || !dirty}>
                   Submit
                 </SubmitButton>
-                <Button color="secondary" size="sm" onClick={toggle}>
+                <Button id="popover_cancel" color="secondary" size="sm" onClick={() => toggleWithCheck(dirty)}>
                   Cancel
                 </Button>
+                <Popover
+                  placement="auto-start"
+                  isOpen={popoverOpen}
+                  target={'popover_cancel'}
+                  toggle={() => togglePopover}
+                  trigger="legacy"
+                >
+                  <PopoverHeader>
+                    You have unsaved changes. If the screen is closed before saving these changes, they will be lost. Do
+                    you want to continue without saving?
+                  </PopoverHeader>
+                  <PopoverBody>
+                    <div className="text-right mt-3">
+                      <ButtonGroup>
+                        <Button color="danger" size="sm" onClick={togglePopover}>
+                          No
+                        </Button>
+                        <Button color="secondary" size="sm" onClick={handleConfirmLeave}>
+                          Yes
+                        </Button>
+                      </ButtonGroup>
+                    </div>
+                  </PopoverBody>
+                </Popover>
               </ModalFooter>
             </Form>
           )}

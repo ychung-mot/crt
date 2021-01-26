@@ -15,7 +15,8 @@ import DataTableWithPaginaionControl from './ui/DataTableWithPaginaionControl';
 import SubmitButton from './ui/SubmitButton';
 import PageSpinner from './ui/PageSpinner';
 import useSearchData from './hooks/useSearchData';
-//import useFormModal from './hooks/useFormModal';
+import useFormModal from './hooks/useFormModal';
+import EditProjectFormFields from '../components/forms/EditProjectFormFields';
 
 import { showValidationErrorDialog } from '../redux/actions';
 
@@ -105,6 +106,12 @@ const Projects = ({ currentUser, projectMgr }) => {
     api.deleteProject(projectId, endDate).then(() => searchData.refresh());
   };
 
+  const handleAddProjectFormSubmit = (values) => {
+    alert('ADDING');
+  };
+
+  const formModal = useFormModal('Project', <EditProjectFormFields />, handleAddProjectFormSubmit);
+
   const data = Object.values(searchData.data).map((projects) => ({
     ...projects,
   }));
@@ -129,7 +136,6 @@ const Projects = ({ currentUser, projectMgr }) => {
                   <Field type="text" name="searchText" placeholder="Keyword" className="form-control" />
                 </Col>
                 <Col>
-                  {/* Temporary fix, wait for projectManager api and change items */}
                   <MultiDropdownField {...formikProps} items={projectMgr} name="projectMgr" title="Project Manager" />
                 </Col>
                 <Col>
@@ -151,7 +157,12 @@ const Projects = ({ currentUser, projectMgr }) => {
       <Authorize requires={Constants.PERMISSIONS.USER_W}>
         <Row>
           <Col>
-            <Button size="sm" color="primary" className="float-right mb-3" onClick={() => alert('create MODAL')}>
+            <Button
+              size="sm"
+              color="primary"
+              className="float-right mb-3"
+              onClick={() => formModal.openForm(Constants.FORM_TYPE.ADD)}
+            >
               Add Project
             </Button>
           </Col>
@@ -176,6 +187,7 @@ const Projects = ({ currentUser, projectMgr }) => {
           {searchData.data.length <= 0 && <div>No records found</div>}
         </MaterialCard>
       )}
+      {formModal.formElement}
     </React.Fragment>
   );
 };
