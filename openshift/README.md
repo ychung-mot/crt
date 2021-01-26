@@ -18,10 +18,11 @@ This document will not go into the details of how to use BCDK and pipeline-cli. 
 
 You will need a Redhat image pull service account before you can continue. Refer to [this document](docs/RedhatServiceAccount.md) on how to create a Redhat image pull service account.
 
-CRT uses two Redhat Docker images and they will be imported into the `tools` namespace as part of the build pipeline. This requires you to have the correct Redhat service account configured.
+CRT uses two Redhat Docker images and they will be imported as part of the build pipeline. This requires you to have the correct Redhat service account configured.
 
 1. [rhel8/dotnet-50](https://catalog.redhat.com/software/containers/rhel8/dotnet-50/5f6278e017452dea0fe47bae?container-tabs=gti&gti-tabs=get-the-source)
-2. [rhel8/nginx-116](https://access.redhat.com/containers/#/registry.access.redhat.com/rhel8/nginx-116)
+2. [rhel8/nginx-116](https://catalog.redhat.com/software/containers/rhel8/nginx-116/5d400ae7bed8bd3809910782)
+3. [postgresql-10-rhel8](https://catalog.redhat.com/software/containers/rhel8/postgresql-10/5ba0ae0ddd19c70b45cbf4cd)
 
 ### Github Personal Access Token
 
@@ -49,9 +50,11 @@ There are a few secret objects that must be created manually in the `dev`, `test
 
 You can use the following templates to create the secret objects. Make sure to replace the parameter variables with actual values encoded to base64.
 
-- [sso-secrets.yaml](secrets/sso-secrets.yaml)
-- [service-account-secrets.yaml](secrets/service-account-secrets.yaml)
 - [database-secrets.yaml](secrets/database-secrets.yaml)
+- [keycloak-service-account-secrets.yaml](secrets/keycloak-service-account-secrets.yaml)
+- [logdb-postgresql-secrets.yaml](secrets/logdb-postgresql-secrets.yaml)
+- [service-account-secrets.yaml](secrets/service-account-secrets.yaml)
+- [sso-secrets.yaml](secrets/sso-secrets.yaml)
 
 #### Optional Step
 
@@ -67,7 +70,7 @@ data:
   realmId: <realm-id>
 kind: Secret
 metadata:
-  name: keycloak-service-client
+  name: keycloak-service-account
 type: Opaque
 ```
 

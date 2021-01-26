@@ -73,7 +73,7 @@ objects:
                   valueFrom:
                     secretKeyRef:
                       name: api-connections-${ENV}
-                      key: hmr.db
+                      key: crt.db
                 - name: ConnectionStrings__serilog
                   valueFrom:
                     secretKeyRef:
@@ -92,22 +92,22 @@ objects:
                 - name: ServiceAccount__User
                   valueFrom:
                     secretKeyRef:
-                      name: service-account
+                      name: service-account-${ENV}
                       key: SERVICE_USER
                 - name: ServiceAccount__Password
                   valueFrom:
                     secretKeyRef:
-                      name: service-account
+                      name: service-account-${ENV}
                       key: SERVICE_PASSWORD
                 - name: ServiceAccount__Server
                   valueFrom:
                     secretKeyRef:
-                      name: service-account
+                      name: service-account-${ENV}
                       key: SERVER
                 - name: ServiceAccount__Port
                   valueFrom:
                     secretKeyRef:
-                      name: service-account
+                      name: service-account-${ENV}
                       key: PORT
                 - name: Keycloak__ServiceClientId
                   valueFrom:
