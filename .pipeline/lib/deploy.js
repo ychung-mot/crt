@@ -2,7 +2,7 @@
 const { OpenShiftClientX } = require("@bcgov/pipeline-cli");
 const path = require("path");
 
-const util = require("./util");
+const util = require("./utils");
 const KeyCloakClient = require("./keycloak");
 
 module.exports = (settings) => {
@@ -78,7 +78,6 @@ module.exports = (settings) => {
       {
         param: {
           ENV: phases[phase].phase,
-          SUBMISSION_URL: `https://${phases[phase].url_prefix}crt.th.gov.bc.ca/workreporting?serviceArea={0}&showResult={1}`,
           EXPORT_URL: `https://${phases[phase].export_server}.apps.th.gov.bc.ca`,
         },
       }
