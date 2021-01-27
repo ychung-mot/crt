@@ -35,7 +35,11 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
         .putProject(values.id, values)
         .then(() => {
           formModal.closeForm();
-          //some sort of refresh statement needed here
+          setLoading(true);
+          api.getProject(match.params.id).then((response) => {
+            setData(response.data);
+            setLoading(false);
+          });
         })
         .catch((error) => {
           console.log(error.response);
