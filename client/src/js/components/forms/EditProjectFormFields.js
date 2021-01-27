@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
-//temporary fix used when we get an end Date during edit
-//import moment from 'moment';
+import moment from 'moment';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
 import SingleDateField from '../ui/SingleDateField';
@@ -10,6 +9,7 @@ import PageSpinner from '../ui/PageSpinner';
 import { FormRow, FormInput } from './FormInputs';
 
 import * as Constants from '../../Constants';
+import * as api from '../../Api';
 
 const defaultValues = {
   projectNumber: undefined,
@@ -33,6 +33,7 @@ const EditProjectFormFields = ({
   setInitialValues,
   formValues,
   setValidationSchema,
+  projectId,
   formType,
   capitalIndexes,
   userRegionIds,
@@ -45,9 +46,13 @@ const EditProjectFormFields = ({
   useEffect(() => {
     setInitialValues(defaultValues);
     setValidationSchema(validationSchema);
+
     if (formType === Constants.FORM_TYPE.EDIT) {
       setLoading(true);
-      //edit logic goes in here
+      api.getProject(projectId).then((response) => {
+        setInitialValues({ ...response.data, endDate: response.data.endDate ? moment(response.data.endDate) : null });
+        setLoading(false);
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -57,16 +62,16 @@ const EditProjectFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="projectNumber" label="Project Number*" helper={{ id: 'projectNumber', text: 'placeholder' }}>
-        <FormInput type="number" name="projectNumber" placeholder="To be assigned" disabled={true} />
+        <FormInput type="text" name="projectNumber" placeholder="To be assigned" disabled={true} />
       </FormRow>
       <FormRow name="projectName" label="Project Name*">
         <FormInput type="text" name="projectName" placeholder="Project Name" />
       </FormRow>
-      <FormRow name="projectDescription" label="Project Description">
-        <FormInput type="text" name="projectDescription" placeholder="Project Description" />
+      <FormRow name="description" label="Project Description">
+        <FormInput type="text" name="description" placeholder="Project Description" />
       </FormRow>
-      <FormRow name="projectScope" label="Project Scope">
-        <FormInput type="text" name="projectScope" placeholder="Project Scope" />
+      <FormRow name="scope" label="Project Scope">
+        <FormInput type="text" name="scope" placeholder="Project Scope" />
       </FormRow>
       <FormRow name="capIndxLkupId" label="Capital Index">
         <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" />
