@@ -31,6 +31,9 @@ namespace Crt.Api.Controllers
             [FromQuery] string searchText, [FromQuery] bool? isInProgress, [FromQuery] string projectManagerIds,
             [FromQuery] int pageSize, [FromQuery] int pageNumber, [FromQuery] string orderBy = "username", [FromQuery] string direction = "")
         {
+            //filter with search criteria
+            //filter with user's region
+
             #region mockup
             await Task.CompletedTask;
 
@@ -105,8 +108,8 @@ namespace Crt.Api.Controllers
                     CodeLookupId = 15,
                     CodeSet = "CAPINDX",
                     CodeName = "Expense- Materiality clause not met",
-                    CodeValueNum = 0,
-                    DisplayOrder = 0
+                    CodeValueText = "1",
+                    DisplayOrder = 0,
                 },
                 Region = new RegionDto
                 {

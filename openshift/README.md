@@ -198,7 +198,7 @@ You can also build from your local source code using the `--dev-mode=true` flag.
 `dev-mode` is useful for testing the pipeline without pushing any changes to the remote repository.
 
 ```
-npm run build --pr=0 --dev-mode=true
+npm run build -- --pr=0 --dev-mode=true
 ```
 
 You can clean up builds and deployments using
