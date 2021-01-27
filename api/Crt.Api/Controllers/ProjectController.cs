@@ -105,10 +105,10 @@ namespace Crt.Api.Controllers
                 NearstTwnLkupId = 1,
                 CapIndxLkup = new CodeLookupDto
                 {
-                    CodeLookupId = 15,
+                    CodeLookupId = 1,
                     CodeSet = "CAPINDX",
-                    CodeName = "Expense- Materiality clause not met",
-                    CodeValueText = "1",
+                    CodeName = "Capitalizable-All components>40yrs",
+                    CodeValueText = "10",
                     DisplayOrder = 0,
                 },
                 Region = new RegionDto
