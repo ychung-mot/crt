@@ -108,8 +108,8 @@ namespace Crt.Api.Controllers
                     CodeLookupId = 15,
                     CodeSet = "CAPINDX",
                     CodeName = "Expense- Materiality clause not met",
-                    CodeValueNum = 0,
-                    DisplayOrder = 0
+                    CodeValueText = "1",
+                    DisplayOrder = 0,
                 },
                 Region = new RegionDto
                 {
