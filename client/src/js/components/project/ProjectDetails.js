@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { showValidationErrorDialog } from '../../redux/actions';
 
 //components
 import Authorize from '../fragments/Authorize';
@@ -13,7 +15,7 @@ import EditProjectFormFields from '../forms/EditProjectFormFields';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectDetails = ({ match }) => {
+const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
@@ -25,8 +27,22 @@ const ProjectDetails = ({ match }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleEditProjectFormSubmit = () => {
-    alert('submitting');
+  const handleEditProjectFormSubmit = (values) => {
+    if (!formModal.submitting) {
+      formModal.setSubmitting(true);
+      //create postProject api
+      api
+        .putProject(values.id, values)
+        .then(() => {
+          formModal.closeForm();
+          //some sort of refresh statement needed here
+        })
+        .catch((error) => {
+          console.log(error.response);
+          showValidationErrorDialog(error.response.data);
+        })
+        .finally(() => formModal.setSubmitting(false));
+    }
   };
 
   const formModal = useFormModal('Project', <EditProjectFormFields />, handleEditProjectFormSubmit, true);
@@ -115,4 +131,10 @@ const ProjectDetails = ({ match }) => {
   );
 };
 
-export default ProjectDetails;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showValidationErrorDialog: () => dispatch(showValidationErrorDialog),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(ProjectDetails);

@@ -80,7 +80,13 @@ const EditProjectFormFields = ({
         <SingleDropdownField items={userRegionIds} name="regionId" />
       </FormRow>
       <FormRow name="projectMgrId" label="Project Manager">
-        <SingleDropdownField items={projectMgr} name="projectMgrId" />
+        <SingleDropdownField
+          items={projectMgr}
+          name="projectMgrId"
+          defaultTitle={
+            formValues.projectMgr ? `${formValues.projectMgr.firstName} ${formValues.projectMgr?.lastName}` : ``
+          }
+        />
       </FormRow>
       <FormRow name="nearstTwnLkupId" label="Nearest Town">
         <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" />

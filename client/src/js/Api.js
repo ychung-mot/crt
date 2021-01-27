@@ -49,6 +49,7 @@ export const deleteProject = (id, endDate) =>
 export const getProjectManagers = () => instance.get(`${Constants.API_PATHS.PROJECT_MANAGERS}`);
 export const postProject = (projectData) => instance.post(Constants.API_PATHS.PROJECTS, projectData);
 export const getProject = (id) => instance.get(`${Constants.API_PATHS.PROJECTS}/${id}`);
+export const putProject = (id, projectData) => instance.put(`${Constants.API_PATHS.PROJECTS}/${id}`, projectData);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
