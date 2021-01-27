@@ -31,6 +31,9 @@ namespace Crt.Api.Controllers
             [FromQuery] string searchText, [FromQuery] bool? isInProgress, [FromQuery] string projectManagerIds,
             [FromQuery] int pageSize, [FromQuery] int pageNumber, [FromQuery] string orderBy = "username", [FromQuery] string direction = "")
         {
+            //filter with search criteria
+            //filter with user's region
+
             #region mockup
             await Task.CompletedTask;
 
