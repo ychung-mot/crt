@@ -40,9 +40,6 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    annotations:
-      volume.beta.kubernetes.io/storage-class: netapp-file-standard
-      volume.beta.kubernetes.io/storage-provisioner: netapp.io/trident
     name: ${NAME}${SUFFIX}
   spec:
     accessModes:
@@ -146,7 +143,7 @@ objects:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-          - mountPath: /var/lib/jenkins/jobs
+          - mountPath: /var/jenkins-data
             name: jenkins-jobs
             readOnly: false
           - mountPath: /var/run/pod
@@ -257,11 +254,6 @@ parameters:
   name: VERSION
   required: true
   value: v1.0.0
-- description: GITHUB_USERNAME
-  displayName: GITHUB_USERNAME
-  name: GITHUB_USERNAME
-  required: true
-  value: cvarjao
 - description: ROUTE_HOST
   displayName: ROUTE_HOST
   name: ROUTE_HOST

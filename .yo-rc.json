@@ -25,7 +25,7 @@
           "uuid": "6c39d7be-4946-4503-a7c1-ede34077d714"
         },
         ".": {
-          "name": "hmr",
+          "name": "crt",
           "version": "1.0.0",
           "path": ".",
           "environments": {
@@ -42,7 +42,7 @@
               "namespace": "2d982c-prod"
             }
           },
-          "jenkinsJobName": "hmr",
+          "jenkinsJobName": "crt",
           "github_owner": "bcgov",
           "github_repo": "crt",
           "jenkinsFilePath": "Jenkinsfile",
