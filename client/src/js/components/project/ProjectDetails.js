@@ -58,7 +58,12 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   };
 
   const commentFilter = (commentType = '') => {
-    return data.notes.filter((note) => note.noteType === commentType);
+    //temporary fix in case data.notes = null
+    if (data.notes) {
+      return data.notes.filter((note) => note.noteType === commentType);
+    }
+
+    return [];
   };
 
   //display row helper functions
