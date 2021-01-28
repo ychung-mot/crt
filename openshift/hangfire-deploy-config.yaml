@@ -32,15 +32,6 @@ objects:
           labels:
             deploymentconfig: ${NAME}${SUFFIX}
         spec:
-          initContainers: # check if logdb is ready, and only continue when true
-            - name: check-logdb-ready
-              image: image-registry.openshift-image-registry.svc:5000/2d982c-tools/postgresql-10:1
-              command:
-                [
-                  "sh",
-                  "-c",
-                  "until pg_isready -h ${LOGDB_NAME}${SUFFIX} -p 5432;  do echo waiting for database; sleep 2; done;",
-                ]
           containers:
             - image: ${NAME}:${VERSION}
               name: hangfire
