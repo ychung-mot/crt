@@ -24,6 +24,7 @@ namespace Crt.Api.Controllers
         private CrtCurrentUser _currentUser;
 
         public UsersController(IUserService userService, IKeycloakService keyCloakService, CrtCurrentUser currentUser)
+               : base(currentUser)
         {
             _userService = userService;
             _keyCloakService = keyCloakService;

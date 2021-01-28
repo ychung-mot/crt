@@ -20,9 +20,9 @@ namespace Crt.Data.Repositories.Base
         void Update<TDto>(string id, TDto dto);
         void Delete<TDto>(TDto dto);
         void Delete(Expression<Func<TEntity, bool>> where);
-        TDto GetById<TDto>(long id);
+        TDto GetById<TDto>(decimal id);
         TDto GetById<TDto>(string id);
-        Task<TDto> GetByIdAsync<TDto>(object id);
+        Task<TDto> GetByIdAsync<TDto>(decimal id);
         IEnumerable<TDto> GetAll<TDto>();
         IEnumerable<TDto> GetAll<TDto>(Expression<Func<TEntity, bool>> where);
         Task<IEnumerable<TDto>> GetAllAsync<TDto>();
@@ -96,7 +96,7 @@ namespace Crt.Data.Repositories.Base
                 DbSet.Remove(obj);
         }
 
-        public virtual TDto GetById<TDto>(long id)
+        public virtual TDto GetById<TDto>(decimal id)
         {
             return Mapper.Map<TDto>(DbSet.Find(id));
         }
@@ -106,7 +106,7 @@ namespace Crt.Data.Repositories.Base
             return Mapper.Map<TDto>(DbSet.Find(id));
         }
 
-        public virtual async Task<TDto> GetByIdAsync<TDto>(object id)
+        public virtual async Task<TDto> GetByIdAsync<TDto>(decimal id)
         {
             return Mapper.Map<TDto>(await DbSet.FindAsync(id));
         }

@@ -18,7 +18,8 @@ namespace Crt.Api.Controllers
     {
         private IPermissionService _permissionService;
 
-        public PermissionsController(IPermissionService permissionService)
+        public PermissionsController(CrtCurrentUser currentUser, IPermissionService permissionService)
+             : base(currentUser)
         {
             _permissionService = permissionService;
         }

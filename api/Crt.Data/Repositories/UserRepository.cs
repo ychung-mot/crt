@@ -75,6 +75,7 @@ namespace Crt.Data.Repositories
                 .Select(s => s.Region);
 
             currentUser.Regions = new List<RegionDto>(Mapper.Map<IEnumerable<RegionDto>>(regions));
+            currentUser.RegionIds = currentUser.Regions.Select(x => x.RegionId).ToArray();
 
             currentUser.IsSystemAdmin = userEntity.CrtUserRoles.Any(x => x.Role.Name == Constants.SystemAdmin);
 

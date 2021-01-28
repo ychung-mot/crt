@@ -21,6 +21,7 @@ namespace Crt.Model.Dtos.User
         public DateTime? EndDate { get; set; }
         public bool IsSystemAdmin { get; set; }
         public bool IsProjectMgr { get; set; }
+        public decimal[] RegionIds { get; set; }
 
         public virtual IList<RegionDto> Regions { get; set; }
         public virtual IList<string> Permissions { get; set; }

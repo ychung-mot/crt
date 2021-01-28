@@ -13,7 +13,8 @@ namespace Crt.Api.Controllers
     [ApiController]
     public class NoteController : CrtControllerBase
     {
-        public NoteController()
+        public NoteController(CrtCurrentUser currentUser)
+             : base(currentUser)
         {
 
         }
