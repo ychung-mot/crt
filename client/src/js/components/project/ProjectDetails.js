@@ -9,8 +9,10 @@ import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import { Row, Col } from 'reactstrap';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
-import useFormModal from '../hooks/useFormModal';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
+import Comments from './Comments';
+
+import useFormModal from '../hooks/useFormModal';
 
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
@@ -55,6 +57,10 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
     formModal.openForm(Constants.FORM_TYPE.EDIT, { projectId });
   };
 
+  const commentFilter = (commentType = '') => {
+    return data.notes.filter((note) => note.noteType === commentType);
+  };
+
   //display row helper functions
   const DisplayRow = ({ children }) => {
     return <Row>{children}</Row>;
@@ -85,8 +91,8 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
       </>
     );
   };
+  //end display helpers
 
-  //Wait to display if page is loading
   if (loading) return <PageSpinner />;
 
   return (
@@ -130,6 +136,8 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
           <ColumnGroup name="Project End Date" label={data.endDate} />
         </DisplayRow>
       </MaterialCard>
+      <Comments title="Status Comments" data={commentFilter('STATUS')} show={1} />
+      <Comments title="EMR Comments" data={commentFilter('EMR')} show={1} />
       {formModal.formElement}
     </React.Fragment>
   );
