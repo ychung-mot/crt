@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 //components
@@ -7,8 +7,21 @@ import UIHeader from '../ui/UIHeader';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
-const Comments = ({ title, data, show = 1 }) => {
-  const [modal, setModal] = useState(false);
+import moment from 'moment';
+
+const Comments = ({ title, dataList, show = 1 }) => {
+  const [modalExpand, setModalExpand] = useState(false);
+  const [modalAdd, setModalAdd] = useState(false);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    setData(
+      dataList.map((comment) => {
+        return { ...comment, noteDate: moment(comment.noteDate).format('YYYY-MMM-DD') };
+      })
+    );
+    //eslint-disable-next-line
+  }, []);
 
   const tableColumns = [
     { heading: 'Date Added', key: 'noteDate', nosort: true },
@@ -16,14 +29,24 @@ const Comments = ({ title, data, show = 1 }) => {
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
-  const toggleShowAllModal = () => setModal(!modal);
+  const toggleShowAllModal = () => setModalExpand(!modalExpand);
+
+  const toggleShowAddModal = () => setModalAdd(!modalAdd);
 
   return (
     <MaterialCard>
       <UIHeader>{title}</UIHeader>
-      <DataTableControl dataList={data.slice(0, show)} tableColumns={tableColumns} />
-      <Modal isOpen={modal} toggle={toggleShowAllModal}>
-        <ModalHeader toggle={toggleShowAllModal}>{title} Comment History</ModalHeader>
+      <DataTableControl dataList={data.slice(show * -1)} tableColumns={tableColumns} />
+      <div className="text-right">
+        <Button color="primary" onClick={toggleShowAddModal}>
+          Add
+        </Button>
+        <Button color="primary" onClick={toggleShowAllModal}>
+          Expand
+        </Button>
+      </div>
+      <Modal isOpen={modalExpand} toggle={toggleShowAllModal}>
+        <ModalHeader toggle={toggleShowAllModal}>{title} History</ModalHeader>
         <ModalBody>
           <DataTableControl dataList={data} tableColumns={tableColumns} />
         </ModalBody>
@@ -35,20 +58,25 @@ const Comments = ({ title, data, show = 1 }) => {
           </div>
         </ModalFooter>
       </Modal>
-      <div className="text-right">
-        <Button color="primary">Add</Button>
-        <Button color="primary" onClick={toggleShowAllModal}>
-          Expand
-        </Button>
-      </div>
+      <Modal isOpen={modalAdd} toggle={toggleShowAddModal}>
+        <ModalHeader toggle={toggleShowAddModal}>Add {title}</ModalHeader>
+        <ModalBody>Adding comment</ModalBody>
+        <ModalFooter>
+          <div className="text-right">
+            <Button color="primary" onClick={toggleShowAddModal}>
+              Close
+            </Button>
+          </div>
+        </ModalFooter>
+      </Modal>
     </MaterialCard>
   );
 };
 
 Comments.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  dataList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   title: PropTypes.string.isRequired,
-  show: PropTypes.number,
+  show: PropTypes.number, //changes how many comments to show starting from the most recent
 };
 
 export default Comments;

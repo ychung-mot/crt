@@ -136,8 +136,8 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
           <ColumnGroup name="Project End Date" label={data.endDate} />
         </DisplayRow>
       </MaterialCard>
-      <Comments title="Status Comments" data={commentFilter('STATUS')} show={1} />
-      <Comments title="EMR Comments" data={commentFilter('EMR')} show={1} />
+      <Comments title="Status Comments" dataList={commentFilter('STATUS')} show={1} />
+      <Comments title="EMR Comments" dataList={commentFilter('EMR')} show={1} />
       {formModal.formElement}
     </React.Fragment>
   );

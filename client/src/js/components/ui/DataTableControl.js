@@ -122,7 +122,7 @@ DataTableControl.propTypes = {
         inactive: PropTypes.string.isRequired,
       }),
       link: PropTypes.shape({
-        //will render link to path and optional :id path using table column key
+        //will render link to path and optional :id path using data in table column key
         path: PropTypes.string.isRequired,
         idKey: PropTypes.string,
       }),
