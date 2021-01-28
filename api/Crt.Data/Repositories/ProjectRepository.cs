@@ -16,8 +16,10 @@ namespace Crt.Data.Repositories
         Task<PagedDto<ProjectSearchDto>> GetProjectsAsync(decimal[] regions,
             string searchText, bool? isInProgress, decimal[] projectManagerIds,
             int pageSize, int pageNumber, string orderBy, string direction);
-
         Task<ProjectDto> GetProjectAsync(decimal projectId);
+        Task<CrtProject> CreateProjectAsync(ProjectCreateDto project);
+        Task UpdateProjectAsync(ProjectUpdateDto project);
+        Task DeleteProjectAsync(ProjectDeleteDto project);
     }
 
     public class ProjectRepository : CrtRepositoryBase<CrtProject>, IProjectRepository
@@ -74,6 +76,35 @@ namespace Crt.Data.Repositories
                 .FirstOrDefaultAsync(x => x.ProjectId == projectId);
 
             return Mapper.Map<ProjectDto>(project);
+        }
+
+        public async Task<CrtProject> CreateProjectAsync(ProjectCreateDto project)
+        {
+            var projectEntity = new CrtProject();
+
+            Mapper.Map(project, projectEntity);
+
+            await DbSet.AddAsync(projectEntity);
+
+            return projectEntity;
+        }
+
+        public async Task UpdateProjectAsync(ProjectUpdateDto project)
+        {
+            var projectEntity = await DbSet
+                                .FirstAsync(x => x.ProjectId == project.ProjectId);
+
+            projectEntity.EndDate = project.EndDate?.Date;
+
+            Mapper.Map(project, projectEntity);
+        }
+
+        public async Task DeleteProjectAsync(ProjectDeleteDto project)
+        {
+            var projectEntity = await DbSet
+                                .FirstAsync(x => x.ProjectId == project.ProjectId);
+
+            projectEntity.EndDate = project.EndDate?.Date;
         }
     }
 }

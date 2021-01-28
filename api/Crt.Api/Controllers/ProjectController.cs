@@ -3,15 +3,9 @@ using Crt.Api.Controllers.Base;
 using Crt.Domain.Services;
 using Crt.Model;
 using Crt.Model.Dtos;
-using Crt.Model.Dtos.CodeLookup;
-using Crt.Model.Dtos.Note;
 using Crt.Model.Dtos.Project;
-using Crt.Model.Dtos.Region;
-using Crt.Model.Dtos.User;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Controllers
@@ -61,70 +55,64 @@ namespace Crt.Api.Controllers
 
         [HttpPost]
         [RequiresPermission(Permissions.ProjectWrite)]
-        public async Task<ActionResult<ProjectCreateDto>> CreateUser(ProjectCreateDto project)
+        public async Task<ActionResult<ProjectCreateDto>> CreateProject(ProjectCreateDto project)
         {
-            throw new NotImplementedException();
+            var response = await _projectService.CreateProjectAsync(project);
 
-            //var response = await _projectService.CreateUserAsync(project);
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
 
-            //if (response.Errors.Count > 0)
-            //{
-            //    return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
-            //}
-
-            //return CreatedAtRoute("GetProject", new { id = response.ProjectId }, await _projectService.GetProjectAsync(response.ProjectId));
+            return CreatedAtRoute("GetProject", new { id = response.projectId }, await _projectService.GetProjectAsync(response.projectId));
         }
 
         [HttpPut("{id}")]
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult> UpdateProject(decimal id, ProjectUpdateDto project)
         {
-            throw new NotImplementedException();
+            if (id != project.ProjectId)
+            {
+                throw new Exception($"The project ID from the query string does not match that of the body.");
+            }
 
-            //if (id != project.ProjectId)
-            //{
-            //    throw new Exception($"The project ID from the query string does not match that of the body.");
-            //}
+            var response = await _projectService.UpdateProjectAsync(project);
 
-            //var response = await _projectService.UpdateUserAsync(project);
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
 
-            //if (response.NotFound)
-            //{
-            //    return NotFound();
-            //}
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
 
-            //if (response.Errors.Count > 0)
-            //{
-            //    return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
-            //}
-
-            //return NoContent();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult> DeleteProject(decimal id, ProjectDeleteDto project)
         {
-            throw new NotImplementedException();
+            if (id != project.ProjectId)
+            {
+                throw new Exception($"The system project ID from the query string does not match that of the body.");
+            }
 
-            //if (id != project.SystemProjectId)
-            //{
-            //    throw new Exception($"The system project ID from the query string does not match that of the body.");
-            //}
+            var response = await _projectService.DeleteProjectAsync(project);
 
-            //var response = await _projectService.DeleteProjectAsync(project);
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
 
-            //if (response.NotFound)
-            //{
-            //    return NotFound();
-            //}
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
 
-            //if (response.Errors.Count > 0)
-            //{
-            //    return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
-            //}
-
-            //return NoContent();
+            return NoContent();
         }
     }
 }
