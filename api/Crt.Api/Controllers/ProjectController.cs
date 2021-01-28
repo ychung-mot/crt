@@ -57,6 +57,12 @@ namespace Crt.Api.Controllers
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult<ProjectCreateDto>> CreateProject(ProjectCreateDto project)
         {
+            var problem = IsRegionIdAuthorized(project.RegionId);
+            if (problem != null)
+            {
+                return Unauthorized(problem);
+            }
+
             var response = await _projectService.CreateProjectAsync(project);
 
             if (response.errors.Count > 0)
@@ -71,6 +77,12 @@ namespace Crt.Api.Controllers
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult> UpdateProject(decimal id, ProjectUpdateDto project)
         {
+            var problem = IsRegionIdAuthorized(project.RegionId);
+            if (problem != null)
+            {
+                return Unauthorized(problem);
+            }
+
             if (id != project.ProjectId)
             {
                 throw new Exception($"The project ID from the query string does not match that of the body.");
