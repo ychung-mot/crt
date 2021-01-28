@@ -26,6 +26,7 @@ namespace Crt.Domain.Services
 
             LoadUserEntityRules();
             LoadRoleEntityRules();
+            LoadProjectEntityRules();
         }
 
 
@@ -46,6 +47,20 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.Role, Fields.Name, FieldTypes.String, true, 1, 30, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.Role, Fields.Description, FieldTypes.String, true, 1, 150, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.Role, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
+        }
+
+        private void LoadProjectEntityRules()
+        {
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.ProjectNumber, FieldTypes.String, true, 1, 50, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.ProjectName, FieldTypes.String, true, 1, 255, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.Description, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.Scope, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
+
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.CapIndxLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.CapIndx));
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.NerstTwnLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.NearstTwn));
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.RcLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.Rc));
+
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
 
         public Dictionary<string, List<string>> Validate<T>(string entityName, T entity, Dictionary<string, List<string>> errors, int rowNum = 0, params string[] fieldsToSkip)

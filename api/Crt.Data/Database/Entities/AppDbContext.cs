@@ -748,7 +748,6 @@ namespace Crt.Data.Database.Entities
                 entity.HasOne(d => d.NearstTwnLkup)
                     .WithMany(p => p.CrtProjectNearstTwnLkups)
                     .HasForeignKey(d => d.NearstTwnLkupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_CODE_LOOKUP_PROJECT_NRST_TWN_FK");
 
                 entity.HasOne(d => d.ProjectMgr)

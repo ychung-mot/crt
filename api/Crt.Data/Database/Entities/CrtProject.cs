@@ -19,7 +19,7 @@ namespace Crt.Data.Database.Entities
         public string Scope { get; set; }
         public decimal RegionId { get; set; }
         public decimal? CapIndxLkupId { get; set; }
-        public decimal NearstTwnLkupId { get; set; }
+        public decimal? NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
         public decimal? ProjectMgrId { get; set; }
         public DateTime? EndDate { get; set; }
