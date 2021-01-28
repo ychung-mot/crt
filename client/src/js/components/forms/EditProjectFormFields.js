@@ -12,7 +12,7 @@ import * as Constants from '../../Constants';
 import * as api from '../../Api';
 
 const defaultValues = {
-  projectNumber: undefined,
+  projectNumber: '',
   projectName: '',
   description: '',
   scope: '',
@@ -25,6 +25,7 @@ const defaultValues = {
 };
 
 const validationSchema = Yup.object({
+  projectNumber: Yup.string().required('Project number required'),
   projectName: Yup.string().required('Project name required'),
   regionId: Yup.number().required('Region required'),
 });
@@ -62,7 +63,7 @@ const EditProjectFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="projectNumber" label="Project Number*" helper={{ id: 'projectNumber', text: 'placeholder' }}>
-        <FormInput type="text" name="projectNumber" placeholder="To be assigned" disabled={true} />
+        <FormInput type="text" name="projectNumber" placeholder="Project Number" />
       </FormRow>
       <FormRow name="projectName" label="Project Name*">
         <FormInput type="text" name="projectName" placeholder="Project Name" />

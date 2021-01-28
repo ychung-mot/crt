@@ -131,7 +131,10 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
-          <ColumnTwoGroups name="Project Manager" label={`${data.projectMgr.firstName} ${data.projectMgr.lastName}`} />
+          <ColumnTwoGroups
+            name="Project Manager"
+            label={data.programMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
+          />
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkupId} />
