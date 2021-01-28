@@ -19,7 +19,8 @@ namespace Crt.Api.Controllers
         private IConfiguration _config;
         private IWebHostEnvironment _env;
         
-        public VersionController(IConfiguration config, IWebHostEnvironment env)
+        public VersionController(CrtCurrentUser currentUser, IConfiguration config, IWebHostEnvironment env)
+                : base(currentUser)
         {
             _config = config;
             _env = env;

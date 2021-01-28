@@ -1,5 +1,6 @@
 ﻿using Crt.Api.Controllers.Base;
 using Crt.Domain.Services;
+using Crt.Model;
 using Crt.Model.Dtos.District;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,7 +17,8 @@ namespace Crt.Api.Controllers
     {
         private IDistrictService _districtService;
 
-        public DistrictController(IDistrictService districtService)
+        public DistrictController(CrtCurrentUser currentUser, IDistrictService districtService)
+            : base(currentUser)
         {
             _districtService = districtService;
         }

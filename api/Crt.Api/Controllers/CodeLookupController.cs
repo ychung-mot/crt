@@ -15,7 +15,8 @@ namespace Crt.Api.Controllers
     {
         private IFieldValidatorService _validator;
 
-        public CodeLookupController(IFieldValidatorService validator)
+        public CodeLookupController(CrtCurrentUser currentUser, IFieldValidatorService validator)
+            : base(currentUser)
         {
             _validator = validator;
         }

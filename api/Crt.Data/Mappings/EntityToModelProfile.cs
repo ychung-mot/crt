@@ -54,11 +54,13 @@ namespace Crt.Data.Mappings
             CreateMap<CrtProject, ProjectCreateDto>();
             CreateMap<CrtProject, ProjectUpdateDto>();
             CreateMap<CrtProject, ProjectDeleteDto>();
-            CreateMap<CrtProject, ProjectSearchDto>();
+            CreateMap<CrtProject, ProjectSearchDto>()
+                .ForMember(x => x.RegionNumber, opt => opt.MapFrom(x => x.Region.RegionNumber))
+                .ForMember(x => x.RegionName, opt => opt.MapFrom(x => x.Region.RegionName));
 
             CreateMap <CrtNote, NoteDto>()
-                  .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
-                  .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.AppCreateTimestamp));
+                .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
+                .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.AppCreateTimestamp));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Crt.Api.Controllers.Base;
 using Crt.Domain.Services;
+using Crt.Model;
 using Crt.Model.Dtos.Region;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,7 +17,8 @@ namespace Crt.Api.Controllers
     {
         private IRegionService _regionService;
 
-       public RegionController(IRegionService regionService)
+       public RegionController(CrtCurrentUser currentUser,IRegionService regionService)
+            : base(currentUser)
         {
             _regionService = regionService;
         }

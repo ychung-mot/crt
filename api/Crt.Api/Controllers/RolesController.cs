@@ -17,7 +17,8 @@ namespace Crt.Api.Controllers
     {
         private IRoleService _roleSvc;
 
-        public RolesController(IRoleService roleSvc)
+        public RolesController(CrtCurrentUser currentUser, IRoleService roleSvc)
+             : base(currentUser)
         {
             _roleSvc = roleSvc;
         }
