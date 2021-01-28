@@ -6,12 +6,16 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { FormInput } from '../forms/FormInputs';
+import { Formik, Form, useField } from 'formik';
 
 import moment from 'moment';
+import * as api from '../../Api';
 
-const Comments = ({ title, dataList, show = 1 }) => {
+const Comments = ({ title, dataList, projectId, show = 1 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [modalAdd, setModalAdd] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -30,8 +34,26 @@ const Comments = ({ title, dataList, show = 1 }) => {
   ];
 
   const toggleShowAllModal = () => setModalExpand(!modalExpand);
-
   const toggleShowAddModal = () => setModalAdd(!modalAdd);
+
+  const handleCommentSubmit = (value) => {
+    setSubmitting(true);
+    console.log(projectId);
+    console.log(value);
+    //temporary fix to simulate submitting a comment
+    setTimeout(() => {
+      setSubmitting(false);
+      toggleShowAddModal();
+    }, 3000);
+    // api
+    //   .postNote(1, value)
+    //   .then(() => {
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setSubmitting(false);
+    //   });
+  };
 
   return (
     <MaterialCard>
@@ -60,14 +82,29 @@ const Comments = ({ title, dataList, show = 1 }) => {
       </Modal>
       <Modal isOpen={modalAdd} toggle={toggleShowAddModal}>
         <ModalHeader toggle={toggleShowAddModal}>Add {title}</ModalHeader>
-        <ModalBody>Adding comment</ModalBody>
-        <ModalFooter>
-          <div className="text-right">
-            <Button color="primary" onClick={toggleShowAddModal}>
-              Close
-            </Button>
-          </div>
-        </ModalFooter>
+        <Formik initialValues={{ comment: '' }} onSubmit={handleCommentSubmit}>
+          {({ dirty, values }) => (
+            <Form>
+              <ModalBody>
+                <FormInput type="text" name="comment" placeholder="Insert Comment Here" />
+              </ModalBody>
+              <ModalFooter>
+                <div className="text-right">
+                  <Button
+                    type="submit"
+                    color="primary"
+                    disabled={!dirty || values.comment.trim().length === 0 || submitting}
+                  >
+                    Submit
+                  </Button>
+                  <Button color="secondary" onClick={toggleShowAddModal}>
+                    Close
+                  </Button>
+                </div>
+              </ModalFooter>
+            </Form>
+          )}
+        </Formik>
       </Modal>
     </MaterialCard>
   );
@@ -75,6 +112,7 @@ const Comments = ({ title, dataList, show = 1 }) => {
 
 Comments.propTypes = {
   dataList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  projectId: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   show: PropTypes.number, //changes how many comments to show starting from the most recent
 };

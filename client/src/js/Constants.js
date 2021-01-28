@@ -20,6 +20,7 @@ export const API_PATHS = {
   VERSION: '/version',
   PROJECTS: '/projects',
   PROJECT_MANAGERS: '/users/managers',
+  NOTES: '/notes',
 };
 
 export const PATHS = {
