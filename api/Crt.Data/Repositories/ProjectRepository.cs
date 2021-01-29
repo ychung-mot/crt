@@ -20,6 +20,7 @@ namespace Crt.Data.Repositories
         Task<CrtProject> CreateProjectAsync(ProjectCreateDto project);
         Task UpdateProjectAsync(ProjectUpdateDto project);
         Task DeleteProjectAsync(ProjectDeleteDto project);
+        Task<bool> ProjectNumberAlreadyExists(decimal projectId, string projectNumber, decimal regionId);
     }
 
     public class ProjectRepository : CrtRepositoryBase<CrtProject>, IProjectRepository
@@ -105,6 +106,16 @@ namespace Crt.Data.Repositories
                                 .FirstAsync(x => x.ProjectId == project.ProjectId);
 
             projectEntity.EndDate = project.EndDate?.Date;
+        }
+
+        public async Task<bool> ProjectNumberAlreadyExists(decimal projectId, string projectNumber, decimal regionId)
+        {
+            var projects = await DbSet.AsNoTracking()
+                .Where(x => x.ProjectNumber == projectNumber && x.RegionId == regionId)
+                .Select(x => new { x.ProjectId })
+                .ToListAsync();
+
+            return projects.Any(x => x.ProjectId != projectId);
         }
     }
 }
