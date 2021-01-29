@@ -17,9 +17,9 @@ namespace Crt.Model.Dtos.Project
         public string ProjectName { get; set; }
 
         [JsonPropertyName("regionId")]
-        public string regionField { get => $"{RegionNumber}-{RegionName}"; }
+        public string Region { get => $"{RegionNumber}-{RegionName}"; }
         [JsonPropertyName("projectNumber")]
-        public string projectField { get => $"{ProjectNumber}-{ProjectName}"; }
+        public string Project { get => $"{ProjectNumber}-{ProjectName}"; }
         public DateTime? EndDate { get; set; }
         public bool IsInProgress { get => EndDate == null || DateTime.Today < EndDate; }
 
