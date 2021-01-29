@@ -10,7 +10,7 @@ const SingleDropdownField = (props) => {
   const [field, meta] = useField(props);
 
   useEffect(() => {
-    if (field.value) setTitle(items.find((o) => o.id === field.value).name);
+    if (field.value) setTitle(items.find((o) => o.id === field.value)?.name || defaultTitle);
     else setTitle(defaultTitle);
   }, [field.value, items, defaultTitle]);
 

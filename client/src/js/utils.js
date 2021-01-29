@@ -49,6 +49,10 @@ export const updateQueryParamsFromHistory = (history, newParam, overwrite) => {
   // remove empty regions
   if (!newParam.regions) processedParams = _.omit(processedParams, ['regions']);
 
+  // remove empty isInProgress
+  if (newParam.isInProgress === null) processedParams = _.omit(processedParams, ['isInProgress']);
+  else processedParams = { ...processedParams, isInProgress: newParam.isInProgress };
+
   return queryString.stringify(processedParams);
 };
 

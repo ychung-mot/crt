@@ -6,6 +6,9 @@ const CODE_LOOKUP = '/codelookup';
 
 export const API_PATHS = {
   CODE_LOOKUP: CODE_LOOKUP,
+  CAPITAL_INDEXES: `${CODE_LOOKUP}/capitalindexes`,
+  RC_NUMBERS: `${CODE_LOOKUP}/rcnumbers`,
+  NEAREST_TOWNS: `${CODE_LOOKUP}/nearesttowns`,
   PERMISSIONS: '/permissions',
   ROLE: '/roles',
   USER: '/users',
@@ -15,6 +18,9 @@ export const API_PATHS = {
   REGIONS: '/regions',
   SUPPORTED_FORMATS: '/exports/supportedformats',
   VERSION: '/version',
+  PROJECTS: '/projects',
+  PROJECT_MANAGERS: '/users/managers',
+  NOTES: '/notes',
 };
 
 export const PATHS = {
@@ -26,6 +32,7 @@ export const PATHS = {
   ADMIN_USERS: '/admin/users',
   ADMIN_ROLES: '/admin/roles',
   VERSION: '/version',
+  PROJECTS: '/projects',
 };
 
 export const MESSAGE_DATE_FORMAT = 'YYYY-MM-DD hh:mmA';
@@ -39,10 +46,13 @@ export const FORM_TYPE = { ADD: 'ADD_FORM', EDIT: 'EDIT_FORM' };
 export const PERMISSIONS = {
   CODE_W: 'CODE_W',
   CODE_R: 'CODE_R',
-  USER_W: 'USER_W',
-  USER_R: 'USER_R',
+  EXPORT_R: 'EXPORT_R',
+  PROJECT_R: 'PROJECT_R',
+  PROJECT_W: 'PROJECT_W',
   ROLE_W: 'ROLE_W',
   ROLE_R: 'ROLE_R',
+  USER_W: 'USER_W',
+  USER_R: 'USER_R',
 };
 
 export const USER_TYPE = { INTERNAL: 'INTERNAL', BUSINESS: 'BUSINESS' };

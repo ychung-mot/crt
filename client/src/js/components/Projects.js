@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+
 import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import queryString from 'query-string';
 
+//components
 import Authorize from './fragments/Authorize';
 import MaterialCard from './ui/MaterialCard';
 import UIHeader from './ui/UIHeader';
@@ -14,29 +16,45 @@ import SubmitButton from './ui/SubmitButton';
 import PageSpinner from './ui/PageSpinner';
 import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
-import EditRoleFormFields from './forms/EditRoleFormFields';
+import EditProjectFormFields from '../components/forms/EditProjectFormFields';
 
 import { showValidationErrorDialog } from '../redux/actions';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
-import { buildStatusIdArray } from '../utils';
 
-const defaultSearchFormValues = { searchText: '', statusId: [Constants.ACTIVE_STATUS.ACTIVE] };
+const defaultSearchFormValues = { searchText: '', regions: [], projectMgr: [], isInProgress: [] };
 
 const defaultSearchOptions = {
   searchText: '',
-  isActive: true,
-  dataPath: Constants.API_PATHS.ROLE,
+  isInProgress: true,
+  dataPath: Constants.API_PATHS.PROJECTS,
+  regions: '',
 };
 
 const tableColumns = [
-  { heading: 'Role Name', key: 'name' },
-  { heading: 'Role Description', key: 'description' },
-  { heading: 'Active', key: 'isActive', nosort: true, badge: { active: 'Active', inactive: 'Inactive' } },
+  { heading: 'Region^', key: 'regionName', nosort: true },
+  { heading: 'Project^', key: 'projectName', link: { path: '/projects', idKey: 'id' } },
+  { heading: 'Planning Targets^', key: 'planningTargets' },
+  { heading: 'Tender Details', key: 'tenderDetails' },
+  { heading: 'Location and Ratios^', key: 'locationRation' },
+  { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
-const RoleAdmin = ({ showValidationErrorDialog }) => {
+const formikInitialValues = {
+  searchText: '',
+  regions: [],
+  projectMgr: [],
+  isInProgress: [],
+};
+
+//temporary fix hardcode project status
+const isInProgress = [
+  { id: 'inProgress', name: 'In Progress' },
+  { id: 'complete', name: 'Completed' },
+];
+
+const Projects = ({ currentUser, projectMgr }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -50,23 +68,32 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
       ...params,
     };
 
+    searchData.updateSearchOptions(options);
+
     const searchText = options.searchText || '';
 
-    searchData.updateSearchOptions(options);
-    setSearchInitialValues({ ...searchInitialValues, searchText, statusId: buildStatusIdArray(options.isActive) });
-
+    setSearchInitialValues({
+      ...searchInitialValues,
+      searchText,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSearchFormSubmit = (values) => {
     const searchText = values.searchText.trim() || null;
-
-    let isActive = null;
-    if (values.statusId.length === 1) {
-      isActive = values.statusId[0] === 'ACTIVE';
+    let isInProgress = null;
+    if (values.isInProgress.length === 1) {
+      isInProgress = values.isInProgress[0] === 'inProgress';
     }
 
-    const options = { ...searchData.searchOptions, isActive, searchText, pageNumber: 1 };
+    const options = {
+      ...searchData.searchOptions,
+      isInProgress,
+      searchText,
+      regions: values.regions.join(',') || null,
+      projectMgr: values.projectMgr.join(',') || null,
+      pageNumber: 1,
+    };
     searchData.updateSearchOptions(options);
   };
 
@@ -75,48 +102,36 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
     searchData.refresh(true);
   };
 
-  const onEditClicked = (roleId) => {
-    formModal.openForm(Constants.FORM_TYPE.EDIT, { roleId });
+  const onDeleteClicked = (projectId, endDate) => {
+    api.deleteProject(projectId, endDate).then(() => searchData.refresh());
   };
 
-  const onDeleteClicked = (roleId, endDate) => {
-    api.deleteRole(roleId, endDate).then(() => searchData.refresh());
-  };
-
-  const handleEditFormSubmit = (values, formType) => {
+  const handleAddProjectFormSubmit = (values, formType) => {
     if (!formModal.submitting) {
       formModal.setSubmitting(true);
-
-      if (formType === Constants.FORM_TYPE.ADD) {
-        api
-          .postRole(values)
-          .then(() => {
-            formModal.closeForm();
-            searchData.refresh();
-          })
-          .catch((error) => showValidationErrorDialog(error.response.data))
-          .finally(() => formModal.setSubmitting(false));
-      } else {
-        api
-          .putRole(values.id, values)
-          .then(() => {
-            formModal.closeForm();
-            searchData.refresh();
-          })
-          .catch((error) => showValidationErrorDialog(error.response.data))
-          .finally(() => formModal.setSubmitting(false));
-      }
+      api
+        .postProject(values)
+        .then(() => {
+          formModal.closeForm();
+          searchData.refresh();
+        })
+        .catch((error) => showValidationErrorDialog(error.response.data))
+        .finally(() => formModal.setSubmitting(false));
     }
   };
 
-  const formModal = useFormModal('Role', <EditRoleFormFields />, handleEditFormSubmit);
+  const formModal = useFormModal('Project', <EditProjectFormFields />, handleAddProjectFormSubmit, true);
+
+  const data = Object.values(searchData.data).map((projects) => ({
+    ...projects,
+  }));
 
   return (
     <React.Fragment>
       <MaterialCard>
-        <UIHeader>Role and Permissions Management</UIHeader>
+        <UIHeader>Projects</UIHeader>
         <Formik
-          initialValues={searchInitialValues}
+          initialValues={formikInitialValues}
           enableReinitialize={true}
           onSubmit={(values) => handleSearchFormSubmit(values)}
           onReset={handleSearchFormReset}
@@ -125,18 +140,17 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
             <Form>
               <Row form>
                 <Col>
-                  <Field type="text" name="searchText" placeholder="Role/Description" className="form-control" />
+                  <MultiDropdownField {...formikProps} items={currentUser.regions} name="regions" title="Regions" />
                 </Col>
                 <Col>
-                  <MultiDropdownField
-                    {...formikProps}
-                    title="Role Status"
-                    items={Constants.ACTIVE_STATUS_ARRAY}
-                    name="statusId"
-                  />
+                  <Field type="text" name="searchText" placeholder="Keyword" className="form-control" />
                 </Col>
-                <Col />
-                <Col />
+                <Col>
+                  <MultiDropdownField {...formikProps} items={projectMgr} name="projectMgr" title="Project Manager" />
+                </Col>
+                <Col>
+                  <MultiDropdownField {...formikProps} items={isInProgress} name="isInProgress" title="Status" />
+                </Col>
                 <Col>
                   <div className="float-right">
                     <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
@@ -150,7 +164,7 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
           )}
         </Formik>
       </MaterialCard>
-      <Authorize requires={Constants.PERMISSIONS.ROLE_W}>
+      <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
         <Row>
           <Col>
             <Button
@@ -159,7 +173,7 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
               className="float-right mb-3"
               onClick={() => formModal.openForm(Constants.FORM_TYPE.ADD)}
             >
-              Add Role
+              Add Project
             </Button>
           </Col>
         </Row>
@@ -167,17 +181,15 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
       {searchData.loading && <PageSpinner />}
       {!searchData.loading && (
         <MaterialCard>
-          {searchData.data.length > 0 && (
+          {data.length > 0 && (
             <DataTableWithPaginaionControl
-              dataList={searchData.data}
+              dataList={data}
               tableColumns={tableColumns}
               searchPagination={searchData.pagination}
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
-              editable
               deletable
-              editPermissionName={Constants.PERMISSIONS.ROLE_W}
-              onEditClicked={onEditClicked}
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               onDeleteClicked={onDeleteClicked}
               onHeadingSortClicked={searchData.handleHeadingSortClicked}
             />
@@ -190,4 +202,11 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
   );
 };
 
-export default connect(null, { showValidationErrorDialog })(RoleAdmin);
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.user.current,
+    projectMgr: Object.values(state.user.projectMgr),
+  };
+};
+
+export default connect(mapStateToProps, { showValidationErrorDialog })(Projects);

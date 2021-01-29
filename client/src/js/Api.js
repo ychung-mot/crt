@@ -43,7 +43,22 @@ export const deleteRole = (id, endDate) =>
 
 export const getPermissions = () => instance.get(Constants.API_PATHS.PERMISSIONS);
 
+//Projects
+export const deleteProject = (id, endDate) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${id}`, { data: { id, endDate } });
+export const getProjectManagers = () => instance.get(`${Constants.API_PATHS.PROJECT_MANAGERS}`);
+export const postProject = (projectData) => instance.post(Constants.API_PATHS.PROJECTS, projectData);
+export const getProject = (id) => instance.get(`${Constants.API_PATHS.PROJECTS}/${id}`);
+export const putProject = (id, projectData) => instance.put(`${Constants.API_PATHS.PROJECTS}/${id}`, projectData);
+export const postNote = (projectId, noteData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`, noteData);
+
+//Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
+//Code Lookups
+export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
+export const getRCNumbers = () => instance.get(Constants.API_PATHS.RC_NUMBERS);
+export const getNearestTowns = () => instance.get(Constants.API_PATHS.NEAREST_TOWNS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

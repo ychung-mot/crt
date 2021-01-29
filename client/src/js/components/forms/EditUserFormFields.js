@@ -35,7 +35,6 @@ const EditUserFormFields = ({
           const data = response.data.sourceList
             .filter((r) => r.isActive === true)
             .map((r) => ({ ...r, description: r.name }));
-
           setRoles(data);
         });
       })

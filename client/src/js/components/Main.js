@@ -4,13 +4,39 @@ import { connect } from 'react-redux';
 import PageSpinner from './ui/PageSpinner';
 import ErrorDialogModal from './ui/ErrorDialogModal';
 
-import { fetchCurrentUser, fetchUserStatuses, fetchRegions } from '../redux/actions';
+import {
+  fetchCurrentUser,
+  fetchUserStatuses,
+  fetchRegions,
+  fetchCapitalIndexes,
+  fetchRCNumbers,
+  fetchNearestTowns,
+  fetchProjectManagers,
+} from '../redux/actions';
 
-const Main = ({ errorDialog, children, fetchCurrentUser, fetchUserStatuses, fetchRegions }) => {
+const Main = ({
+  errorDialog,
+  children,
+  fetchCurrentUser,
+  fetchUserStatuses,
+  fetchRegions,
+  fetchCapitalIndexes,
+  fetchRCNumbers,
+  fetchNearestTowns,
+  fetchProjectManagers,
+}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([fetchCurrentUser(), fetchUserStatuses(), fetchRegions()]).then(() => setLoading(false));
+    Promise.all([
+      fetchCurrentUser(),
+      fetchUserStatuses(),
+      fetchRegions(),
+      fetchCapitalIndexes(),
+      fetchRCNumbers(),
+      fetchNearestTowns(),
+      fetchProjectManagers(),
+    ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -32,4 +58,8 @@ export default connect(mapStateToProps, {
   fetchCurrentUser,
   fetchUserStatuses,
   fetchRegions,
+  fetchCapitalIndexes,
+  fetchRCNumbers,
+  fetchNearestTowns,
+  fetchProjectManagers,
 })(Main);

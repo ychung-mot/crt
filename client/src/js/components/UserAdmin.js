@@ -44,7 +44,7 @@ const tableColumns = [
   { heading: 'IDIR', key: 'username' },
   { heading: 'Email', key: 'email' },
   { heading: 'Regions', key: 'regionNumbers', nosort: true },
-  { heading: 'Active', key: 'isActive', nosort: true },
+  { heading: 'Active', key: 'isActive', nosort: true, badge: { active: 'Active', inactive: 'Inactive' } },
 ];
 
 const validationSchema = Yup.object({
@@ -199,6 +199,7 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
               editable
+              deletable
               editPermissionName={Constants.PERMISSIONS.USER_W}
               onEditClicked={onEditClicked}
               onDeleteClicked={onDeleteClicked}

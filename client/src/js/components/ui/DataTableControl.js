@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Badge } from 'reactstrap';
 
+import { Link } from 'react-router-dom';
+
 import Authorize from '../fragments/Authorize';
 import FontAwesomeButton from './FontAwesomeButton';
 import DeleteButton from './DeleteButton';
@@ -10,6 +12,7 @@ const DataTableControl = ({
   dataList,
   tableColumns,
   editable,
+  deletable,
   editPermissionName,
   onEditClicked,
   onDeleteClicked,
@@ -36,7 +39,7 @@ const DataTableControl = ({
                 </th>
               );
             })}
-            {editable && (
+            {(editable || deletable) && (
               <Authorize requires={editPermissionName}>
                 <th></th>
               </Authorize>
@@ -48,13 +51,13 @@ const DataTableControl = ({
             return (
               <tr key={index}>
                 {tableColumns.map((column) => {
-                  if (column.key === 'isActive')
+                  if (column.badge)
                     return (
                       <td key={column.key}>
                         {item[column.key] ? (
-                          <Badge color="success">Active</Badge>
+                          <Badge color="success">{column.badge.active}</Badge>
                         ) : (
-                          <Badge color="danger">Inactive</Badge>
+                          <Badge color="danger">{column.badge.inactive}</Badge>
                         )}
                       </td>
                     );
@@ -63,30 +66,37 @@ const DataTableControl = ({
                   if (column.maxWidth) {
                     style.maxWidth = column.maxWidth;
                   }
-
                   return (
                     <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
-                      {item[column.key]}
+                      {column.link ? (
+                        <Link to={`${column.link.path}/${item[column.link?.idKey] ?? ''}`}>{item[column.key]}</Link>
+                      ) : (
+                        item[column.key]
+                      )}
                     </td>
                   );
                 })}
-                {editable && (
+                {(editable || deletable) && (
                   <Authorize requires={editPermissionName}>
                     <td style={{ width: '1%', whiteSpace: 'nowrap' }}>
-                      <FontAwesomeButton
-                        icon="edit"
-                        className="mr-1"
-                        onClick={() => handleEditClicked(item.id)}
-                        title="Edit Record"
-                      />
-                      <DeleteButton
-                        itemId={item.id}
-                        buttonId={`item_${item.id}_delete`}
-                        defaultEndDate={item.endDate}
-                        onDeleteClicked={onDeleteClicked}
-                        permanentDelete={item.canDelete}
-                        title={item.canDelete ? 'Delete Record' : 'Disable Record'}
-                      ></DeleteButton>
+                      {editable && (
+                        <FontAwesomeButton
+                          icon="edit"
+                          className="mr-1"
+                          onClick={() => handleEditClicked(item.id)}
+                          title="Edit Record"
+                        />
+                      )}
+                      {deletable && (
+                        <DeleteButton
+                          itemId={item.id}
+                          buttonId={`item_${item.id}_delete`}
+                          defaultEndDate={item.endDate}
+                          onDeleteClicked={onDeleteClicked}
+                          permanentDelete={item.canDelete}
+                          title={item.canDelete ? 'Delete Record' : 'Disable Record'}
+                        ></DeleteButton>
+                      )}
                     </td>
                   </Authorize>
                 )}
@@ -106,6 +116,16 @@ DataTableControl.propTypes = {
       heading: PropTypes.string.isRequired,
       key: PropTypes.string.isRequired,
       nosort: PropTypes.bool,
+      badge: PropTypes.shape({
+        //badge will show active/inactive string based on boolean value
+        active: PropTypes.string.isRequired,
+        inactive: PropTypes.string.isRequired,
+      }),
+      link: PropTypes.shape({
+        //will render link to path and optional :id path using data in table column key
+        path: PropTypes.string.isRequired,
+        idKey: PropTypes.string,
+      }),
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,
@@ -117,6 +137,7 @@ DataTableControl.propTypes = {
 
 DataTableControl.defaultProps = {
   editable: false,
+  deletable: false,
 };
 
 export default DataTableControl;
