@@ -8,9 +8,11 @@ import DataTableControl from '../ui/DataTableControl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FormInput } from '../forms/FormInputs';
 import { Formik, Form, useField } from 'formik';
+import Authorize from '../fragments/Authorize';
 
 import moment from 'moment';
 import * as api from '../../Api';
+import * as Constants from '../../Constants';
 
 const Comments = ({ title, dataList, projectId, show = 1 }) => {
   const [modalExpand, setModalExpand] = useState(false);
@@ -60,9 +62,11 @@ const Comments = ({ title, dataList, projectId, show = 1 }) => {
       <UIHeader>{title}</UIHeader>
       <DataTableControl dataList={data.slice(show * -1)} tableColumns={tableColumns} />
       <div className="text-right">
-        <Button color="primary" onClick={toggleShowAddModal}>
-          Add
-        </Button>
+        <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+          <Button color="primary" onClick={toggleShowAddModal}>
+            Add
+          </Button>
+        </Authorize>
         <Button color="primary" onClick={toggleShowAllModal}>
           Expand
         </Button>

@@ -164,7 +164,7 @@ const Projects = ({ currentUser, projectMgr }) => {
           )}
         </Formik>
       </MaterialCard>
-      <Authorize requires={Constants.PERMISSIONS.USER_W}>
+      <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
         <Row>
           <Col>
             <Button
