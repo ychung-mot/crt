@@ -131,7 +131,7 @@ namespace Crt.Domain.Services
             }
 
             var managers = await _userRepo.GetManagersAsync();
-            if (project.ProjectMgrId != null && managers.Any(x => x.SystemUserId == project.ProjectMgrId))
+            if (project.ProjectMgrId != null && !managers.Any(x => x.SystemUserId == project.ProjectMgrId))
             {
                 errors.AddItem(Fields.ProjectMgrId, $"Invalid project manager ID [{project.ProjectMgrId}]");
             }
