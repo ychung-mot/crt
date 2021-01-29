@@ -20,8 +20,7 @@ namespace Crt.Domain.Services
         Task<ProjectDto> GetProjectAsync(decimal projectId);
         Task<(decimal projectId, Dictionary<string, List<string>> errors)> CreateProjectAsync(ProjectCreateDto project);
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateProjectAsync(ProjectUpdateDto project);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteProjectAsync
-            (ProjectDeleteDto project);
+        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteProjectAsync(ProjectDeleteDto project);
     }
 
     public class ProjectService : CrtServiceBase, IProjectService
@@ -55,6 +54,8 @@ namespace Crt.Domain.Services
 
         public async Task<(decimal projectId, Dictionary<string, List<string>> errors)> CreateProjectAsync(ProjectCreateDto project)
         {
+            project.TrimStringFields();
+
             var errors = new Dictionary<string, List<string>>();
 
             _validator.Validate(Entities.Project, project, errors);
@@ -75,6 +76,8 @@ namespace Crt.Domain.Services
 
         public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateProjectAsync(ProjectUpdateDto project)
         {
+            project.TrimStringFields();
+
             var crtProject = await _projectRepo.GetProjectAsync(project.ProjectId);
 
             if (crtProject == null)
@@ -123,7 +126,7 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        private async Task ValidateProject(IProjectSave project, Dictionary<string, List<string>> errors)
+        private async Task ValidateProject(ProjectSaveDto project, Dictionary<string, List<string>> errors)
         {
             if (!_currentUser.UserInfo.RegionIds.Contains(project.RegionId))
             {
@@ -134,6 +137,13 @@ namespace Crt.Domain.Services
             if (project.ProjectMgrId != null && !managers.Any(x => x.SystemUserId == project.ProjectMgrId))
             {
                 errors.AddItem(Fields.ProjectMgrId, $"Invalid project manager ID [{project.ProjectMgrId}]");
+            }
+
+            var projectId = project.GetType() == typeof(ProjectUpdateDto) ? ((ProjectUpdateDto)project).ProjectId : 0M;
+
+            if (await _projectRepo.ProjectNumberAlreadyExists(projectId, project.ProjectNumber, project.RegionId))
+            {
+                errors.AddItem(Fields.ProjectNumber, $"Project Number [{project.ProjectNumber}] already exists");
             }
         }
     }
