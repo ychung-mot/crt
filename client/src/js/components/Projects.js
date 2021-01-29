@@ -34,7 +34,7 @@ const defaultSearchOptions = {
 
 const tableColumns = [
   { heading: 'Region^', key: 'regionName', nosort: true },
-  { heading: 'Project^', key: 'projectName', link: { path: '/projects', idKey: 'id' } },
+  { heading: 'Project^', key: 'projectNumber', link: { path: '/projects', idKey: 'id' } },
   { heading: 'Planning Targets^', key: 'planningTargets' },
   { heading: 'Tender Details', key: 'tenderDetails' },
   { heading: 'Location and Ratios^', key: 'locationRation' },
