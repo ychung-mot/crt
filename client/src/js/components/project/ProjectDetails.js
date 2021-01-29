@@ -144,17 +144,23 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
           <ColumnGroup name="Project End Date" label={data.endDate} />
         </DisplayRow>
       </MaterialCard>
-      <Comments title="Status Comments" dataList={commentFilter('STATUS')} projectId={match.params.id} show={1} />
-      <Comments title="EMR Comments" dataList={commentFilter('EMR')} projectId={match.params.id} show={1} />
+      <Comments
+        title="Status Comments"
+        dataList={commentFilter('STATUS')}
+        noteType="STATUS"
+        projectId={match.params.id}
+        show={1}
+      />
+      <Comments
+        title="EMR Comments"
+        dataList={commentFilter('EMR')}
+        noteType="EMR"
+        projectId={match.params.id}
+        show={1}
+      />
       {formModal.formElement}
     </React.Fragment>
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    showValidationErrorDialog: () => dispatch(showValidationErrorDialog),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(ProjectDetails);
+export default connect(null, { showValidationErrorDialog })(ProjectDetails);

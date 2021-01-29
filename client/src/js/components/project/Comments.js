@@ -7,14 +7,14 @@ import UIHeader from '../ui/UIHeader';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FormInput } from '../forms/FormInputs';
-import { Formik, Form, useField } from 'formik';
+import { Formik, Form } from 'formik';
 import Authorize from '../fragments/Authorize';
 
 import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const Comments = ({ title, dataList, projectId, show = 1 }) => {
+const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [modalAdd, setModalAdd] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -40,21 +40,14 @@ const Comments = ({ title, dataList, projectId, show = 1 }) => {
 
   const handleCommentSubmit = (value) => {
     setSubmitting(true);
-    console.log(projectId);
-    console.log(value);
-    //temporary fix to simulate submitting a comment
-    setTimeout(() => {
-      setSubmitting(false);
-      toggleShowAddModal();
-    }, 3000);
-    // api
-    //   .postNote(1, value)
-    //   .then(() => {
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setSubmitting(false);
-    //   });
+
+    api
+      .postNote(projectId, { projectId, ...value, noteType })
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+        setSubmitting(false);
+      });
   };
 
   return (

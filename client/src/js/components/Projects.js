@@ -23,13 +23,13 @@ import { showValidationErrorDialog } from '../redux/actions';
 import * as Constants from '../Constants';
 import * as api from '../Api';
 
-const defaultSearchFormValues = { searchText: '', regions: [], projectMgr: [], isInProgress: [] };
+const defaultSearchFormValues = { searchText: '', regionIds: [], projectManagerIds: [], isInProgress: [] };
 
 const defaultSearchOptions = {
   searchText: '',
   isInProgress: true,
   dataPath: Constants.API_PATHS.PROJECTS,
-  regions: '',
+  regionIds: '',
 };
 
 const tableColumns = [
@@ -43,8 +43,8 @@ const tableColumns = [
 
 const formikInitialValues = {
   searchText: '',
-  regions: [],
-  projectMgr: [],
+  regionIds: [],
+  projectManagerIds: [],
   isInProgress: [],
 };
 
@@ -90,8 +90,8 @@ const Projects = ({ currentUser, projectMgr }) => {
       ...searchData.searchOptions,
       isInProgress,
       searchText,
-      regions: values.regions.join(',') || null,
-      projectMgr: values.projectMgr.join(',') || null,
+      regionIds: values.regionIds.join(',') || null,
+      projectManagerIds: values.projectManagerIds.join(',') || null,
       pageNumber: 1,
     };
     searchData.updateSearchOptions(options);
@@ -140,13 +140,18 @@ const Projects = ({ currentUser, projectMgr }) => {
             <Form>
               <Row form>
                 <Col>
-                  <MultiDropdownField {...formikProps} items={currentUser.regions} name="regions" title="Regions" />
+                  <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
                 </Col>
                 <Col>
                   <Field type="text" name="searchText" placeholder="Keyword" className="form-control" />
                 </Col>
                 <Col>
-                  <MultiDropdownField {...formikProps} items={projectMgr} name="projectMgr" title="Project Manager" />
+                  <MultiDropdownField
+                    {...formikProps}
+                    items={projectMgr}
+                    name="projectManagerIds"
+                    title="Project Manager"
+                  />
                 </Col>
                 <Col>
                   <MultiDropdownField {...formikProps} items={isInProgress} name="isInProgress" title="Status" />
