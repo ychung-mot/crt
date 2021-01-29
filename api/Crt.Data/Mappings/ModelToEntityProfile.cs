@@ -54,6 +54,7 @@ namespace Crt.Data.Mappings
             CreateMap<ProjectDeleteDto, CrtProject>();
 
             CreateMap<NoteDto, CrtNote>();
+            CreateMap<NoteCreateDto, CrtNote>();
         }
     }
 }
