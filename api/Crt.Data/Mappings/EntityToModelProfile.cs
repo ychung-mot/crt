@@ -50,7 +50,9 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRegionDistrict, RegionDistrictDto>();
             CreateMap<CrtDistrict, DistrictDto>();
 
-            CreateMap<CrtProject, ProjectDto>();
+            CreateMap<CrtProject, ProjectDto>()
+                .ForMember(x => x.Notes, opt => opt.MapFrom(x => x.CrtNotes));
+
             CreateMap<CrtProject, ProjectCreateDto>();
             CreateMap<CrtProject, ProjectUpdateDto>();
             CreateMap<CrtProject, ProjectDeleteDto>();
@@ -58,9 +60,11 @@ namespace Crt.Data.Mappings
                 .ForMember(x => x.RegionNumber, opt => opt.MapFrom(x => x.Region.RegionNumber))
                 .ForMember(x => x.RegionName, opt => opt.MapFrom(x => x.Region.RegionName));
 
-            CreateMap <CrtNote, NoteDto>()
+            CreateMap<CrtNote, NoteDto>()
                 .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
                 .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.AppCreateTimestamp));
+
+            CreateMap<CrtNote, NoteCreateDto>();
         }
     }
 }

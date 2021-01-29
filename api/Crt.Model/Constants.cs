@@ -53,6 +53,7 @@ namespace Crt.Model
         public const string User = "user";
         public const string Role = "role";
         public const string Project = "project";
+        public const string Note = "note";
     }
 
     public static class FieldTypes
@@ -79,6 +80,7 @@ namespace Crt.Model
 
         public const string ApiClientId = "ApiClientId";
 
+        public const string ProjectId = "ProjectId";
         public const string ProjectNumber = "ProjectNumber";
         public const string ProjectName = "ProjectName";
         public const string Scope = "Scope";
@@ -86,6 +88,9 @@ namespace Crt.Model
         public const string NerstTwnLkupId = "NerstTwnLkupId";
         public const string RcLkupId = "RcLkupId";
         public const string ProjectMgrId = "ProjectMgrId";
+
+        public const string NoteType = "NoteType";
+        public const string Comment = "Comment";
     }
 
     public class DateColNames
@@ -172,5 +177,11 @@ namespace Crt.Model
     {
         public const string SamAccountName = "sAMAccountName";
         public const string BcgovGuid = "bcgovGUID";
+    }
+
+    public static class NoteTypes
+    {
+        public const string Status = "STATUS";
+        public const string Emr = "EMR";
     }
 }

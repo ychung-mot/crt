@@ -29,7 +29,6 @@ namespace Crt.Domain.Services
             LoadProjectEntityRules();
         }
 
-
         public IEnumerable<FieldValidationRule> GetFieldValidationRules(string entityName)
         {
             return _rules.Where(x => x.EntityName.ToLowerInvariant() == entityName.ToLowerInvariant());
