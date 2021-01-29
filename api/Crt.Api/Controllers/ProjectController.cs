@@ -26,11 +26,11 @@ namespace Crt.Api.Controllers
         [HttpGet]
         [RequiresPermission(Permissions.ProjectRead)]
         public async Task<ActionResult<PagedDto<ProjectSearchDto>>> GetProjectsAsync(
-            [FromQuery] string? regions,
+            [FromQuery] string? regionIds,
             [FromQuery] string searchText, [FromQuery] bool? isInProgress, [FromQuery] string projectManagerIds,
             [FromQuery] int pageSize, [FromQuery] int pageNumber, [FromQuery] string orderBy = "ProjectNumber", [FromQuery] string direction = "")
         {
-            return await _projectService.GetProjectsAsync(regions, searchText, isInProgress, projectManagerIds, pageSize, pageNumber, orderBy, direction);
+            return await _projectService.GetProjectsAsync(regionIds, searchText, isInProgress, projectManagerIds, pageSize, pageNumber, orderBy, direction);
         }
 
         [HttpGet("{id}", Name = "GetProject")]
