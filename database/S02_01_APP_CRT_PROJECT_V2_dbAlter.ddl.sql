@@ -1,13 +1,15 @@
 /* ---------------------------------------------------------------------- */
 /* Script generated with: DeZign for Databases 12.1.0                     */
 /* Target DBMS:           MS SQL Server 2017                              */
-/* Project file:          S02_01_APP_CRT_V1.dez                           */
+/* Project file:          S02_01_APP_CRT_V2.dez                           */
 /* Project name:          Capital Rehabilitation Tracking Reporting       */
 /* Author:                Ayodeji Kuponiyi                                */
 /* Script type:           Alter database script                           */
-/* Created on:            2021-01-22 08:49                                */
+/* Created on:            2021-01-28 14:44                                */
 /* ---------------------------------------------------------------------- */
 
+USE [CRT_DEV];
+GO
 
 /* ---------------------------------------------------------------------- */
 /* Drop triggers                                                          */
@@ -97,7 +99,7 @@ GO
 /* Add sequences                                                          */
 /* ---------------------------------------------------------------------- */
 
-CREATE SEQUENCE [dbo].[PROJECT_ID_SEQ]
+CREATE SEQUENCE [dbo].[CRT_PROJECT_ID_SEQ]
   AS bigint 
   START WITH 1
   INCREMENT BY 1 
@@ -119,7 +121,7 @@ CREATE SEQUENCE [dbo].[CRT_NOTE_ID_SEQ]
 GO
 
 
-CREATE SEQUENCE [dbo].[PROJECT_ID_HIST_SEQ]
+CREATE SEQUENCE [dbo].[CRT_PROJECT_H_ID_SEQ]
   AS bigint 
   START WITH 1
   INCREMENT BY 1 
@@ -192,7 +194,7 @@ GO
 /* ---------------------------------------------------------------------- */
 
 CREATE TABLE [dbo].[CRT_PROJECT] (
-    [PROJECT_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [PROJECT_ID_SEQ] NOT NULL,
+    [PROJECT_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_PROJECT_ID_SEQ] NOT NULL,
     [PROJECT_NUMBER] VARCHAR(50) NOT NULL,
     [PROJECT_NAME] VARCHAR(255) NOT NULL,
     [DESCRIPTION] VARCHAR(2000),
@@ -409,7 +411,7 @@ GO
 /* ---------------------------------------------------------------------- */
 
 CREATE TABLE [dbo].[CRT_PROJECT_HIST] (
-    [PROJECT_HIST_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [PROJECT_ID_HIST_SEQ] NOT NULL,
+    [PROJECT_HIST_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_PROJECT_H_ID_SEQ] NOT NULL,
     [PROJECT_ID] NUMERIC(9) NOT NULL,
     [PROJECT_NUMBER] VARCHAR(50) NOT NULL,
     [PROJECT_NAME] VARCHAR(255) NOT NULL,
@@ -668,7 +670,7 @@ SET @curr_date = getutcdate();
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -707,7 +709,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -742,7 +744,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -766,7 +768,7 @@ SET @curr_date = getutcdate();
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -815,7 +817,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -855,7 +857,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -879,7 +881,7 @@ SET @curr_date = getutcdate();
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -918,7 +920,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -953,7 +955,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -977,7 +979,7 @@ SET @curr_date = getutcdate();
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -1016,7 +1018,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH;
 GO
 
@@ -1040,7 +1042,7 @@ SET @curr_date = getutcdate();
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -1134,7 +1136,7 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
    IF @@trancount > 0 ROLLBACK TRANSACTION
-   EXEC CRT_error_handling
+   EXEC crt_error_handling
 END CATCH
 GO
 
@@ -1146,7 +1148,7 @@ BEGIN TRY
     RETURN;
 
 
-  insert into NOTE_ID ("NOTE_ID",
+  insert into CRT_NOTE ("NOTE_ID",
   	  "NOTE_TYPE",
   	  "PROJECT_ID",
   	  "COMMENT",
