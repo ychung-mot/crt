@@ -8,6 +8,7 @@ import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
+import MouseoverTooltip from '../ui/MouseoverTooltip';
 import { Row, Col, Button } from 'reactstrap';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
@@ -17,6 +18,7 @@ import useFormModal from '../hooks/useFormModal';
 
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
+import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
 const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
@@ -72,6 +74,9 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
       <>
         <Col className="mt-2 font-weight-bold" sm="3">
           {name}
+          {helper && (
+            <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>
+          )}
         </Col>
         <Col className="mt-2" sm="9">
           {label ? label : 'None'}
@@ -85,6 +90,9 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
       <>
         <Col className="mt-2 font-weight-bold" sm="3">
           {name}
+          {helper && (
+            <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>
+          )}
         </Col>
         <Col className="mt-2" sm="3">
           {label ? label : 'None'}
@@ -113,31 +121,32 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
           </Row>
         </Authorize>
         <DisplayRow>
-          <ColumnTwoGroups name="Project Number" label={data.projectNumber} />
-          <ColumnTwoGroups name="Project Name" label={data.projectName} />
+          <ColumnTwoGroups name="Project Number" label={data.projectNumber} helper="projectNumber" />
+          <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Project Description" label={data.description} />
+          <ColumnGroup name="Project Description" label={data.description} helper="description" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Project Scope" label={data.scope} />
+          <ColumnGroup name="Project Scope" label={data.scope} helper="scope" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.name}`} />
+          <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.name}`} helper="capIndxLkupId" />
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
           <ColumnTwoGroups
             name="Project Manager"
             label={data.programMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
+            helper={'projectMgrId'}
           />
         </DisplayRow>
         <DisplayRow>
-          <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkupId} />
-          <ColumnTwoGroups name="RC Number" label={data.rcLkupId} />
+          <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkupId} helper="nearstTwnLkupId" />
+          <ColumnTwoGroups name="RC Number" label={data.rcLkupId} helper="rcLkupId" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Project End Date" label={data.endDate} />
+          <ColumnGroup name="Project End Date" label={data.endDate} helper="endDate" />
         </DisplayRow>
       </MaterialCard>
       <Comments

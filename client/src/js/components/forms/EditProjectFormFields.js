@@ -62,25 +62,25 @@ const EditProjectFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="projectNumber" label="Project Number*" helper={{ id: 'projectNumber', text: 'placeholder' }}>
+      <FormRow name="projectNumber" label="Project Number*" helper="projectNumber">
         <FormInput type="text" name="projectNumber" placeholder="Project Number" />
       </FormRow>
-      <FormRow name="projectName" label="Project Name*">
+      <FormRow name="projectName" label="Project Name*" helper="projectName">
         <FormInput type="text" name="projectName" placeholder="Project Name" />
       </FormRow>
-      <FormRow name="description" label="Project Description">
+      <FormRow name="description" label="Project Description" helper="description">
         <FormInput type="text" name="description" placeholder="Project Description" />
       </FormRow>
-      <FormRow name="scope" label="Project Scope">
+      <FormRow name="scope" label="Project Scope" helper="scope">
         <FormInput type="text" name="scope" placeholder="Project Scope" />
       </FormRow>
-      <FormRow name="capIndxLkupId" label="Capital Index">
+      <FormRow name="capIndxLkupId" label="Capital Index" helper="capIndxLkupId">
         <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" />
       </FormRow>
       <FormRow name="regionId" label="MoTI Region*">
         <SingleDropdownField items={userRegionIds} name="regionId" />
       </FormRow>
-      <FormRow name="projectMgrId" label="Project Manager">
+      <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
         <SingleDropdownField
           items={projectMgr}
           name="projectMgrId"
@@ -89,13 +89,13 @@ const EditProjectFormFields = ({
           }
         />
       </FormRow>
-      <FormRow name="nearstTwnLkupId" label="Nearest Town">
+      <FormRow name="nearstTwnLkupId" label="Nearest Town" helper="nearstTwnLkupId">
         <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" />
       </FormRow>
-      <FormRow name="rcLkupId" label="RC Number">
+      <FormRow name="rcLkupId" label="RC Number" helper="rcLkupId">
         <SingleDropdownField items={rcNumbers} name="rcLkupId" />
       </FormRow>
-      <FormRow name="endDate" label="End Date">
+      <FormRow name="endDate" label="End Date" helper="endDate">
         <SingleDateField name="endDate" placeholder="End Date" />
       </FormRow>
     </React.Fragment>
