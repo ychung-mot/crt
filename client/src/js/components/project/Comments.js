@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import DataTableControl from '../ui/DataTableControl';
+import SubmitButton from '../ui/SubmitButton';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FormInput } from '../forms/FormInputs';
 import { Formik, Form } from 'formik';
@@ -96,13 +97,10 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
               </ModalBody>
               <ModalFooter>
                 <div className="text-right">
-                  <Button
-                    type="submit"
-                    color="primary"
+                  <SubmitButton
+                    submitting={submitting}
                     disabled={!dirty || values.comment.trim().length === 0 || submitting}
-                  >
-                    Submit
-                  </Button>
+                  />
                   <Button color="secondary" onClick={toggleShowAddModal}>
                     Close
                   </Button>
