@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
+import { Link } from 'react-router-dom';
 
 //components
 import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
 import Comments from './Comments';
@@ -58,12 +59,7 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   };
 
   const commentFilter = (commentType = '') => {
-    //temporary fix in case data.notes = null
-    if (data.notes) {
-      return data.notes.filter((note) => note.noteType === commentType);
-    }
-
-    return [];
+    return data.notes.filter((note) => note.noteType === commentType);
   };
 
   //display row helper functions
@@ -127,7 +123,7 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
           <ColumnGroup name="Project Scope" label={data.scope} />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.id} - ${data.capIndxLkup.name}`} />
+          <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.name}`} />
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
@@ -158,6 +154,16 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
         projectId={match.params.id}
         show={1}
       />
+
+      <div className="text-right">
+        <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
+          Continue
+        </Button>
+        <Link to={`${Constants.PATHS.PROJECTS}`}>
+          <Button color="secondary">Close</Button>
+        </Link>
+      </div>
+
       {formModal.formElement}
     </React.Fragment>
   );
