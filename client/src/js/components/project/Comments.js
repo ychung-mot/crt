@@ -40,10 +40,19 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
 
   const handleCommentSubmit = (value) => {
     setSubmitting(true);
-
     api
       .postNote(projectId, { projectId, ...value, noteType })
-      .then(() => {})
+      .then((response) => {
+        setData(
+          response.data.notes
+            .filter((note) => note.noteType === noteType)
+            .map((comment) => {
+              return { ...comment, noteDate: moment(comment.noteDate).format('YYYY-MMM-DD') };
+            })
+        );
+        toggleShowAddModal();
+        setSubmitting(false);
+      })
       .catch((error) => {
         console.log(error);
         setSubmitting(false);
