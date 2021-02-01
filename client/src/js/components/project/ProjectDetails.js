@@ -35,7 +35,6 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   const handleEditProjectFormSubmit = (values) => {
     if (!formModal.submitting) {
       formModal.setSubmitting(true);
-      //create postProject api
       api
         .putProject(values.id, values)
         .then(() => {

@@ -16,7 +16,7 @@ const defaultValues = {
   projectName: '',
   description: '',
   scope: '',
-  capIndxLkupId: null,
+  capIndxLkupId: undefined,
   regionId: undefined,
   projectMgrId: null,
   nearstTwnLkupId: null,
@@ -28,6 +28,7 @@ const validationSchema = Yup.object({
   projectNumber: Yup.string().required('Project number required'),
   projectName: Yup.string().required('Project name required'),
   regionId: Yup.number().required('Region required'),
+  capIndxLkupId: Yup.number().required('Capital Index required'),
 });
 
 const EditProjectFormFields = ({
@@ -74,7 +75,7 @@ const EditProjectFormFields = ({
       <FormRow name="scope" label="Project Scope" helper="scope">
         <FormInput type="text" name="scope" placeholder="Project Scope" />
       </FormRow>
-      <FormRow name="capIndxLkupId" label="Capital Index" helper="capIndxLkupId">
+      <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
         <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" />
       </FormRow>
       <FormRow name="regionId" label="MoTI Region*">
