@@ -616,7 +616,7 @@ namespace Crt.Data.Database.Entities
                 entity.Property(e => e.ProjectId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("PROJECT_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [PROJECT_ID_SEQ])")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_ID_SEQ])")
                     .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.AppCreateTimestamp)
@@ -782,7 +782,7 @@ namespace Crt.Data.Database.Entities
                 entity.Property(e => e.ProjectHistId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("PROJECT_HIST_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [PROJECT_ID_HIST_SEQ])")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_H_ID_SEQ])")
                     .HasComment("A system generated unique identifier tracking Project history");
 
                 entity.Property(e => e.AppCreateTimestamp)
@@ -2469,6 +2469,14 @@ namespace Crt.Data.Database.Entities
                 .HasMin(1)
                 .HasMax(2147483647);
 
+            modelBuilder.HasSequence("CRT_PROJECT_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(999999999);
+
+            modelBuilder.HasSequence("CRT_PROJECT_ID_SEQ")
+                .HasMin(1)
+                .HasMax(9999999999);
+
             modelBuilder.HasSequence("CRT_REG_DIST_H_ID_SEQ")
                 .HasMin(1)
                 .HasMax(9999999999);
@@ -2524,14 +2532,6 @@ namespace Crt.Data.Database.Entities
             modelBuilder.HasSequence("CRT_USR_RL_ID_SEQ")
                 .HasMin(1)
                 .HasMax(999999999);
-
-            modelBuilder.HasSequence("PROJECT_ID_HIST_SEQ")
-                .HasMin(1)
-                .HasMax(999999999);
-
-            modelBuilder.HasSequence("PROJECT_ID_SEQ")
-                .HasMin(1)
-                .HasMax(9999999999);
 
             modelBuilder.HasSequence("SYS_USR_ID_SEQ")
                 .HasMin(1)
