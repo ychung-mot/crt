@@ -64,16 +64,16 @@ const EditProjectFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="projectNumber" label="Project Number*" helper="projectNumber">
-        <FormInput type="text" name="projectNumber" placeholder="Project Number" />
+        <FormInput type="text" name="projectNumber" placeholder="Project Number" id="projectNumber" />
       </FormRow>
       <FormRow name="projectName" label="Project Name*" helper="projectName">
-        <FormInput type="text" name="projectName" placeholder="Project Name" />
+        <FormInput type="text" name="projectName" placeholder="Project Name" id="projectName" />
       </FormRow>
       <FormRow name="description" label="Project Description" helper="description">
-        <FormInput type="text" name="description" placeholder="Project Description" />
+        <FormInput type="text" name="description" placeholder="Project Description" id="description" />
       </FormRow>
       <FormRow name="scope" label="Project Scope" helper="scope">
-        <FormInput type="text" name="scope" placeholder="Project Scope" />
+        <FormInput type="text" name="scope" placeholder="Project Scope" id="scope" />
       </FormRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
         <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" />
