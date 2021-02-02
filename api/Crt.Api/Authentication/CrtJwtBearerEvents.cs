@@ -70,8 +70,6 @@ namespace Crt.Api.Authentication
 
         private async Task<bool> PopulateCurrentUserFromDb(ClaimsPrincipal principal)
         {
-            _logger.LogInformation("PopulateCurrentUserFromDb");
-
             _ = bool.TryParse(principal.FindFirstValue(CrtClaimTypes.KcIsApiClient), out bool isApiClient);
 
             //preferred_username token has a form of "{username}@{directory}".
@@ -81,8 +79,6 @@ namespace Crt.Api.Authentication
 
             var userGuid = new Guid(principal.FindFirstValue(CrtClaimTypes.KcIdirGuid));
             var email = principal.FindFirstValue(ClaimTypes.Email).ToUpperInvariant();
-
-            _logger.LogInformation($"User {username}/{userGuid}");
 
             var user = await _userService.GetActiveUserEntityAsync(userGuid);
             if (user == null)
