@@ -115,7 +115,10 @@ const Projects = ({ currentUser, projectMgr }) => {
           formModal.closeForm();
           searchData.refresh();
         })
-        .catch((error) => showValidationErrorDialog(error.response.data))
+        .catch((error) => {
+          console.log(error.response);
+          showValidationErrorDialog(error.response.data);
+        })
         .finally(() => formModal.setSubmitting(false));
     }
   };

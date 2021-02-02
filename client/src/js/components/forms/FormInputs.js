@@ -3,15 +3,16 @@ import { CustomInput, Col, FormGroup, Label, Input, FormFeedback } from 'reactst
 import { useField } from 'formik';
 import MouseoverTooltip from '../ui/MouseoverTooltip';
 
-export const FormRow = ({ name, label, children, helper }) => {
+import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
+
+export const FormRow = ({ name, label, children, helper = '' }) => {
   return (
     <FormGroup row>
       <Col sm={3}>
         <Label className="d-inline" for={name}>
           {label}
         </Label>
-        {/* temporary implementation. Will add tooltip functionaity when project core functions are complete */}
-        {helper && <MouseoverTooltip id={helper.id}>{helper.text}</MouseoverTooltip>}
+        {helper && <MouseoverTooltip id={helper}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
       <Col sm={9}>{children}</Col>
     </FormGroup>
