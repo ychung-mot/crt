@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
+using Crt.Model;
 using Crt.Model.Dtos;
 using Crt.Model.Dtos.Permission;
 using Crt.Model.Dtos.Role;
@@ -29,8 +30,8 @@ namespace Crt.Data.Repositories
     {
         private IUserRoleRepository _userRoleRepo;
 
-        public RoleRepository(AppDbContext dbContext, IMapper mapper, IUserRoleRepository userRoleRepo)
-            : base(dbContext, mapper)
+        public RoleRepository(AppDbContext dbContext, IMapper mapper, IUserRoleRepository userRoleRepo, CrtCurrentUser currentUser)
+            : base(dbContext, mapper, currentUser)
         {
             _userRoleRepo = userRoleRepo;
         }

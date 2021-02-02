@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
+using Crt.Model;
 using Crt.Model.Dtos.District;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,8 +21,8 @@ namespace Crt.Data.Repositories
 
     public class DistrictRepository : CrtRepositoryBase<CrtDistrict>, IDistrictRepository
     {
-        public DistrictRepository(AppDbContext dbContext, IMapper mapper)
-            : base(dbContext, mapper)
+        public DistrictRepository(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser)
+            : base(dbContext, mapper, currentUser)
         { }
 
         public IEnumerable<DistrictDto> GetAllDistricts()
