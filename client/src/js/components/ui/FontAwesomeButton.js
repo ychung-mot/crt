@@ -13,7 +13,7 @@ const FontAwesomeButton = (props) => {
       disabled={props.disabled}
       title={props.title}
     >
-      <FontAwesomeIcon icon={props.icon} spin={props.spin} />
+      <FontAwesomeIcon icon={props.icon} spin={props.spin} size={props.iconSize} />
     </Button>
   );
 };

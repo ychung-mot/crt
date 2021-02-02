@@ -10,6 +10,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { FormInput } from '../forms/FormInputs';
 import { Formik, Form } from 'formik';
 import Authorize from '../fragments/Authorize';
+import FontAwesomeButton from '../ui/FontAwesomeButton';
 
 import moment from 'moment';
 import * as api from '../../Api';
@@ -66,13 +67,15 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
       <DataTableControl dataList={data.slice(show * -1)} tableColumns={tableColumns} />
       <div className="text-right">
         <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-          <Button color="primary" onClick={toggleShowAddModal}>
-            Add
-          </Button>
+          <FontAwesomeButton
+            icon="plus"
+            iconSize="2x"
+            onClick={toggleShowAddModal}
+            title={`Add ${title}`}
+            className="mr-2"
+          />
         </Authorize>
-        <Button color="primary" onClick={toggleShowAllModal}>
-          Expand
-        </Button>
+        <FontAwesomeButton icon="expand-alt" iconSize="2x" onClick={toggleShowAllModal} title={`Show all ${title}`} />
       </div>
       <Modal isOpen={modalExpand} toggle={toggleShowAllModal}>
         <ModalHeader toggle={toggleShowAllModal}>{title} History</ModalHeader>
