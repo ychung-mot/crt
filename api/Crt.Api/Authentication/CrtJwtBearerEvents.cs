@@ -77,8 +77,11 @@ namespace Crt.Api.Authentication
             var usernames = preferredUsername.Split("@");
             var username = usernames[0].ToUpperInvariant();
 
+
             var userGuid = new Guid(principal.FindFirstValue(CrtClaimTypes.KcIdirGuid));
             var email = principal.FindFirstValue(ClaimTypes.Email).ToUpperInvariant();
+
+            _logger.LogInformation($"User {usernames}/{userGuid}");
 
             var user = await _userService.GetActiveUserEntityAsync(userGuid);
             if (user == null)
