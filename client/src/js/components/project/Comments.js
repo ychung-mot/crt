@@ -67,15 +67,9 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
       <DataTableControl dataList={data.slice(show * -1)} tableColumns={tableColumns} />
       <div className="text-right">
         <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-          <FontAwesomeButton
-            icon="plus"
-            iconSize="2x"
-            onClick={toggleShowAddModal}
-            title={`Add ${title}`}
-            className="mr-2"
-          />
+          <FontAwesomeButton icon="plus" onClick={toggleShowAddModal} title={`Add ${title}`} className="mr-2" />
         </Authorize>
-        <FontAwesomeButton icon="expand-alt" iconSize="2x" onClick={toggleShowAllModal} title={`Show all ${title}`} />
+        <FontAwesomeButton icon="expand-alt" onClick={toggleShowAllModal} title={`Show all ${title}`} />
       </div>
       <Modal isOpen={modalExpand} toggle={toggleShowAllModal}>
         <ModalHeader toggle={toggleShowAllModal}>{title} History</ModalHeader>
