@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
+using Crt.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -13,8 +14,8 @@ namespace Crt.Data.Repositories
 
     public class UserRoleRepository : CrtRepositoryBase<CrtUserRole>, IUserRoleRepository
     {
-        public UserRoleRepository(AppDbContext dbContext, IMapper mapper)
-            : base(dbContext, mapper)
+        public UserRoleRepository(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser)
+            : base(dbContext, mapper, currentUser)
         {
         }
 
@@ -22,6 +23,5 @@ namespace Crt.Data.Repositories
         {
             return await DbSet.AnyAsync(x => x.RoleId == roleId);
         }
-
     }
 }

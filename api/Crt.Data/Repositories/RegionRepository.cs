@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
+using Crt.Model;
 using Crt.Model.Dtos.Region;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,9 +22,9 @@ namespace Crt.Data.Repositories
 
     public class RegionRepository : CrtRepositoryBase<CrtRegion>, IRegionRepository
     {
-        public RegionRepository(AppDbContext dbContext, IMapper mapper)
-            : base(dbContext, mapper)
-        {}
+        public RegionRepository(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser)
+            : base(dbContext, mapper, currentUser)
+        { }
 
         public IEnumerable<RegionDto> GetAllRegions()
         {

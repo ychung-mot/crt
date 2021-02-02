@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
+using Crt.Model;
 using Crt.Model.Dtos.Note;
 using System.Threading.Tasks;
 
@@ -13,8 +14,8 @@ namespace Crt.Data.Repositories
 
     public class NoteRepository : CrtRepositoryBase<CrtNote>, INoteRepository
     {
-        public NoteRepository(AppDbContext dbContext, IMapper mapper)
-            : base(dbContext, mapper)
+        public NoteRepository(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser)
+            : base(dbContext, mapper, currentUser)
         {
         }
 
