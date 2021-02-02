@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-//for popover
-import { Popover, PopoverHeader, PopoverBody, ButtonGroup } from 'reactstrap';
 import { Formik, Form } from 'formik';
 
 import SubmitButton from '../ui/SubmitButton';
@@ -16,26 +14,24 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
   const [formType, setFormType] = useState(Constants.FORM_TYPE.ADD);
   const [formOptions, setFormOptions] = useState({});
   const [validationSchema, setValidationSchema] = useState({});
-  //popover states:
-  const [popoverOpen, setPopoverOpen] = useState(false);
+  //saveCheck modal states:
+  const [modalSaveCheckOpen, setModalSaveCheckOpen] = useState(false);
 
-  const toggle = () => setIsOpen(false);
-
-  const toggleWithCheck = (dirty) => {
-    if (dirty) {
-      togglePopover();
+  const toggle = (dirty = false) => {
+    if (dirty && saveCheck) {
+      toggleModalSaveCheck();
     } else {
-      toggle();
+      setIsOpen(false);
     }
   };
 
-  const togglePopover = () => {
-    setPopoverOpen(!popoverOpen);
+  const toggleModalSaveCheck = () => {
+    setModalSaveCheckOpen(!modalSaveCheckOpen);
   };
 
   const handleConfirmLeave = () => {
-    setPopoverOpen(false);
-    toggle();
+    setIsOpen(false);
+    setModalSaveCheckOpen(false);
   };
 
   const openForm = (formType, options) => {
@@ -56,7 +52,6 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
   const formModal = () => {
     return (
       <Modal isOpen={isOpen} toggle={toggle} backdrop="static">
-        <ModalHeader toggle={toggle}>{title}</ModalHeader>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
@@ -65,6 +60,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
         >
           {({ dirty, values }) => (
             <Form>
+              <ModalHeader toggle={() => toggle(dirty)}>{title}</ModalHeader>
               <ModalBody>
                 {isOpen &&
                   React.cloneElement(formFieldsChildElement, {
@@ -79,37 +75,24 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
                 <SubmitButton size="sm" submitting={submitting} disabled={submitting || !dirty}>
                   Submit
                 </SubmitButton>
-                <Button
-                  id="popover_cancel"
-                  color="secondary"
-                  size="sm"
-                  onClick={saveCheck ? () => toggleWithCheck(dirty) : toggle}
-                >
+                <Button color="secondary" size="sm" onClick={() => toggle(dirty)}>
                   Cancel
                 </Button>
-                <Popover
-                  placement="auto-start"
-                  isOpen={popoverOpen}
-                  target={'popover_cancel'}
-                  toggle={() => togglePopover}
-                  trigger="legacy"
-                >
-                  <PopoverHeader>You have unsaved changes.</PopoverHeader>
-                  <PopoverBody>
+                <Modal isOpen={modalSaveCheckOpen}>
+                  <ModalHeader>You have unsaved changes.</ModalHeader>
+                  <ModalBody>
                     If the screen is closed before saving these changes, they will be lost. Do you want to continue
                     without saving?
-                    <div className="text-right">
-                      <ButtonGroup>
-                        <Button color="danger" size="sm" onClick={handleConfirmLeave}>
-                          Yes
-                        </Button>
-                        <Button color="secondary" size="sm" onClick={togglePopover}>
-                          No
-                        </Button>
-                      </ButtonGroup>
-                    </div>
-                  </PopoverBody>
-                </Popover>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button size="sm" color="primary" onClick={handleConfirmLeave}>
+                      Leave
+                    </Button>
+                    <Button color="secondary" size="sm" onClick={toggleModalSaveCheck}>
+                      Go Back
+                    </Button>
+                  </ModalFooter>
+                </Modal>
               </ModalFooter>
             </Form>
           )}
