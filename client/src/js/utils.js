@@ -53,6 +53,9 @@ export const updateQueryParamsFromHistory = (history, newParam, overwrite) => {
   if (newParam.isInProgress === null) processedParams = _.omit(processedParams, ['isInProgress']);
   else processedParams = { ...processedParams, isInProgress: newParam.isInProgress };
 
+  //remove empty projectManagerIds
+  if (newParam.projectManagerIds === null) processedParams = _.omit(processedParams, ['projectManagerIds']);
+
   return queryString.stringify(processedParams);
 };
 

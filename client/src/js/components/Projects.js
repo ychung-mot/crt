@@ -25,7 +25,7 @@ import * as api from '../Api';
 
 const defaultSearchFormValues = { searchText: '', regionIds: [], projectManagerIds: [], isInProgress: [] };
 
-const defaultSearchOptions = {
+let defaultSearchOptions = {
   searchText: '',
   isInProgress: true,
   dataPath: Constants.API_PATHS.PROJECTS,
@@ -55,6 +55,10 @@ const isInProgress = [
 ];
 
 const Projects = ({ currentUser, projectMgr }) => {
+  if (currentUser.isProjectMgr) {
+    defaultSearchOptions = { ...defaultSearchOptions, projectManagerIds: currentUser.id };
+  }
+
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -76,6 +80,7 @@ const Projects = ({ currentUser, projectMgr }) => {
       ...searchInitialValues,
       searchText,
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
