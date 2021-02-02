@@ -33,12 +33,9 @@ namespace Crt.Data.Repositories
 
     public class UserRepository : CrtRepositoryBase<CrtSystemUser>, IUserRepository
     {
-        private CrtCurrentUser _currentUser;
-
         public UserRepository(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser)
-            : base(dbContext, mapper)
+            : base(dbContext, mapper, currentUser)
         {
-            _currentUser = currentUser;
         }
 
         public async Task<UserCurrentDto> GetCurrentUserAsync()

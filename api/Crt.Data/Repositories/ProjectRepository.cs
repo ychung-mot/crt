@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
+using Crt.Model;
 using Crt.Model.Dtos;
 using Crt.Model.Dtos.Project;
 using Crt.Model.Utils;
@@ -25,8 +26,8 @@ namespace Crt.Data.Repositories
 
     public class ProjectRepository : CrtRepositoryBase<CrtProject>, IProjectRepository
     {
-        public ProjectRepository(AppDbContext dbContext, IMapper mapper) 
-            : base(dbContext, mapper)
+        public ProjectRepository(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser) 
+            : base(dbContext, mapper, currentUser)
         {
         }
 
@@ -35,6 +36,8 @@ namespace Crt.Data.Repositories
             int pageSize, int pageNumber, string orderBy, string direction)
         {
             var query = DbSet.AsNoTracking();
+
+            query = query.Where(x => _currentUser.UserInfo.RegionIds.Contains(x.RegionId));
 
             if (regions.Length > 0)
             {

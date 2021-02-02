@@ -8,6 +8,7 @@ using Crt.Data.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using NetTopologySuite.Geometries;
+using Crt.Model;
 
 namespace Crt.Data.Repositories.Base
 {
@@ -41,17 +42,21 @@ namespace Crt.Data.Repositories.Base
 
         protected DbSet<TEntity> DbSet { get; private set; }
 
+        protected CrtCurrentUser _currentUser;
+
         protected AppDbContext DbContext { get; private set; }
 
         protected IMapper Mapper { get; private set; }
 
+
         #endregion
 
-        public CrtRepositoryBase(AppDbContext dbContext, IMapper mapper)
+        public CrtRepositoryBase(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser)
         {
             Mapper = mapper;
             DbContext = dbContext;
             DbSet = DbContext.Set<TEntity>();
+            _currentUser = currentUser;
         }
 
         #region Implementation
