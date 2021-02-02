@@ -65,7 +65,7 @@ const SingleDropdown = (props) => {
         <DropdownToggle caret onBlur={handleOnBlur}>
           {title}
         </DropdownToggle>
-        <DropdownMenu>{renderMenuItems()}</DropdownMenu>
+        <DropdownMenu className="pre-scrollable">{renderMenuItems()}</DropdownMenu>
       </UncontrolledDropdown>
       {fieldMeta && fieldMeta.touched && fieldMeta.error && (
         <FormFeedback style={errorStyle}>{fieldMeta.error}</FormFeedback>
