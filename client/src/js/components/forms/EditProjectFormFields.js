@@ -25,7 +25,9 @@ const defaultValues = {
 };
 
 const validationSchema = Yup.object({
-  projectNumber: Yup.string().required('Project number required'),
+  projectNumber: Yup.string().required(
+    'Project number required. You may assign a temporary value that can be updated once the project number is known?'
+  ),
   projectName: Yup.string().required('Project name required'),
   regionId: Yup.number().required('Region required'),
   capIndxLkupId: Yup.number().required('Capital Index required'),
