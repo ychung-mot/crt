@@ -49,15 +49,23 @@ namespace Crt.Api.Authentication
 
         public override async Task TokenValidated(TokenValidatedContext context)
         {
-            if (!(await PopulateCurrentUserFromDb(context.Principal)))
+            try
             {
-                context.Fail("Access Denied");
-                return;
+                if (!(await PopulateCurrentUserFromDb(context.Principal)))
+                {
+                    context.Fail("Access Denied");
+                    return;
+                }
+
+                _curentUser.UserInfo = await _userService.GetCurrentUserAsync();
+
+                AddClaimsFromUserInfo(context.Principal, _curentUser.UserInfo);
             }
-
-            _curentUser.UserInfo = await _userService.GetCurrentUserAsync();
-
-            AddClaimsFromUserInfo(context.Principal, _curentUser.UserInfo);
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
 
         private async Task<bool> PopulateCurrentUserFromDb(ClaimsPrincipal principal)
