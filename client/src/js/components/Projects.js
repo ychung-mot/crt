@@ -25,7 +25,7 @@ import * as api from '../Api';
 
 const defaultSearchFormValues = { searchText: '', regionIds: [], projectManagerIds: [], isInProgress: [] };
 
-let defaultSearchOptions = {
+const defaultSearchOptions = {
   searchText: '',
   isInProgress: true,
   dataPath: Constants.API_PATHS.PROJECTS,
@@ -41,22 +41,23 @@ const tableColumns = [
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
-const formikInitialValues = {
-  searchText: '',
-  regionIds: [],
-  projectManagerIds: [],
-  isInProgress: [],
-};
-
 //temporary fix hardcode project status
 const isInProgress = [
   { id: 'inProgress', name: 'In Progress' },
   { id: 'complete', name: 'Completed' },
 ];
 
+const formikInitialValues = {
+  searchText: '',
+  regionIds: [],
+  projectManagerIds: [],
+  isInProgress: [isInProgress[0].id],
+};
+
 const Projects = ({ currentUser, projectMgr }) => {
   if (currentUser.isProjectMgr) {
-    defaultSearchOptions = { ...defaultSearchOptions, projectManagerIds: currentUser.id };
+    defaultSearchOptions.projectManagerIds = currentUser.id;
+    formikInitialValues.projectManagerIds = [currentUser.id];
   }
 
   const location = useLocation();
