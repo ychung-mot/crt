@@ -136,7 +136,7 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
           <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
           <ColumnTwoGroups
             name="Project Manager"
-            label={data.programMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
+            label={data.projectMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
             helper={'projectMgrId'}
           />
         </DisplayRow>

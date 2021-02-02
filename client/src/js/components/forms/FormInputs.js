@@ -12,7 +12,7 @@ export const FormRow = ({ name, label, children, helper = '' }) => {
         <Label className="d-inline" for={name}>
           {label}
         </Label>
-        {helper && <MouseoverTooltip id={helper}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+        {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
       <Col sm={9}>{children}</Col>
     </FormGroup>

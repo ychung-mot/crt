@@ -54,10 +54,10 @@ const EditRoleFormFields = ({ setInitialValues, formValues, setValidationSchema,
   return (
     <React.Fragment>
       <FormRow name="name" label="Role Name*">
-        <FormInput type="text" name="name" placeholder="Role Name" />
+        <FormInput type="text" name="name" placeholder="Role Name" id="name" />
       </FormRow>
       <FormRow name="description" label="Role Description*">
-        <FormInput type="text" name="description" placeholder="Role Description" />
+        <FormInput type="text" name="description" placeholder="Role Description" id="description" />
       </FormRow>
       <FormRow name="permissions" label="Permissions*">
         <MultiSelect items={permissionIds} name="permissions" />

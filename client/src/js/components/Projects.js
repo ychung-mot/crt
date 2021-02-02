@@ -41,20 +41,25 @@ const tableColumns = [
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
-const formikInitialValues = {
-  searchText: '',
-  regionIds: [],
-  projectManagerIds: [],
-  isInProgress: [],
-};
-
 //temporary fix hardcode project status
 const isInProgress = [
   { id: 'inProgress', name: 'In Progress' },
   { id: 'complete', name: 'Completed' },
 ];
 
+const formikInitialValues = {
+  searchText: '',
+  regionIds: [],
+  projectManagerIds: [],
+  isInProgress: [isInProgress[0].id],
+};
+
 const Projects = ({ currentUser, projectMgr }) => {
+  if (currentUser.isProjectMgr) {
+    defaultSearchOptions.projectManagerIds = currentUser.id;
+    formikInitialValues.projectManagerIds = [currentUser.id];
+  }
+
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -76,6 +81,7 @@ const Projects = ({ currentUser, projectMgr }) => {
       ...searchInitialValues,
       searchText,
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

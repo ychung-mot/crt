@@ -39,6 +39,7 @@ const AddUserSearch = ({ submitting, toggle, values, handleSubmit }) => {
             <FormGroup>
               <Label for="username">Search by IDIR</Label>
               <FormInput
+                id="username"
                 type="text"
                 name="username"
                 placeholder="IDIR"

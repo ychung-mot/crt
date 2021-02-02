@@ -90,7 +90,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
           {({ dirty, values }) => (
             <Form>
               <ModalBody>
-                <FormInput type="text" name="comment" placeholder="Insert Comment Here" />
+                <FormInput type="textarea" name="comment" placeholder="Insert Comment Here" />
               </ModalBody>
               <ModalFooter>
                 <div className="text-right">
