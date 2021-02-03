@@ -155,7 +155,7 @@ const Projects = ({ currentUser, projectMgr }) => {
                   <Field
                     type="text"
                     name="searchText"
-                    placeholder="Keyword"
+                    placeholder="Number/Name/Description/Scope"
                     className="form-control"
                     title="Searches Project Number, Name, Description and Scope fields"
                   />
@@ -166,6 +166,7 @@ const Projects = ({ currentUser, projectMgr }) => {
                     items={projectMgr}
                     name="projectManagerIds"
                     title="Project Manager"
+                    searchable
                   />
                 </Col>
                 <Col>
