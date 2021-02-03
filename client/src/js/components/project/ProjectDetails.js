@@ -106,19 +106,18 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   return (
     <React.Fragment>
       <MaterialCard>
-        <UIHeader>Project Details</UIHeader>
-        <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-          <Row>
-            <Col>
-              <FontAwesomeButton
-                icon="edit"
-                className="float-right"
-                onClick={() => onEditClicked(match.params.id)}
-                title="Edit Record"
-              />
-            </Col>
-          </Row>
-        </Authorize>
+        <UIHeader>
+          Project Details{' '}
+          <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+            <FontAwesomeButton
+              icon="edit"
+              className="float-right"
+              onClick={() => onEditClicked(match.params.id)}
+              title="Edit Record"
+              iconSize="lg"
+            />
+          </Authorize>
+        </UIHeader>
         <DisplayRow>
           <ColumnTwoGroups name="Project Number" label={data.projectNumber} helper="projectNumber" />
           <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
