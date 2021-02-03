@@ -152,7 +152,13 @@ const Projects = ({ currentUser, projectMgr }) => {
                   <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
                 </Col>
                 <Col>
-                  <Field type="text" name="searchText" placeholder="Keyword" className="form-control" />
+                  <Field
+                    type="text"
+                    name="searchText"
+                    placeholder="Keyword"
+                    className="form-control"
+                    title="Searches Project Number, Name, Description and Scope fields"
+                  />
                 </Col>
                 <Col>
                   <MultiDropdownField
