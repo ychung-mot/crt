@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
-import { Link, useHistory } from 'react-router-dom';
 
 //components
 import Authorize from '../fragments/Authorize';
@@ -20,14 +19,11 @@ import * as api from '../../Api';
 import * as Constants from '../../Constants';
 import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
-const ProjectDetails = ({ match, showValidationErrorDialog }) => {
+const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
-  let history = useHistory();
-
   useEffect(() => {
-    console.log(history);
     api.getProject(match.params.id).then((response) => {
       setData(response.data);
       setLoading(false);
@@ -169,9 +165,6 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
         <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
           Continue
         </Button>
-        {/* <Link to={`${Constants.PATHS.PROJECTS}`}>
-          <Button color="secondary">Close</Button>
-        </Link> */}
         <Button color="secondary" onClick={() => history.goBack()}>
           Close
         </Button>

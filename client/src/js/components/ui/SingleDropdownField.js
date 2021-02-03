@@ -4,7 +4,7 @@ import { useFormikContext, useField } from 'formik';
 import SingleDropdown from './SingleDropdown';
 
 const SingleDropdownField = (props) => {
-  const { items, name, defaultTitle, disabled } = props;
+  const { items, name, defaultTitle, disabled, searchable } = props;
   const { values, setFieldValue, setFieldTouched } = useFormikContext();
   const [title, setTitle] = useState(values[name] && values[name].length > 0 ? values[name] : defaultTitle);
   const [field, meta] = useField(props);
@@ -37,6 +37,7 @@ const SingleDropdownField = (props) => {
       isInvalidClassName={isInvalidClassName}
       errorStyle={style}
       fieldMeta={meta}
+      searchable={searchable}
     />
   );
 };

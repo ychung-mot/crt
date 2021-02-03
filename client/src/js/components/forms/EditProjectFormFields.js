@@ -93,10 +93,10 @@ const EditProjectFormFields = ({
         />
       </FormRow>
       <FormRow name="nearstTwnLkupId" label="Nearest Town" helper="nearstTwnLkupId">
-        <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" />
+        <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable />
       </FormRow>
       <FormRow name="rcLkupId" label="RC Number" helper="rcLkupId">
-        <SingleDropdownField items={rcNumbers} name="rcLkupId" />
+        <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
       </FormRow>
       <FormRow name="endDate" label="End Date" helper="endDate">
         <SingleDateField name="endDate" placeholder="End Date" />
