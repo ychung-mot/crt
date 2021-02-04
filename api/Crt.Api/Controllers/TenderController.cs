@@ -1,13 +1,9 @@
 ﻿using Crt.Api.Authorization;
 using Crt.Api.Controllers.Base;
 using Crt.Model;
-using Crt.Model.Dtos.CodeLookup;
-using Crt.Model.Dtos.ProjectTender;
 using Crt.Model.Dtos.Tender;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Controllers
@@ -24,7 +20,7 @@ namespace Crt.Api.Controllers
 
         [HttpGet("{id}", Name = "GetTender")]
         [RequiresPermission(Permissions.ProjectRead)]
-        public async Task<ActionResult<ProjectTenderDto>> GetTenderByIdAsync(decimal id)
+        public async Task<ActionResult<TenderDto>> GetTenderByIdAsync(decimal id)
         {
             //var project = await _projectService.GetProjectAsync(projectId);
 
