@@ -104,7 +104,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
       </UIHeader>
       <DataTableControl dataList={data.slice(show * -1)} tableColumns={tableColumns} />
 
-      <Modal isOpen={modalExpand} toggle={toggleShowAllModal}>
+      <Modal isOpen={modalExpand} toggle={toggleShowAllModal} size="lg">
         <ModalHeader toggle={toggleShowAllModal}>{title} History</ModalHeader>
         <ModalBody>
           <DataTableControl dataList={data} tableColumns={tableColumns} />
@@ -118,13 +118,24 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
         </ModalFooter>
       </Modal>
 
-      <Modal isOpen={modalAdd} toggle={toggleShowAddModal} onOpened={() => myInput.current && myInput.current.focus()}>
+      <Modal
+        isOpen={modalAdd}
+        toggle={toggleShowAddModal}
+        onOpened={() => myInput.current && myInput.current.focus()}
+        size="lg"
+      >
         <ModalHeader toggle={toggleShowAddModal}>Add {title}</ModalHeader>
         <Formik initialValues={{ comment: '' }} onSubmit={handleCommentSubmit}>
           {({ dirty, values }) => (
             <Form>
               <ModalBody>
-                <FormInput innerRef={myInput} type="textarea" name="comment" placeholder="Insert Comment Here" />
+                <FormInput
+                  innerRef={myInput}
+                  type="textarea"
+                  name="comment"
+                  placeholder="Insert Comment Here"
+                  rows={5}
+                />
               </ModalBody>
               <ModalFooter>
                 <div className="text-right">
