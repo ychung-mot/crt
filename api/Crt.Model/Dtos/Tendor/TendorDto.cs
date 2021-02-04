@@ -11,7 +11,7 @@ namespace Crt.Model.Dtos.Tendor
         public string  TendorNumber { get; set; }
         public DateTime? PlannedDate { get; set; }
         public DateTime? ActualDate { get; set; }
-        public decimal Value { get; set; }
+        public decimal TendorValue { get; set; }
         public decimal WinningContractorLkupId { get; set; }
         public decimal BidValue { get; set; }
     }

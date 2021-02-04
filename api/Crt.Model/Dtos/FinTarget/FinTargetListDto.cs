@@ -1,6 +1,5 @@
 ﻿using Crt.Model.Dtos.CodeLookup;
 using Crt.Model.Dtos.Element;
-using System;
 using System.Text.Json.Serialization;
 
 namespace Crt.Model.Dtos.FinTarget
