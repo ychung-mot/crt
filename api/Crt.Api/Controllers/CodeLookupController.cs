@@ -68,5 +68,11 @@ namespace Crt.Api.Controllers
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Contractor));
         }
+
+        [HttpGet("forecasttypes")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetForecastTypes()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.ForecastType));
+        }
     }
 }

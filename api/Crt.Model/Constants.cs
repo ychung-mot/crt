@@ -108,6 +108,7 @@ namespace Crt.Model
         public const string Quantity = "QUANTITY";
         public const string Accomplishment = "ACCOMPLISHMENT";
         public const string Contractor = "CONTRACTOR";
+        public const string ForecastType = "FORECAST_TYPE";
     }
 
     public static class CrtEnvironments
