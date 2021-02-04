@@ -122,12 +122,6 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
           <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Project Description" label={data.description} helper="description" />
-        </DisplayRow>
-        <DisplayRow>
-          <ColumnGroup name="Project Scope" label={data.scope} helper="scope" />
-        </DisplayRow>
-        <DisplayRow>
           <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.name}`} helper="capIndxLkupId" />
         </DisplayRow>
         <DisplayRow>
@@ -139,11 +133,17 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
           />
         </DisplayRow>
         <DisplayRow>
-          <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkupId} helper="nearstTwnLkupId" />
-          <ColumnTwoGroups name="RC Number" label={data.rcLkupId} helper="rcLkupId" />
+          <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkup.codeName} helper="nearstTwnLkupId" />
+          <ColumnTwoGroups name="RC Number" label={data.rcLkup.codeName} helper="rcLkupId" />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Project End Date" label={data.endDate} helper="endDate" />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnGroup name="Project Description" label={data.description} helper="description" />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnGroup name="Project Scope" label={data.scope} helper="scope" />
         </DisplayRow>
       </MaterialCard>
       <Comments
