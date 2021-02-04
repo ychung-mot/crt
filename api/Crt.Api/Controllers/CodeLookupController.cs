@@ -57,7 +57,7 @@ namespace Crt.Api.Controllers
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Quantity));
         }
 
-        [HttpGet("accomplishiments")]
+        [HttpGet("accomplishments")]
         public ActionResult<IEnumerable<CodeLookupDto>> GetAccomplishments()
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Accomplishment));
