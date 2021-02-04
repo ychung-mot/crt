@@ -2,13 +2,17 @@
 using Crt.Data.Database.Entities;
 using Crt.Model.Dtos.CodeLookup;
 using Crt.Model.Dtos.District;
+using Crt.Model.Dtos.Element;
+using Crt.Model.Dtos.FinTarget;
 using Crt.Model.Dtos.Note;
 using Crt.Model.Dtos.Permission;
 using Crt.Model.Dtos.Project;
+using Crt.Model.Dtos.QtyAccmp;
 using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.Role;
 using Crt.Model.Dtos.RolePermission;
 using Crt.Model.Dtos.ServiceArea;
+using Crt.Model.Dtos.Tender;
 using Crt.Model.Dtos.User;
 using Crt.Model.Dtos.UserRole;
 
@@ -55,6 +59,14 @@ namespace Crt.Data.Mappings
 
             CreateMap<NoteDto, CrtNote>();
             CreateMap<NoteCreateDto, CrtNote>();
+
+            CreateMap<ElementDto, CrtElement>();
+
+            CreateMap<FinTargetDto, CrtFinTarget>();
+
+            CreateMap<QtyAccmpDto, CrtQtyAccmp>();
+
+            CreateMap<TenderDto, CrtTender>();
         }
     }
 }

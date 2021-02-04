@@ -5,25 +5,20 @@ using System.Collections.Generic;
 
 namespace Crt.Data.Database.Entities
 {
-    public partial class CrtProjectHist
+    public partial class CrtTenderHist
     {
-        public decimal ProjectHistId { get; set; }
+        public decimal TenderHistId { get; set; }
+        public decimal TenderId { get; set; }
         public decimal ProjectId { get; set; }
-        public string ProjectNumber { get; set; }
-        public string ProjectName { get; set; }
-        public string Description { get; set; }
-        public string Scope { get; set; }
-        public decimal RegionId { get; set; }
-        public decimal CapIndxLkupId { get; set; }
-        public string NearstTwnLkupId { get; set; }
-        public decimal? RcLkupId { get; set; }
-        public decimal? ProjectMgrId { get; set; }
-        public decimal? AnncmentValue { get; set; }
-        public decimal? C035Value { get; set; }
-        public string AnncmentComment { get; set; }
-        public DateTime? EndDate { get; set; }
-        public DateTime? EndDateHist { get; set; }
+        public decimal TenderNumber { get; set; }
+        public DateTime PlannedDate { get; set; }
+        public DateTime? ActualDate { get; set; }
+        public decimal TenderValue { get; set; }
+        public decimal WinningCntrctrLkupId { get; set; }
+        public string Comment { get; set; }
         public DateTime EffectiveDateHist { get; set; }
+        public DateTime EndDate { get; set; }
+        public DateTime? EndDateHist { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }
         public DateTime AppCreateTimestamp { get; set; }

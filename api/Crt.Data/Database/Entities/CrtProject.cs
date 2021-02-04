@@ -9,7 +9,10 @@ namespace Crt.Data.Database.Entities
     {
         public CrtProject()
         {
+            CrtFinTargets = new HashSet<CrtFinTarget>();
             CrtNotes = new HashSet<CrtNote>();
+            CrtQtyAccmps = new HashSet<CrtQtyAccmp>();
+            CrtTenders = new HashSet<CrtTender>();
         }
 
         public decimal ProjectId { get; set; }
@@ -22,6 +25,9 @@ namespace Crt.Data.Database.Entities
         public decimal? NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
         public decimal? ProjectMgrId { get; set; }
+        public decimal? AnncmentValue { get; set; }
+        public decimal? C035Value { get; set; }
+        public string AnncmentComment { get; set; }
         public DateTime? EndDate { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }
@@ -40,6 +46,9 @@ namespace Crt.Data.Database.Entities
         public virtual CrtSystemUser ProjectMgr { get; set; }
         public virtual CrtCodeLookup RcLkup { get; set; }
         public virtual CrtRegion Region { get; set; }
+        public virtual ICollection<CrtFinTarget> CrtFinTargets { get; set; }
         public virtual ICollection<CrtNote> CrtNotes { get; set; }
+        public virtual ICollection<CrtQtyAccmp> CrtQtyAccmps { get; set; }
+        public virtual ICollection<CrtTender> CrtTenders { get; set; }
     }
 }

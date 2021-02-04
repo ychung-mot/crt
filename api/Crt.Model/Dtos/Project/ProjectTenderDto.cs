@@ -15,6 +15,9 @@ namespace Crt.Model.Dtos.Project
 
         [JsonPropertyName("projectNumber")]
         public string Project { get => $"{ProjectNumber}-{ProjectName}"; }
+        public decimal? AnncmentValue { get; set; }
+        public decimal? C035Value { get; set; }
+        public string AnncmentComment { get; set; }
 
         public List<TenderListDto> Tenders { get; set; }
 
