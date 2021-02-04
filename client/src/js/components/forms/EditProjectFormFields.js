@@ -20,7 +20,7 @@ const defaultValues = {
   regionId: undefined,
   projectMgrId: null,
   nearstTwnLkupId: null,
-  rcLkupId: null,
+  rcLkupId: undefined,
   endDate: null,
 };
 
@@ -31,6 +31,7 @@ const validationSchema = Yup.object({
   projectName: Yup.string().required('Project name required'),
   regionId: Yup.number().required('Region required'),
   capIndxLkupId: Yup.number().required('Capital Index required'),
+  rcLkupId: Yup.number().required('RC Number required'),
 });
 
 const EditProjectFormFields = ({
@@ -95,7 +96,7 @@ const EditProjectFormFields = ({
       <FormRow name="nearstTwnLkupId" label="Nearest Town" helper="nearstTwnLkupId">
         <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable />
       </FormRow>
-      <FormRow name="rcLkupId" label="RC Number" helper="rcLkupId">
+      <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
         <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
       </FormRow>
       <FormRow name="endDate" label="End Date" helper="endDate">
