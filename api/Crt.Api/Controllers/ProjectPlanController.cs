@@ -27,7 +27,7 @@ namespace Crt.Api.Controllers
 
         [HttpGet]
         [RequiresPermission(Permissions.ProjectRead)]
-        public async Task<ActionResult<ProjectPlanDto>> GetFinancialPlanAsync(decimal projectId)
+        public async Task<ActionResult<ProjectPlanDto>> GetProjectPlanAsync(decimal projectId)
         {
             //var project = await _projectService.GetProjectAsync(projectId);
 
