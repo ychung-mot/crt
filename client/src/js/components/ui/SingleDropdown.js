@@ -78,7 +78,7 @@ const SingleDropdown = (props) => {
         <DropdownToggle caret onBlur={handleOnBlur}>
           {title}
         </DropdownToggle>
-        <DropdownMenu className="pre-scrollable">
+        <DropdownMenu className="dropdown__single-scroll">
           {searchable && (
             <Input
               type="textbox"
