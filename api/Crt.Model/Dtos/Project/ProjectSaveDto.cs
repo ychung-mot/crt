@@ -13,6 +13,9 @@ namespace Crt.Model.Dtos.Project
         public decimal? NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
         public decimal? ProjectMgrId { get; set; }
+        public decimal? AnncmentValue { get; set; }
+        public decimal? C035Value { get; set; }
+        public string AnncmentComment { get; set; }
         public DateTime? EndDate { get; set; }
     }
 }

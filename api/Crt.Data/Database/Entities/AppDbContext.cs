@@ -20,11 +20,17 @@ namespace Crt.Data.Database.Entities
         public virtual DbSet<CrtCodeLookup> CrtCodeLookups { get; set; }
         public virtual DbSet<CrtCodeLookupHist> CrtCodeLookupHists { get; set; }
         public virtual DbSet<CrtDistrict> CrtDistricts { get; set; }
+        public virtual DbSet<CrtElement> CrtElements { get; set; }
+        public virtual DbSet<CrtElementHist> CrtElementHists { get; set; }
+        public virtual DbSet<CrtFinTarget> CrtFinTargets { get; set; }
+        public virtual DbSet<CrtFinTargetHist> CrtFinTargetHists { get; set; }
         public virtual DbSet<CrtNote> CrtNotes { get; set; }
         public virtual DbSet<CrtPermission> CrtPermissions { get; set; }
         public virtual DbSet<CrtPermissionHist> CrtPermissionHists { get; set; }
         public virtual DbSet<CrtProject> CrtProjects { get; set; }
         public virtual DbSet<CrtProjectHist> CrtProjectHists { get; set; }
+        public virtual DbSet<CrtQtyAccmp> CrtQtyAccmps { get; set; }
+        public virtual DbSet<CrtQtyAccmpHist> CrtQtyAccmpHists { get; set; }
         public virtual DbSet<CrtRegion> CrtRegions { get; set; }
         public virtual DbSet<CrtRegionDistrict> CrtRegionDistricts { get; set; }
         public virtual DbSet<CrtRegionDistrictHist> CrtRegionDistrictHists { get; set; }
@@ -38,6 +44,8 @@ namespace Crt.Data.Database.Entities
         public virtual DbSet<CrtServiceAreaHist> CrtServiceAreaHists { get; set; }
         public virtual DbSet<CrtSystemUser> CrtSystemUsers { get; set; }
         public virtual DbSet<CrtSystemUserHist> CrtSystemUserHists { get; set; }
+        public virtual DbSet<CrtTender> CrtTenders { get; set; }
+        public virtual DbSet<CrtTenderHist> CrtTenderHists { get; set; }
         public virtual DbSet<CrtUserRole> CrtUserRoles { get; set; }
         public virtual DbSet<CrtUserRoleHist> CrtUserRoleHists { get; set; }
 
@@ -286,6 +294,507 @@ namespace Crt.Data.Database.Entities
                     .HasColumnType("date")
                     .HasColumnName("END_DATE")
                     .HasComment("Date the entity ends or changes");
+            });
+
+            modelBuilder.Entity<CrtElement>(entity =>
+            {
+                entity.HasKey(e => e.ElementId)
+                    .HasName("CRT_ELMNT_PK");
+
+                entity.ToTable("CRT_ELEMENT");
+
+                entity.HasComment("Defines CRT project elements");
+
+                entity.HasIndex(e => new { e.ElementId, e.Code }, "CRT_PROJECT_ELEM_FK_I");
+
+                entity.Property(e => e.ElementId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("ELEMENT_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_ELEMENT_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE")
+                    .HasComment("Unique identifier for element code");
+
+                entity.Property(e => e.Comment)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("COMMENT")
+                    .HasComment("Comment on project element");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION")
+                    .HasComment("Description of project element");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+            });
+
+            modelBuilder.Entity<CrtElementHist>(entity =>
+            {
+                entity.HasKey(e => e.ElementHistId)
+                    .HasName("CRT_ELEMENT_HIST_PK");
+
+                entity.ToTable("CRT_ELEMENT_HIST");
+
+                entity.HasComment("Defines CRT project element history");
+
+                entity.Property(e => e.ElementHistId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("ELEMENT_HIST_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_ELEMENT_H_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
+                    .HasColumnName("CODE")
+                    .HasComment("Unique identifier for element code");
+
+                entity.Property(e => e.Comment)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("COMMENT")
+                    .HasComment("Comment on project element");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION")
+                    .HasComment("Description of project element");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.ElementId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("ELEMENT_ID")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+            });
+
+            modelBuilder.Entity<CrtFinTarget>(entity =>
+            {
+                entity.HasKey(e => e.FinTargetId)
+                    .HasName("CRT_FIN_TARGET_PK");
+
+                entity.ToTable("CRT_FIN_TARGET");
+
+                entity.HasComment("Defines CRT financial targets");
+
+                entity.HasIndex(e => new { e.FiscalYearLkupId, e.PhaseLkupId }, "CRT_FIN_TARGET_FK_I");
+
+                entity.Property(e => e.FinTargetId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FIN_TARGET_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_FIN_TARGET_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.Amount)
+                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnName("AMOUNT")
+                    .HasDefaultValueSql("((0))")
+                    .HasComment("Dollar value associated with financial target");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION")
+                    .HasComment("Description of the selected financial target - planning to be completed in the next fiscal year");
+
+                entity.Property(e => e.ElementId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("ELEMENT_ID")
+                    .HasComment("Project Element ID FK");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+
+                entity.Property(e => e.FiscalYearLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FISCAL_YEAR_LKUP_ID")
+                    .HasComment("Fiscal Year lookup ID associated with Financial Target ");
+
+                entity.Property(e => e.ForecastTypeLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FORECAST_TYPE_LKUP_ID")
+                    .HasComment("Forecast type allows users to plan their program outside the bounds of current fiscal/allocation	");
+
+                entity.Property(e => e.PhaseLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PHASE_LKUP_ID")
+                    .HasComment("Project phase identifier on the lookup table");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID");
+
+                entity.HasOne(d => d.Element)
+                    .WithMany(p => p.CrtFinTargets)
+                    .HasForeignKey(d => d.ElementId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_ELEMENT_CRT_FIN_TARGET");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.CrtFinTargets)
+                    .HasForeignKey(d => d.ProjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_PROJECT_CRT_FIN_TARGET");
+            });
+
+            modelBuilder.Entity<CrtFinTargetHist>(entity =>
+            {
+                entity.HasKey(e => e.FinTargetHistId)
+                    .HasName("CRT_FIN_TARGET_HIST_PK");
+
+                entity.ToTable("CRT_FIN_TARGET_HIST");
+
+                entity.HasComment("Defines CRT financial targets");
+
+                entity.Property(e => e.FinTargetHistId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FIN_TARGET_HIST_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_FIN_TARGET_H_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.Amount)
+                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnName("AMOUNT")
+                    .HasDefaultValueSql("((0))")
+                    .HasComment("Dollar value associated with financial target");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION")
+                    .HasComment("Description of the selected financial target - planning to be completed in the next fiscal year");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.ElementId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("ELEMENT_ID")
+                    .HasComment("Project Element ID FK");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+
+                entity.Property(e => e.FinTargetId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FIN_TARGET_ID")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.FiscalYearLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FISCAL_YEAR_LKUP_ID")
+                    .HasComment("Fiscal Year lookup ID associated with Financial Target ");
+
+                entity.Property(e => e.ForecastTypeLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FORECAST_TYPE_LKUP_ID")
+                    .HasComment("Forecast type allows users to plan their program outside the bounds of current fiscal/allocation	");
+
+                entity.Property(e => e.PhaseLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PHASE_LKUP_ID")
+                    .HasComment("Project phase identifier on the lookup table");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID")
+                    .HasComment("ID linked with the project");
             });
 
             modelBuilder.Entity<CrtNote>(entity =>
@@ -609,136 +1118,123 @@ namespace Crt.Data.Database.Entities
 
                 entity.ToTable("CRT_PROJECT");
 
-                entity.HasComment("Defines CRT projects");
-
                 entity.HasIndex(e => new { e.ProjectNumber, e.CapIndxLkupId, e.NearstTwnLkupId, e.RcLkupId, e.ProjectMgrId }, "CRT_PROJECT_FK_I");
 
                 entity.Property(e => e.ProjectId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("PROJECT_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_ID_SEQ])")
-                    .HasComment("A system generated unique identifier.");
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_ID_SEQ])");
+
+                entity.Property(e => e.AnncmentComment)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("ANNCMENT_COMMENT");
+
+                entity.Property(e => e.AnncmentValue)
+                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnName("ANNCMENT_VALUE");
 
                 entity.Property(e => e.AppCreateTimestamp)
                     .HasColumnType("datetime")
-                    .HasColumnName("APP_CREATE_TIMESTAMP")
-                    .HasComment("Date and time of record creation");
+                    .HasColumnName("APP_CREATE_TIMESTAMP");
 
-                entity.Property(e => e.AppCreateUserGuid)
-                    .HasColumnName("APP_CREATE_USER_GUID")
-                    .HasComment("Unique idenifier of user who created record");
+                entity.Property(e => e.AppCreateUserGuid).HasColumnName("APP_CREATE_USER_GUID");
 
                 entity.Property(e => e.AppCreateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("APP_CREATE_USERID")
-                    .HasComment("Unique idenifier of user who created record");
+                    .HasColumnName("APP_CREATE_USERID");
 
                 entity.Property(e => e.AppLastUpdateTimestamp)
                     .HasColumnType("datetime")
-                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
-                    .HasComment("Date and time of last record update");
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP");
 
-                entity.Property(e => e.AppLastUpdateUserGuid)
-                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
-                    .HasComment("Unique idenifier of user who last updated record");
+                entity.Property(e => e.AppLastUpdateUserGuid).HasColumnName("APP_LAST_UPDATE_USER_GUID");
 
                 entity.Property(e => e.AppLastUpdateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("APP_LAST_UPDATE_USERID")
-                    .HasComment("Unique idenifier of user who last updated record");
+                    .HasColumnName("APP_LAST_UPDATE_USERID");
+
+                entity.Property(e => e.C035Value)
+                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnName("C035_VALUE");
 
                 entity.Property(e => e.CapIndxLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("CAP_INDX_LKUP_ID")
-                    .HasComment("Capital index lookup ID associated with capital indices in the lookup table");
+                    .HasColumnName("CAP_INDX_LKUP_ID");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
-                    .HasDefaultValueSql("((1))")
-                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.DbAuditCreateTimestamp)
                     .HasColumnType("datetime")
                     .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
-                    .HasDefaultValueSql("(getutcdate())")
-                    .HasComment("Date and time record created in the database");
+                    .HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.DbAuditCreateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("DB_AUDIT_CREATE_USERID")
-                    .HasDefaultValueSql("(user_name())")
-                    .HasComment("Named database user who created record");
+                    .HasDefaultValueSql("(user_name())");
 
                 entity.Property(e => e.DbAuditLastUpdateTimestamp)
                     .HasColumnType("datetime")
                     .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
-                    .HasDefaultValueSql("(getutcdate())")
-                    .HasComment("Date and time record was last updated in the database.");
+                    .HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.DbAuditLastUpdateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
-                    .HasDefaultValueSql("(user_name())")
-                    .HasComment("Named database user who last updated record");
+                    .HasDefaultValueSql("(user_name())");
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("DESCRIPTION")
-                    .HasComment("Description of the selected project");
+                    .HasColumnName("DESCRIPTION");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("END_DATE")
-                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+                    .HasColumnName("END_DATE");
 
                 entity.Property(e => e.NearstTwnLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("NEARST_TWN_LKUP_ID")
-                    .HasComment("Nearest town lookup ID is associated with nearest town to the project location. The ID maps to the lookup table");
+                    .HasColumnName("NEARST_TWN_LKUP_ID");
 
                 entity.Property(e => e.ProjectMgrId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("PROJECT_MGR_ID")
-                    .HasComment("Project manager mapped to system user ID");
+                    .HasColumnName("PROJECT_MGR_ID");
 
                 entity.Property(e => e.ProjectName)
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("PROJECT_NAME")
-                    .HasComment("Name of project");
+                    .HasColumnName("PROJECT_NAME");
 
                 entity.Property(e => e.ProjectNumber)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("PROJECT_NUMBER")
-                    .HasComment("Number assigned to the project");
+                    .HasColumnName("PROJECT_NUMBER");
 
                 entity.Property(e => e.RcLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("RC_LKUP_ID")
-                    .HasComment("RC lookup IDs associated with RC numbers");
+                    .HasColumnName("RC_LKUP_ID");
 
                 entity.Property(e => e.RegionId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("REGION_ID")
-                    .HasComment("Region ID associated with the Ministry regions");
+                    .HasColumnName("REGION_ID");
 
                 entity.Property(e => e.Scope)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("SCOPE")
-                    .HasComment("Scope of the project ");
+                    .HasColumnName("SCOPE");
 
                 entity.HasOne(d => d.CapIndxLkup)
                     .WithMany(p => p.CrtProjectCapIndxLkups)
@@ -774,16 +1270,161 @@ namespace Crt.Data.Database.Entities
 
                 entity.ToTable("CRT_PROJECT_HIST");
 
-                entity.HasComment("Defines CRT projects");
-
                 entity.HasIndex(e => new { e.ProjectHistId, e.EndDateHist }, "CRT_PROJECT_H_UK")
                     .IsUnique();
 
                 entity.Property(e => e.ProjectHistId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("PROJECT_HIST_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_H_ID_SEQ])")
-                    .HasComment("A system generated unique identifier tracking Project history");
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_H_ID_SEQ])");
+
+                entity.Property(e => e.AnncmentComment)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("ANNCMENT_COMMENT");
+
+                entity.Property(e => e.AnncmentValue)
+                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnName("ANNCMENT_VALUE");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP");
+
+                entity.Property(e => e.AppCreateUserGuid).HasColumnName("APP_CREATE_USER_GUID");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP");
+
+                entity.Property(e => e.AppLastUpdateUserGuid).HasColumnName("APP_LAST_UPDATE_USER_GUID");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID");
+
+                entity.Property(e => e.C035Value)
+                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnName("C035_VALUE");
+
+                entity.Property(e => e.CapIndxLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("CAP_INDX_LKUP_ID");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+
+                entity.Property(e => e.NearstTwnLkupId)
+                    .HasMaxLength(9)
+                    .IsUnicode(false)
+                    .HasColumnName("NEARST_TWN_LKUP_ID");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID");
+
+                entity.Property(e => e.ProjectMgrId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_MGR_ID");
+
+                entity.Property(e => e.ProjectName)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("PROJECT_NAME");
+
+                entity.Property(e => e.ProjectNumber)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("PROJECT_NUMBER");
+
+                entity.Property(e => e.RcLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RC_LKUP_ID");
+
+                entity.Property(e => e.RegionId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("REGION_ID");
+
+                entity.Property(e => e.Scope)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("SCOPE");
+            });
+
+            modelBuilder.Entity<CrtQtyAccmp>(entity =>
+            {
+                entity.HasKey(e => e.QtyAccmpId)
+                    .HasName("CRT_QTY_ACCMP_PK");
+
+                entity.ToTable("CRT_QTY_ACCMP");
+
+                entity.HasComment("Defines CRT project quantity and accomplishment");
+
+                entity.HasIndex(e => new { e.ProjectId, e.QtyAccmpLkupId }, "CRT_QTY_ACCMP_FK_I");
+
+                entity.Property(e => e.QtyAccmpId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("QTY_ACCMP_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_QTY_ACCMP_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.Actual)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("ACTUAL")
+                    .HasComment("actual value of quantity or accomplishment.");
 
                 entity.Property(e => e.AppCreateTimestamp)
                     .HasColumnType("datetime")
@@ -817,10 +1458,11 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("APP_LAST_UPDATE_USERID")
                     .HasComment("Unique idenifier of user who last updated record");
 
-                entity.Property(e => e.CapIndxLkupId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("CAP_INDX_LKUP_ID")
-                    .HasComment("Capital index lookup ID associated with capital indices in the lookup table");
+                entity.Property(e => e.Comment)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("COMMENT")
+                    .HasComment("comments on entries associated with either quantity or accomplishment");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
@@ -855,17 +1497,138 @@ namespace Crt.Data.Database.Entities
                     .HasDefaultValueSql("(user_name())")
                     .HasComment("Named database user who last updated record");
 
-                entity.Property(e => e.Description)
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Marks the status of quantity and/or accomplishment item");
+
+                entity.Property(e => e.FiscalYearLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FISCAL_YEAR_LKUP_ID")
+                    .HasComment("Unique identifier linked with fiscal year on the look up table");
+
+                entity.Property(e => e.Forecast)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("FORECAST")
+                    .HasComment("forecast value associated with quantity or accomplishment");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID")
+                    .HasComment("ID linked with the project");
+
+                entity.Property(e => e.QtyAccmpLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("QTY_ACCMP_LKUP_ID")
+                    .HasComment("Unique identifier linked with the look up table offering extra attributes");
+
+                entity.Property(e => e.Schedule7)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("SCHEDULE7")
+                    .HasComment("determined value of quantity before the actual. Can only apply to quantity");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.CrtQtyAccmps)
+                    .HasForeignKey(d => d.ProjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_PROJECT_CRT_QTY_ACCMP");
+            });
+
+            modelBuilder.Entity<CrtQtyAccmpHist>(entity =>
+            {
+                entity.HasKey(e => e.QtyAccmpHistId)
+                    .HasName("CRT_QTY_ACCMP_HIST_PK");
+
+                entity.ToTable("CRT_QTY_ACCMP_HIST");
+
+                entity.HasComment("Defines CRT project quantity and accomplishment");
+
+                entity.Property(e => e.QtyAccmpHistId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("QTY_ACCMP_HIST_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_QTY_ACCMP_H_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.Actual)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("ACTUAL")
+                    .HasComment("Project Element ID FK");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.Comment)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("DESCRIPTION")
-                    .HasComment("Description of the selected project");
+                    .HasColumnName("COMMENT")
+                    .HasComment("Description of the selected financial target - planning to be completed in the next fiscal year");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
 
                 entity.Property(e => e.EffectiveDateHist)
                     .HasColumnType("datetime")
                     .HasColumnName("EFFECTIVE_DATE_HIST")
-                    .HasDefaultValueSql("(getutcdate())")
-                    .HasComment("Date the history record was logged and finalized");
+                    .HasDefaultValueSql("(getutcdate())");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnType("datetime")
@@ -874,54 +1637,37 @@ namespace Crt.Data.Database.Entities
 
                 entity.Property(e => e.EndDateHist)
                     .HasColumnType("datetime")
-                    .HasColumnName("END_DATE_HIST")
-                    .HasComment("History of projects' end date");
+                    .HasColumnName("END_DATE_HIST");
 
-                entity.Property(e => e.NearstTwnLkupId)
-                    .HasMaxLength(9)
-                    .IsUnicode(false)
-                    .HasColumnName("NEARST_TWN_LKUP_ID")
-                    .HasComment("Nearest town lookup ID is associated with nearest town to the project location. The ID maps to the lookup table");
+                entity.Property(e => e.FiscalYearLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("FISCAL_YEAR_LKUP_ID")
+                    .HasComment("Unique identifier linked with fiscal year on the look up table");
+
+                entity.Property(e => e.Forecast)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("FORECAST")
+                    .HasComment("Dollar value associated with financial target");
 
                 entity.Property(e => e.ProjectId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("PROJECT_ID")
+                    .HasComment("ID linked with the project");
+
+                entity.Property(e => e.QtyAccmpId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("QTY_ACCMP_ID")
                     .HasComment("A system generated unique identifier.");
 
-                entity.Property(e => e.ProjectMgrId)
+                entity.Property(e => e.QtyAccmpLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("PROJECT_MGR_ID")
-                    .HasComment("Project manager mapped to system user ID");
+                    .HasColumnName("QTY_ACCMP_LKUP_ID")
+                    .HasComment("Fiscal Year lookup ID associated with Financial Target ");
 
-                entity.Property(e => e.ProjectName)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("PROJECT_NAME")
-                    .HasComment("Name of project");
-
-                entity.Property(e => e.ProjectNumber)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("PROJECT_NUMBER")
-                    .HasComment("Number assigned to the project");
-
-                entity.Property(e => e.RcLkupId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("RC_LKUP_ID")
-                    .HasComment("RC lookup IDs associated with RC numbers");
-
-                entity.Property(e => e.RegionId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("REGION_ID")
-                    .HasComment("Region ID associated with the Ministry regions");
-
-                entity.Property(e => e.Scope)
-                    .HasMaxLength(2000)
-                    .IsUnicode(false)
-                    .HasColumnName("SCOPE")
-                    .HasComment("Scope of the project ");
+                entity.Property(e => e.Schedule7)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("SCHEDULE7")
+                    .HasComment("Forecast type allows users to plan their program outside the bounds of current fiscal/allocation	");
             });
 
             modelBuilder.Entity<CrtRegion>(entity =>
@@ -2223,6 +2969,274 @@ namespace Crt.Data.Database.Entities
                     .HasComment("IDIR Active Directory defined universal identifier (SM_UNIVERSALID or userID) attributed to a user.  This value can change over time, while USER_GUID will remain consistant.");
             });
 
+            modelBuilder.Entity<CrtTender>(entity =>
+            {
+                entity.HasKey(e => e.TenderId)
+                    .HasName("CRT_TENDER_PK");
+
+                entity.ToTable("CRT_TENDER");
+
+                entity.HasComment("Defines CRT tender for the project");
+
+                entity.HasIndex(e => new { e.ProjectId, e.TenderNumber }, "CRT_TENDER_FK_I");
+
+                entity.Property(e => e.TenderId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("TENDER_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_TENDER_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.ActualDate)
+                    .HasColumnType("date")
+                    .HasColumnName("ACTUAL_DATE")
+                    .HasComment("Date that tender actually takes place");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.Comment)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("COMMENT")
+                    .HasComment("Comments on the tender item");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+
+                entity.Property(e => e.PlannedDate)
+                    .HasColumnType("date")
+                    .HasColumnName("PLANNED_DATE")
+                    .HasDefaultValueSql("('0')")
+                    .HasComment("Date the tender is planned for");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID")
+                    .HasComment("ID linked with the project");
+
+                entity.Property(e => e.TenderNumber)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("TENDER_NUMBER")
+                    .HasComment("Number associated with a tender");
+
+                entity.Property(e => e.TenderValue)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("TENDER_VALUE")
+                    .HasComment("Dollar value of tender");
+
+                entity.Property(e => e.WinningCntrctrLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("WINNING_CNTRCTR_LKUP_ID")
+                    .HasComment("Unique identifier for the winning contractor of the tender");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.CrtTenders)
+                    .HasForeignKey(d => d.ProjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_PROJECT_CRT_TENDER");
+            });
+
+            modelBuilder.Entity<CrtTenderHist>(entity =>
+            {
+                entity.HasKey(e => e.TenderHistId)
+                    .HasName("CRT_TENDER_HIST_PK");
+
+                entity.ToTable("CRT_TENDER_HIST");
+
+                entity.HasComment("Defines CRT tender for the project");
+
+                entity.Property(e => e.TenderHistId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("TENDER_HIST_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_TENDER_H_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.ActualDate)
+                    .HasColumnType("date")
+                    .HasColumnName("ACTUAL_DATE")
+                    .HasComment("Date that tender actually takes place");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.Comment)
+                    .HasMaxLength(2000)
+                    .IsUnicode(false)
+                    .HasColumnName("COMMENT")
+                    .HasComment("Comments on the tender item");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+
+                entity.Property(e => e.PlannedDate)
+                    .HasColumnType("date")
+                    .HasColumnName("PLANNED_DATE")
+                    .HasDefaultValueSql("('0')")
+                    .HasComment("Date the tender is planned for");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID")
+                    .HasComment("ID linked with the project");
+
+                entity.Property(e => e.TenderId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("TENDER_ID")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.TenderNumber)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("TENDER_NUMBER")
+                    .HasComment("Number associated with a tender");
+
+                entity.Property(e => e.TenderValue)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("TENDER_VALUE")
+                    .HasComment("Dollar value of tender");
+
+                entity.Property(e => e.WinningCntrctrLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("WINNING_CNTRCTR_LKUP_ID")
+                    .HasComment("Unique identifier for the winning contractor of the tender");
+            });
+
             modelBuilder.Entity<CrtUserRole>(entity =>
             {
                 entity.HasKey(e => e.UserRoleId)
@@ -2457,6 +3471,22 @@ namespace Crt.Data.Database.Entities
                 .HasMin(1)
                 .HasMax(999999999);
 
+            modelBuilder.HasSequence("CRT_ELEMENT_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(9999999999);
+
+            modelBuilder.HasSequence("CRT_ELEMENT_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
+
+            modelBuilder.HasSequence("CRT_FIN_TARGET_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
+
+            modelBuilder.HasSequence("CRT_FIN_TARGET_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
+
             modelBuilder.HasSequence("CRT_NOTE_ID_SEQ")
                 .HasMin(1)
                 .HasMax(99999999);
@@ -2476,6 +3506,14 @@ namespace Crt.Data.Database.Entities
             modelBuilder.HasSequence("CRT_PROJECT_ID_SEQ")
                 .HasMin(1)
                 .HasMax(9999999999);
+
+            modelBuilder.HasSequence("CRT_QTY_ACCMP_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
+
+            modelBuilder.HasSequence("CRT_QTY_ACCMP_ID_SEQ")
+                .HasMin(1)
+                .HasMax(999999999999);
 
             modelBuilder.HasSequence("CRT_REG_DIST_H_ID_SEQ")
                 .HasMin(1)
@@ -2524,6 +3562,14 @@ namespace Crt.Data.Database.Entities
             modelBuilder.HasSequence("CRT_SYSTEM_USER_H_ID_SEQ")
                 .HasMin(1)
                 .HasMax(2147483647);
+
+            modelBuilder.HasSequence("CRT_TENDER_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(999999999999);
+
+            modelBuilder.HasSequence("CRT_TENDER_ID_SEQ")
+                .HasMin(1)
+                .HasMax(9999999999999);
 
             modelBuilder.HasSequence("CRT_USER_ROLE_H_ID_SEQ")
                 .HasMin(1)
