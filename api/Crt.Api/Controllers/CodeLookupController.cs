@@ -38,5 +38,41 @@ namespace Crt.Api.Controllers
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.NearstTwn));
         }
+
+        [HttpGet("phases")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetPhases()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Phase));
+        }
+
+        [HttpGet("fiscalyears")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetFiscalYears()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.FiscalYear));
+        }
+
+        [HttpGet("quantities")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetQuantity()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Quantity));
+        }
+
+        [HttpGet("accomplishiments")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetAccomplishments()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Accomplishment));
+        }
+
+        [HttpGet("contractors")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetContractors()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Contractor));
+        }
+
+        [HttpGet("forecasttypes")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetForecastTypes()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.ForecastType));
+        }
     }
 }

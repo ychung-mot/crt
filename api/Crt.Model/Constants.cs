@@ -103,6 +103,12 @@ namespace Crt.Model
         public const string CapIndx = "CAP_INDX";
         public const string Rc = "RC";
         public const string NearstTwn = "NEARST_TWN";
+        public const string Phase = "PHASE";
+        public const string FiscalYear = "FISCAL_YEAR";
+        public const string Quantity = "QUANTITY";
+        public const string Accomplishment = "ACCOMPLISHMENT";
+        public const string Contractor = "CONTRACTOR";
+        public const string ForecastType = "FORECAST_TYPE";
     }
 
     public static class CrtEnvironments
