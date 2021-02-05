@@ -3,12 +3,8 @@ using Crt.Api.Controllers.Base;
 using Crt.Domain.Services;
 using Crt.Model;
 using Crt.Model.Dtos.CodeLookup;
-using Crt.Model.Dtos.Element;
 using Crt.Model.Dtos.FinTarget;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Controllers

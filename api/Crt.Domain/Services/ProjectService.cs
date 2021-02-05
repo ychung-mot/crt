@@ -21,6 +21,7 @@ namespace Crt.Domain.Services
         Task<(decimal projectId, Dictionary<string, List<string>> errors)> CreateProjectAsync(ProjectCreateDto project);
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateProjectAsync(ProjectUpdateDto project);
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteProjectAsync(ProjectDeleteDto project);
+        Task<ProjectTenderDto> GetProjectTenderAsync(decimal projectId);
     }
 
     public class ProjectService : CrtServiceBase, IProjectService
@@ -145,6 +146,11 @@ namespace Crt.Domain.Services
             {
                 errors.AddItem(Fields.ProjectNumber, $"Project Number [{project.ProjectNumber}] already exists");
             }
+        }
+
+        public async Task<ProjectTenderDto> GetProjectTenderAsync(decimal projectId)
+        {
+            return await _projectRepo.GetProjectTenderAsync(projectId);
         }
     }
 }

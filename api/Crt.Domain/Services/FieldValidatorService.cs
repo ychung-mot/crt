@@ -27,6 +27,7 @@ namespace Crt.Domain.Services
             LoadUserEntityRules();
             LoadRoleEntityRules();
             LoadProjectEntityRules();
+            LoadTenderEntityRules();
         }
 
         public IEnumerable<FieldValidationRule> GetFieldValidationRules(string entityName)
@@ -60,6 +61,18 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.RcLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.Rc));
 
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
+        }
+
+        private void LoadTenderEntityRules()
+        {
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.TenderNumber, FieldTypes.String, true, 1, 40, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.PlannedDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.ActualDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.TenderValue, FieldTypes.String, true, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.WinningCntrctrLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Contractor));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.BidValue, FieldTypes.String, true, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.Comment, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
 
         public Dictionary<string, List<string>> Validate<T>(string entityName, T entity, Dictionary<string, List<string>> errors, int rowNum = 0, params string[] fieldsToSkip)

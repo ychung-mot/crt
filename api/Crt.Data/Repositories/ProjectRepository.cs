@@ -22,6 +22,7 @@ namespace Crt.Data.Repositories
         Task UpdateProjectAsync(ProjectUpdateDto project);
         Task DeleteProjectAsync(ProjectDeleteDto project);
         Task<bool> ProjectNumberAlreadyExists(decimal projectId, string projectNumber, decimal regionId);
+        Task<ProjectTenderDto> GetProjectTenderAsync(decimal projectId);
     }
 
     public class ProjectRepository : CrtRepositoryBase<CrtProject>, IProjectRepository
@@ -119,6 +120,16 @@ namespace Crt.Data.Repositories
                 .ToListAsync();
 
             return projects.Any(x => x.ProjectId != projectId);
+        }
+
+        public async Task<ProjectTenderDto> GetProjectTenderAsync(decimal projectId)
+        {
+            var project = await DbSet.AsNoTracking()
+                .Include(x => x.CrtTenders)
+                    .ThenInclude(x => x.WinningCntrctrLkup)
+                .FirstOrDefaultAsync(x => x.ProjectId == projectId);
+
+            return Mapper.Map<ProjectTenderDto>(project);
         }
     }
 }

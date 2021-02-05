@@ -7,6 +7,7 @@ namespace Crt.Model.Dtos.Tender
     {
         [JsonPropertyName("id")]
         public decimal TenderId { get; set; }
+        public decimal ProjectId { get; set; }
         public DateTime? EndDate { get; set; }
     }
 }
