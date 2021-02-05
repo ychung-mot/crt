@@ -7,6 +7,7 @@ namespace Crt.Model.Dtos.Element
     {
         [JsonPropertyName("id")]
         public decimal ElementId { get; set; }
+        [JsonPropertyName("name")]
         public string Code { get; set; }
         public string Description { get; set; }
         public string Comment { get; set; }
