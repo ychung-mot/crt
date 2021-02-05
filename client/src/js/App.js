@@ -17,6 +17,7 @@ import UserAdmin from './components/UserAdmin';
 import RoleAdmin from './components/RoleAdmin';
 import Projects from './components/Projects';
 import ProjectDetails from './components/project/ProjectDetails';
+import ProjectPlan from './components/project/ProjectPlan';
 import Version from './components/Version';
 import ApiAccess from './components/ApiAccess';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -116,7 +117,8 @@ const ProjectRoutes = (currentUser) => {
   return (
     <AuthorizedRoute path={Constants.PATHS.PROJECTS} requires={Constants.PERMISSIONS.PROJECT_R}>
       <Route path={Constants.PATHS.PROJECTS} exact component={Projects} />
-      <Route path={`${Constants.PATHS.PROJECTS}/:id`} component={ProjectDetails} />
+      <Route path={`${Constants.PATHS.PROJECTS}/:id`} exact component={ProjectDetails} />
+      <Route path={`${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`} component={ProjectPlan} />
     </AuthorizedRoute>
   );
 };

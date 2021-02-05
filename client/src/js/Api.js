@@ -52,6 +52,8 @@ export const getProject = (id) => instance.get(`${Constants.API_PATHS.PROJECTS}/
 export const putProject = (id, projectData) => instance.put(`${Constants.API_PATHS.PROJECTS}/${id}`, projectData);
 export const postNote = (projectId, noteData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`, noteData);
+export const getProjectPlan = (projectId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_PLAN}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
@@ -59,6 +61,12 @@ export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
 export const getRCNumbers = () => instance.get(Constants.API_PATHS.RC_NUMBERS);
 export const getNearestTowns = () => instance.get(Constants.API_PATHS.NEAREST_TOWNS);
+export const getFiscalYears = () => instance.get(Constants.API_PATHS.FISCAL_YEARS);
+export const getQuantities = () => instance.get(Constants.API_PATHS.QUANTITIES);
+export const getAccomplishments = () => instance.get(Constants.API_PATHS.ACCOMPLISHMENTS);
+export const getPhases = () => instance.get(Constants.API_PATHS.PHASES);
+export const getContractors = () => instance.get(Constants.API_PATHS.CONTRACTORS);
+export const getForecastTypes = () => instance.get(Constants.API_PATHS.FORECAST_TYPES);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

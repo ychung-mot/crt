@@ -24,10 +24,16 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    api.getProject(match.params.id).then((response) => {
-      setData(response.data);
-      setLoading(false);
-    });
+    api
+      .getProject(match.params.id)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

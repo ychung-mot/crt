@@ -22,6 +22,22 @@ const DataTableControl = ({
     if (onEditClicked) onEditClicked(id);
   };
 
+  const linkFormatter = (item = {}, column = {}) => {
+    let link = column.link.path;
+    const regex = /:[a-z 0-9]*/gi; //finds all parts of the URL that have : to replace with variables
+    let variableParams = link.match(regex);
+
+    if (!variableParams) {
+      return link;
+    }
+
+    for (let each of variableParams) {
+      link = link.replace(each, item[each.slice(1)]);
+    }
+
+    return link;
+  };
+
   return (
     <React.Fragment>
       <Table size="sm" responsive hover>
@@ -69,7 +85,7 @@ const DataTableControl = ({
                   return (
                     <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
                       {column.link ? (
-                        <Link to={`${column.link.path}/${item[column.link?.idKey] ?? ''}`}>{item[column.key]}</Link>
+                        <Link to={() => linkFormatter(item, column)}>{item[column.key] || column.heading}</Link>
                       ) : (
                         item[column.key]
                       )}
@@ -122,9 +138,8 @@ DataTableControl.propTypes = {
         inactive: PropTypes.string.isRequired,
       }),
       link: PropTypes.shape({
-        //will render link to path and optional :id path using data in table column key
+        //will render link to path will replace any parameter with : with key. ie. project/:id => project/1
         path: PropTypes.string.isRequired,
-        idKey: PropTypes.string,
       }),
     })
   ).isRequired,
