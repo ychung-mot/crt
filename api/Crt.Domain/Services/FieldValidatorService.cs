@@ -28,6 +28,8 @@ namespace Crt.Domain.Services
             LoadRoleEntityRules();
             LoadProjectEntityRules();
             LoadFinTargetEntityRules();
+            LoadQtyRules();
+            LoadAccmpRules();
             LoadTenderEntityRules();
         }
 
@@ -72,6 +74,28 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.PhaseLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Phase));
             _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.ForecastTypeLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.ForecastType));
             _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
+        }
+
+        private void LoadQtyRules()
+        {
+            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.Description, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.FiscalYearLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.FiscalYear));
+            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.QtyAccmpLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Quantity));
+            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.Forecast, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));
+            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.Schedule7, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));
+            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.Actual, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));
+            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.Comment, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
+        }
+
+        private void LoadAccmpRules()
+        {
+            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.Description, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.FiscalYearLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.FiscalYear));
+            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.QtyAccmpLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Accomplishment));
+            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.Forecast, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));
+            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.Schedule7, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));
+            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.Actual, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));
+            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.Comment, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
         }
 
         private void LoadTenderEntityRules()
