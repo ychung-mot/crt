@@ -54,6 +54,8 @@ export const postNote = (projectId, noteData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`, noteData);
 export const getProjectPlan = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_PLAN}`);
+export const getFinTarget = (projectId, finTargetId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);

@@ -52,8 +52,8 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
   ];
 
   //temporary fix will make real edit and delete functions
-  const onFinTargetEditClicked = (id) => {
-    console.log(`Fin Plan edit project ${id}`);
+  const onFinTargetEditClicked = (finTargetId) => {
+    formModal.openForm(Constants.FORM_TYPE.EDIT, { finTargetId, projectId: data.id });
   };
 
   const onFinTargetDeleteClicked = (id, endDate) => {

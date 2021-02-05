@@ -29,6 +29,7 @@ export const API_PATHS = {
   NOTES: '/notes',
   PROJECT_PLAN: '/projectplan',
   ELEMENTS: `/elements`,
+  FIN_TARGETS: '/targets',
 };
 
 export const PATHS = {

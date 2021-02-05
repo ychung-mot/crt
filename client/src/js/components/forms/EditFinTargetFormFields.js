@@ -33,6 +33,7 @@ const EditFinTargetFormFields = ({
   formValues,
   setValidationSchema,
   projectId,
+  finTargetId,
   formType,
   fiscalYears,
   phases,
@@ -48,10 +49,13 @@ const EditFinTargetFormFields = ({
     if (formType === Constants.FORM_TYPE.EDIT) {
       //temporary fix, need to change to post finTarget
       setLoading(true);
-      api.getProject(projectId).then((response) => {
-        setInitialValues({ ...response.data, endDate: response.data.endDate ? moment(response.data.endDate) : null });
-        setLoading(false);
-      });
+      api
+        .getFinTarget(projectId, finTargetId)
+        .then((response) => {
+          setInitialValues({ ...response.data, endDate: response.data.endDate ? moment(response.data.endDate) : null });
+          setLoading(false);
+        })
+        .catch((error) => console.log(error.response));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -66,8 +70,8 @@ const EditFinTargetFormFields = ({
       <FormRow name="phaseLkupId" label="Phase*">
         <SingleDropdownField items={phases} name="phaseLkupId" />
       </FormRow>
-      <FormRow name="element" label="Element*">
-        <SingleDropdownField items={elements} name="element" />
+      <FormRow name="elementId" label="Element*">
+        <SingleDropdownField items={elements} name="elementId" />
       </FormRow>
       <FormRow name="forecastTypeLkupId" label="Phase*">
         <SingleDropdownField items={forecastTypes} name="forecastTypeLkupId" />
