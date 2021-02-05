@@ -110,7 +110,7 @@ namespace Crt.Domain.Services
 
         private async Task ValidateFinTarget(FinTargetSaveDto target, Dictionary<string, List<string>> errors)
         {
-            if (await _finTargetRepo.ElementExists(target.ElementId))
+            if (!await _finTargetRepo.ElementExists(target.ElementId))
             {
                 errors.AddItem(Fields.ElementId, $"Element ID [{target.ElementId}] does not exists");
             }
