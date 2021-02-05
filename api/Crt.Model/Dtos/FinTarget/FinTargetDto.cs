@@ -19,8 +19,8 @@ namespace Crt.Model.Dtos.FinTarget
         public DateTime? EndDate { get; set; }
 
         public virtual ElementDto Element { get; set; }
-        public CodeLookupDto FiscalYearLkup { get; set; }
-        public CodeLookupDto PhaseLkup { get; set; }
-        public CodeLookupDto ForecastTypeLkup { get; set; }
+        public virtual CodeLookupDto FiscalYearLkup { get; set; }
+        public virtual CodeLookupDto ForecastTypeLkup { get; set; }
+        public virtual CodeLookupDto PhaseLkup { get; set; }
     }
 }

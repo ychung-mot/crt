@@ -29,6 +29,9 @@ namespace Crt.Data.Database.Entities
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
         public virtual CrtElement Element { get; set; }
+        public virtual CrtCodeLookup FiscalYearLkup { get; set; }
+        public virtual CrtCodeLookup ForecastTypeLkup { get; set; }
+        public virtual CrtCodeLookup PhaseLkup { get; set; }
         public virtual CrtProject Project { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Crt.Model.Dtos.QtyAccmp
         public string Comment { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public CodeLookupDto FiscalYearLkup { get; set; }
-        public CodeLookupDto QtyAccmpLkup { get; set; }
+        public virtual CodeLookupDto FiscalYearLkup { get; set; }
+        public virtual CodeLookupDto QtyAccmpLkup { get; set; }
     }
 }

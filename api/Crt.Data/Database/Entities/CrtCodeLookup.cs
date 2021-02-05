@@ -9,9 +9,15 @@ namespace Crt.Data.Database.Entities
     {
         public CrtCodeLookup()
         {
+            CrtFinTargetFiscalYearLkups = new HashSet<CrtFinTarget>();
+            CrtFinTargetForecastTypeLkups = new HashSet<CrtFinTarget>();
+            CrtFinTargetPhaseLkups = new HashSet<CrtFinTarget>();
             CrtProjectCapIndxLkups = new HashSet<CrtProject>();
             CrtProjectNearstTwnLkups = new HashSet<CrtProject>();
             CrtProjectRcLkups = new HashSet<CrtProject>();
+            CrtQtyAccmpFiscalYearLkups = new HashSet<CrtQtyAccmp>();
+            CrtQtyAccmpQtyAccmpLkups = new HashSet<CrtQtyAccmp>();
+            CrtTenders = new HashSet<CrtTender>();
         }
 
         public decimal CodeLookupId { get; set; }
@@ -28,8 +34,14 @@ namespace Crt.Data.Database.Entities
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
+        public virtual ICollection<CrtFinTarget> CrtFinTargetFiscalYearLkups { get; set; }
+        public virtual ICollection<CrtFinTarget> CrtFinTargetForecastTypeLkups { get; set; }
+        public virtual ICollection<CrtFinTarget> CrtFinTargetPhaseLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectCapIndxLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectNearstTwnLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectRcLkups { get; set; }
+        public virtual ICollection<CrtQtyAccmp> CrtQtyAccmpFiscalYearLkups { get; set; }
+        public virtual ICollection<CrtQtyAccmp> CrtQtyAccmpQtyAccmpLkups { get; set; }
+        public virtual ICollection<CrtTender> CrtTenders { get; set; }
     }
 }

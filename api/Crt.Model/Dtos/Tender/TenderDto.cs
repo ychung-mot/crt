@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Crt.Model.Dtos.CodeLookup;
+using System;
 using System.Text.Json.Serialization;
 
 namespace Crt.Model.Dtos.Tender
@@ -16,5 +17,7 @@ namespace Crt.Model.Dtos.Tender
         public decimal WinningCntrctrLkupId { get; set; }
         public string Comment { get; set; }
         public DateTime EndDate { get; set; }
+
+        public virtual CodeLookupDto WinningCntrctrLkup { get; set; }
     }
 }
