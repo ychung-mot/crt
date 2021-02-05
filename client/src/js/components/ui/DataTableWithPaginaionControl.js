@@ -34,11 +34,8 @@ DataTableWithPaginaionControl.propTypes = {
         active: PropTypes.string.isRequired,
         inactive: PropTypes.string.isRequired,
       }),
-      link: PropTypes.shape({
-        //will render link to path and optional :id path using table column key
-        path: PropTypes.string.isRequired,
-        idKey: PropTypes.string,
-      }),
+      //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
+      link: PropTypes.string,
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,

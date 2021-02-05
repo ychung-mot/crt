@@ -34,13 +34,8 @@ const defaultSearchOptions = {
 
 const tableColumns = [
   { heading: 'Region', key: 'regionId' },
-  { heading: 'Project', key: 'projectNumber', link: { path: '/projects/:id' } },
-  {
-    heading: 'Planning Targets',
-    key: 'planningTargets',
-    link: { path: '/projects/:id/projectplan' },
-    nosort: true,
-  },
+  { heading: 'Project', key: 'projectNumber', link: '/projects/:id' },
+  { heading: 'Planning Targets', key: 'planningTargets', link: '/projects/:id/projectplan', nosort: true },
   { heading: 'Tender Details', key: 'tenderDetails', nosort: true },
   { heading: 'Location and Ratios', key: 'locationRation', nosort: true },
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
