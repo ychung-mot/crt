@@ -16,7 +16,7 @@ namespace Crt.Data.Database.Entities
         public decimal WinningCntrctrLkupId { get; set; }
         public decimal? BidValue { get; set; }
         public string Comment { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }
         public DateTime AppCreateTimestamp { get; set; }
