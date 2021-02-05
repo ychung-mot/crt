@@ -15,6 +15,7 @@ namespace Crt.Model
         public const string Email = "Email";
         public const string GpsCoords = "D14_9"; //latitude longitude
         public const string Offset = "D7_3"; //offset
+        public const string QtyAccmpAmount = "D10_3";
         public const string DollarValue = "D10_2"; //value of work, accomplishment
         public const string Volume = "D6_2"; //rockfall volume
         public const string Quantity = "D4"; //wildlife quantity
@@ -39,6 +40,7 @@ namespace Crt.Model
             _regexInfos.Add(DollarValue, new RegexInfo { Regex = @"^\-?\d{1,8}(\.\d{1,2})?$", ErrorMessage = "Value [{0}] must be a number of less than 9 digits optionally with maximum 2 decimal digits" });
             _regexInfos.Add(Volume, new RegexInfo { Regex = @"^\-?\d{1,4}(\.\d{1,2})?$", ErrorMessage = "Value must be a number of less than 5 digits optionally with maximum 2 decimal digits" });
             _regexInfos.Add(Quantity, new RegexInfo { Regex = @"^\-?\d{1,4}$", ErrorMessage = "Value must be a number of less than 5 digits" });
+            _regexInfos.Add(QtyAccmpAmount, new RegexInfo { Regex = @"^\-?\d{1,7}(\.\d{1,3})?$", ErrorMessage = "Value must be a number of less than 8 digits optionally with maximum 3 decimal digits" });
 
             _regexInfos.Add(SiteNumber, new RegexInfo { Regex = @"^[ABDLRSTWX]\d{4}\d{0,2}$", ErrorMessage = "Value must start with one of these 9 [ABDLRSTWX] letters followed by 4 to 6 digits" });
 

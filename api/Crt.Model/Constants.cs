@@ -53,7 +53,8 @@ namespace Crt.Model
         public const string Project = "project";
         public const string Note = "note";
         public const string FinTarget = "fintarget";
-        public const string QtyAccmp = "qtyaccmp";
+        public const string Qty = "qty";
+        public const string Accmp = "accmp";
         public const string Tender = "tender";
     }
 
@@ -98,6 +99,11 @@ namespace Crt.Model
         public const string ElementId = "ElementId";
         public const string PhaseLkupId = "PhaseLkupId";
         public const string ForecastTypeLkupId = "ForecastTypeLkupId";
+
+        public const string QtyAccmpLkupId = "QtyAccmpLkupId";
+        public const string Forecast = "Forecast";
+        public const string Schedule7 = "Schedule7";
+        public const string Actual = "Actual";
 
         public const string TenderNumber = "TenderNumber";
         public const string PlannedDate = "PlannedDate";
