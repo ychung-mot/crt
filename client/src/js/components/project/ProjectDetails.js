@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
+import { Link } from 'react-router-dom';
 
 //components
 import Authorize from '../fragments/Authorize';
@@ -19,7 +20,7 @@ import * as api from '../../Api';
 import * as Constants from '../../Constants';
 import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
-const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
+const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
@@ -117,7 +118,7 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
             <FontAwesomeButton
               icon="edit"
               className="float-right"
-              onClick={() => onEditClicked(match.params.id)}
+              onClick={() => onEditClicked(data.id)}
               title="Edit Record"
               iconSize="lg"
             />
@@ -156,22 +157,16 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
         title="Status Comments"
         dataList={commentFilter('STATUS')}
         noteType="STATUS"
-        projectId={match.params.id}
+        projectId={data.id}
         show={1}
       />
-      <Comments
-        title="EMR Comments"
-        dataList={commentFilter('EMR')}
-        noteType="EMR"
-        projectId={match.params.id}
-        show={1}
-      />
+      <Comments title="EMR Comments" dataList={commentFilter('EMR')} noteType="EMR" projectId={data.id} show={1} />
 
       <div className="text-right">
-        <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
-          Continue
-        </Button>
-        <Button color="secondary" onClick={() => history.goBack()}>
+        <Link to={`${Constants.API_PATHS.PROJECTS}/${data.id}${Constants.API_PATHS.PROJECT_PLAN}`}>
+          <Button color="primary">Continue</Button>
+        </Link>
+        <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
           Close
         </Button>
       </div>
@@ -181,4 +176,10 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog }) => {
   );
 };
 
-export default connect(null, { showValidationErrorDialog })(ProjectDetails);
+const mapStateToProps = (state) => {
+  return {
+    projectSearchHistory: state.projectSearchHistory.projectSearch,
+  };
+};
+
+export default connect(mapStateToProps, { showValidationErrorDialog })(ProjectDetails);

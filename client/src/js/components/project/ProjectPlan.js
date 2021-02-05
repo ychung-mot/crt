@@ -7,11 +7,13 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
+import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectPlan = ({ match, fiscalYears, showValidationErrorDialog }) => {
+const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -95,6 +97,17 @@ const ProjectPlan = ({ match, fiscalYears, showValidationErrorDialog }) => {
           onDeleteClicked={onQADeleteClicked}
         />
       </MaterialCard>
+      <div className="text-right">
+        <Link to={`${Constants.API_PATHS.PROJECTS}/${data.id}`}>
+          <Button color="secondary">{'< Project Details'}</Button>
+        </Link>
+        <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
+          Continue
+        </Button>
+        <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
+          Close
+        </Button>
+      </div>
     </React.Fragment>
   );
 };
@@ -102,6 +115,7 @@ const ProjectPlan = ({ match, fiscalYears, showValidationErrorDialog }) => {
 const mapStateToProps = (state) => {
   return {
     fiscalYears: state.codeLookups.fiscalYears,
+    projectSearchHistory: state.projectSearchHistory.projectSearch,
   };
 };
 

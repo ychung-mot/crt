@@ -18,7 +18,7 @@ import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
 import EditProjectFormFields from '../components/forms/EditProjectFormFields';
 
-import { showValidationErrorDialog } from '../redux/actions';
+import { showValidationErrorDialog, setProjectSearchHistory } from '../redux/actions';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -54,7 +54,13 @@ const formikInitialValues = {
   isInProgress: [isInProgress[0].id],
 };
 
-const Projects = ({ currentUser, projectMgr }) => {
+const Projects = ({
+  currentUser,
+  projectMgr,
+  setProjectSearchHistory,
+  showValidationErrorDialog,
+  projectSearchHistory,
+}) => {
   if (currentUser.isProjectMgr) {
     defaultSearchOptions.projectManagerIds = currentUser.id;
     formikInitialValues.projectManagerIds = [currentUser.id];
@@ -82,8 +88,10 @@ const Projects = ({ currentUser, projectMgr }) => {
       searchText,
     });
 
+    setProjectSearchHistory(location.pathname + location.search);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [`${location.pathname}${location.search}`]);
 
   const handleSearchFormSubmit = (values) => {
     const searchText = values.searchText.trim() || null;
@@ -227,7 +235,15 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgr: Object.values(state.user.projectMgr),
+    projectSearchHistory: state.projectSearchHistory.projectSearch,
   };
 };
 
-export default connect(mapStateToProps, { showValidationErrorDialog })(Projects);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showValidationErrorDialog: (error) => dispatch(showValidationErrorDialog(error)),
+    setProjectSearchHistory: (url) => dispatch(setProjectSearchHistory(url)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Projects);
