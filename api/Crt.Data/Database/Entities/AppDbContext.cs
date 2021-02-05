@@ -3271,7 +3271,8 @@ namespace Crt.Data.Database.Entities
                     .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.TenderNumber)
-                    .HasColumnType("numeric(9, 0)")
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
                     .HasColumnName("TENDER_NUMBER")
                     .HasComment("Number associated with a tender");
 
