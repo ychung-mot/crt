@@ -27,6 +27,7 @@ namespace Crt.Domain.Services
             LoadUserEntityRules();
             LoadRoleEntityRules();
             LoadProjectEntityRules();
+            LoadFinTargetEntityRules();
             LoadTenderEntityRules();
         }
 
@@ -61,6 +62,16 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.RcLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.Rc));
 
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
+        }
+
+        private void LoadFinTargetEntityRules()
+        {
+            _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.Description, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.Amount, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
+            _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.FiscalYearLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.FiscalYear));
+            _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.PhaseLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Phase));
+            _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.ForecastTypeLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.ForecastType));
+            _rules.Add(new FieldValidationRule(Entities.FinTarget, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
 
         private void LoadTenderEntityRules()
