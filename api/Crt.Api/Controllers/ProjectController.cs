@@ -136,74 +136,20 @@ namespace Crt.Api.Controllers
         [RequiresPermission(Permissions.ProjectRead)]
         public async Task<ActionResult<ProjectTenderDto>> GetProjectTenderAsync(decimal id)
         {
-            //var project = await _projectService.GetProjectAsync(projectId);
+            var projectTender = await _projectService.GetProjectTenderAsync(id);
 
-            //if (project == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var problem = IsRegionIdAuthorized(project.RegionId);
-            //if (problem != null)
-            //{
-            //    return Unauthorized(problem);
-            //}
-
-            #region Mockup
-            await Task.CompletedTask;
-
-            var projectTender = new ProjectTenderDto();
-
-            projectTender.ProjectId = 1;
-            projectTender.ProjectName = "Mockup Project 1";
-            projectTender.ProjectNumber = "P001";
-
-            projectTender.Tenders.Add(new TenderListDto
+            if (projectTender == null)
             {
-                TenderId = 1,
-                ProjectId = 1,
-                TenderNumber = "P1-0001",
-                PlannedDate = new DateTime(2020, 5, 14).Date,
-                ActualDate = new DateTime(2020, 5, 10).Date,
-                TenderValue = 25250M,
-                BidValue = 25000M,
-                WinningCntrctrLkup = new CodeLookupDto
-                {
-                    CodeLookupId = 416,
-                    CodeSet = CodeSet.Contractor,
-                    CodeName = "Axis Mountain Technical Inc.",
-                    CodeValueText = "",
-                    CodeValueNum = null,
-                    CodeValueFormat = "STRING",
-                    DisplayOrder = 9
-                },
-                Comment = "Test Comment 1"
-            });
+                return NotFound();
+            }
 
-            projectTender.Tenders.Add(new TenderListDto
+            var problem = IsRegionIdAuthorized(projectTender.RegionId);
+            if (problem != null)
             {
-                TenderId = 2,
-                ProjectId = 1,
-                TenderNumber = "P1-0002",
-                PlannedDate = new DateTime(2021, 5, 25).Date,
-                ActualDate = new DateTime(2021, 5, 24).Date,
-                TenderValue = 500000M,
-                BidValue = 495965M,
-                WinningCntrctrLkup = new CodeLookupDto
-                {
-                    CodeLookupId = 423,
-                    CodeSet = CodeSet.Contractor,
-                    CodeName = "Borrow Ent.",
-                    CodeValueText = "",
-                    CodeValueNum = null,
-                    CodeValueFormat = "STRING",
-                    DisplayOrder = 16
-                },
-            });
+                return Unauthorized(problem);
+            }
 
-
-            return Ok(projectTender);
-            #endregion
+            return projectTender;
         }
 
         [HttpGet("{id}/projectplan")]

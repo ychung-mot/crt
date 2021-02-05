@@ -52,7 +52,7 @@ namespace Crt.Data.Repositories
         public async Task UpdateTenderAsync(TenderUpdateDto tender)
         {
             var crtTender = await DbSet
-                                .FirstAsync(x => x.TenderId == tender.TenderId);
+                                .FirstAsync(x => x.ProjectId == tender.ProjectId && x.TenderId == tender.TenderId);
 
             crtTender.EndDate = tender.EndDate?.Date;
 
@@ -62,7 +62,7 @@ namespace Crt.Data.Repositories
         public async Task DeleteTenderAsync(TenderDeleteDto tender)
         {
             var tenderEntity = await DbSet
-                                .FirstAsync(x => x.TenderId == tender.TenderId);
+                                .FirstAsync(x => x.ProjectId == tender.ProjectId && x.TenderId == tender.TenderId);
 
             tenderEntity.EndDate = tender.EndDate?.Date;
         }

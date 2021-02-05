@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace Crt.Model.Dtos.Tender
+namespace Crt.Model.Dtos.FinTarget
 {
-    public class TenderDeleteDto
+    public class FinTargetDeleteDto
     {
         [JsonPropertyName("id")]
-        public decimal TenderId { get; set; }
+        public decimal FinTargetId { get; set; }
         public decimal ProjectId { get; set; }
         public DateTime? EndDate { get; set; }
     }

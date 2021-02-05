@@ -15,7 +15,7 @@ namespace Crt.Model
         public const string Email = "Email";
         public const string GpsCoords = "D14_9"; //latitude longitude
         public const string Offset = "D7_3"; //offset
-        public const string DollarValue = "D9_2"; //value of work, accomplishment
+        public const string DollarValue = "D10_2"; //value of work, accomplishment
         public const string Volume = "D6_2"; //rockfall volume
         public const string Quantity = "D4"; //wildlife quantity
         public const string SiteNumber = "SiteNumber";
@@ -36,7 +36,7 @@ namespace Crt.Model
 
             _regexInfos.Add(GpsCoords, new RegexInfo { Regex = @"^\-?\d{1,5}(\.\d{1,9})?$", ErrorMessage = "Value must be a number of less than 6 digits optionally with maximum 9 decimal digits" });
             _regexInfos.Add(Offset, new RegexInfo { Regex = @"^\-?\d{1,4}(\.\d{1,3})?$", ErrorMessage = "Value must be a number of less than 5 digits optionally with maximum 3 decimal digits" });
-            _regexInfos.Add(DollarValue, new RegexInfo { Regex = @"^\-?\d{1,7}(\.\d+)?$", ErrorMessage = "Provided value [{0}] is not a number and/or is incorrectly formatted" });
+            _regexInfos.Add(DollarValue, new RegexInfo { Regex = @"^\-?\d{1,8}(\.\d{1,2})?$", ErrorMessage = "Value [{0}] must be a number of less than 9 digits optionally with maximum 2 decimal digits" });
             _regexInfos.Add(Volume, new RegexInfo { Regex = @"^\-?\d{1,4}(\.\d{1,2})?$", ErrorMessage = "Value must be a number of less than 5 digits optionally with maximum 2 decimal digits" });
             _regexInfos.Add(Quantity, new RegexInfo { Regex = @"^\-?\d{1,4}$", ErrorMessage = "Value must be a number of less than 5 digits" });
 

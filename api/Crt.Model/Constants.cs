@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Crt.Model
 {
@@ -95,7 +93,18 @@ namespace Crt.Model
         public const string NoteType = "NoteType";
         public const string Comment = "Comment";
 
+        public const string Amount = "Amount";
+        public const string FiscalYearLkupId = "FiscalYearLkupId";
+        public const string ElementId = "ElementId";
+        public const string PhaseLkupId = "PhaseLkupId";
+        public const string ForecastTypeLkupId = "ForecastTypeLkupId";
+
         public const string TenderNumber = "TenderNumber";
+        public const string PlannedDate = "PlannedDate";
+        public const string ActualDate = "ActualDate";
+        public const string TenderValue = "TenderValue";
+        public const string WinningCntrctrLkupId = "WinningCntrctrLkupId";
+        public const string BidValue = "BidValue";
     }
 
     public class DateColNames

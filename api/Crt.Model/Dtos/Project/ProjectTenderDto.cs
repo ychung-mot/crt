@@ -12,7 +12,8 @@ namespace Crt.Model.Dtos.Project
         public string ProjectNumber { get; set; }
         [JsonIgnore]
         public string ProjectName { get; set; }
-
+        [JsonIgnore]
+        public decimal RegionId { get; set; }
         [JsonPropertyName("projectNumber")]
         public string Project { get => $"{ProjectNumber}-{ProjectName}"; }
         public decimal? AnncmentValue { get; set; }

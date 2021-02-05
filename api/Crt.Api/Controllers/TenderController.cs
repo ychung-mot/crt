@@ -47,13 +47,15 @@ namespace Crt.Api.Controllers
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;
 
+            tender.ProjectId = projectId;
+
             var response = await _tenderService.CreateTenderAsync(tender);
             if (response.errors.Count > 0)
             {
                 return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
-            return CreatedAtRoute("GetTender", new { id = response.tenderId }, await _tenderService.GetTenderByIdAsync(response.tenderId));
+            return CreatedAtRoute("GetTender", new { projectId = projectId, id = response.tenderId }, await _tenderService.GetTenderByIdAsync(response.tenderId));
         }
 
         [HttpPut("{id}")]
@@ -62,6 +64,8 @@ namespace Crt.Api.Controllers
         {
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;
+
+            tender.ProjectId = projectId;
 
             if (id != tender.TenderId)
             {
@@ -89,6 +93,8 @@ namespace Crt.Api.Controllers
         {
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;
+
+            tender.ProjectId = projectId;
 
             if (id != tender.TenderId)
             {

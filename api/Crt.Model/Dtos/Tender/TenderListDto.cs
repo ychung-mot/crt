@@ -18,7 +18,7 @@ namespace Crt.Model.Dtos.Tender
         public DateTime? EndDate { get; set; }
 
         [JsonIgnore]
-        public CodeLookupDto WinningCntrctrLkup { get; set; }
+        public virtual CodeLookupDto WinningCntrctrLkup { get; set; }
 
         public string WinningCntrctr { get => WinningCntrctrLkup.Description; }
     }
