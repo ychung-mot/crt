@@ -37,7 +37,7 @@ const tableColumns = [
   { heading: 'Project', key: 'projectNumber', link: '/projects/:id' },
   { heading: 'Planning Targets', key: 'planningTargets', link: '/projects/:id/projectplan', nosort: true },
   { heading: 'Tender Details', key: 'tenderDetails', nosort: true },
-  { heading: 'Location and Ratios', key: 'locationRation', nosort: true },
+  { heading: 'Location and Ratios', key: 'locationRatios', nosort: true },
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 

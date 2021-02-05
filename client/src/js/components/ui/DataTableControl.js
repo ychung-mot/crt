@@ -22,9 +22,10 @@ const DataTableControl = ({
     if (onEditClicked) onEditClicked(id);
   };
 
-  const linkFormatter = (item = {}, path = '') => {
-    let link = path;
-    const regex = /:[a-z 0-9]*/gi; //finds all parts of the URL that have : to replace with variables
+  const linkFormatter = (item = {}, url = '') => {
+    //finds all parts of the URL that have : to replace with attribute from item keys
+    let link = url;
+    const regex = /:[a-z 0-9]*/gi;
     let variableParams = link.match(regex);
 
     if (!variableParams) {
