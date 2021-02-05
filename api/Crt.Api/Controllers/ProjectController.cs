@@ -324,7 +324,7 @@ namespace Crt.Api.Controllers
                 }
             });
 
-            planning.QytAccmps.Add(new QtyAccmpListDto
+            planning.QtyAccmps.Add(new QtyAccmpListDto
             {
                 QtyAccmpId = 1,
                 ProjectId = 1,
@@ -356,7 +356,7 @@ namespace Crt.Api.Controllers
                 },
             });
 
-            planning.QytAccmps.Add(new QtyAccmpListDto
+            planning.QtyAccmps.Add(new QtyAccmpListDto
             {
                 QtyAccmpId = 2,
                 ProjectId = 1,

@@ -65,7 +65,7 @@ namespace Crt.Data.Mappings
                 .ForMember(x => x.RegionName, opt => opt.MapFrom(x => x.Region.RegionName));
             CreateMap<CrtProject, ProjectPlanDto>()
                 .ForMember(x => x.FinTargets, opt => opt.MapFrom(x => x.CrtFinTargets))
-                .ForMember(x => x.QytAccmps, opt => opt.MapFrom(x => x.CrtQtyAccmps));
+                .ForMember(x => x.QtyAccmps, opt => opt.MapFrom(x => x.CrtQtyAccmps));
             CreateMap<CrtProject, ProjectTenderDto>()
                 .ForMember(x => x.Tenders, opt => opt.MapFrom(x => x.CrtTenders));
 

@@ -54,6 +54,9 @@ namespace Crt.Model
         public const string Role = "role";
         public const string Project = "project";
         public const string Note = "note";
+        public const string FinTarget = "fintarget";
+        public const string QtyAccmp = "qtyaccmp";
+        public const string Tender = "tender";
     }
 
     public static class FieldTypes
@@ -91,6 +94,8 @@ namespace Crt.Model
 
         public const string NoteType = "NoteType";
         public const string Comment = "Comment";
+
+        public const string TenderNumber = "TenderNumber";
     }
 
     public class DateColNames
