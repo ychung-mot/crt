@@ -1,4 +1,5 @@
 ﻿using Crt.Model.Dtos.CodeLookup;
+using Crt.Model.Dtos.Element;
 using System;
 using System.Text.Json.Serialization;
 
@@ -17,6 +18,7 @@ namespace Crt.Model.Dtos.FinTarget
         public decimal ForecastTypeLkupId { get; set; }
         public DateTime? EndDate { get; set; }
 
+        public virtual ElementDto Element { get; set; }
         public CodeLookupDto FiscalYearLkup { get; set; }
         public CodeLookupDto PhaseLkup { get; set; }
         public CodeLookupDto ForecastTypeLkup { get; set; }

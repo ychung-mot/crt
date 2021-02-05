@@ -5,25 +5,18 @@ using System.Collections.Generic;
 
 namespace Crt.Data.Database.Entities
 {
-    public partial class CrtProjectHist
+    public partial class CrtElement
     {
-        public decimal ProjectHistId { get; set; }
-        public decimal ProjectId { get; set; }
-        public string ProjectNumber { get; set; }
-        public string ProjectName { get; set; }
+        public CrtElement()
+        {
+            CrtFinTargets = new HashSet<CrtFinTarget>();
+        }
+
+        public decimal ElementId { get; set; }
+        public string Code { get; set; }
         public string Description { get; set; }
-        public string Scope { get; set; }
-        public decimal RegionId { get; set; }
-        public decimal CapIndxLkupId { get; set; }
-        public string NearstTwnLkupId { get; set; }
-        public decimal? RcLkupId { get; set; }
-        public decimal? ProjectMgrId { get; set; }
-        public decimal? AnncmentValue { get; set; }
-        public decimal? C035Value { get; set; }
-        public string AnncmentComment { get; set; }
+        public string Comment { get; set; }
         public DateTime? EndDate { get; set; }
-        public DateTime? EndDateHist { get; set; }
-        public DateTime EffectiveDateHist { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }
         public DateTime AppCreateTimestamp { get; set; }
@@ -35,5 +28,7 @@ namespace Crt.Data.Database.Entities
         public DateTime DbAuditCreateTimestamp { get; set; }
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
+
+        public virtual ICollection<CrtFinTarget> CrtFinTargets { get; set; }
     }
 }

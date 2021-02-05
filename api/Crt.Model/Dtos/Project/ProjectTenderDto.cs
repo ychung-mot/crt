@@ -1,11 +1,10 @@
-﻿using Crt.Model.Dtos.FinTarget;
-using Crt.Model.Dtos.QtyAccmp;
+﻿using Crt.Model.Dtos.Tender;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Crt.Model.Dtos.ProjectPlanning
+namespace Crt.Model.Dtos.Project
 {
-    public class ProjectPlanDto
+    public class ProjectTenderDto
     {
         [JsonPropertyName("id")]
         public decimal ProjectId { get; set; }
@@ -16,14 +15,15 @@ namespace Crt.Model.Dtos.ProjectPlanning
 
         [JsonPropertyName("projectNumber")]
         public string Project { get => $"{ProjectNumber}-{ProjectName}"; }
+        public decimal? AnncmentValue { get; set; }
+        public decimal? C035Value { get; set; }
+        public string AnncmentComment { get; set; }
 
-        public List<FinTargetListDto> FinTargets { get; set; }
-        public List<QtyAccmpListDto> QytAccmps { get; set; }
+        public List<TenderListDto> Tenders { get; set; }
 
-        public ProjectPlanDto()
+        public ProjectTenderDto()
         {
-            FinTargets = new List<FinTargetListDto>();
-            QytAccmps = new List<QtyAccmpListDto>();
+            Tenders = new List<TenderListDto>();
         }
     }
 }

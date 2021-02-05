@@ -3,7 +3,12 @@ using Crt.Api.Controllers.Base;
 using Crt.Domain.Services;
 using Crt.Model;
 using Crt.Model.Dtos;
+using Crt.Model.Dtos.CodeLookup;
+using Crt.Model.Dtos.Element;
+using Crt.Model.Dtos.FinTarget;
 using Crt.Model.Dtos.Project;
+using Crt.Model.Dtos.QtyAccmp;
+using Crt.Model.Dtos.Tender;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -125,6 +130,266 @@ namespace Crt.Api.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("{id}/projecttender")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<ProjectTenderDto>> GetProjectTenderAsync(decimal id)
+        {
+            //var project = await _projectService.GetProjectAsync(projectId);
+
+            //if (project == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var problem = IsRegionIdAuthorized(project.RegionId);
+            //if (problem != null)
+            //{
+            //    return Unauthorized(problem);
+            //}
+
+            #region Mockup
+            await Task.CompletedTask;
+
+            var projectTender = new ProjectTenderDto();
+
+            projectTender.ProjectId = 1;
+            projectTender.ProjectName = "Mockup Project 1";
+            projectTender.ProjectNumber = "P001";
+
+            projectTender.Tenders.Add(new TenderListDto
+            {
+                TenderId = 1,
+                ProjectId = 1,
+                TenderNumber = "P1-0001",
+                PlannedDate = new DateTime(2020, 5, 14).Date,
+                ActualDate = new DateTime(2020, 5, 10).Date,
+                TenderValue = 25250M,
+                BidValue = 25000M,
+                WinningCntrctrLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 416,
+                    CodeSet = CodeSet.Contractor,
+                    CodeName = "Axis Mountain Technical Inc.",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 9
+                },
+                Comment = "Test Comment 1"
+            });
+
+            projectTender.Tenders.Add(new TenderListDto
+            {
+                TenderId = 2,
+                ProjectId = 1,
+                TenderNumber = "P1-0002",
+                PlannedDate = new DateTime(2021, 5, 25).Date,
+                ActualDate = new DateTime(2021, 5, 24).Date,
+                TenderValue = 500000M,
+                BidValue = 495965M,
+                WinningCntrctrLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 423,
+                    CodeSet = CodeSet.Contractor,
+                    CodeName = "Borrow Ent.",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 16
+                },
+            });
+
+
+            return Ok(projectTender);
+            #endregion
+        }
+
+        [HttpGet("{id}/projectplan")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<ProjectPlanDto>> GetProjectPlanAsync(decimal id)
+        {
+            //var project = await _projectService.GetProjectAsync(projectId);
+
+            //if (project == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //var problem = IsRegionIdAuthorized(project.RegionId);
+            //if (problem != null)
+            //{
+            //    return Unauthorized(problem);
+            //}
+
+            #region Mockup
+            await Task.CompletedTask;
+
+            var planning = new ProjectPlanDto();
+
+            planning.ProjectId = 1;
+            planning.ProjectName = "Mockup Project 1";
+            planning.ProjectNumber = "P001";
+
+            planning.FinTargets.Add(new FinTargetListDto
+            {
+                FinTargetId = 1,
+                ProjectId = 1,
+                Description = "Test financial target comment",
+                Amount = 25000M,
+
+                FiscalYearLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 362,
+                    CodeSet = CodeSet.FiscalYear,
+                    CodeName = "2020/2021",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 11
+                },
+
+                PhaseLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 345,
+                    CodeSet = CodeSet.Phase,
+                    CodeName = "Plan",
+                    CodeValueText = "C",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 1
+                },
+
+                ForecastTypeLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 509,
+                    CodeSet = CodeSet.ForecastType,
+                    CodeName = "Allocation",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 1
+                },
+
+                Element = new ElementDto
+                {
+                    Code = "Bm"
+                }
+            });
+
+            planning.FinTargets.Add(new FinTargetListDto
+            {
+                FinTargetId = 2,
+                ProjectId = 1,
+                Description = "Test financial target comment",
+                Amount = 5000M,
+
+                FiscalYearLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 361,
+                    CodeSet = CodeSet.FiscalYear,
+                    CodeName = "2019/2020",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 10
+                },
+
+                PhaseLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 346,
+                    CodeSet = CodeSet.Phase,
+                    CodeName = "Engineer",
+                    CodeValueText = "E",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 1
+                },
+
+                ForecastTypeLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 510,
+                    CodeSet = CodeSet.ForecastType,
+                    CodeName = "Priority",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 2
+                },
+
+                Element = new ElementDto
+                {
+                    Code = "Tc"
+                }
+            });
+
+            planning.QytAccmps.Add(new QtyAccmpListDto
+            {
+                QtyAccmpId = 1,
+                ProjectId = 1,
+                Forecast = 90,
+                Schedule7 = 98,
+                Actual = 100,
+                Comment = "Test quantity target comment",
+
+                FiscalYearLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 362,
+                    CodeSet = CodeSet.FiscalYear,
+                    CodeName = "2020/2021",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 11
+                },
+
+                QtyAccmpLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 370,
+                    CodeSet = CodeSet.Quantity,
+                    CodeName = "Asphalt Mix  (tonnes)",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 1
+                },
+            });
+
+            planning.QytAccmps.Add(new QtyAccmpListDto
+            {
+                QtyAccmpId = 2,
+                ProjectId = 1,
+                Forecast = 30,
+                Schedule7 = 0,
+                Actual = 25,
+                Comment = "Test accomplishment target comment",
+
+                FiscalYearLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 361,
+                    CodeSet = CodeSet.FiscalYear,
+                    CodeName = "2019/2020",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 10
+                },
+
+                QtyAccmpLkup = new CodeLookupDto
+                {
+                    CodeLookupId = 374,
+                    CodeSet = CodeSet.Accomplishment,
+                    CodeName = "Active Transportation Project",
+                    CodeValueText = "",
+                    CodeValueNum = null,
+                    CodeValueFormat = "STRING",
+                    DisplayOrder = 1
+                },
+            });
+
+            return Ok(planning);
+            #endregion
         }
     }
 }
