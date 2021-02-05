@@ -5,6 +5,7 @@ using Crt.Model;
 using Crt.Model.Dtos.CodeLookup;
 using Crt.Model.Dtos.FinTarget;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Controllers
@@ -14,78 +15,124 @@ namespace Crt.Api.Controllers
     [ApiController]
     public class FinTargetsController : CrtControllerBase
     {
+        private IProjectService _projectService;
         private IFinTargetService _finTargetService;
 
-        public FinTargetsController(CrtCurrentUser currentUser, IFinTargetService finTargetService)
+        public FinTargetsController(CrtCurrentUser currentUser, IProjectService projectService, IFinTargetService finTargetService)
             : base(currentUser)
         {
+            _projectService = projectService;
             _finTargetService = finTargetService;
         }
 
-        [HttpGet]
+        [HttpGet("{id}", Name = "GetFinTarget")]
         [RequiresPermission(Permissions.ProjectRead)]
-        public async Task<ActionResult<FinTargetDto>> GetTargetByIdAsync(decimal finTargetId)
+        public async Task<ActionResult<FinTargetDto>> GetFinTargetByIdAsync(decimal projectId, decimal id)
         {
-            //var finTarget = await _projectService.GetFinTargetAsync(finTargetId);
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
 
-            //if (finTarget == null)
-            //{
-            //    return NotFound();
-            //}
+            var finTarget = await _finTargetService.GetFinTargetByIdAsync(id);
+            if (finTarget == null)
+            {
+                return NotFound();
+            }
 
-            //var problem = IsRegionIdAuthorized(regionId);
-            //if (problem != null)
-            //{
-            //    return Unauthorized(problem);
-            //}
+            return finTarget;
+        }
 
-            #region Mockup
-            await Task.CompletedTask;
+        [HttpPost]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<FinTargetCreateDto>> CreateFinTarget(decimal projectId, FinTargetCreateDto finTarget)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
 
-            var finTarget = new FinTargetDto {
-                FinTargetId = 1,
-                ProjectId = 1,
-                Description = "Test financial target",
-                Amount = 500000M,
+            finTarget.ProjectId = projectId;
 
-                FiscalYearLkup = new CodeLookupDto
-                {
-                    CodeLookupId = 362,
-                    CodeSet = CodeSet.FiscalYear,
-                    CodeName = "2020/2021",
-                    CodeValueText = "",
-                    CodeValueNum = null,
-                    CodeValueFormat = "STRING",
-                    DisplayOrder = 11
-                },
+            var response = await _finTargetService.CreateFinTargetAsync(finTarget);
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
 
-                PhaseLkup = new CodeLookupDto
-                {
-                    CodeLookupId = 345,
-                    CodeSet = CodeSet.Phase,
-                    CodeName = "Plan",
-                    CodeValueText = "C",
-                    CodeValueNum = null,
-                    CodeValueFormat = "STRING",
-                    DisplayOrder = 1
-                },
+            return CreatedAtRoute("GetFinTarget", new { projectId, id = response.finTargetId }, await _finTargetService.GetFinTargetByIdAsync(response.finTargetId));
+        }
 
-                ForecastTypeLkup = new CodeLookupDto
-                {
-                    CodeLookupId = 509,
-                    CodeSet = CodeSet.ForecastType,
-                    CodeName = "Allocation",
-                    CodeValueText = "",
-                    CodeValueNum = null,
-                    CodeValueFormat = "STRING",
-                    DisplayOrder = 1
-                },
+        [HttpPut("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> UpdateFinTarget(decimal projectId, decimal id, FinTargetUpdateDto finTarget)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
 
-                ElementId = 1
-            };
+            finTarget.ProjectId = projectId;
 
-            return Ok(finTarget);
-            #endregion
+            if (id != finTarget.FinTargetId)
+            {
+                throw new Exception($"The finTarget ID from the query string does not match that of the body.");
+            }
+
+            var response = await _finTargetService.UpdateFinTargetAsync(finTarget);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> DeleteFinTarget(decimal projectId, decimal id, FinTargetDeleteDto finTarget)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            finTarget.ProjectId = projectId;
+
+            if (id != finTarget.FinTargetId)
+            {
+                throw new Exception($"The system finTarget ID from the query string does not match that of the body.");
+            }
+
+            var response = await _finTargetService.DeleteFinTargetAsync(finTarget);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
+        private async Task<ActionResult> IsProjectAuthorized(decimal projectId)
+        {
+            var project = await _projectService.GetProjectAsync(projectId);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            var problem = IsRegionIdAuthorized(project.RegionId);
+            if (problem != null)
+            {
+                return Unauthorized(problem);
+            }
+
+            return null;
         }
     }
 }

@@ -63,6 +63,9 @@ namespace Crt.Data.Mappings
             CreateMap<ElementDto, CrtElement>();
 
             CreateMap<FinTargetDto, CrtFinTarget>();
+            CreateMap<FinTargetCreateDto, CrtFinTarget>();
+            CreateMap<FinTargetUpdateDto, CrtFinTarget>();
+            CreateMap<FinTargetDeleteDto, CrtFinTarget>();
 
             CreateMap<QtyAccmpDto, CrtQtyAccmp>();
 
