@@ -23,6 +23,7 @@ namespace Crt.Data.Repositories
         Task DeleteProjectAsync(ProjectDeleteDto project);
         Task<bool> ProjectNumberAlreadyExists(decimal projectId, string projectNumber, decimal regionId);
         Task<ProjectTenderDto> GetProjectTenderAsync(decimal projectId);
+        Task<ProjectPlanDto> GetProjectPlanAsync(decimal projectId);
     }
 
     public class ProjectRepository : CrtRepositoryBase<CrtProject>, IProjectRepository
@@ -130,6 +131,26 @@ namespace Crt.Data.Repositories
                 .FirstOrDefaultAsync(x => x.ProjectId == projectId);
 
             return Mapper.Map<ProjectTenderDto>(project);
+        }
+
+        public async Task<ProjectPlanDto> GetProjectPlanAsync(decimal projectId)
+        {
+            var project = await DbSet.AsNoTracking()
+                .Include(x => x.CrtQtyAccmps)
+                    .ThenInclude(x => x.FiscalYearLkup)
+                .Include(x => x.CrtQtyAccmps)
+                    .ThenInclude(x => x.QtyAccmpLkup)
+                .Include(x => x.CrtFinTargets)
+                    .ThenInclude(x => x.FiscalYearLkup)
+                .Include(x => x.CrtFinTargets)
+                    .ThenInclude(x => x.PhaseLkup)
+                .Include(x => x.CrtFinTargets)
+                    .ThenInclude(x => x.ForecastTypeLkup)
+                .Include(x => x.CrtFinTargets)
+                    .ThenInclude(x => x.Element)
+                .FirstOrDefaultAsync(x => x.ProjectId == projectId);
+
+            return Mapper.Map<ProjectPlanDto>(project);
         }
     }
 }
