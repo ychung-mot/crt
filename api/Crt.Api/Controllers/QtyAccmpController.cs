@@ -2,14 +2,9 @@
 using Crt.Api.Controllers.Base;
 using Crt.Domain.Services;
 using Crt.Model;
-using Crt.Model.Dtos.CodeLookup;
-using Crt.Model.Dtos.Element;
-using Crt.Model.Dtos.FinTarget;
 using Crt.Model.Dtos.QtyAccmp;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Controllers
@@ -19,67 +14,125 @@ namespace Crt.Api.Controllers
     [ApiController]
     public class QtyAccmpController : CrtControllerBase
     {
+        private IProjectService _projectService;
         private IQtyAccmpService _qtyAccmpService;
 
-        public QtyAccmpController(CrtCurrentUser currentUser, IQtyAccmpService qtyAccmpService)
+        public QtyAccmpController(CrtCurrentUser currentUser, IProjectService projectService, IQtyAccmpService qtyAccmpService)
             : base(currentUser)
         {
+            _projectService = projectService;
             _qtyAccmpService = qtyAccmpService;
         }
 
-        [HttpGet]
+        [HttpGet("{id}", Name = "GetQtyAccmp")]
         [RequiresPermission(Permissions.ProjectRead)]
-        public async Task<ActionResult<QtyAccmpDto>> GetQtyAccmpIdAsync(decimal qtyAccmpId)
+        public async Task<ActionResult<QtyAccmpDto>> GetQtyAccmpByIdAsync(decimal projectId, decimal id)
         {
-            //var qtyAccmp = await _qtyAccmpService.GetQtyAccmpAsync(qtyAccmpId);
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
 
-            //if (qtyAccmp == null)
-            //{
-            //    return NotFound();
-            //}
+            var qtyAccmp = await _qtyAccmpService.GetQtyAccmpByIdAsync(id);
+            if (qtyAccmp == null)
+            {
+                return NotFound();
+            }
 
-            //var problem = IsRegionIdAuthorized(regionId);
-            //if (problem != null)
-            //{
-            //    return Unauthorized(problem);
-            //}
-
-            #region Mockup
-            await Task.CompletedTask;
-
-            var qtyAccmp = new QtyAccmpDto {
-                QtyAccmpId = 1,
-                ProjectId = 1,
-                Forecast = 52,
-                Schedule7 = 68,
-                Actual = 75,
-                Comment = "Test accomplishment comment",
-
-                FiscalYearLkup = new CodeLookupDto
-                {
-                    CodeLookupId = 362,
-                    CodeSet = CodeSet.FiscalYear,
-                    CodeName = "2020/2021",
-                    CodeValueText = "",
-                    CodeValueNum = null,
-                    CodeValueFormat = "STRING",
-                    DisplayOrder = 11
-                },
-
-                QtyAccmpLkup = new CodeLookupDto
-                {
-                    CodeLookupId = 370,
-                    CodeSet = CodeSet.Quantity,
-                    CodeName = "Asphalt Mix  (tonnes)",
-                    CodeValueText = "",
-                    CodeValueNum = null,
-                    CodeValueFormat = "STRING",
-                    DisplayOrder = 1
-                },
-            };
-
-            return Ok(qtyAccmp);
-            #endregion
+            return qtyAccmp;
         }
+
+        [HttpPost]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<QtyAccmpCreateDto>> CreateQtyAccmp(decimal projectId, QtyAccmpCreateDto qtyAccmp)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            qtyAccmp.ProjectId = projectId;
+
+            var response = await _qtyAccmpService.CreateQtyAccmpAsync(qtyAccmp);
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return CreatedAtRoute("GetQtyAccmp", new { projectId = projectId, id = response.qtyAccmpId }, await _qtyAccmpService.GetQtyAccmpByIdAsync(response.qtyAccmpId));
+        }
+
+        [HttpPut("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> UpdateQtyAccmp(decimal projectId, decimal id, QtyAccmpUpdateDto qtyAccmp)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            qtyAccmp.ProjectId = projectId;
+
+            if (id != qtyAccmp.QtyAccmpId)
+            {
+                throw new Exception($"The qtyAccmp ID from the query string does not match that of the body.");
+            }
+
+            var response = await _qtyAccmpService.UpdateQtyAccmpAsync(qtyAccmp);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> DeleteQtyAccmp(decimal projectId, decimal id, QtyAccmpDeleteDto qtyAccmp)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            qtyAccmp.ProjectId = projectId;
+
+            if (id != qtyAccmp.QtyAccmpId)
+            {
+                throw new Exception($"The system qtyAccmp ID from the query string does not match that of the body.");
+            }
+
+            var response = await _qtyAccmpService.DeleteQtyAccmpAsync(qtyAccmp);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
+        private async Task<ActionResult> IsProjectAuthorized(decimal projectId)
+        {
+            var project = await _projectService.GetProjectAsync(projectId);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            var problem = IsRegionIdAuthorized(project.RegionId);
+            if (problem != null)
+            {
+                return Unauthorized(problem);
+            }
+
+            return null;
+        }
+
     }
 }
