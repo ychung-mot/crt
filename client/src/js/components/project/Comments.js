@@ -174,7 +174,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
 
 Comments.propTypes = {
   dataList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  projectId: PropTypes.string.isRequired,
+  projectId: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   show: PropTypes.number, //changes how many comments to show starting from the most recent
 };

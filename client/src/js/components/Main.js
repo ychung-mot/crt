@@ -18,6 +18,7 @@ import {
   fetchPhases,
   fetchContractors,
   fetchForecastTypes,
+  fetchElements,
 } from '../redux/actions';
 
 const Main = ({
@@ -36,6 +37,7 @@ const Main = ({
   fetchPhases,
   fetchContractors,
   fetchForecastTypes,
+  fetchElements,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -54,6 +56,7 @@ const Main = ({
       fetchPhases(),
       fetchContractors(),
       fetchForecastTypes(),
+      fetchElements(),
     ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -86,4 +89,5 @@ export default connect(mapStateToProps, {
   fetchPhases,
   fetchContractors,
   fetchForecastTypes,
+  fetchElements,
 })(Main);

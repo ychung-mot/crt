@@ -28,6 +28,7 @@ export const API_PATHS = {
   PROJECT_MANAGERS: '/users/managers',
   NOTES: '/notes',
   PROJECT_PLAN: '/projectplan',
+  ELEMENTS: `/elements`,
 };
 
 export const PATHS = {

@@ -9,7 +9,9 @@ import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
 
+import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
@@ -31,31 +33,35 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const finPlanTableColumns = [
-    { heading: 'Fiscal Year', key: 'fiscalYear', noSort: true },
-    { heading: 'Project Phase', key: 'projectPhase', noSort: true },
-    { heading: 'Element', key: 'element', noSort: true },
-    { heading: 'Type', key: 'forecastType', noSort: true },
-    { heading: 'Amount', key: 'amount', noSort: true },
-    { heading: 'Description', key: 'description', noSort: true },
+  const finTargetTableColumns = [
+    { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
+    { heading: 'Project Phase', key: 'projectPhase', nosort: true },
+    { heading: 'Element', key: 'element', nosort: true },
+    { heading: 'Type', key: 'forecastType', nosort: true },
+    { heading: 'Amount', key: 'amount', nosort: true },
+    { heading: 'Description', key: 'description', nosort: true },
   ];
 
   const qaTableColumns = [
-    { heading: 'Fiscal Year', key: 'fiscalYear', noSort: true },
-    { heading: 'Accomplishment/Quantity', key: 'qtyAccmpType', noSort: true },
-    { heading: 'Forecast', key: 'forecast', noSort: true },
-    { heading: 'Schedule7', key: 'schedule7', noSort: true },
-    { heading: 'Actual', key: 'actual', noSort: true },
-    { heading: 'Comment', key: 'comment', noSort: true },
+    { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
+    { heading: 'Accomplishment/Quantity', key: 'qtyAccmpType', nosort: true },
+    { heading: 'Forecast', key: 'forecast', nosort: true },
+    { heading: 'Schedule7', key: 'schedule7', nosort: true },
+    { heading: 'Actual', key: 'actual', nosort: true },
+    { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
   //temporary fix will make real edit and delete functions
-  const onFinPlanEditClicked = (id) => {
+  const onFinTargetEditClicked = (id) => {
     console.log(`Fin Plan edit project ${id}`);
   };
 
-  const onFinPlanDeleteClicked = (id, endDate) => {
+  const onFinTargetDeleteClicked = (id, endDate) => {
     console.log(`Fin Plan delete project ${id}`);
+  };
+
+  const addFinTargetClicked = () => {
+    formModal.openForm(Constants.FORM_TYPE.ADD);
   };
 
   const onQAEditClicked = (id) => {
@@ -66,7 +72,22 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     console.log(`QA delete project ${id}`);
   };
 
+  const addQAClicked = () => {
+    console.log('adding new quantity/accomplishment');
+  };
+
   //end temporary fix edit and delete functions
+
+  const handleEditFinTargetFormSubmit = (values) => {
+    console.log(`submitting ${values}`);
+  };
+
+  const formModal = useFormModal(
+    'Financial Planning Targets',
+    <EditFinTargetFormFields />,
+    handleEditFinTargetFormSubmit,
+    true
+  );
 
   if (loading) return <PageSpinner />;
 
@@ -74,19 +95,29 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     <React.Fragment>
       <UIHeader>Project {data.id} Details</UIHeader>
       <MaterialCard>
-        <UIHeader>Financial Planning Targets</UIHeader>
+        <UIHeader>
+          Financial Planning Targets
+          <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
+            + Add
+          </Button>
+        </UIHeader>
         <DataTableControl
           dataList={data.finTargets}
-          tableColumns={finPlanTableColumns}
+          tableColumns={finTargetTableColumns}
           editable
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onEditClicked={onFinPlanEditClicked}
-          onDeleteClicked={onFinPlanDeleteClicked}
+          onEditClicked={onFinTargetEditClicked}
+          onDeleteClicked={onFinTargetDeleteClicked}
         />
       </MaterialCard>
       <MaterialCard>
-        <UIHeader>Quantities/Accomplishments</UIHeader>
+        <UIHeader>
+          Quantities/Accomplishments{' '}
+          <Button color="primary" className="float-right" onClick={addQAClicked}>
+            + Add
+          </Button>
+        </UIHeader>
         <DataTableControl
           dataList={data.qtyAccmps}
           tableColumns={qaTableColumns}
@@ -108,6 +139,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
           Close
         </Button>
       </div>
+      {formModal.formElement}
     </React.Fragment>
   );
 };

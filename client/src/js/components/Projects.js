@@ -54,13 +54,7 @@ const formikInitialValues = {
   isInProgress: [isInProgress[0].id],
 };
 
-const Projects = ({
-  currentUser,
-  projectMgr,
-  setProjectSearchHistory,
-  showValidationErrorDialog,
-  projectSearchHistory,
-}) => {
+const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValidationErrorDialog }) => {
   if (currentUser.isProjectMgr) {
     defaultSearchOptions.projectManagerIds = currentUser.id;
     formikInitialValues.projectManagerIds = [currentUser.id];

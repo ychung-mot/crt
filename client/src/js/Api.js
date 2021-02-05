@@ -67,6 +67,7 @@ export const getAccomplishments = () => instance.get(Constants.API_PATHS.ACCOMPL
 export const getPhases = () => instance.get(Constants.API_PATHS.PHASES);
 export const getContractors = () => instance.get(Constants.API_PATHS.CONTRACTORS);
 export const getForecastTypes = () => instance.get(Constants.API_PATHS.FORECAST_TYPES);
+export const getElements = () => instance.get(Constants.API_PATHS.ELEMENTS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);
