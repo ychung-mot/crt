@@ -18,12 +18,12 @@ namespace Crt.Model.Dtos.Project
         public string Project { get => $"{ProjectNumber}-{ProjectName}"; }
 
         public List<FinTargetListDto> FinTargets { get; set; }
-        public List<QtyAccmpListDto> QytAccmps { get; set; }
+        public List<QtyAccmpListDto> QtyAccmps { get; set; }
 
         public ProjectPlanDto()
         {
             FinTargets = new List<FinTargetListDto>();
-            QytAccmps = new List<QtyAccmpListDto>();
+            QtyAccmps = new List<QtyAccmpListDto>();
         }
     }
 }

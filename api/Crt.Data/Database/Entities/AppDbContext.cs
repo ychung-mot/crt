@@ -653,6 +653,24 @@ namespace Crt.Data.Database.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_ELEMENT_CRT_FIN_TARGET");
 
+                entity.HasOne(d => d.FiscalYearLkup)
+                    .WithMany(p => p.CrtFinTargetFiscalYearLkups)
+                    .HasForeignKey(d => d.FiscalYearLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_FIN_TARGET_FSCL_YR");
+
+                entity.HasOne(d => d.ForecastTypeLkup)
+                    .WithMany(p => p.CrtFinTargetForecastTypeLkups)
+                    .HasForeignKey(d => d.ForecastTypeLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_FIN_TARGET_FCST_TYP");
+
+                entity.HasOne(d => d.PhaseLkup)
+                    .WithMany(p => p.CrtFinTargetPhaseLkups)
+                    .HasForeignKey(d => d.PhaseLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_FIN_TARGET_PHS");
+
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.CrtFinTargets)
                     .HasForeignKey(d => d.ProjectId)
@@ -1527,11 +1545,23 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("SCHEDULE7")
                     .HasComment("determined value of quantity before the actual. Can only apply to quantity");
 
+                entity.HasOne(d => d.FiscalYearLkup)
+                    .WithMany(p => p.CrtQtyAccmpFiscalYearLkups)
+                    .HasForeignKey(d => d.FiscalYearLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_QTY_ACCMP_FSCL_YR");
+
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.CrtQtyAccmps)
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_PROJECT_CRT_QTY_ACCMP");
+
+                entity.HasOne(d => d.QtyAccmpLkup)
+                    .WithMany(p => p.CrtQtyAccmpQtyAccmpLkups)
+                    .HasForeignKey(d => d.QtyAccmpLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_QTY_ACCMP_QTY_ACCMP");
             });
 
             modelBuilder.Entity<CrtQtyAccmpHist>(entity =>
@@ -1647,6 +1677,7 @@ namespace Crt.Data.Database.Entities
                 entity.Property(e => e.Forecast)
                     .HasColumnType("numeric(10, 3)")
                     .HasColumnName("FORECAST")
+                    .HasDefaultValueSql("((0))")
                     .HasComment("Dollar value associated with financial target");
 
                 entity.Property(e => e.ProjectId)
@@ -3023,6 +3054,11 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("APP_LAST_UPDATE_USERID")
                     .HasComment("Unique idenifier of user who last updated record");
 
+                entity.Property(e => e.BidValue)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("BID_VALUE")
+                    .HasComment("Bid amount in response to tender");
+
                 entity.Property(e => e.Comment)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
@@ -3079,7 +3115,9 @@ namespace Crt.Data.Database.Entities
                     .HasComment("ID linked with the project");
 
                 entity.Property(e => e.TenderNumber)
-                    .HasColumnType("numeric(9, 0)")
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .IsUnicode(false)
                     .HasColumnName("TENDER_NUMBER")
                     .HasComment("Number associated with a tender");
 
@@ -3098,6 +3136,12 @@ namespace Crt.Data.Database.Entities
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_PROJECT_CRT_TENDER");
+
+                entity.HasOne(d => d.WinningCntrctrLkup)
+                    .WithMany(p => p.CrtTenders)
+                    .HasForeignKey(d => d.WinningCntrctrLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_TENDER");
             });
 
             modelBuilder.Entity<CrtTenderHist>(entity =>
@@ -3151,6 +3195,11 @@ namespace Crt.Data.Database.Entities
                     .IsUnicode(false)
                     .HasColumnName("APP_LAST_UPDATE_USERID")
                     .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.BidValue)
+                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnName("BID_VALUE")
+                    .HasComment("Bid amount in response to tender");
 
                 entity.Property(e => e.Comment)
                     .HasMaxLength(2000)

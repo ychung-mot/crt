@@ -28,6 +28,8 @@ namespace Crt.Data.Database.Entities
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
+        public virtual CrtCodeLookup FiscalYearLkup { get; set; }
         public virtual CrtProject Project { get; set; }
+        public virtual CrtCodeLookup QtyAccmpLkup { get; set; }
     }
 }
