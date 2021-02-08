@@ -82,10 +82,13 @@ const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValida
       searchText,
     });
 
-    setProjectSearchHistory(location.pathname + location.search);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [`${location.pathname}${location.search}`]);
+  }, []);
+
+  useEffect(() => {
+    setProjectSearchHistory(location.pathname + location.search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [`${location.search}`]);
 
   const handleSearchFormSubmit = (values) => {
     const searchText = values.searchText.trim() || null;
@@ -229,7 +232,6 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgr: Object.values(state.user.projectMgr),
-    projectSearchHistory: state.projectSearchHistory.projectSearch,
   };
 };
 
