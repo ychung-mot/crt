@@ -19,12 +19,13 @@ const defaultValues = {
   amount: 0,
   description: '',
   endDate: null,
+  qtyOrAccmp: undefined,
 };
 
 const validationSchema = Yup.object({
   fiscalYearLkupId: Yup.number().required('Fiscal Year Required'),
   phaseLkupId: Yup.number().required('Phase Required'),
-  element: Yup.number().required('Element Required'),
+  elementId: Yup.number().required('Element Required'),
   forecastTypeLkupId: Yup.number().required('Forecast Type Required'),
 });
 
@@ -47,12 +48,14 @@ const EditFinTargetFormFields = ({
     setValidationSchema(validationSchema);
 
     if (formType === Constants.FORM_TYPE.EDIT) {
-      //temporary fix, need to change to post finTarget
       setLoading(true);
       api
         .getFinTarget(projectId, finTargetId)
         .then((response) => {
-          setInitialValues({ ...response.data, endDate: response.data.endDate ? moment(response.data.endDate) : null });
+          setInitialValues({
+            ...response.data,
+            endDate: response.data.endDate ? moment(response.data.endDate) : null,
+          });
           setLoading(false);
         })
         .catch((error) => console.log(error.response));
@@ -73,7 +76,7 @@ const EditFinTargetFormFields = ({
       <FormRow name="elementId" label="Element*">
         <SingleDropdownField items={elements} name="elementId" />
       </FormRow>
-      <FormRow name="forecastTypeLkupId" label="Phase*">
+      <FormRow name="forecastTypeLkupId" label="Forecast*">
         <SingleDropdownField items={forecastTypes} name="forecastTypeLkupId" />
       </FormRow>
       <FormRow name="amount" label="Amount">

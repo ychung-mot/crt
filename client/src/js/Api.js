@@ -54,8 +54,34 @@ export const postNote = (projectId, noteData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`, noteData);
 export const getProjectPlan = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_PLAN}`);
+
 export const getFinTarget = (projectId, finTargetId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`);
+export const postFinTarget = (projectId, finTargetData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}`, finTargetData);
+export const putFinTarget = (projectId, finTargetId, finTargetData) =>
+  instance.put(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`,
+    finTargetData
+  );
+export const deleteFinTarget = (projectId, finTargetId, endDate) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`, {
+    data: { projectId: projectId, id: finTargetId, endDate },
+  });
+
+export const getQtyAccmp = (projectId, qtyAccmpId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`);
+export const postQtyAccmp = (projectId, qtyAccmpData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}`, qtyAccmpData);
+export const putQtyAccmp = (projectId, qtyAccmpId, qtyAccmpData) =>
+  instance.put(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`,
+    qtyAccmpData
+  );
+export const deleteQtyAccmp = (projectId, qtyAccmpId, endDate) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`, {
+    data: { projectId, id: qtyAccmpId, endDate },
+  });
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);

@@ -10,6 +10,7 @@ import DataTableControl from '../ui/DataTableControl';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
+import EditQtyAccmpFormFields from '../forms/EditQtyAccmpFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -51,41 +52,117 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
-  //temporary fix will make real edit and delete functions
+  //Financial Target edit, delete, put, post functions.
   const onFinTargetEditClicked = (finTargetId) => {
-    formModal.openForm(Constants.FORM_TYPE.EDIT, { finTargetId, projectId: data.id });
+    finTargetsFormModal.openForm(Constants.FORM_TYPE.EDIT, { finTargetId, projectId: data.id });
   };
 
-  const onFinTargetDeleteClicked = (id, endDate) => {
-    console.log(`Fin Plan delete project ${id}`);
+  const onFinTargetDeleteClicked = (finTargetid, endDate) => {
+    api.deleteFinTarget(data.id, finTargetid, endDate).then((response) => {
+      refreshData();
+    });
   };
 
   const addFinTargetClicked = () => {
-    formModal.openForm(Constants.FORM_TYPE.ADD);
+    finTargetsFormModal.openForm(Constants.FORM_TYPE.ADD);
   };
 
-  const onQAEditClicked = (id) => {
-    console.log(`QA edit project ${id}`);
+  const handleEditFinTargetFormSubmit = (values, formType) => {
+    if (!finTargetsFormModal.submitting) {
+      finTargetsFormModal.setSubmitting(true);
+      if (formType === Constants.FORM_TYPE.ADD) {
+        api
+          .postFinTarget(data.id, values)
+          .then(() => {
+            finTargetsFormModal.closeForm();
+            refreshData();
+          })
+          .catch((error) => {
+            console.log(error.response);
+            showValidationErrorDialog(error.response.data);
+          })
+          .finally(() => finTargetsFormModal.setSubmitting(false));
+      } else if (formType === Constants.FORM_TYPE.EDIT) {
+        api
+          .putFinTarget(data.id, values.id, values)
+          .then(() => {
+            finTargetsFormModal.closeForm();
+            refreshData();
+          })
+          .catch((error) => {
+            console.log(error.response);
+            showValidationErrorDialog(error.response.data);
+          })
+          .finally(() => finTargetsFormModal.setSubmitting(false));
+      }
+    }
   };
 
-  const onQADeleteClicked = (id, endDate) => {
-    console.log(`QA delete project ${id}`);
+  //Quantity Accomplishments edit, delete, put, post functions.
+  const onQAEditClicked = (qtyAccmpId) => {
+    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.EDIT, { qtyAccmpId, projectId: data.id });
+  };
+
+  const onQADeleteClicked = (qtyAccmpId, endDate) => {
+    console.log(`QA delete project ${qtyAccmpId}`);
+    api.deleteQtyAccmp(data.id, qtyAccmpId, endDate).then(() => refreshData);
   };
 
   const addQAClicked = () => {
+    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.ADD);
     console.log('adding new quantity/accomplishment');
   };
 
-  //end temporary fix edit and delete functions
-
-  const handleEditFinTargetFormSubmit = (values) => {
-    console.log(`submitting ${values}`);
+  const handleEditQtyAccmptFormSubmit = (values, formType) => {
+    if (!qtyAccmpFormModal.submitting) {
+      qtyAccmpFormModal.setSubmitting(true);
+      if (formType === Constants.FORM_TYPE.ADD) {
+        api
+          .postQtyAccmp(data.id, values)
+          .then(() => {
+            qtyAccmpFormModal.closeForm();
+            refreshData();
+          })
+          .catch((error) => {
+            console.log(error.response);
+            showValidationErrorDialog(error.response.data);
+          })
+          .finally(() => qtyAccmpFormModal.setSubmitting(false));
+      } else if (formType === Constants.FORM_TYPE.EDIT) {
+        api
+          .putQtyAccmp(data.id, values.id, values)
+          .then(() => {
+            qtyAccmpFormModal.closeForm();
+            refreshData();
+          })
+          .catch((error) => {
+            console.log(error.response);
+            showValidationErrorDialog(error.response.data);
+          })
+          .finally(() => qtyAccmpFormModal.setSubmitting(false));
+      }
+    }
   };
 
-  const formModal = useFormModal(
+  const refreshData = () => {
+    setLoading(true);
+    api.getProjectPlan(data.id).then((response) => {
+      setData(response.data);
+      setLoading(false);
+    });
+  };
+
+  const finTargetsFormModal = useFormModal(
     'Financial Planning Targets',
     <EditFinTargetFormFields />,
     handleEditFinTargetFormSubmit,
+    true
+  );
+
+  const qtyAccmpFormModal = useFormModal(
+    'Quantities and Accomplishments',
+    <EditQtyAccmpFormFields />,
+    handleEditQtyAccmptFormSubmit,
     true
   );
 
@@ -97,7 +174,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
       <MaterialCard>
         <UIHeader>
           Financial Planning Targets
-          <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
+          <Button color="primary" className="float-right" onClick={addFinTargetClicked} size="sm">
             + Add
           </Button>
         </UIHeader>
@@ -113,8 +190,8 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
       </MaterialCard>
       <MaterialCard>
         <UIHeader>
-          Quantities/Accomplishments{' '}
-          <Button color="primary" className="float-right" onClick={addQAClicked}>
+          Quantities/Accomplishments
+          <Button color="primary" className="float-right" onClick={addQAClicked} size="sm">
             + Add
           </Button>
         </UIHeader>
@@ -139,7 +216,8 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
           Close
         </Button>
       </div>
-      {formModal.formElement}
+      {finTargetsFormModal.formElement}
+      {qtyAccmpFormModal.formElement}
     </React.Fragment>
   );
 };

@@ -30,6 +30,7 @@ export const API_PATHS = {
   PROJECT_PLAN: '/projectplan',
   ELEMENTS: `/elements`,
   FIN_TARGETS: '/targets',
+  QTY_ACCMPS: '/qtyaccmps',
 };
 
 export const PATHS = {
