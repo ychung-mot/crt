@@ -64,10 +64,8 @@ export const putFinTarget = (projectId, finTargetId, finTargetData) =>
     `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`,
     finTargetData
   );
-export const deleteFinTarget = (projectId, finTargetId, endDate) =>
-  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`, {
-    data: { projectId: projectId, id: finTargetId, endDate },
-  });
+export const deleteFinTarget = (projectId, finTargetId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`);
 
 export const getQtyAccmp = (projectId, qtyAccmpId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`);
@@ -78,10 +76,8 @@ export const putQtyAccmp = (projectId, qtyAccmpId, qtyAccmpData) =>
     `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`,
     qtyAccmpData
   );
-export const deleteQtyAccmp = (projectId, qtyAccmpId, endDate) =>
-  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`, {
-    data: { projectId, id: qtyAccmpId, endDate },
-  });
+export const deleteQtyAccmp = (projectId, qtyAccmpId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);

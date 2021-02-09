@@ -65,8 +65,8 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     finTargetsFormModal.openForm(Constants.FORM_TYPE.EDIT, { finTargetId, projectId: data.id });
   };
 
-  const onFinTargetDeleteClicked = (finTargetid, endDate) => {
-    api.deleteFinTarget(data.id, finTargetid, endDate).then((response) => {
+  const onFinTargetDeleteClicked = (finTargetid) => {
+    api.deleteFinTarget(data.id, finTargetid).then(() => {
       refreshData();
     });
   };
@@ -111,14 +111,12 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     qtyAccmpFormModal.openForm(Constants.FORM_TYPE.EDIT, { qtyAccmpId, projectId: data.id });
   };
 
-  const onQADeleteClicked = (qtyAccmpId, endDate) => {
-    console.log(`QA delete project ${qtyAccmpId}`);
-    api.deleteQtyAccmp(data.id, qtyAccmpId, endDate).then(() => refreshData);
+  const onQADeleteClicked = (qtyAccmpId) => {
+    api.deleteQtyAccmp(data.id, qtyAccmpId).then(() => refreshData());
   };
 
   const addQAClicked = () => {
     qtyAccmpFormModal.openForm(Constants.FORM_TYPE.ADD);
-    console.log('adding new quantity/accomplishment');
   };
 
   const handleEditQtyAccmptFormSubmit = (values, formType) => {
