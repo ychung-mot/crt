@@ -14,6 +14,7 @@ namespace Crt.Model.Dtos.QtyAccmp
         public decimal Actual { get; set; }
         public string Comment { get; set; }
         public DateTime? EndDate { get; set; }
+        public bool CanDelete = true;
 
         [JsonIgnore]
         public CodeLookupDto FiscalYearLkup { get; set; }
