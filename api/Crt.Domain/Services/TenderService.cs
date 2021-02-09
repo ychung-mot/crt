@@ -38,7 +38,7 @@ namespace Crt.Domain.Services
 
             var errors = new Dictionary<string, List<string>>();
 
-            _validator.Validate(Entities.Tender, tender, errors);
+            errors = _validator.Validate(Entities.Tender, tender, errors);
 
             await ValidateTender(tender, errors);
 
@@ -67,7 +67,7 @@ namespace Crt.Domain.Services
 
             var errors = new Dictionary<string, List<string>>();
 
-            _validator.Validate(Entities.Tender, tender, errors);
+            errors = _validator.Validate(Entities.Tender, tender, errors);
 
             await ValidateTender(tender, errors);
 
