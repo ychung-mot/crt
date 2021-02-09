@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem, FormFeedback } from 'reactstrap';
+import React, { useState, useEffect, useMemo } from 'react';
+import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem, FormFeedback, Input } from 'reactstrap';
 
 const SingleDropdown = (props) => {
   const {
@@ -12,8 +12,10 @@ const SingleDropdown = (props) => {
     isInvalidClassName,
     fieldMeta,
     errorStyle,
+    searchable,
   } = props;
   const [title, setTitle] = useState(defaultTitle);
+  const [textFilter, setTextFilter] = useState('');
 
   useEffect(() => {
     const item = items.find((o) => {
@@ -35,8 +37,19 @@ const SingleDropdown = (props) => {
     setTitle(item.name);
   };
 
+  const displayItems = useMemo(() => {
+    if (textFilter.trim().length > 0) {
+      const pattern = new RegExp(textFilter.trim(), 'i');
+      const filteredItems = items.filter((item) => pattern.test(item.name));
+
+      return filteredItems;
+    }
+
+    return items;
+  }, [items, textFilter]);
+
   const renderMenuItems = () => {
-    return items.map((item, index) => {
+    return displayItems.map((item, index) => {
       const displayName = item.name;
 
       if (item.type === 'header') {
@@ -65,7 +78,19 @@ const SingleDropdown = (props) => {
         <DropdownToggle caret onBlur={handleOnBlur}>
           {title}
         </DropdownToggle>
-        <DropdownMenu className="pre-scrollable">{renderMenuItems()}</DropdownMenu>
+        <DropdownMenu className="dropdown__single-scroll">
+          {searchable && (
+            <Input
+              type="textbox"
+              placeholder="Search"
+              value={textFilter}
+              onChange={(e) => {
+                setTextFilter(e.target.value);
+              }}
+            />
+          )}
+          {renderMenuItems()}
+        </DropdownMenu>
       </UncontrolledDropdown>
       {fieldMeta && fieldMeta.touched && fieldMeta.error && (
         <FormFeedback style={errorStyle}>{fieldMeta.error}</FormFeedback>

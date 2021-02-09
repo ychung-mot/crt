@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 //components
@@ -19,8 +19,11 @@ import * as Constants from '../../Constants';
 const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
   const [modalExpand, setModalExpand] = useState(false);
   const [modalAdd, setModalAdd] = useState(false);
+  const [modalSaveCheckOpen, setModalSaveCheckOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [data, setData] = useState([]);
+
+  const myInput = useRef();
 
   useEffect(() => {
     setData(
@@ -39,6 +42,17 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
 
   const toggleShowAllModal = () => setModalExpand(!modalExpand);
   const toggleShowAddModal = () => setModalAdd(!modalAdd);
+  const toggleModalSaveCheck = () => {
+    setModalSaveCheckOpen(!modalSaveCheckOpen);
+  };
+
+  const addCommentChangeCheck = (dirty = false) => {
+    if (dirty) {
+      toggleModalSaveCheck();
+    } else {
+      toggleShowAddModal();
+    }
+  };
 
   const handleCommentSubmit = (value) => {
     setSubmitting(true);
@@ -61,17 +75,36 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
       });
   };
 
+  const handleConfirmLeave = () => {
+    setModalAdd(false);
+    setModalSaveCheckOpen(false);
+  };
+
   return (
     <MaterialCard>
-      <UIHeader>{title}</UIHeader>
+      <UIHeader>
+        {title}
+        <div className="float-right">
+          <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+            <FontAwesomeButton
+              icon="plus"
+              onClick={toggleShowAddModal}
+              iconSize={'lg'}
+              title={`Add ${title}`}
+              className="mr-2"
+            />
+          </Authorize>
+          <FontAwesomeButton
+            icon="expand-alt"
+            onClick={toggleShowAllModal}
+            iconSize={'lg'}
+            title={`Show all ${title}`}
+          />
+        </div>
+      </UIHeader>
       <DataTableControl dataList={data.slice(show * -1)} tableColumns={tableColumns} />
-      <div className="text-right">
-        <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-          <FontAwesomeButton icon="plus" onClick={toggleShowAddModal} title={`Add ${title}`} className="mr-2" />
-        </Authorize>
-        <FontAwesomeButton icon="expand-alt" onClick={toggleShowAllModal} title={`Show all ${title}`} />
-      </div>
-      <Modal isOpen={modalExpand} toggle={toggleShowAllModal}>
+
+      <Modal isOpen={modalExpand} toggle={toggleShowAllModal} size="lg">
         <ModalHeader toggle={toggleShowAllModal}>{title} History</ModalHeader>
         <ModalBody>
           <DataTableControl dataList={data} tableColumns={tableColumns} />
@@ -84,13 +117,25 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
           </div>
         </ModalFooter>
       </Modal>
-      <Modal isOpen={modalAdd} toggle={toggleShowAddModal}>
+
+      <Modal
+        isOpen={modalAdd}
+        toggle={toggleShowAddModal}
+        onOpened={() => myInput.current && myInput.current.focus()}
+        size="lg"
+      >
         <ModalHeader toggle={toggleShowAddModal}>Add {title}</ModalHeader>
         <Formik initialValues={{ comment: '' }} onSubmit={handleCommentSubmit}>
           {({ dirty, values }) => (
             <Form>
               <ModalBody>
-                <FormInput type="textarea" name="comment" placeholder="Insert Comment Here" />
+                <FormInput
+                  innerRef={myInput}
+                  type="textarea"
+                  name="comment"
+                  placeholder="Insert Comment Here"
+                  rows={5}
+                />
               </ModalBody>
               <ModalFooter>
                 <div className="text-right">
@@ -98,7 +143,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
                     submitting={submitting}
                     disabled={!dirty || values.comment.trim().length === 0 || submitting}
                   />
-                  <Button color="secondary" onClick={toggleShowAddModal}>
+                  <Button color="secondary" onClick={() => addCommentChangeCheck(dirty)}>
                     Close
                   </Button>
                 </div>
@@ -107,13 +152,29 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
           )}
         </Formik>
       </Modal>
+
+      <Modal isOpen={modalSaveCheckOpen}>
+        <ModalHeader>You have unsaved changes.</ModalHeader>
+        <ModalBody>
+          If the screen is closed before saving these changes, they will be lost. Do you want to continue without
+          saving?
+        </ModalBody>
+        <ModalFooter>
+          <Button size="sm" color="primary" onClick={handleConfirmLeave}>
+            Leave
+          </Button>
+          <Button color="secondary" size="sm" onClick={toggleModalSaveCheck}>
+            Go Back
+          </Button>
+        </ModalFooter>
+      </Modal>
     </MaterialCard>
   );
 };
 
 Comments.propTypes = {
   dataList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  projectId: PropTypes.string.isRequired,
+  projectId: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   show: PropTypes.number, //changes how many comments to show starting from the most recent
 };

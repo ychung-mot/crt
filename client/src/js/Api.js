@@ -52,6 +52,36 @@ export const getProject = (id) => instance.get(`${Constants.API_PATHS.PROJECTS}/
 export const putProject = (id, projectData) => instance.put(`${Constants.API_PATHS.PROJECTS}/${id}`, projectData);
 export const postNote = (projectId, noteData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`, noteData);
+export const getProjectPlan = (projectId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_PLAN}`);
+
+export const getFinTarget = (projectId, finTargetId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`);
+export const postFinTarget = (projectId, finTargetData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}`, finTargetData);
+export const putFinTarget = (projectId, finTargetId, finTargetData) =>
+  instance.put(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`,
+    finTargetData
+  );
+export const deleteFinTarget = (projectId, finTargetId, endDate) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`, {
+    data: { projectId: projectId, id: finTargetId, endDate },
+  });
+
+export const getQtyAccmp = (projectId, qtyAccmpId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`);
+export const postQtyAccmp = (projectId, qtyAccmpData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}`, qtyAccmpData);
+export const putQtyAccmp = (projectId, qtyAccmpId, qtyAccmpData) =>
+  instance.put(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`,
+    qtyAccmpData
+  );
+export const deleteQtyAccmp = (projectId, qtyAccmpId, endDate) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`, {
+    data: { projectId, id: qtyAccmpId, endDate },
+  });
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
@@ -59,6 +89,13 @@ export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
 export const getRCNumbers = () => instance.get(Constants.API_PATHS.RC_NUMBERS);
 export const getNearestTowns = () => instance.get(Constants.API_PATHS.NEAREST_TOWNS);
+export const getFiscalYears = () => instance.get(Constants.API_PATHS.FISCAL_YEARS);
+export const getQuantities = () => instance.get(Constants.API_PATHS.QUANTITIES);
+export const getAccomplishments = () => instance.get(Constants.API_PATHS.ACCOMPLISHMENTS);
+export const getPhases = () => instance.get(Constants.API_PATHS.PHASES);
+export const getContractors = () => instance.get(Constants.API_PATHS.CONTRACTORS);
+export const getForecastTypes = () => instance.get(Constants.API_PATHS.FORECAST_TYPES);
+export const getElements = () => instance.get(Constants.API_PATHS.ELEMENTS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

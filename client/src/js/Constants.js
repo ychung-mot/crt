@@ -9,6 +9,12 @@ export const API_PATHS = {
   CAPITAL_INDEXES: `${CODE_LOOKUP}/capitalindexes`,
   RC_NUMBERS: `${CODE_LOOKUP}/rcnumbers`,
   NEAREST_TOWNS: `${CODE_LOOKUP}/nearesttowns`,
+  PHASES: `${CODE_LOOKUP}/phases`,
+  FISCAL_YEARS: `${CODE_LOOKUP}/fiscalyears`,
+  QUANTITIES: `${CODE_LOOKUP}/quantities`,
+  ACCOMPLISHMENTS: `${CODE_LOOKUP}/accomplishments`,
+  CONTRACTORS: `${CODE_LOOKUP}/contractors`,
+  FORECAST_TYPES: `${CODE_LOOKUP}/forecasttypes`,
   PERMISSIONS: '/permissions',
   ROLE: '/roles',
   USER: '/users',
@@ -21,6 +27,10 @@ export const API_PATHS = {
   PROJECTS: '/projects',
   PROJECT_MANAGERS: '/users/managers',
   NOTES: '/notes',
+  PROJECT_PLAN: '/projectplan',
+  ELEMENTS: `/elements`,
+  FIN_TARGETS: '/targets',
+  QTY_ACCMPS: '/qtyaccmps',
 };
 
 export const PATHS = {
@@ -33,6 +43,7 @@ export const PATHS = {
   ADMIN_ROLES: '/admin/roles',
   VERSION: '/version',
   PROJECTS: '/projects',
+  PROJECT_PLAN: '/projectplan',
 };
 
 export const MESSAGE_DATE_FORMAT = 'YYYY-MM-DD hh:mmA';

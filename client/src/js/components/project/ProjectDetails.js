@@ -20,15 +20,21 @@ import * as api from '../../Api';
 import * as Constants from '../../Constants';
 import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
-const ProjectDetails = ({ match, showValidationErrorDialog }) => {
+const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
   useEffect(() => {
-    api.getProject(match.params.id).then((response) => {
-      setData(response.data);
-      setLoading(false);
-    });
+    api
+      .getProject(match.params.id)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -106,28 +112,21 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   return (
     <React.Fragment>
       <MaterialCard>
-        <UIHeader>Project Details</UIHeader>
-        <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-          <Row>
-            <Col>
-              <FontAwesomeButton
-                icon="edit"
-                className="float-right"
-                onClick={() => onEditClicked(match.params.id)}
-                title="Edit Record"
-              />
-            </Col>
-          </Row>
-        </Authorize>
+        <UIHeader>
+          Project Details{' '}
+          <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+            <FontAwesomeButton
+              icon="edit"
+              className="float-right"
+              onClick={() => onEditClicked(data.id)}
+              title="Edit Record"
+              iconSize="lg"
+            />
+          </Authorize>
+        </UIHeader>
         <DisplayRow>
           <ColumnTwoGroups name="Project Number" label={data.projectNumber} helper="projectNumber" />
           <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
-        </DisplayRow>
-        <DisplayRow>
-          <ColumnGroup name="Project Description" label={data.description} helper="description" />
-        </DisplayRow>
-        <DisplayRow>
-          <ColumnGroup name="Project Scope" label={data.scope} helper="scope" />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.name}`} helper="capIndxLkupId" />
@@ -141,35 +140,35 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
           />
         </DisplayRow>
         <DisplayRow>
-          <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkupId} helper="nearstTwnLkupId" />
-          <ColumnTwoGroups name="RC Number" label={data.rcLkupId} helper="rcLkupId" />
+          <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkup?.codeName} helper="nearstTwnLkupId" />
+          <ColumnTwoGroups name="RC Number" label={data.rcLkup?.codeName} helper="rcLkupId" />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Project End Date" label={data.endDate} helper="endDate" />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnGroup name="Project Description" label={data.description} helper="description" />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnGroup name="Project Scope" label={data.scope} helper="scope" />
         </DisplayRow>
       </MaterialCard>
       <Comments
         title="Status Comments"
         dataList={commentFilter('STATUS')}
         noteType="STATUS"
-        projectId={match.params.id}
+        projectId={data.id}
         show={1}
       />
-      <Comments
-        title="EMR Comments"
-        dataList={commentFilter('EMR')}
-        noteType="EMR"
-        projectId={match.params.id}
-        show={1}
-      />
+      <Comments title="EMR Comments" dataList={commentFilter('EMR')} noteType="EMR" projectId={data.id} show={1} />
 
       <div className="text-right">
-        <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
-          Continue
-        </Button>
-        <Link to={`${Constants.PATHS.PROJECTS}`}>
-          <Button color="secondary">Close</Button>
+        <Link to={`${Constants.API_PATHS.PROJECTS}/${data.id}${Constants.API_PATHS.PROJECT_PLAN}`}>
+          <Button color="primary">Continue</Button>
         </Link>
+        <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
+          Close
+        </Button>
       </div>
 
       {formModal.formElement}
@@ -177,4 +176,10 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   );
 };
 
-export default connect(null, { showValidationErrorDialog })(ProjectDetails);
+const mapStateToProps = (state) => {
+  return {
+    projectSearchHistory: state.projectSearchHistory.projectSearch,
+  };
+};
+
+export default connect(mapStateToProps, { showValidationErrorDialog })(ProjectDetails);

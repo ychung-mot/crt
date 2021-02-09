@@ -18,7 +18,7 @@ import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
 import EditProjectFormFields from '../components/forms/EditProjectFormFields';
 
-import { showValidationErrorDialog } from '../redux/actions';
+import { showValidationErrorDialog, setProjectSearchHistory } from '../redux/actions';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -34,10 +34,10 @@ const defaultSearchOptions = {
 
 const tableColumns = [
   { heading: 'Region', key: 'regionId' },
-  { heading: 'Project', key: 'projectNumber', link: { path: '/projects', idKey: 'id' } },
-  { heading: 'Planning Targets', key: 'planningTargets', nosort: true },
+  { heading: 'Project', key: 'projectNumber', link: '/projects/:id' },
+  { heading: 'Planning Targets', key: 'planningTargets', link: '/projects/:id/projectplan', nosort: true },
   { heading: 'Tender Details', key: 'tenderDetails', nosort: true },
-  { heading: 'Location and Ratios', key: 'locationRation', nosort: true },
+  { heading: 'Location and Ratios', key: 'locationRatios', nosort: true },
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
@@ -54,7 +54,7 @@ const formikInitialValues = {
   isInProgress: [isInProgress[0].id],
 };
 
-const Projects = ({ currentUser, projectMgr }) => {
+const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValidationErrorDialog }) => {
   if (currentUser.isProjectMgr) {
     defaultSearchOptions.projectManagerIds = currentUser.id;
     formikInitialValues.projectManagerIds = [currentUser.id];
@@ -84,6 +84,11 @@ const Projects = ({ currentUser, projectMgr }) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setProjectSearchHistory(location.pathname + location.search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [`${location.search}`]);
 
   const handleSearchFormSubmit = (values) => {
     const searchText = values.searchText.trim() || null;
@@ -152,7 +157,13 @@ const Projects = ({ currentUser, projectMgr }) => {
                   <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
                 </Col>
                 <Col>
-                  <Field type="text" name="searchText" placeholder="Keyword" className="form-control" />
+                  <Field
+                    type="text"
+                    name="searchText"
+                    placeholder="Number/Name/Description/Scope"
+                    className="form-control"
+                    title="Searches Project Number, Name, Description and Scope fields"
+                  />
                 </Col>
                 <Col>
                   <MultiDropdownField
@@ -160,6 +171,7 @@ const Projects = ({ currentUser, projectMgr }) => {
                     items={projectMgr}
                     name="projectManagerIds"
                     title="Project Manager"
+                    searchable
                   />
                 </Col>
                 <Col>
@@ -223,4 +235,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { showValidationErrorDialog })(Projects);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showValidationErrorDialog: (error) => dispatch(showValidationErrorDialog(error)),
+    setProjectSearchHistory: (url) => dispatch(setProjectSearchHistory(url)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Projects);

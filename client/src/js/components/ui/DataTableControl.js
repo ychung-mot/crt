@@ -22,6 +22,23 @@ const DataTableControl = ({
     if (onEditClicked) onEditClicked(id);
   };
 
+  const linkFormatter = (item = {}, url = '') => {
+    //finds all parts of the URL that have : to replace with attribute from item keys
+    let link = url;
+    const regex = /:[a-z 0-9]*/gi;
+    let variableParams = link.match(regex);
+
+    if (!variableParams) {
+      return link;
+    }
+
+    for (let each of variableParams) {
+      link = link.replace(each, item[each.slice(1)]);
+    }
+
+    return link;
+  };
+
   return (
     <React.Fragment>
       <Table size="sm" responsive hover>
@@ -69,7 +86,7 @@ const DataTableControl = ({
                   return (
                     <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
                       {column.link ? (
-                        <Link to={`${column.link.path}/${item[column.link?.idKey] ?? ''}`}>{item[column.key]}</Link>
+                        <Link to={() => linkFormatter(item, column.link)}>{item[column.key] || column.heading}</Link>
                       ) : (
                         item[column.key]
                       )}
@@ -121,11 +138,8 @@ DataTableControl.propTypes = {
         active: PropTypes.string.isRequired,
         inactive: PropTypes.string.isRequired,
       }),
-      link: PropTypes.shape({
-        //will render link to path and optional :id path using data in table column key
-        path: PropTypes.string.isRequired,
-        idKey: PropTypes.string,
-      }),
+      //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
+      link: PropTypes.string,
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,
