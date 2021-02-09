@@ -90,19 +90,12 @@ namespace Crt.Api.Controllers
 
         [HttpDelete("{id}")]
         [RequiresPermission(Permissions.ProjectWrite)]
-        public async Task<ActionResult> DeleteFinTarget(decimal projectId, decimal id, FinTargetDeleteDto finTarget)
+        public async Task<ActionResult> DeleteFinTarget(decimal projectId, decimal id)
         {
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;
 
-            finTarget.ProjectId = projectId;
-
-            if (id != finTarget.FinTargetId)
-            {
-                throw new Exception($"The system finTarget ID from the query string does not match that of the body.");
-            }
-
-            var response = await _finTargetService.DeleteFinTargetAsync(finTarget);
+            var response = await _finTargetService.DeleteFinTargetAsync(projectId, id);
 
             if (response.NotFound)
             {

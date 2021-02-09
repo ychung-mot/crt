@@ -18,7 +18,7 @@ namespace Crt.Domain.Services
         Task<FinTargetDto> GetFinTargetByIdAsync(decimal finTargetId);
         Task<(decimal finTargetId, Dictionary<string, List<string>> errors)> CreateFinTargetAsync(FinTargetCreateDto finTarget);
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateFinTargetAsync(FinTargetUpdateDto finTarget);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteFinTargetAsync(FinTargetDeleteDto finTarget);
+        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteFinTargetAsync(decimal projectId, decimal finTargetId);
     }
 
     public class FinTargetService : CrtServiceBase, IFinTargetService
@@ -67,7 +67,7 @@ namespace Crt.Domain.Services
 
             var crtFinTarget = await _finTargetRepo.GetFinTargetByIdAsync(finTarget.FinTargetId);
 
-            if (crtFinTarget == null)
+            if (crtFinTarget == null || crtFinTarget.ProjectId != finTarget.ProjectId)
             {
                 return (true, null);
             }
@@ -90,18 +90,18 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteFinTargetAsync(FinTargetDeleteDto finTarget)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteFinTargetAsync(decimal projectId, decimal finTargetId)
         {
-            var crtFinTarget = await _finTargetRepo.GetFinTargetByIdAsync(finTarget.FinTargetId);
+            var crtFinTarget = await _finTargetRepo.GetFinTargetByIdAsync(finTargetId);
 
-            if (crtFinTarget == null)
+            if (crtFinTarget == null || crtFinTarget.ProjectId != projectId)
             {
                 return (true, null);
             }
 
             var errors = new Dictionary<string, List<string>>();
 
-            await _finTargetRepo.DeleteFinTargetAsync(finTarget);
+            await _finTargetRepo.DeleteFinTargetAsync(finTargetId);
 
             _unitOfWork.Commit();
 

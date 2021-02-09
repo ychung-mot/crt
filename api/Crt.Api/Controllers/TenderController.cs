@@ -89,19 +89,12 @@ namespace Crt.Api.Controllers
 
         [HttpDelete("{id}")]
         [RequiresPermission(Permissions.ProjectWrite)]
-        public async Task<ActionResult> DeleteTender(decimal projectId, decimal id, TenderDeleteDto tender)
+        public async Task<ActionResult> DeleteTender(decimal projectId, decimal id)
         {
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;
 
-            tender.ProjectId = projectId;
-
-            if (id != tender.TenderId)
-            {
-                throw new Exception($"The system tender ID from the query string does not match that of the body.");
-            }
-
-            var response = await _tenderService.DeleteTenderAsync(tender);
+            var response = await _tenderService.DeleteTenderAsync(projectId, id);
 
             if (response.NotFound)
             {

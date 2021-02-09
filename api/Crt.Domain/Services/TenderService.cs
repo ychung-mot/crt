@@ -14,7 +14,7 @@ namespace Crt.Domain.Services
         Task<TenderDto> GetTenderByIdAsync(decimal tenderId);
         Task<(decimal tenderId, Dictionary<string, List<string>> errors)> CreateTenderAsync(TenderCreateDto tender);
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateTenderAsync(TenderUpdateDto tender);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteTenderAsync(TenderDeleteDto tender);
+        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteTenderAsync(decimal projectId, decimal tender);
     }
 
     public class TenderService : CrtServiceBase, ITenderService
@@ -83,18 +83,18 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteTenderAsync(TenderDeleteDto tender)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteTenderAsync(decimal projectId, decimal tenderId)
         {
-            var crtTender = await _tenderRepo.GetTenderByIdAsync(tender.TenderId);
+            var crtTender = await _tenderRepo.GetTenderByIdAsync(tenderId);
 
-            if (crtTender == null)
+            if (crtTender == null || crtTender.ProjectId != projectId)
             {
                 return (true, null);
             }
 
             var errors = new Dictionary<string, List<string>>();
 
-            await _tenderRepo.DeleteTenderAsync(tender);
+            await _tenderRepo.DeleteTenderAsync(tenderId);
 
             _unitOfWork.Commit();
 

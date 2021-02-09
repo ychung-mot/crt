@@ -18,7 +18,7 @@ namespace Crt.Data.Repositories
         Task<FinTargetDto> GetFinTargetByIdAsync(decimal finTargetId);
         Task<CrtFinTarget> CreateFinTargetAsync(FinTargetCreateDto finTarget);
         Task UpdateFinTargetAsync(FinTargetUpdateDto finTarget);
-        Task DeleteFinTargetAsync(FinTargetDeleteDto finTarget);
+        Task DeleteFinTargetAsync(decimal finTargetId);
         Task<bool> ElementExists(decimal elementId);
     }
 
@@ -56,19 +56,19 @@ namespace Crt.Data.Repositories
         public async Task UpdateFinTargetAsync(FinTargetUpdateDto finTarget)
         {
             var crtFinTarget = await DbSet
-                                .FirstAsync(x => x.ProjectId == finTarget.ProjectId && x.FinTargetId == finTarget.FinTargetId);
+                                .FirstAsync(x => x.FinTargetId == finTarget.FinTargetId);
 
             crtFinTarget.EndDate = finTarget.EndDate?.Date;
 
             Mapper.Map(finTarget, crtFinTarget);
         }
 
-        public async Task DeleteFinTargetAsync(FinTargetDeleteDto finTarget)
+        public async Task DeleteFinTargetAsync(decimal finTargetId)
         {
-            var finTargetEntity = await DbSet
-                                .FirstAsync(x => x.ProjectId == finTarget.ProjectId && x.FinTargetId == finTarget.FinTargetId);
+            var crtFinTarget = await DbSet
+                                .FirstAsync(x => x.FinTargetId == finTargetId);
 
-            finTargetEntity.EndDate = finTarget.EndDate?.Date;
+            DbSet.Remove(crtFinTarget);
         }
 
         public async Task<bool> ElementExists(decimal elementId)

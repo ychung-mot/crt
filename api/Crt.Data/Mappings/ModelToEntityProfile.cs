@@ -65,17 +65,14 @@ namespace Crt.Data.Mappings
             CreateMap<FinTargetDto, CrtFinTarget>();
             CreateMap<FinTargetCreateDto, CrtFinTarget>();
             CreateMap<FinTargetUpdateDto, CrtFinTarget>();
-            CreateMap<FinTargetDeleteDto, CrtFinTarget>();
 
             CreateMap<QtyAccmpDto, CrtQtyAccmp>();
             CreateMap<QtyAccmpCreateDto, CrtQtyAccmp>();
             CreateMap<QtyAccmpUpdateDto, CrtQtyAccmp>();
-            CreateMap<QtyAccmpDeleteDto, CrtQtyAccmp>();
 
             CreateMap<TenderDto, CrtTender>();
             CreateMap<TenderCreateDto, CrtTender>();
             CreateMap<TenderUpdateDto, CrtTender>();
-            CreateMap<TenderDeleteDto, CrtTender>();
         }
     }
 }

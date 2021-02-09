@@ -17,7 +17,7 @@ namespace Crt.Data.Repositories
         Task<TenderDto> GetTenderByIdAsync(decimal tenderId);
         Task<CrtTender> CreateTenderAsync(TenderCreateDto tender);
         Task UpdateTenderAsync(TenderUpdateDto tender);
-        Task DeleteTenderAsync(TenderDeleteDto tender);
+        Task DeleteTenderAsync(decimal tenderId);
         Task<bool> TenderNumberAlreadyExists(decimal projectId, decimal tenderId, string tenderNumber);
     }
 
@@ -59,12 +59,12 @@ namespace Crt.Data.Repositories
             Mapper.Map(tender, crtTender);
         }
 
-        public async Task DeleteTenderAsync(TenderDeleteDto tender)
+        public async Task DeleteTenderAsync(decimal tenderId)
         {
             var tenderEntity = await DbSet
-                                .FirstAsync(x => x.ProjectId == tender.ProjectId && x.TenderId == tender.TenderId);
+                                .FirstAsync(x => x.TenderId == tenderId);
 
-            tenderEntity.EndDate = tender.EndDate?.Date;
+            DbSet.Remove(tenderEntity);
         }
 
         public async Task<bool> TenderNumberAlreadyExists(decimal projectId, decimal tenderId, string tenderNumber)
