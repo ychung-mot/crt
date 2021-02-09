@@ -89,19 +89,12 @@ namespace Crt.Api.Controllers
 
         [HttpDelete("{id}")]
         [RequiresPermission(Permissions.ProjectWrite)]
-        public async Task<ActionResult> DeleteQtyAccmp(decimal projectId, decimal id, QtyAccmpDeleteDto qtyAccmp)
+        public async Task<ActionResult> DeleteQtyAccmp(decimal projectId, decimal id)
         {
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;
 
-            qtyAccmp.ProjectId = projectId;
-
-            if (id != qtyAccmp.QtyAccmpId)
-            {
-                throw new Exception($"The system qtyAccmp ID from the query string does not match that of the body.");
-            }
-
-            var response = await _qtyAccmpService.DeleteQtyAccmpAsync(qtyAccmp);
+            var response = await _qtyAccmpService.DeleteQtyAccmpAsync(projectId, id);
 
             if (response.NotFound)
             {

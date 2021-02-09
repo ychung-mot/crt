@@ -13,7 +13,7 @@ namespace Crt.Data.Repositories
         Task<QtyAccmpDto> GetQtyAccmpByIdAsync(decimal qtyAccmpId);
         Task<CrtQtyAccmp> CreateQtyAccmpAsync(QtyAccmpCreateDto qtyAccmp);
         Task UpdateQtyAccmpAsync(QtyAccmpUpdateDto qtyAccmp);
-        Task DeleteQtyAccmpAsync(QtyAccmpDeleteDto qtyAccmp);
+        Task DeleteQtyAccmpAsync(decimal qtyAccmpId);
     }
 
     public class QtyAccmpRepository : CrtRepositoryBase<CrtQtyAccmp>, IQtyAccmpRepository
@@ -55,12 +55,12 @@ namespace Crt.Data.Repositories
             Mapper.Map(qtyAccmp, crtQtyAccmp);
         }
 
-        public async Task DeleteQtyAccmpAsync(QtyAccmpDeleteDto qtyAccmp)
+        public async Task DeleteQtyAccmpAsync(decimal qtyAccmpId)
         {
-            var qtyAccmpEntity = await DbSet
-                                .FirstAsync(x => x.ProjectId == qtyAccmp.ProjectId && x.QtyAccmpId == qtyAccmp.QtyAccmpId);
+            var crtQtyAccmp = await DbSet
+                                .FirstAsync(x => x.QtyAccmpId == qtyAccmpId);
 
-            qtyAccmpEntity.EndDate = qtyAccmp.EndDate?.Date;
+            DbSet.Remove(crtQtyAccmp);
         }
     }
 }
