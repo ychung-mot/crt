@@ -16,7 +16,7 @@ namespace Crt.Model.Dtos.Tender
         public decimal BidValue { get; set; }
         public string Comment { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool CanDelete = true;
+        public bool CanDelete { get => true; }
 
         [JsonIgnore]
         public virtual CodeLookupDto WinningCntrctrLkup { get; set; }

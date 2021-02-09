@@ -11,7 +11,7 @@ namespace Crt.Model.Dtos.FinTarget
         public decimal ProjectId { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
-        public bool CanDelete = true;
+        public bool CanDelete { get => true; }
 
         [JsonIgnore]
         public CodeLookupDto FiscalYearLkup { get; set; }
