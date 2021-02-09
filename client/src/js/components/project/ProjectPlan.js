@@ -9,6 +9,7 @@ import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import SingleDropdown from '../ui/SingleDropdown';
 import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
 import EditQtyAccmpFormFields from '../forms/EditQtyAccmpFormFields';
 
@@ -50,6 +51,13 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     { heading: 'Schedule7', key: 'schedule7', nosort: true },
     { heading: 'Actual', key: 'actual', nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },
+  ];
+
+  //temporary fix hard code quantity and accomplishments
+  const qtyAccmpArray = [
+    { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
+    { id: 'QUANTITY', name: 'Quantity' },
+    { id: 'ALL', name: 'Show Quantity and Accomplishment' },
   ];
 
   //Financial Target edit, delete, put, post functions.
@@ -191,6 +199,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
       <MaterialCard>
         <UIHeader>
           Quantities/Accomplishments
+          <SingleDropdown items={qtyAccmpArray} handleOnChange={(e) => console.log(e)} />
           <Button color="primary" className="float-right" onClick={addQAClicked} size="sm">
             + Add
           </Button>
