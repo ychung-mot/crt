@@ -19,6 +19,7 @@ namespace Crt.Model.Dtos.QtyAccmp
         public CodeLookupDto FiscalYearLkup { get; set; }
         [JsonIgnore]
         public CodeLookupDto QtyAccmpLkup { get; set; }
+        public string FiscalYear { get => FiscalYearLkup.Description; }
         public string QtyAccmpType { get => QtyAccmpLkup.CodeSet;  }
     }
 }
