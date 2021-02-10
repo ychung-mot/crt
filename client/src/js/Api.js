@@ -55,6 +55,7 @@ export const postNote = (projectId, noteData) =>
 export const getProjectPlan = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_PLAN}`);
 
+//Projects FinTargets
 export const getFinTarget = (projectId, finTargetId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`);
 export const postFinTarget = (projectId, finTargetData) =>
@@ -64,11 +65,10 @@ export const putFinTarget = (projectId, finTargetId, finTargetData) =>
     `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`,
     finTargetData
   );
-export const deleteFinTarget = (projectId, finTargetId, endDate) =>
-  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`, {
-    data: { projectId: projectId, id: finTargetId, endDate },
-  });
+export const deleteFinTarget = (projectId, finTargetId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`);
 
+//Projects QtyAccmps
 export const getQtyAccmp = (projectId, qtyAccmpId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`);
 export const postQtyAccmp = (projectId, qtyAccmpData) =>
@@ -78,10 +78,14 @@ export const putQtyAccmp = (projectId, qtyAccmpId, qtyAccmpData) =>
     `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`,
     qtyAccmpData
   );
-export const deleteQtyAccmp = (projectId, qtyAccmpId, endDate) =>
-  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`, {
-    data: { projectId, id: qtyAccmpId, endDate },
-  });
+export const deleteQtyAccmp = (projectId, qtyAccmpId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`);
+
+//Projects Tender
+export const getProjectTender = (projectId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_TENDER}`);
+export const getTender = (projectId, tenderId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);

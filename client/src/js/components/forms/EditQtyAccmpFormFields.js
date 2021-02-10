@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import moment from 'moment';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
-import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
 import { FormRow, FormInput } from './FormInputs';
 
@@ -49,7 +48,6 @@ const EditQtyAccmpFormFields = ({
     setValidationSchema(validationSchema);
 
     if (formType === Constants.FORM_TYPE.EDIT) {
-      //temporary fix, need to change to post finTarget
       setLoading(true);
       api
         .getQtyAccmp(projectId, qtyAccmpId)
@@ -96,7 +94,7 @@ const EditQtyAccmpFormFields = ({
             <FormInput type="number" name="amount" placeholder="0" />
           </FormRow>
           <FormRow name="comment" label="Comment">
-            <FormInput type="textarea" name="comment" placeholder="Insert Comment Here" value="" />
+            <FormInput type="input" name="comment" placeholder="Insert Comment Here" value={formValues.comment} />
           </FormRow>
         </>
       )}

@@ -28,7 +28,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
   useEffect(() => {
     setData(
       dataList.map((comment) => {
-        return { ...comment, noteDate: moment(comment.noteDate).format('YYYY-MMM-DD') };
+        return { ...comment, noteDate: moment(comment.noteDate).format(Constants.DATE_DISPLAY_FORMAT) };
       })
     );
     //eslint-disable-next-line
@@ -63,7 +63,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
           response.data.notes
             .filter((note) => note.noteType === noteType)
             .map((comment) => {
-              return { ...comment, noteDate: moment(comment.noteDate).format('YYYY-MMM-DD') };
+              return { ...comment, noteDate: moment(comment.noteDate).format(Constants.DATE_DISPLAY_FORMAT) };
             })
         );
         toggleShowAddModal();

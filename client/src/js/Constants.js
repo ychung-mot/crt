@@ -31,6 +31,8 @@ export const API_PATHS = {
   ELEMENTS: `/elements`,
   FIN_TARGETS: '/targets',
   QTY_ACCMPS: '/qtyaccmps',
+  PROJECT_TENDER: '/projecttender',
+  TENDER: '/tenders',
 };
 
 export const PATHS = {
@@ -44,6 +46,7 @@ export const PATHS = {
   VERSION: '/version',
   PROJECTS: '/projects',
   PROJECT_PLAN: '/projectplan',
+  PROJECT_TENDER: '/projecttender',
 };
 
 export const MESSAGE_DATE_FORMAT = 'YYYY-MM-DD hh:mmA';
