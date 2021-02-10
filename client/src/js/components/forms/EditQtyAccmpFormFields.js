@@ -96,7 +96,7 @@ const EditQtyAccmpFormFields = ({
             <FormInput type="number" name="amount" placeholder="0" />
           </FormRow>
           <FormRow name="comment" label="Comment">
-            <FormInput type="textarea" name="comment" placeholder="Insert Comment Here" value="" />
+            <FormInput type="input" name="comment" placeholder="Insert Comment Here" value={formValues.comment} />
           </FormRow>
         </>
       )}

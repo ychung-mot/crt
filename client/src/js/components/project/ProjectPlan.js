@@ -7,7 +7,7 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
-import { Button } from 'reactstrap';
+import { Button, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import SingleDropdown from '../ui/SingleDropdown';
 import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
@@ -20,6 +20,9 @@ import * as Constants from '../../Constants';
 const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+
+  const [fiscalYearsFilter, setFiscalYearsFilter] = useState('ALL');
+  const [qtyOrAccmpFilter, setqtyOrAccmpFIlter] = useState('ALL');
 
   useEffect(() => {
     api
@@ -55,9 +58,9 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
 
   //temporary fix hard code quantity and accomplishments
   const qtyAccmpArray = [
+    { id: 'ALL', name: 'Show All' },
     { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
     { id: 'QUANTITY', name: 'Quantity' },
-    { id: 'ALL', name: 'Show Quantity and Accomplishment' },
   ];
 
   //Financial Target edit, delete, put, post functions.
@@ -150,12 +153,49 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     }
   };
 
+  //filter helper functions
+  const onFiscalYearFilterChange = (fiscalId) => {
+    const result =
+      fiscalYears.find((fiscalYearItem) => {
+        return fiscalYearItem.id === fiscalId;
+      })?.codeName || 'ALL';
+    console.log(`Filtering for year ${result}`);
+    setFiscalYearsFilter(result);
+  };
+
+  const onQtyAccmpFilterChange = (qtyAccmpName) => {
+    setqtyOrAccmpFIlter(qtyAccmpName);
+    console.log(`Filtering for ${qtyAccmpName}`);
+  };
+
+  const displayAfterYearFilter = (items) => {
+    let filteredResult = items;
+    if (fiscalYearsFilter === 'ALL') {
+      return filteredResult;
+    } else {
+      return filteredResult.filter((items) => items.fiscalYear === fiscalYearsFilter);
+    }
+  };
+
+  const displayAfterQtyAccmpsFilter = (items) => {
+    let filteredResult = items;
+    if (qtyOrAccmpFilter === 'ALL') {
+      return filteredResult;
+    } else {
+      return filteredResult.filter((items) => items.qtyAccmpType === qtyOrAccmpFilter);
+    }
+  };
+
   const refreshData = () => {
-    setLoading(true);
-    api.getProjectPlan(data.id).then((response) => {
-      setData(response.data);
-      setLoading(false);
-    });
+    api
+      .getProjectPlan(data.id)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
   };
 
   const finTargetsFormModal = useFormModal(
@@ -179,13 +219,26 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
       <UIHeader>Project {data.id} Details</UIHeader>
       <MaterialCard>
         <UIHeader>
-          Financial Planning Targets
-          <Button color="primary" className="float-right" onClick={addFinTargetClicked} size="sm">
-            + Add
-          </Button>
+          <Container>
+            <Row>
+              <Col xs="auto">Financial Planning Targets</Col>
+              <Col xs={3}>
+                <SingleDropdown
+                  items={[{ id: 'ALL', name: 'Show All' }].concat(fiscalYears)}
+                  handleOnChange={onFiscalYearFilterChange}
+                  defaultTitle="Show All"
+                />
+              </Col>
+              <Col>
+                <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
+                  + Add
+                </Button>
+              </Col>
+            </Row>
+          </Container>
         </UIHeader>
         <DataTableControl
-          dataList={data.finTargets}
+          dataList={displayAfterYearFilter(data.finTargets)}
           tableColumns={finTargetTableColumns}
           editable
           deletable
@@ -196,14 +249,22 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
       </MaterialCard>
       <MaterialCard>
         <UIHeader>
-          Quantities/Accomplishments
-          <SingleDropdown items={qtyAccmpArray} handleOnChange={(e) => console.log(e)} />
-          <Button color="primary" className="float-right" onClick={addQAClicked} size="sm">
-            + Add
-          </Button>
+          <Container>
+            <Row>
+              <Col xs="auto">Quantities/Accomplishments</Col>
+              <Col xs={3}>
+                <SingleDropdown items={qtyAccmpArray} handleOnChange={onQtyAccmpFilterChange} defaultTitle="Show All" />
+              </Col>
+              <Col>
+                <Button color="primary" className="float-right" onClick={addQAClicked}>
+                  + Add
+                </Button>
+              </Col>
+            </Row>
+          </Container>
         </UIHeader>
         <DataTableControl
-          dataList={data.qtyAccmps}
+          dataList={displayAfterQtyAccmpsFilter(displayAfterYearFilter(data.qtyAccmps))}
           tableColumns={qaTableColumns}
           editable
           deletable
