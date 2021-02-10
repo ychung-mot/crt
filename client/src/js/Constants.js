@@ -31,6 +31,8 @@ export const API_PATHS = {
   ELEMENTS: `/elements`,
   FIN_TARGETS: '/targets',
   QTY_ACCMPS: '/qtyaccmps',
+  PROJECT_TENDER: '/projecttender',
+  TENDER: '/tenders',
 };
 
 export const PATHS = {

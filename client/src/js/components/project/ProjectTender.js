@@ -10,11 +10,10 @@ import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import SingleDropdown from '../ui/SingleDropdown';
-import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
-import EditQtyAccmpFormFields from '../forms/EditQtyAccmpFormFields';
+import EditTenderFormFields from '../forms/EditTenderFormFields';
 
 import useFormModal from '../hooks/useFormModal';
+import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
@@ -22,14 +21,12 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const [fiscalYearsFilter, setFiscalYearsFilter] = useState('ALL');
-  const [qtyOrAccmpFilter, setqtyOrAccmpFIlter] = useState('ALL');
-
   useEffect(() => {
     api
-      .getProjectPlan(match.params.id)
+      .getProjectTender(match.params.id)
       .then((response) => {
-        setData(response.data);
+        let dateFormattedResponse = { ...response.data, tenders: changeDateFormat(response.data.tenders) };
+        setData(dateFormattedResponse);
         setLoading(false);
       })
       .catch((error) => {
@@ -39,157 +36,66 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const finTargetTableColumns = [
-    { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
-    { heading: 'Project Phase', key: 'projectPhase', nosort: true },
-    { heading: 'Element', key: 'element', nosort: true },
-    { heading: 'Type', key: 'forecastType', nosort: true },
-    { heading: 'Amount', key: 'amount', nosort: true },
-    { heading: 'Description', key: 'description', nosort: true },
-  ];
-
-  const qaTableColumns = [
-    { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
-    { heading: 'Accomplishment/Quantity', key: 'qtyAccmpType', nosort: true },
-    { heading: 'Forecast', key: 'forecast', nosort: true },
-    { heading: 'Schedule7', key: 'schedule7', nosort: true },
-    { heading: 'Actual', key: 'actual', nosort: true },
+  const projectTenderTableColumns = [
+    { heading: 'Tendor #', key: 'tenderNumber', nosort: true },
+    { heading: 'Planned Date', key: 'plannedDate', nosort: true },
+    { heading: 'Actual Date', key: 'actualDate', nosort: true },
+    { heading: 'Tendor Value', key: 'tenderValue', nosort: true },
+    { heading: 'Winning Contractor', key: 'winningCntrctr', nosort: true },
+    { heading: 'Winning Bid', key: 'bidValue', nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
-  //temporary fix hard code quantity and accomplishments
-  const qtyAccmpArray = [
-    { id: 'ALL', name: 'Show All' },
-    { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
-    { id: 'QUANTITY', name: 'Quantity' },
-  ];
-
-  //Financial Target edit, delete, put, post functions.
-  const onFinTargetEditClicked = (finTargetId) => {
-    finTargetsFormModal.openForm(Constants.FORM_TYPE.EDIT, { finTargetId, projectId: data.id });
+  const onTenderEditClicked = (tenderId) => {
+    tendersFormModal.openForm(Constants.FORM_TYPE.EDIT, { tenderId, projectId: data.id });
+    console.log(tenderId + 'Edit');
   };
 
-  const onFinTargetDeleteClicked = (finTargetid) => {
-    api.deleteFinTarget(data.id, finTargetid).then(() => {
-      refreshData();
-    });
+  const onTenderDeleteClicked = (tenderId) => {
+    console.log(tenderId + 'Delete');
   };
 
-  const addFinTargetClicked = () => {
-    finTargetsFormModal.openForm(Constants.FORM_TYPE.ADD);
+  const addTenderClicked = () => {
+    tendersFormModal.openForm(Constants.FORM_TYPE.ADD);
   };
 
-  const handleEditFinTargetFormSubmit = (values, formType) => {
-    if (!finTargetsFormModal.submitting) {
-      finTargetsFormModal.setSubmitting(true);
+  const handleEditTenderFormSubmit = (values, formType) => {
+    if (!tendersFormModal.submitting) {
+      tendersFormModal.setSubmitting(true);
       if (formType === Constants.FORM_TYPE.ADD) {
         api
           .postFinTarget(data.id, values)
           .then(() => {
-            finTargetsFormModal.closeForm();
+            tendersFormModal.closeForm();
             refreshData();
           })
           .catch((error) => {
             console.log(error.response);
             showValidationErrorDialog(error.response.data);
           })
-          .finally(() => finTargetsFormModal.setSubmitting(false));
+          .finally(() => tendersFormModal.setSubmitting(false));
       } else if (formType === Constants.FORM_TYPE.EDIT) {
         api
           .putFinTarget(data.id, values.id, values)
           .then(() => {
-            finTargetsFormModal.closeForm();
+            tendersFormModal.closeForm();
             refreshData();
           })
           .catch((error) => {
             console.log(error.response);
             showValidationErrorDialog(error.response.data);
           })
-          .finally(() => finTargetsFormModal.setSubmitting(false));
+          .finally(() => tendersFormModal.setSubmitting(false));
       }
-    }
-  };
-
-  //Quantity Accomplishments edit, delete, put, post functions.
-  const onQAEditClicked = (qtyAccmpId) => {
-    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.EDIT, { qtyAccmpId, projectId: data.id });
-  };
-
-  const onQADeleteClicked = (qtyAccmpId) => {
-    api.deleteQtyAccmp(data.id, qtyAccmpId).then(() => refreshData());
-  };
-
-  const addQAClicked = () => {
-    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.ADD);
-  };
-
-  const handleEditQtyAccmptFormSubmit = (values, formType) => {
-    if (!qtyAccmpFormModal.submitting) {
-      qtyAccmpFormModal.setSubmitting(true);
-      if (formType === Constants.FORM_TYPE.ADD) {
-        api
-          .postQtyAccmp(data.id, values)
-          .then(() => {
-            qtyAccmpFormModal.closeForm();
-            refreshData();
-          })
-          .catch((error) => {
-            console.log(error.response);
-            showValidationErrorDialog(error.response.data);
-          })
-          .finally(() => qtyAccmpFormModal.setSubmitting(false));
-      } else if (formType === Constants.FORM_TYPE.EDIT) {
-        api
-          .putQtyAccmp(data.id, values.id, values)
-          .then(() => {
-            qtyAccmpFormModal.closeForm();
-            refreshData();
-          })
-          .catch((error) => {
-            console.log(error.response);
-            showValidationErrorDialog(error.response.data);
-          })
-          .finally(() => qtyAccmpFormModal.setSubmitting(false));
-      }
-    }
-  };
-
-  //filter helper functions
-  const onFiscalYearFilterChange = (fiscalId) => {
-    const result =
-      fiscalYears.find((fiscalYearItem) => {
-        return fiscalYearItem.id === fiscalId;
-      })?.codeName || 'ALL';
-    setFiscalYearsFilter(result);
-  };
-
-  const onQtyAccmpFilterChange = (qtyAccmpName) => {
-    setqtyOrAccmpFIlter(qtyAccmpName);
-  };
-
-  const displayAfterYearFilter = (items) => {
-    let filteredResult = items;
-    if (fiscalYearsFilter === 'ALL') {
-      return filteredResult;
-    } else {
-      return filteredResult.filter((items) => items.fiscalYear === fiscalYearsFilter);
-    }
-  };
-
-  const displayAfterQtyAccmpsFilter = (items) => {
-    let filteredResult = items;
-    if (qtyOrAccmpFilter === 'ALL') {
-      return filteredResult;
-    } else {
-      return filteredResult.filter((items) => items.qtyAccmpType === qtyOrAccmpFilter);
     }
   };
 
   const refreshData = () => {
     api
-      .getProjectPlan(data.id)
+      .getProjectTender(data.id)
       .then((response) => {
-        setData(response.data);
+        let dateFormattedResponse = { ...response.data, tenders: changeDateFormat(response.data.tenders) };
+        setData(dateFormattedResponse);
       })
       .catch((error) => {
         console.log(error.response);
@@ -197,19 +103,19 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
       });
   };
 
-  const finTargetsFormModal = useFormModal(
-    'Financial Planning Targets',
-    <EditFinTargetFormFields />,
-    handleEditFinTargetFormSubmit,
-    true
-  );
+  const changeDateFormat = (tenderArray) => {
+    let changedTenderArray = tenderArray.map((tender) => {
+      return {
+        ...tender,
+        plannedDate: moment(tender.plannedDate).format(Constants.DATE_DISPLAY_FORMAT),
+        actualDate: moment(tender.actualDate).format(Constants.DATE_DISPLAY_FORMAT),
+      };
+    });
 
-  const qtyAccmpFormModal = useFormModal(
-    'Quantities and Accomplishments',
-    <EditQtyAccmpFormFields />,
-    handleEditQtyAccmptFormSubmit,
-    true
-  );
+    return changedTenderArray;
+  };
+
+  const tendersFormModal = useFormModal('Tender Details', <EditTenderFormFields />, handleEditTenderFormSubmit, true);
 
   if (loading) return <PageSpinner />;
 
@@ -218,63 +124,25 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
       <UIHeader>Project {data.id} Details</UIHeader>
       <MaterialCard>
         <UIHeader>
-          <Container>
-            <Row>
-              <Col xs="auto">Financial Planning Targets</Col>
-              <Col xs={3}>
-                <SingleDropdown
-                  items={[{ id: 'ALL', name: 'Show All' }].concat(fiscalYears)}
-                  handleOnChange={onFiscalYearFilterChange}
-                  defaultTitle="Show All"
-                />
-              </Col>
-              <Col>
-                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
-                    + Add
-                  </Button>
-                </Authorize>
-              </Col>
-            </Row>
-          </Container>
+          Project Tender Details{' '}
+          <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+            <Button color="primary" className="float-right" onClick={addTenderClicked}>
+              + Add
+            </Button>
+          </Authorize>
         </UIHeader>
         <DataTableControl
-          dataList={displayAfterYearFilter(data.finTargets)}
-          tableColumns={finTargetTableColumns}
+          dataList={data.tenders}
+          tableColumns={projectTenderTableColumns}
           editable
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onEditClicked={onFinTargetEditClicked}
-          onDeleteClicked={onFinTargetDeleteClicked}
+          onEditClicked={onTenderEditClicked}
+          onDeleteClicked={onTenderDeleteClicked}
         />
       </MaterialCard>
       <MaterialCard>
-        <UIHeader>
-          <Container>
-            <Row>
-              <Col xs="auto">Quantities/Accomplishments</Col>
-              <Col xs={3}>
-                <SingleDropdown items={qtyAccmpArray} handleOnChange={onQtyAccmpFilterChange} defaultTitle="Show All" />
-              </Col>
-              <Col>
-                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={addQAClicked}>
-                    + Add
-                  </Button>
-                </Authorize>
-              </Col>
-            </Row>
-          </Container>
-        </UIHeader>
-        <DataTableControl
-          dataList={displayAfterQtyAccmpsFilter(displayAfterYearFilter(data.qtyAccmps))}
-          tableColumns={qaTableColumns}
-          editable
-          deletable
-          editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onEditClicked={onQAEditClicked}
-          onDeleteClicked={onQADeleteClicked}
-        />
+        <UIHeader>Announcement Details</UIHeader>
       </MaterialCard>
       <div className="text-right">
         <Link to={`${Constants.API_PATHS.PROJECTS}/${data.id}`}>
@@ -287,8 +155,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
           Close
         </Button>
       </div>
-      {finTargetsFormModal.formElement}
-      {qtyAccmpFormModal.formElement}
+      {tendersFormModal.formElement}
     </React.Fragment>
   );
 };

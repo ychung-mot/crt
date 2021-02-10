@@ -48,7 +48,6 @@ const EditQtyAccmpFormFields = ({
     setValidationSchema(validationSchema);
 
     if (formType === Constants.FORM_TYPE.EDIT) {
-      //temporary fix, need to change to post finTarget
       setLoading(true);
       api
         .getQtyAccmp(projectId, qtyAccmpId)
