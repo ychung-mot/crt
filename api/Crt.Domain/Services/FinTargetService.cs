@@ -44,8 +44,7 @@ namespace Crt.Domain.Services
             finTarget.TrimStringFields();
 
             var errors = new Dictionary<string, List<string>>();
-
-            _validator.Validate(Entities.FinTarget, finTarget, errors);
+            errors = _validator.Validate(Entities.FinTarget, finTarget, errors);
 
             await ValidateFinTarget(finTarget, errors);
 
@@ -73,8 +72,7 @@ namespace Crt.Domain.Services
             }
 
             var errors = new Dictionary<string, List<string>>();
-
-            _validator.Validate(Entities.FinTarget, finTarget, errors);
+            errors = _validator.Validate(Entities.FinTarget, finTarget, errors);
 
             await ValidateFinTarget(finTarget, errors);
 
