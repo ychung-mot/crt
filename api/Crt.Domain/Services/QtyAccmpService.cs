@@ -50,7 +50,7 @@ namespace Crt.Domain.Services
                 return (0, errors);
             }
 
-            _validator.Validate(entity, qtyAccmp, errors);
+            errors = _validator.Validate(entity, qtyAccmp, errors);
 
             await ValidateQtyAccmp(qtyAccmp, errors);
 
@@ -87,7 +87,7 @@ namespace Crt.Domain.Services
                 return (false, errors);
             }
 
-            _validator.Validate(entity, qtyAccmp, errors);
+            errors = _validator.Validate(entity, qtyAccmp, errors);
 
             await ValidateQtyAccmp(qtyAccmp, errors);
 

@@ -78,7 +78,6 @@ namespace Crt.Domain.Services
 
         private void LoadQtyRules()
         {
-            _rules.Add(new FieldValidationRule(Entities.Qty, Fields.Description, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.Qty, Fields.FiscalYearLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.FiscalYear));
             _rules.Add(new FieldValidationRule(Entities.Qty, Fields.QtyAccmpLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Quantity));
             _rules.Add(new FieldValidationRule(Entities.Qty, Fields.Forecast, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));
@@ -89,7 +88,6 @@ namespace Crt.Domain.Services
 
         private void LoadAccmpRules()
         {
-            _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.Description, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.FiscalYearLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.FiscalYear));
             _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.QtyAccmpLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Accomplishment));
             _rules.Add(new FieldValidationRule(Entities.Accmp, Fields.Forecast, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.QtyAccmpAmount), null));

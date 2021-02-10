@@ -60,7 +60,7 @@ namespace Crt.Domain.Services
 
             var errors = new Dictionary<string, List<string>>();
 
-            _validator.Validate(Entities.Project, project, errors);
+            errors = _validator.Validate(Entities.Project, project, errors);
 
             await ValidateProject(project, errors);
 
@@ -89,7 +89,7 @@ namespace Crt.Domain.Services
 
             var errors = new Dictionary<string, List<string>>();
 
-            _validator.Validate(Entities.Project, project, errors);
+            errors = _validator.Validate(Entities.Project, project, errors);
 
             await ValidateProject(project, errors);
 
