@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import moment from 'moment';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
-import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
 import { FormRow, FormInput } from './FormInputs';
 

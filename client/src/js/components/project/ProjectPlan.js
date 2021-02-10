@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
 
 //components
+import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
@@ -159,13 +160,11 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
       fiscalYears.find((fiscalYearItem) => {
         return fiscalYearItem.id === fiscalId;
       })?.codeName || 'ALL';
-    console.log(`Filtering for year ${result}`);
     setFiscalYearsFilter(result);
   };
 
   const onQtyAccmpFilterChange = (qtyAccmpName) => {
     setqtyOrAccmpFIlter(qtyAccmpName);
-    console.log(`Filtering for ${qtyAccmpName}`);
   };
 
   const displayAfterYearFilter = (items) => {
@@ -230,9 +229,11 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
                 />
               </Col>
               <Col>
-                <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
-                  + Add
-                </Button>
+                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                  <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
+                    + Add
+                  </Button>
+                </Authorize>
               </Col>
             </Row>
           </Container>
@@ -256,9 +257,11 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
                 <SingleDropdown items={qtyAccmpArray} handleOnChange={onQtyAccmpFilterChange} defaultTitle="Show All" />
               </Col>
               <Col>
-                <Button color="primary" className="float-right" onClick={addQAClicked}>
-                  + Add
-                </Button>
+                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                  <Button color="primary" className="float-right" onClick={addQAClicked}>
+                    + Add
+                  </Button>
+                </Authorize>
               </Col>
             </Row>
           </Container>
