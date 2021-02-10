@@ -44,6 +44,7 @@ export const PATHS = {
   VERSION: '/version',
   PROJECTS: '/projects',
   PROJECT_PLAN: '/projectplan',
+  PROJECT_TENDER: '/projecttender',
 };
 
 export const MESSAGE_DATE_FORMAT = 'YYYY-MM-DD hh:mmA';
