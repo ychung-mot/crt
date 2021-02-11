@@ -16,7 +16,7 @@ const defaultValues = {
   plannedDate: undefined,
   actualDate: undefined,
   tenderValue: 0,
-  winningCntrctr: undefined,
+  winningCntrctrLkUpId: undefined,
   bidValue: 0,
   comment: '',
 };
@@ -74,8 +74,8 @@ const EditTenderFormFields = ({
       <FormRow name="tenderValue" label="Tender Value">
         <FormInput type="number" name="tenderValue" placeholder="0" id="tenderValue" />
       </FormRow>
-      <FormRow name="winningCntrctr" label="Winning Contractor">
-        <SingleDropdownField items={contractors} name="winningCntrctr" searchable />
+      <FormRow name="winningCntrctrLkupId" label="Winning Contractor">
+        <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable />
       </FormRow>
       <FormRow name="bidValue" label="Winning Bid">
         <FormInput type="number" name="bidValue" placeholder="0" id="bidValue" />

@@ -86,6 +86,12 @@ export const getProjectTender = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_TENDER}`);
 export const getTender = (projectId, tenderId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`);
+export const postTender = (projectId, tenderData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}`, tenderData);
+export const putTender = (projectId, tenderId, tenderData) =>
+  instance.put(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`, tenderData);
+export const deleteTender = (projectId, tenderId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
