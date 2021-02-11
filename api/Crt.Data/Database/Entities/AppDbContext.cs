@@ -3140,7 +3140,6 @@ namespace Crt.Data.Database.Entities
                 entity.HasOne(d => d.WinningCntrctrLkup)
                     .WithMany(p => p.CrtTenders)
                     .HasForeignKey(d => d.WinningCntrctrLkupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_CODE_LOOKUP_CRT_TENDER");
             });
 

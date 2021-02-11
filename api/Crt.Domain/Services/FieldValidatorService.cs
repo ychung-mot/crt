@@ -101,9 +101,9 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.Tender, Fields.TenderNumber, FieldTypes.String, true, 1, 40, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.Tender, Fields.PlannedDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
             _rules.Add(new FieldValidationRule(Entities.Tender, Fields.ActualDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
-            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.TenderValue, FieldTypes.String, true, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
-            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.WinningCntrctrLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.Contractor));
-            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.BidValue, FieldTypes.String, true, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.TenderValue, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.WinningCntrctrLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.Contractor));
+            _rules.Add(new FieldValidationRule(Entities.Tender, Fields.BidValue, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
             _rules.Add(new FieldValidationRule(Entities.Tender, Fields.Comment, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.Tender, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
