@@ -42,13 +42,13 @@ const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidatio
 
   return (
     <React.Fragment>
-      <FormRow name="anncmentValue" label="Announcement Value">
+      <FormRow name="anncmentValue" label="Announcement Value" helper="anncmentValue">
         <FormInput type="number" name="anncmentValue" id="anncmentValue" />
       </FormRow>
-      <FormRow name="c035Value" label="C-035 Value">
+      <FormRow name="c035Value" label="C-035 Value" helper="c035Value">
         <FormInput type="number" name="c035Value" id="c035Value" />
       </FormRow>
-      <FormRow name="anncmentComment" label="Annoucement Notes">
+      <FormRow name="anncmentComment" label="Annoucement Notes" helper="anncmentComment">
         <FormInput
           type="textArea"
           name="anncmentComment"
