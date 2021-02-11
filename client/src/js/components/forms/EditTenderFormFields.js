@@ -62,23 +62,23 @@ const EditTenderFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="tenderNumber" label="Tender Number*">
+      <FormRow name="tenderNumber" label="Tender Number*" helper="tenderNumber">
         <FormInput type="text" name="tenderNumber" placeholder="Tender Number" id="tenderNumber" />
       </FormRow>
-      <FormRow name="plannedDate" label="Planned Date">
+      <FormRow name="plannedDate" label="Planned Date" helper="plannedDate">
         <SingleDateField name="plannedDate" placeholder="Planned Date" />
       </FormRow>
-      <FormRow name="actualDate" label="Actual Date">
+      <FormRow name="actualDate" label="Actual Date" helper="actualDate">
         <SingleDateField name="actualDate" placeholder="Actual Date" />
       </FormRow>
-      <FormRow name="tenderValue" label="Tender Value">
-        <FormInput type="number" name="tenderValue" placeholder="0" id="tenderValue" />
+      <FormRow name="tenderValue" label="Tender Value" helper="tenderValue">
+        <FormInput type="number" name="tenderValue" id="tenderValue" />
       </FormRow>
-      <FormRow name="winningCntrctrLkupId" label="Winning Contractor">
+      <FormRow name="winningCntrctrLkupId" label="Winning Contractor" helper="winningCntrctrLkupId">
         <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable />
       </FormRow>
-      <FormRow name="bidValue" label="Winning Bid">
-        <FormInput type="number" name="bidValue" placeholder="0" id="bidValue" />
+      <FormRow name="bidValue" label="Winning Bid" helper="bidValue">
+        <FormInput type="number" name="bidValue" id="bidValue" />
       </FormRow>
       <FormRow name="comment" label="Comment">
         <FormInput

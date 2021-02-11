@@ -8,14 +8,17 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import EditTenderFormFields from '../forms/EditTenderFormFields';
+import { DisplayRow, ColumnGroup, ColumnTwoGroups } from './ProjectDisplayHelper';
+import FontAwesomeButton from '../ui/FontAwesomeButton';
 
 import useFormModal from '../hooks/useFormModal';
 import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
+import EditAnnouncementFormFields from '../forms/EditAnnouncementFormFields';
 
 const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
@@ -60,7 +63,6 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
         console.log(error.response);
         showValidationErrorDialog(error.response.data);
       });
-    console.log(tenderId + 'Delete');
   };
 
   const addTenderClicked = () => {
@@ -98,6 +100,30 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     }
   };
 
+  const handleAnnouncementEditFormClick = (projectId) => {
+    announcementFormModal.openForm(Constants.FORM_TYPE.EDIT, { projectId: projectId });
+  };
+
+  const handleAnnouncementEditFormSubmit = (values) => {
+    console.log('submitting');
+    console.log(values);
+
+    if (!tendersFormModal.submitting) {
+      announcementFormModal.setSubmitting(true);
+      api
+        .putProject(values.id, values)
+        .then(() => {
+          announcementFormModal.closeForm();
+          refreshData();
+        })
+        .catch((error) => {
+          console.log(error.response);
+          showValidationErrorDialog(error.response.data);
+        })
+        .finally(() => announcementFormModal.setSubmitting(false));
+    }
+  };
+
   const refreshData = () => {
     api
       .getProjectTender(data.id)
@@ -124,6 +150,12 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
   };
 
   const tendersFormModal = useFormModal('Tender Details', <EditTenderFormFields />, handleEditTenderFormSubmit, true);
+  const announcementFormModal = useFormModal(
+    'Announcement Details',
+    <EditAnnouncementFormFields />,
+    handleAnnouncementEditFormSubmit,
+    true
+  );
 
   if (loading) return <PageSpinner />;
 
@@ -150,7 +182,25 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
         />
       </MaterialCard>
       <MaterialCard>
-        <UIHeader>Announcement Details</UIHeader>
+        <UIHeader>
+          Announcement Details
+          <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+            <FontAwesomeButton
+              icon="edit"
+              className="float-right"
+              onClick={() => handleAnnouncementEditFormClick(data.id)}
+              title="Edit Record"
+              iconSize="lg"
+            />
+          </Authorize>
+        </UIHeader>
+        <DisplayRow>
+          <ColumnTwoGroups name="Announcement Value" label={data?.anncmentValue} />
+          <ColumnTwoGroups name="C-035 Value" label={data?.c035Value} />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnGroup name="Annoucement Comment" label={data?.anncmentComment} />
+        </DisplayRow>
       </MaterialCard>
       <div className="text-right">
         <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_PLAN}`}>
@@ -164,6 +214,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
         </Button>
       </div>
       {tendersFormModal.formElement}
+      {announcementFormModal.formElement}
     </React.Fragment>
   );
 };
