@@ -8,17 +8,16 @@ import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
-import MouseoverTooltip from '../ui/MouseoverTooltip';
-import { Row, Col, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
 import Comments from './Comments';
+import { DisplayRow, ColumnGroup, ColumnTwoGroups } from './ProjectDisplayHelper';
 
 import useFormModal from '../hooks/useFormModal';
 
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
-import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
 const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
@@ -68,44 +67,6 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
   const commentFilter = (commentType = '') => {
     return data.notes.filter((note) => note.noteType === commentType);
   };
-
-  //display row helper functions
-  const DisplayRow = ({ children }) => {
-    return <Row>{children}</Row>;
-  };
-
-  const ColumnGroup = ({ name, label, helper }) => {
-    return (
-      <>
-        <Col className="mt-2 font-weight-bold" sm="3">
-          {name}
-          {helper && (
-            <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>
-          )}
-        </Col>
-        <Col className="mt-2" sm="9">
-          {label ? label : 'None'}
-        </Col>
-      </>
-    );
-  };
-
-  const ColumnTwoGroups = ({ name, label, helper }) => {
-    return (
-      <>
-        <Col className="mt-2 font-weight-bold" sm="3">
-          {name}
-          {helper && (
-            <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>
-          )}
-        </Col>
-        <Col className="mt-2" sm="3">
-          {label ? label : 'None'}
-        </Col>
-      </>
-    );
-  };
-  //end display helpers
 
   if (loading) return <PageSpinner />;
 

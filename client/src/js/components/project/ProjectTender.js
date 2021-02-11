@@ -8,9 +8,10 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import EditTenderFormFields from '../forms/EditTenderFormFields';
+import { DisplayRow, ColumnGroup, ColumnTwoGroups } from './ProjectDisplayHelper';
 
 import useFormModal from '../hooks/useFormModal';
 import moment from 'moment';
@@ -60,7 +61,6 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
         console.log(error.response);
         showValidationErrorDialog(error.response.data);
       });
-    console.log(tenderId + 'Delete');
   };
 
   const addTenderClicked = () => {
@@ -151,6 +151,13 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
       </MaterialCard>
       <MaterialCard>
         <UIHeader>Announcement Details</UIHeader>
+        <DisplayRow>
+          <ColumnTwoGroups name="Announcement Value" label={data?.anncmentValue} />
+          <ColumnTwoGroups name="C-035 Value" label={data?.c035Value} />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnGroup name="Annoucement Comment" label={data?.anncmentComment} />
+        </DisplayRow>
       </MaterialCard>
       <div className="text-right">
         <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_PLAN}`}>
