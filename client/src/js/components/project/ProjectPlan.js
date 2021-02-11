@@ -215,7 +215,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
 
   return (
     <React.Fragment>
-      <UIHeader>Project {data.id} Details</UIHeader>
+      <UIHeader>Project {data.id} Planning</UIHeader>
       <MaterialCard>
         <UIHeader>
           <Container>
@@ -277,12 +277,12 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
         />
       </MaterialCard>
       <div className="text-right">
-        <Link to={`${Constants.API_PATHS.PROJECTS}/${data.id}`}>
+        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}`}>
           <Button color="secondary">{'< Project Details'}</Button>
         </Link>
-        <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
-          Continue
-        </Button>
+        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_TENDER}`}>
+          <Button color="primary">Continue</Button>
+        </Link>
         <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
           Close
         </Button>

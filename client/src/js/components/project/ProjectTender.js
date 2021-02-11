@@ -37,10 +37,10 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
   }, []);
 
   const projectTenderTableColumns = [
-    { heading: 'Tendor #', key: 'tenderNumber', nosort: true },
+    { heading: 'Tender #', key: 'tenderNumber', nosort: true },
     { heading: 'Planned Date', key: 'plannedDate', nosort: true },
     { heading: 'Actual Date', key: 'actualDate', nosort: true },
-    { heading: 'Tendor Value', key: 'tenderValue', nosort: true },
+    { heading: 'Tender Value', key: 'tenderValue', nosort: true },
     { heading: 'Winning Contractor', key: 'winningCntrctr', nosort: true },
     { heading: 'Winning Bid', key: 'bidValue', nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },
@@ -48,10 +48,18 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
 
   const onTenderEditClicked = (tenderId) => {
     tendersFormModal.openForm(Constants.FORM_TYPE.EDIT, { tenderId, projectId: data.id });
-    console.log(tenderId + 'Edit');
   };
 
   const onTenderDeleteClicked = (tenderId) => {
+    api
+      .deleteTender(data.id, tenderId)
+      .then(() => {
+        refreshData();
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
     console.log(tenderId + 'Delete');
   };
 
@@ -64,7 +72,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
       tendersFormModal.setSubmitting(true);
       if (formType === Constants.FORM_TYPE.ADD) {
         api
-          .postFinTarget(data.id, values)
+          .postTender(data.id, values)
           .then(() => {
             tendersFormModal.closeForm();
             refreshData();
@@ -76,7 +84,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
           .finally(() => tendersFormModal.setSubmitting(false));
       } else if (formType === Constants.FORM_TYPE.EDIT) {
         api
-          .putFinTarget(data.id, values.id, values)
+          .putTender(data.id, values.id, values)
           .then(() => {
             tendersFormModal.closeForm();
             refreshData();
@@ -121,7 +129,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
 
   return (
     <React.Fragment>
-      <UIHeader>Project {data.id} Details</UIHeader>
+      <UIHeader>Project {data.id} Tender</UIHeader>
       <MaterialCard>
         <UIHeader>
           Project Tender Details{' '}
@@ -145,8 +153,8 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
         <UIHeader>Announcement Details</UIHeader>
       </MaterialCard>
       <div className="text-right">
-        <Link to={`${Constants.API_PATHS.PROJECTS}/${data.id}`}>
-          <Button color="secondary">{'< Project Details'}</Button>
+        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_PLAN}`}>
+          <Button color="secondary">{'< Project Planning'}</Button>
         </Link>
         <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
           Continue
