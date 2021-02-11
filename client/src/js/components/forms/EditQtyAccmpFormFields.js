@@ -85,13 +85,13 @@ const EditQtyAccmpFormFields = ({
           <FormRow name="forecast" label="Forecast">
             <FormInput type="number" name="forecast" placeholder="0" />
           </FormRow>
-          {formValues.qtyOrAccmp === 'quantity' && (
+          {formValues.qtyOrAccmp === 'QUANTITY' && (
             <FormRow name="schedule7" label="Schedule 7">
               <FormInput type="number" name="schedule7" placeholder="0" />
             </FormRow>
           )}
-          <FormRow name="amount" label="Amount">
-            <FormInput type="number" name="amount" placeholder="0" />
+          <FormRow name="actual" label="Amount">
+            <FormInput type="number" name="actual" placeholder="0" />
           </FormRow>
           <FormRow name="comment" label="Comment">
             <FormInput type="input" name="comment" placeholder="Insert Comment Here" value={formValues.comment} />
