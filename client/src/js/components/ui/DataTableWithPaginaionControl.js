@@ -34,8 +34,8 @@ DataTableWithPaginaionControl.propTypes = {
         active: PropTypes.string.isRequired,
         inactive: PropTypes.string.isRequired,
       }),
-      //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
-      link: PropTypes.string,
+      link: PropTypes.string, //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
+      currency: PropTypes.bool, //if true then format values as currency
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,

@@ -2,6 +2,7 @@ import React from 'react';
 import { CustomInput, Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 import { useField } from 'formik';
 import MouseoverTooltip from '../ui/MouseoverTooltip';
+import NumberFormat from 'react-number-format';
 
 import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
