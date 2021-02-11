@@ -12,8 +12,8 @@ namespace Crt.Model.Dtos.Tender
         public string TenderNumber { get; set; }
         public DateTime? PlannedDate { get; set; }
         public DateTime? ActualDate { get; set; }
-        public decimal TenderValue { get; set; }
-        public decimal BidValue { get; set; }
+        public decimal? TenderValue { get; set; }
+        public decimal? BidValue { get; set; }
         public string Comment { get; set; }
         public DateTime? EndDate { get; set; }
         public bool CanDelete { get => true; }
@@ -21,6 +21,6 @@ namespace Crt.Model.Dtos.Tender
         [JsonIgnore]
         public virtual CodeLookupDto WinningCntrctrLkup { get; set; }
 
-        public string WinningCntrctr { get => WinningCntrctrLkup.Description; }
+        public string WinningCntrctr { get => WinningCntrctrLkup?.Description; }
     }
 }
