@@ -70,5 +70,3 @@ export const buildStatusIdArray = (isActive) => {
 
   return [Constants.ACTIVE_STATUS.ACTIVE, Constants.ACTIVE_STATUS.INACTIVE];
 };
-
-export const toNum = (value) => Number(value.replace(/,/g, ''));

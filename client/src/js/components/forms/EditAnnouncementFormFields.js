@@ -58,7 +58,7 @@ const EditAnnouncementFormFields = ({
         />
       </FormRow>
       <FormRow name="c035Value" label="C-035 Value" helper="c035Value">
-        <FormInput type="number" name="c035Value" id="c035Value" />
+        <FormNumberFormat name="c035Value" id="c035Value" setFieldValue={setFieldValue} value={formValues.c035Value} />
       </FormRow>
       <FormRow name="anncmentComment" label="Annoucement Notes" helper="anncmentComment">
         <FormInput
