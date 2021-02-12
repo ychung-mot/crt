@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
+import NumberFormat from 'react-number-format';
 
 //components
 import Authorize from '../fragments/Authorize';
@@ -43,9 +44,9 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     { heading: 'Tender #', key: 'tenderNumber', nosort: true },
     { heading: 'Planned Date', key: 'plannedDate', nosort: true },
     { heading: 'Actual Date', key: 'actualDate', nosort: true },
-    { heading: 'Tender Value', key: 'tenderValue', nosort: true },
+    { heading: 'Tender Value', key: 'tenderValue', currency: true, nosort: true },
     { heading: 'Winning Contractor', key: 'winningCntrctr', nosort: true },
-    { heading: 'Winning Bid', key: 'bidValue', nosort: true },
+    { heading: 'Winning Bid', key: 'bidValue', currency: true, nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
@@ -105,9 +106,6 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
   };
 
   const handleAnnouncementEditFormSubmit = (values) => {
-    console.log('submitting');
-    console.log(values);
-
     if (!tendersFormModal.submitting) {
       announcementFormModal.setSubmitting(true);
       api
@@ -195,8 +193,14 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
           </Authorize>
         </UIHeader>
         <DisplayRow>
-          <ColumnTwoGroups name="Announcement Value" label={data?.anncmentValue} />
-          <ColumnTwoGroups name="C-035 Value" label={data?.c035Value} />
+          <ColumnTwoGroups
+            name="Announcement Value"
+            label={<NumberFormat value={data?.anncmentValue} prefix="$" thousandSeparator={true} displayType="text" />}
+          />
+          <ColumnTwoGroups
+            name="C-035 Value"
+            label={<NumberFormat value={data?.c035Value} prefix="$" thousandSeparator={true} displayType="text" />}
+          />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Annoucement Comment" label={data?.anncmentComment} />

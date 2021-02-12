@@ -44,22 +44,22 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     { heading: 'Project Phase', key: 'projectPhase', nosort: true },
     { heading: 'Element', key: 'element', nosort: true },
     { heading: 'Type', key: 'forecastType', nosort: true },
-    { heading: 'Amount', key: 'amount', nosort: true },
+    { heading: 'Amount', key: 'amount', currency: true, nosort: true },
     { heading: 'Description', key: 'description', nosort: true },
   ];
 
   const qaTableColumns = [
     { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
     { heading: 'Accomplishment/Quantity', key: 'qtyAccmpType', nosort: true },
-    { heading: 'Forecast', key: 'forecast', nosort: true },
-    { heading: 'Schedule7', key: 'schedule7', nosort: true },
-    { heading: 'Actual', key: 'actual', nosort: true },
+    { heading: 'Forecast', key: 'forecast', currency: true, nosort: true },
+    { heading: 'Schedule7', key: 'schedule7', currency: true, nosort: true },
+    { heading: 'Actual', key: 'actual', currency: true, nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
   //temporary fix hard code quantity and accomplishments
   const qtyAccmpArray = [
-    { id: 'ALL', name: 'Show All' },
+    { id: 'ALL', name: 'Show All Qty/Accmp' },
     { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
     { id: 'QUANTITY', name: 'Quantity' },
   ];
@@ -215,19 +215,23 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
 
   return (
     <React.Fragment>
-      <UIHeader>Project {data.id} Planning</UIHeader>
+      <UIHeader>
+        <Row>
+          <Col xs="auto">Project {data.id} Planning </Col>
+          <Col xs={3}>
+            <SingleDropdown
+              items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
+              handleOnChange={onFiscalYearFilterChange}
+              defaultTitle="Show All Fiscal Years"
+            />
+          </Col>
+        </Row>
+      </UIHeader>
       <MaterialCard>
         <UIHeader>
           <Container>
             <Row>
               <Col xs="auto">Financial Planning Targets</Col>
-              <Col xs={3}>
-                <SingleDropdown
-                  items={[{ id: 'ALL', name: 'Show All' }].concat(fiscalYears)}
-                  handleOnChange={onFiscalYearFilterChange}
-                  defaultTitle="Show All"
-                />
-              </Col>
               <Col>
                 <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
                   <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
@@ -254,7 +258,11 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
             <Row>
               <Col xs="auto">Quantities/Accomplishments</Col>
               <Col xs={3}>
-                <SingleDropdown items={qtyAccmpArray} handleOnChange={onQtyAccmpFilterChange} defaultTitle="Show All" />
+                <SingleDropdown
+                  items={qtyAccmpArray}
+                  handleOnChange={onQtyAccmpFilterChange}
+                  defaultTitle="Show All Qty/Accmp"
+                />
               </Col>
               <Col>
                 <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>

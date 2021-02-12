@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, Badge } from 'reactstrap';
 
 import { Link } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
 
 import Authorize from '../fragments/Authorize';
 import FontAwesomeButton from './FontAwesomeButton';
@@ -37,6 +38,19 @@ const DataTableControl = ({
     }
 
     return link;
+  };
+
+  const displayFormatter = (item = {}, column = {}) => {
+    //checks if item should be rendered as a special type. ie. currency, link or no formatting
+    if (column.link) {
+      return <Link to={() => linkFormatter(item, column.link)}>{item[column.key] || column.heading}</Link>;
+    }
+
+    if (column.currency) {
+      return <NumberFormat value={item[column.key]} prefix="$" thousandSeparator={true} displayType="text" />;
+    }
+
+    return item[column.key];
   };
 
   return (
@@ -85,11 +99,7 @@ const DataTableControl = ({
                   }
                   return (
                     <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
-                      {column.link ? (
-                        <Link to={() => linkFormatter(item, column.link)}>{item[column.key] || column.heading}</Link>
-                      ) : (
-                        item[column.key]
-                      )}
+                      {displayFormatter(item, column)}
                     </td>
                   );
                 })}
@@ -140,6 +150,8 @@ DataTableControl.propTypes = {
       }),
       //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
       link: PropTypes.string,
+      //if true then format values as currency
+      currency: PropTypes.bool,
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,
