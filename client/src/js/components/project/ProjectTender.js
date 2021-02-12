@@ -110,7 +110,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     if (!tendersFormModal.submitting) {
       announcementFormModal.setSubmitting(true);
       api
-        .putProject(values.id, { ...values, anncmentValue: toNum(values.anncmentValue) })
+        .putProject(values.id, { ...values })
         .then(() => {
           announcementFormModal.closeForm();
           refreshData();

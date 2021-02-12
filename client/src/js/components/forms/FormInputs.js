@@ -49,12 +49,14 @@ export const FormNumberFormat = ({ className, children, ...props }) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
   return (
     <React.Fragment>
+      <Input type="hidden" {...field} {...props} invalid={meta.error && meta.touched} />
       <NumberFormat
         className={classNames('form-control', className)}
         thousandSeparator={true}
-        {...field}
-        {...props}
-        invalid={meta.error && meta.touched}
+        value={props.value}
+        onValueChange={(val) => {
+          props.setFieldValue(field.name, val.floatValue);
+        }}
       >
         {children}
       </NumberFormat>

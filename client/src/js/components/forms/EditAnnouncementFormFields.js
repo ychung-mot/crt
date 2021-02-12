@@ -15,7 +15,14 @@ const defaultValues = {
 
 const validationSchema = Yup.object({});
 
-const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidationSchema, projectId, formType }) => {
+const EditAnnouncementFormFields = ({
+  setInitialValues,
+  formValues,
+  setValidationSchema,
+  projectId,
+  formType,
+  setFieldValue,
+}) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -43,10 +50,15 @@ const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidatio
   return (
     <React.Fragment>
       <FormRow name="anncmentValue" label="Announcement Value" helper="anncmentValue">
-        <FormNumberFormat name="anncmentValue" id="anncmentValue" />
+        <FormNumberFormat
+          name="anncmentValue"
+          id="anncmentValue"
+          setFieldValue={setFieldValue}
+          value={formValues.anncmentValue}
+        />
       </FormRow>
       <FormRow name="c035Value" label="C-035 Value" helper="c035Value">
-        <FormInput type="number" name="c035Value" id="c035Value" />
+        <FormNumberFormat name="c035Value" id="c035Value" setFieldValue={setFieldValue} value={formValues.c035Value} />
       </FormRow>
       <FormRow name="anncmentComment" label="Annoucement Notes" helper="anncmentComment">
         <FormInput
