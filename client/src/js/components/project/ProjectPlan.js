@@ -59,7 +59,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
 
   //temporary fix hard code quantity and accomplishments
   const qtyAccmpArray = [
-    { id: 'ALL', name: 'Show All' },
+    { id: 'ALL', name: 'Show All Qty/Accmp' },
     { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
     { id: 'QUANTITY', name: 'Quantity' },
   ];
@@ -220,9 +220,9 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
           <Col xs="auto">Project {data.id} Planning </Col>
           <Col xs={3}>
             <SingleDropdown
-              items={[{ id: 'ALL', name: 'Fiscal Years' }].concat(fiscalYears)}
+              items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
               handleOnChange={onFiscalYearFilterChange}
-              defaultTitle="Fiscal Years"
+              defaultTitle="Show All Fiscal Years"
             />
           </Col>
         </Row>
@@ -258,7 +258,11 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
             <Row>
               <Col xs="auto">Quantities/Accomplishments</Col>
               <Col xs={3}>
-                <SingleDropdown items={qtyAccmpArray} handleOnChange={onQtyAccmpFilterChange} defaultTitle="Show All" />
+                <SingleDropdown
+                  items={qtyAccmpArray}
+                  handleOnChange={onQtyAccmpFilterChange}
+                  defaultTitle="Show All Qty/Accmp"
+                />
               </Col>
               <Col>
                 <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>

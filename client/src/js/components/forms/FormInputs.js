@@ -2,7 +2,6 @@ import React from 'react';
 import { CustomInput, Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 import { useField } from 'formik';
 import MouseoverTooltip from '../ui/MouseoverTooltip';
-import NumberFormat from 'react-number-format';
 
 import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
@@ -10,10 +9,12 @@ export const FormRow = ({ name, label, children, helper = '' }) => {
   return (
     <FormGroup row>
       <Col sm={3}>
-        <Label className="d-inline" for={name}>
-          {label}
-        </Label>
-        {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+        <div className="d-flex align-middle">
+          <Label for={name}>{label}</Label>
+          <div>
+            {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+          </div>
+        </div>
       </Col>
       <Col sm={9}>{children}</Col>
     </FormGroup>
