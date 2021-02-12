@@ -2,6 +2,8 @@ import React from 'react';
 import { CustomInput, Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 import { useField } from 'formik';
 import MouseoverTooltip from '../ui/MouseoverTooltip';
+import NumberFormat from 'react-number-format';
+import classNames from 'classnames';
 
 import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
 
@@ -38,6 +40,24 @@ export const FormInput = ({ children, ...props }) => {
       <Input {...field} {...props} invalid={meta.error && meta.touched}>
         {children}
       </Input>
+      {meta.error && meta.touched && <FormFeedback>{meta.error}</FormFeedback>}
+    </React.Fragment>
+  );
+};
+
+export const FormNumberFormat = ({ className, children, ...props }) => {
+  const [field, meta] = useField({ ...props, type: 'checkbox' });
+  return (
+    <React.Fragment>
+      <NumberFormat
+        className={classNames('form-control', className)}
+        thousandSeparator={true}
+        {...field}
+        {...props}
+        invalid={meta.error && meta.touched}
+      >
+        {children}
+      </NumberFormat>
       {meta.error && meta.touched && <FormFeedback>{meta.error}</FormFeedback>}
     </React.Fragment>
   );

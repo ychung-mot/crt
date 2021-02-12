@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
 import NumberFormat from 'react-number-format';
+import { toNum } from '../../utils';
 
 //components
 import Authorize from '../fragments/Authorize';
@@ -109,7 +110,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     if (!tendersFormModal.submitting) {
       announcementFormModal.setSubmitting(true);
       api
-        .putProject(values.id, values)
+        .putProject(values.id, { ...values, anncmentValue: toNum(values.anncmentValue) })
         .then(() => {
           announcementFormModal.closeForm();
           refreshData();
