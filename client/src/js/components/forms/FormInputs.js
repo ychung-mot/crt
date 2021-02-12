@@ -45,7 +45,7 @@ export const FormInput = ({ children, ...props }) => {
   );
 };
 
-export const FormNumberFormat = ({ className, children, ...props }) => {
+export const FormNumberInput = ({ className, children, ...props }) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
   return (
     <React.Fragment>

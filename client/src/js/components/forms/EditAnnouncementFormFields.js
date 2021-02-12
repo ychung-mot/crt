@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput, FormNumberFormat } from './FormInputs';
+import { FormRow, FormInput, FormNumberInput } from './FormInputs';
 
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
@@ -50,7 +50,7 @@ const EditAnnouncementFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="anncmentValue" label="Announcement Value" helper="anncmentValue">
-        <FormNumberFormat
+        <FormNumberInput
           name="anncmentValue"
           id="anncmentValue"
           setFieldValue={setFieldValue}
@@ -58,7 +58,7 @@ const EditAnnouncementFormFields = ({
         />
       </FormRow>
       <FormRow name="c035Value" label="C-035 Value" helper="c035Value">
-        <FormNumberFormat name="c035Value" id="c035Value" setFieldValue={setFieldValue} value={formValues.c035Value} />
+        <FormNumberInput name="c035Value" id="c035Value" setFieldValue={setFieldValue} value={formValues.c035Value} />
       </FormRow>
       <FormRow name="anncmentComment" label="Annoucement Notes" helper="anncmentComment">
         <FormInput
