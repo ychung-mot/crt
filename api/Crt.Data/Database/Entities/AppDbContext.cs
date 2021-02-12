@@ -3106,7 +3106,6 @@ namespace Crt.Data.Database.Entities
                 entity.Property(e => e.PlannedDate)
                     .HasColumnType("date")
                     .HasColumnName("PLANNED_DATE")
-                    .HasDefaultValueSql("('0')")
                     .HasComment("Date the tender is planned for");
 
                 entity.Property(e => e.ProjectId)
