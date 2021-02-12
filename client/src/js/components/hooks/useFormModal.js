@@ -58,7 +58,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
           validationSchema={validationSchema}
           onSubmit={onFormSubmit}
         >
-          {({ dirty, values }) => (
+          {({ dirty, values, setFieldValue }) => (
             <Form>
               <ModalHeader toggle={() => toggle(dirty)}>{title}</ModalHeader>
               <ModalBody>
@@ -69,6 +69,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
                     formValues: values,
                     setInitialValues,
                     setValidationSchema,
+                    setFieldValue,
                   })}
               </ModalBody>
               <ModalFooter>
