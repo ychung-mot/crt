@@ -58,6 +58,7 @@ export const FormNumberInput = ({ className, children, ...props }) => {
         onValueChange={(val) => {
           props.setFieldValue(field.name, val.floatValue);
         }}
+        invalid={meta.error && meta.touched}
         {...numberFormatProps}
       >
         {children}
