@@ -42,9 +42,11 @@ const EditFinTargetFormFields = ({
   elements,
 }) => {
   const [loading, setLoading] = useState(false);
+  let currentYear = moment().year().toString();
+  let defaultFiscalYearLkupId = fiscalYears.find((year) => year.name.startsWith(currentYear))?.id;
 
   useEffect(() => {
-    setInitialValues(defaultValues);
+    setInitialValues({ ...defaultValues, fiscalYearLkupId: defaultFiscalYearLkupId });
     setValidationSchema(validationSchema);
 
     if (formType === Constants.FORM_TYPE.EDIT) {
