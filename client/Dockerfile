@@ -1,4 +1,4 @@
-FROM docker.io/node:13.7-alpine3.11 AS builder
+FROM image-registry.openshift-image-registry.svc:5000/2d982c-tools/node:1 AS builder
 LABEL maintainer="young-jin.chung@gov.bc.ca"
 
 COPY . ./src
