@@ -11,12 +11,10 @@ export const FormRow = ({ name, label, children, helper = '' }) => {
   return (
     <FormGroup row>
       <Col sm={3}>
-        <div className="d-flex align-middle">
-          <Label for={name}>{label}</Label>
-          <div>
-            {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
-          </div>
-        </div>
+        <Label for={name}>
+          {label}
+          {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+        </Label>
       </Col>
       <Col sm={9}>{children}</Col>
     </FormGroup>
