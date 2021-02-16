@@ -6,7 +6,7 @@ import moment from 'moment';
 import SingleDropdownField from '../ui/SingleDropdownField';
 import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput } from './FormInputs';
+import { FormRow, FormInput, FormNumberInput } from './FormInputs';
 
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
@@ -33,6 +33,7 @@ const EditTenderFormFields = ({
   tenderId,
   formType,
   contractors,
+  setFieldValue,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -72,13 +73,18 @@ const EditTenderFormFields = ({
         <SingleDateField name="actualDate" placeholder="Actual Date" />
       </FormRow>
       <FormRow name="tenderValue" label="Tender Value" helper="tenderValue">
-        <FormInput type="number" name="tenderValue" id="tenderValue" />
+        <FormNumberInput
+          name="tenderValue"
+          id="tenderValue"
+          setFieldValue={setFieldValue}
+          value={formValues.tenderValue}
+        />
       </FormRow>
       <FormRow name="winningCntrctrLkupId" label="Winning Contractor" helper="winningCntrctrLkupId">
         <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable />
       </FormRow>
       <FormRow name="bidValue" label="Winning Bid" helper="bidValue">
-        <FormInput type="number" name="bidValue" id="bidValue" />
+        <FormNumberInput name="bidValue" id="bidValue" setFieldValue={setFieldValue} value={formValues.bidValue} />
       </FormRow>
       <FormRow name="comment" label="Comment">
         <FormInput

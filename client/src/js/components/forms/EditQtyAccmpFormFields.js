@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput } from './FormInputs';
+import { FormRow, FormInput, FormNumberInput } from './FormInputs';
 
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
@@ -40,6 +40,7 @@ const EditQtyAccmpFormFields = ({
   fiscalYears,
   quantities,
   accomplishments,
+  setFieldValue,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -83,15 +84,20 @@ const EditQtyAccmpFormFields = ({
             />
           </FormRow>
           <FormRow name="forecast" label="Forecast">
-            <FormInput type="number" name="forecast" placeholder="0" />
+            <FormNumberInput name="forecast" id="forecast" setFieldValue={setFieldValue} value={formValues.forecast} />
           </FormRow>
           {formValues.qtyOrAccmp === 'QUANTITY' && (
             <FormRow name="schedule7" label="Schedule 7">
-              <FormInput type="number" name="schedule7" placeholder="0" />
+              <FormNumberInput
+                name="schedule7"
+                id="schedule7"
+                setFieldValue={setFieldValue}
+                value={formValues.schedule7}
+              />
             </FormRow>
           )}
           <FormRow name="actual" label="Amount">
-            <FormInput type="number" name="actual" placeholder="0" />
+            <FormNumberInput name="actual" id="actual" setFieldValue={setFieldValue} value={formValues.actual} />
           </FormRow>
           <FormRow name="comment" label="Comment">
             <FormInput type="input" name="comment" placeholder="Insert Comment Here" value={formValues.comment} />

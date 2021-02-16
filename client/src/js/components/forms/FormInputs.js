@@ -11,12 +11,10 @@ export const FormRow = ({ name, label, children, helper = '' }) => {
   return (
     <FormGroup row>
       <Col sm={3}>
-        <div className="d-flex align-middle">
-          <Label for={name}>{label}</Label>
-          <div>
-            {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
-          </div>
-        </div>
+        <Label for={name}>
+          {label}
+          {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+        </Label>
       </Col>
       <Col sm={9}>{children}</Col>
     </FormGroup>
@@ -47,9 +45,9 @@ export const FormInput = ({ children, ...props }) => {
 
 export const FormNumberInput = ({ className, children, ...props }) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
+  const { setFieldValue, ...rest } = props;
   return (
     <React.Fragment>
-      <Input type="hidden" {...field} {...props} invalid={meta.error && meta.touched} />
       <NumberFormat
         className={classNames('form-control', className)}
         thousandSeparator={true}
@@ -57,6 +55,7 @@ export const FormNumberInput = ({ className, children, ...props }) => {
         onValueChange={(val) => {
           props.setFieldValue(field.name, val.floatValue);
         }}
+        {...rest}
       >
         {children}
       </NumberFormat>

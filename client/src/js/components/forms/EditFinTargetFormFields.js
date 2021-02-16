@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput } from './FormInputs';
+import { FormRow, FormInput, FormNumberInput } from './FormInputs';
 
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
@@ -31,6 +31,7 @@ const validationSchema = Yup.object({
 const EditFinTargetFormFields = ({
   setInitialValues,
   formValues,
+  setFieldValue,
   setValidationSchema,
   projectId,
   finTargetId,
@@ -79,10 +80,10 @@ const EditFinTargetFormFields = ({
         <SingleDropdownField items={forecastTypes} name="forecastTypeLkupId" />
       </FormRow>
       <FormRow name="amount" label="Amount">
-        <FormInput type="number" name="amount" placeholder="0" />
+        <FormNumberInput name="amount" id="amount" setFieldValue={setFieldValue} value={formValues.amount} />
       </FormRow>
       <FormRow name="description" label="Description">
-        <FormInput type="textarea" name="description" placeholder="Description" />
+        <FormInput type="textarea" name="description" placeholder="Description" id="description" />
       </FormRow>
     </React.Fragment>
   );
