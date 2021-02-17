@@ -39,10 +39,10 @@ namespace Crt.Tests.UnitTests.Tender
             };
         }
 
-        private UserCurrentDto GetMockedUserCurrentDto()
+        private UserCurrentDto GetMockedUserCurrentDto(decimal regionId = Lookup.RegionId)
         {
             var regionIds = new List<Decimal>();
-            regionIds.Add(Lookup.RegionId);
+            regionIds.Add(regionId);
             
             return new UserCurrentDto
             {
@@ -57,6 +57,16 @@ namespace Crt.Tests.UnitTests.Tender
                 ProjectId = Lookup.ProjectId,
                 TenderId = Lookup.TenderId,
             };
+        }
+
+        private DefaultHttpContext GetMockedHTTPContext()
+        {
+            var newContext = new DefaultHttpContext();
+
+            newContext.Request.Path = "//mocked.test.path";
+            newContext.TraceIdentifier = "mocked traced ident";
+
+            return newContext;
         }
 
         [Fact]
@@ -121,6 +131,29 @@ namespace Crt.Tests.UnitTests.Tender
 
             //assert
             Assert.IsType<NotFoundResult>(actionResult.Result);
+        }
+
+        [Fact]
+        public async Task ReturnUnauthorizedWhenUserDoesntHaveRegionAccess()
+        {
+            //arrange
+            var projectId = Lookup.ProjectId;
+
+            mockCurrentUser.Object.UserInfo = GetMockedUserCurrentDto(99);
+            
+            mockTenderService.Setup(x => x.GetTenderByIdAsync(projectId)).Returns(Task.FromResult<TenderDto>(GetMockedTenderDto()));
+            mockProjectService.Setup(x => x.GetProjectAsync(projectId)).Returns(Task.FromResult<ProjectDto>(GetMockedProjectDto()));
+
+            var tenderCtrllr = new TenderController(mockCurrentUser.Object, mockProjectService.Object,
+                mockTenderService.Object);
+
+            tenderCtrllr.ControllerContext.HttpContext = GetMockedHTTPContext();
+            
+            //act
+            var actionResult = await tenderCtrllr.GetTenderByIdAsync(Lookup.ProjectId, Lookup.TenderId);
+
+            //assert
+            Assert.IsType<UnauthorizedObjectResult>(actionResult.Result);
         }
     }
 }
