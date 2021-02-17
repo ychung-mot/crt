@@ -24,9 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Crt.Api\Crt.Api.csproj" />
     <ProjectReference Include="..\Crt.Data\Crt.Data.csproj" />
     <ProjectReference Include="..\Crt.Domain\Crt.Domain.csproj" />
     <ProjectReference Include="..\Crt.Model\Crt.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UnitTests\Project\" />
   </ItemGroup>
 
 </Project>

@@ -37,7 +37,7 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            return tender;
+            return Ok(tender);
         }
 
         [HttpPost]
