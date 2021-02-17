@@ -29,7 +29,15 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     api
       .getProjectPlan(match.params.id)
       .then((response) => {
-        setData(response.data);
+        //sort FinTarget and QtyAccmps
+        let data = response.data;
+        data = {
+          ...data,
+          finTargets: sortByFiscalYearDesc(data.finTargets),
+          qtyAccmps: sortByFiscalYearDesc(data.qtyAccmps),
+        };
+
+        setData(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -154,7 +162,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     }
   };
 
-  //filter helper functions
+  //filter/sort helper functions
   const onFiscalYearFilterChange = (fiscalId) => {
     const result =
       fiscalYears.find((fiscalYearItem) => {
@@ -185,11 +193,30 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     }
   };
 
+  const sortFunctionDesc = (a, b) => {
+    let displayOrderA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
+    let displayOrderB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
+
+    return displayOrderB - displayOrderA;
+  };
+
+  const sortByFiscalYearDesc = (items = []) => {
+    return items.sort(sortFunctionDesc);
+  };
+
   const refreshData = () => {
     api
       .getProjectPlan(data.id)
       .then((response) => {
-        setData(response.data);
+        //sort FinTarget and QtyAccmps
+        let data = response.data;
+        data = {
+          ...data,
+          finTargets: sortByFiscalYearDesc(data.finTargets),
+          qtyAccmps: sortByFiscalYearDesc(data.qtyAccmps),
+        };
+
+        setData(data);
       })
       .catch((error) => {
         console.log(error.response);
