@@ -18,7 +18,7 @@ const defaultValues = {
   forecast: undefined,
   schedule7: undefined,
   actual: undefined,
-  comments: '',
+  comment: '',
 };
 
 const validationSchema = Yup.object({
@@ -45,7 +45,6 @@ const EditQtyAccmpFormFields = ({
   fiscalYears,
   quantities,
   accomplishments,
-  setFieldValue,
 }) => {
   const [loading, setLoading] = useState(false);
   const [qtyOrAccmp, setQtyOrAccmp] = useState(null);
@@ -106,20 +105,15 @@ const EditQtyAccmpFormFields = ({
             />
           </FormRow>
           <FormRow name="forecast" label="Forecast">
-            <FormNumberInput name="forecast" id="forecast" setFieldValue={setFieldValue} value={formValues.forecast} />
+            <FormNumberInput name="forecast" id="forecast" value={formValues.forecast} />
           </FormRow>
           {qtyOrAccmp === 'QUANTITY' && (
             <FormRow name="schedule7" label="Schedule 7">
-              <FormNumberInput
-                name="schedule7"
-                id="schedule7"
-                setFieldValue={setFieldValue}
-                value={formValues.schedule7}
-              />
+              <FormNumberInput name="schedule7" id="schedule7" value={formValues.schedule7} />
             </FormRow>
           )}
           <FormRow name="actual" label="Actual">
-            <FormNumberInput name="actual" id="actual" setFieldValue={setFieldValue} value={formValues.actual} />
+            <FormNumberInput name="actual" id="actual" value={formValues.actual} />
           </FormRow>
           <FormRow name="comment" label="Comment">
             <FormInput type="input" name="comment" placeholder="Insert Comment Here" value={formValues.comment} />
