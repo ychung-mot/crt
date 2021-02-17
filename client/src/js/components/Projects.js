@@ -34,17 +34,17 @@ const defaultSearchOptions = {
 
 const tableColumns = [
   { heading: 'Region', key: 'regionId' },
-  { heading: 'Project', key: 'projectNumber', link: `${Constants.PATHS.PROJECTS}/:id` },
+  { heading: 'Project', key: 'projectNumber', link: { path: `${Constants.PATHS.PROJECTS}/:id` } },
   {
     heading: 'Planning Targets',
     key: 'planningTargets',
-    link: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`,
+    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}` },
     nosort: true,
   },
   {
     heading: 'Tender Details',
     key: 'tenderDetails',
-    link: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}`,
+    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}` },
     nosort: true,
   },
   { heading: 'Location and Ratios', key: 'locationRatios', nosort: true },
