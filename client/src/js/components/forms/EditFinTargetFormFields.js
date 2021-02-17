@@ -32,7 +32,6 @@ const validationSchema = Yup.object({
 const EditFinTargetFormFields = ({
   setInitialValues,
   formValues,
-  setFieldValue,
   setValidationSchema,
   projectId,
   finTargetId,
@@ -83,7 +82,7 @@ const EditFinTargetFormFields = ({
         <SingleDropdownField items={forecastTypes} name="forecastTypeLkupId" />
       </FormRow>
       <FormRow name="amount" label="Amount">
-        <FormNumberInput name="amount" id="amount" setFieldValue={setFieldValue} value={formValues.amount} />
+        <FormNumberInput name="amount" id="amount" value={formValues.amount} />
       </FormRow>
       <FormRow name="description" label="Description">
         <FormInput type="textarea" name="description" placeholder="Description" id="description" />

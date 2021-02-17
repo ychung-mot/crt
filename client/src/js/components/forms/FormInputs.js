@@ -44,19 +44,19 @@ export const FormInput = ({ children, ...props }) => {
 };
 
 export const FormNumberInput = ({ className, children, ...props }) => {
-  const [field, meta] = useField({ ...props, type: 'checkbox' });
-  const { setFieldValue, ...rest } = props;
+  const [field, meta, helpers] = useField({ ...props, type: 'checkbox' });
   return (
     <React.Fragment>
-      <Input type="hidden" {...field} {...rest} invalid={meta.error && meta.touched} />
+      <Input type="hidden" {...field} {...props} invalid={meta.error && meta.touched} />
       <NumberFormat
         className={classNames('form-control', className)}
         thousandSeparator={true}
         value={props.value}
         onValueChange={(val) => {
-          props.setFieldValue(field.name, val.floatValue);
+          helpers.setTouched(true);
+          helpers.setValue(val.floatValue);
         }}
-        {...rest}
+        {...props}
       >
         {children}
       </NumberFormat>
