@@ -243,16 +243,18 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
   return (
     <React.Fragment>
       <UIHeader>
-        <Row>
-          <Col xs="auto">Project {data.id} Planning </Col>
-          <Col xs={3}>
-            <SingleDropdown
-              items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
-              handleOnChange={onFiscalYearFilterChange}
-              defaultTitle="Show All Fiscal Years"
-            />
-          </Col>
-        </Row>
+        <MaterialCard>
+          <Row>
+            <Col xs="auto">{data.projectNumber}</Col>
+            <Col xs={3}>
+              <SingleDropdown
+                items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
+                handleOnChange={onFiscalYearFilterChange}
+                defaultTitle="Show All Fiscal Years"
+              />
+            </Col>
+          </Row>
+        </MaterialCard>
       </UIHeader>
       <MaterialCard>
         <UIHeader>

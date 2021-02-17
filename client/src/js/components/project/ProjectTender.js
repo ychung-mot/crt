@@ -21,7 +21,7 @@ import * as api from '../../Api';
 import * as Constants from '../../Constants';
 import EditAnnouncementFormFields from '../forms/EditAnnouncementFormFields';
 
-const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog, projectSearchHistory }) => {
+const ProjectTender = ({ match, history, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -160,7 +160,10 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
 
   return (
     <React.Fragment>
-      <UIHeader>Project {data.id} Tender</UIHeader>
+      <UIHeader>
+        <MaterialCard>{data.projectNumber} </MaterialCard>{' '}
+      </UIHeader>
+
       <MaterialCard>
         <UIHeader>
           Project Tender Details{' '}
@@ -226,7 +229,6 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
 
 const mapStateToProps = (state) => {
   return {
-    fiscalYears: state.codeLookups.fiscalYears,
     projectSearchHistory: state.projectSearchHistory.projectSearch,
   };
 };
