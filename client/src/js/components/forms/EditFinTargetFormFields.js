@@ -26,6 +26,7 @@ const validationSchema = Yup.object({
   phaseLkupId: Yup.number().required('Phase Required'),
   elementId: Yup.number().required('Element Required'),
   forecastTypeLkupId: Yup.number().required('Forecast Type Required'),
+  amount: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
 });
 
 const EditFinTargetFormFields = ({
@@ -78,7 +79,7 @@ const EditFinTargetFormFields = ({
       <FormRow name="elementId" label="Element*">
         <SingleDropdownField items={elements} name="elementId" />
       </FormRow>
-      <FormRow name="forecastTypeLkupId" label="Forecast*">
+      <FormRow name="forecastTypeLkupId" label="Forecast Type*">
         <SingleDropdownField items={forecastTypes} name="forecastTypeLkupId" />
       </FormRow>
       <FormRow name="amount" label="Amount">
