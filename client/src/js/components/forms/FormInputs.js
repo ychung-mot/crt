@@ -44,7 +44,7 @@ export const FormInput = ({ children, ...props }) => {
 };
 
 export const FormNumberInput = ({ className, children, ...props }) => {
-  const [field, meta] = useField({ ...props, type: 'checkbox' });
+  const [field, meta, helpers] = useField({ ...props, type: 'checkbox' });
   const { setFieldValue, ...rest } = props;
   return (
     <React.Fragment>
@@ -54,7 +54,8 @@ export const FormNumberInput = ({ className, children, ...props }) => {
         thousandSeparator={true}
         value={props.value}
         onValueChange={(val) => {
-          props.setFieldValue(field.name, val.floatValue);
+          helpers.setTouched(true);
+          helpers.setValue(val.floatValue);
         }}
         {...rest}
       >

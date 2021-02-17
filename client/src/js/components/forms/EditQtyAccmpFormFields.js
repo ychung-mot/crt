@@ -49,7 +49,7 @@ const EditQtyAccmpFormFields = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [qtyOrAccmp, setQtyOrAccmp] = useState(null);
-  const { values, setValues } = useFormikContext();
+  const { setFieldTouched, setValues, values } = useFormikContext();
 
   let currentYear = moment().year().toString();
   let defaultFiscalYearLkupId = fiscalYears.find((year) => year.name.startsWith(currentYear))?.id;
@@ -78,8 +78,7 @@ const EditQtyAccmpFormFields = ({
 
   const handleOnChange = (type) => {
     setQtyOrAccmp(type);
-    setFieldValue('qtyAccmpLkupId', undefined);
-    setFieldValue('schedule7', undefined);
+    setFieldTouched('qtyAccmpLkupId', false);
     setValues({ ...values, qtyAccmpLkupId: undefined, schedule7: undefined });
   };
 
