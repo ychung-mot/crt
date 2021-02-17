@@ -36,6 +36,7 @@ DataTableWithPaginaionControl.propTypes = {
       }),
       link: PropTypes.string, //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
       currency: PropTypes.bool, //if true then format values as currency
+      thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,

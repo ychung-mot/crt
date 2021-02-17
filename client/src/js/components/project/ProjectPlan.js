@@ -51,9 +51,9 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
   const qaTableColumns = [
     { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
     { heading: 'Accomplishment/Quantity', key: 'qtyAccmpType', nosort: true },
-    { heading: 'Forecast', key: 'forecast', nosort: true },
-    { heading: 'Schedule7', key: 'schedule7', nosort: true },
-    { heading: 'Actual', key: 'actual', nosort: true },
+    { heading: 'Forecast', key: 'forecast', thousandSeparator: true, nosort: true },
+    { heading: 'Schedule7', key: 'schedule7', thousandSeparator: true, nosort: true },
+    { heading: 'Actual', key: 'actual', thousandSeparator: true, nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 

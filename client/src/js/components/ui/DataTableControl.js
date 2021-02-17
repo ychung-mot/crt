@@ -50,6 +50,10 @@ const DataTableControl = ({
       return <NumberFormat value={item[column.key]} prefix="$" thousandSeparator={true} displayType="text" />;
     }
 
+    if (column.thousandSeparator) {
+      return <NumberFormat value={item[column.key]} thousandSeparator={true} displayType="text" />;
+    }
+
     return item[column.key];
   };
 
@@ -150,8 +154,8 @@ DataTableControl.propTypes = {
       }),
       //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
       link: PropTypes.string,
-      //if true then format values as currency
-      currency: PropTypes.bool,
+      currency: PropTypes.bool, //if true then format values as currency
+      thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,
