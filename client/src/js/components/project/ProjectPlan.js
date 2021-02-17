@@ -18,7 +18,7 @@ import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, projectSearchHistory }) => {
+const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -33,8 +33,8 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
         let data = response.data;
         data = {
           ...data,
-          finTargets: sortByFiscalYearDesc(data.finTargets),
-          qtyAccmps: sortByFiscalYearDesc(data.qtyAccmps),
+          finTargets: sortByFiscalYearAndPecos(data.finTargets),
+          qtyAccmps: sortByFiscalYear(data.qtyAccmps),
         };
 
         setData(data);
@@ -193,15 +193,28 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     }
   };
 
-  const sortFunctionDesc = (a, b) => {
-    let displayOrderA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
-    let displayOrderB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
+  const sortFunctionFinPlan = (a, b) => {
+    let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
+    let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
+    let displayOrderPhaseA = phases.find((phase) => phase.name === a.projectPhase).displayOrder;
+    let displayOrderPhaseB = phases.find((phase) => phase.name === b.projectPhase).displayOrder;
 
-    return displayOrderB - displayOrderA;
+    return displayOrderYearA - displayOrderYearB || displayOrderPhaseA - displayOrderPhaseB;
   };
 
-  const sortByFiscalYearDesc = (items = []) => {
-    return items.sort(sortFunctionDesc);
+  const sortFunctionQtyAccmps = (a, b) => {
+    let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
+    let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
+
+    return displayOrderYearA - displayOrderYearB;
+  };
+
+  const sortByFiscalYearAndPecos = (items = []) => {
+    return items.sort(sortFunctionFinPlan);
+  };
+
+  const sortByFiscalYear = (items = []) => {
+    return items.sort(sortFunctionQtyAccmps);
   };
 
   const refreshData = () => {
@@ -212,8 +225,8 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
         let data = response.data;
         data = {
           ...data,
-          finTargets: sortByFiscalYearDesc(data.finTargets),
-          qtyAccmps: sortByFiscalYearDesc(data.qtyAccmps),
+          finTargets: sortByFiscalYearAndPecos(data.finTargets),
+          qtyAccmps: sortByFiscalYear(data.qtyAccmps),
         };
 
         setData(data);
@@ -333,6 +346,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
 const mapStateToProps = (state) => {
   return {
     fiscalYears: state.codeLookups.fiscalYears,
+    phases: state.codeLookups.phases,
     projectSearchHistory: state.projectSearchHistory.projectSearch,
   };
 };
