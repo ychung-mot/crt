@@ -139,8 +139,9 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     let changedTenderArray = tenderArray.map((tender) => {
       return {
         ...tender,
-        plannedDate: moment(tender.plannedDate).format(Constants.DATE_DISPLAY_FORMAT),
-        actualDate: moment(tender.actualDate).format(Constants.DATE_DISPLAY_FORMAT),
+        plannedDate:
+          tender.plannedDate === null ? null : moment(tender.plannedDate).format(Constants.DATE_DISPLAY_FORMAT),
+        actualDate: tender.actualDate === null ? null : moment(tender.actualDate).format(Constants.DATE_DISPLAY_FORMAT),
       };
     });
 

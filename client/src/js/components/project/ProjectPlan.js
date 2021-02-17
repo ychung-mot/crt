@@ -43,7 +43,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
     { heading: 'Project Phase', key: 'projectPhase', nosort: true },
     { heading: 'Element', key: 'element', nosort: true },
-    { heading: 'Type', key: 'forecastType', nosort: true },
+    { heading: 'Funding Type', key: 'forecastType', nosort: true },
     { heading: 'Amount', key: 'amount', currency: true, nosort: true },
     { heading: 'Description', key: 'description', nosort: true },
   ];
