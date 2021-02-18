@@ -1,4 +1,5 @@
-﻿using Crt.Model.Dtos.Tender;
+﻿using Crt.Model.Dtos.QtyAccmp;
+using Crt.Model.Dtos.Tender;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
@@ -16,15 +17,14 @@ namespace Crt.Model.Dtos.Project
         public decimal RegionId { get; set; }
         [JsonPropertyName("projectNumber")]
         public string Project { get => $"{ProjectNumber}-{ProjectName}"; }
-        public decimal? AnncmentValue { get; set; }
-        public decimal? C035Value { get; set; }
-        public string AnncmentComment { get; set; }
-
+        
         public List<TenderListDto> Tenders { get; set; }
+        public List<QtyAccmpListDto> QtyAccmps { get; set; }
 
         public ProjectTenderDto()
         {
             Tenders = new List<TenderListDto>();
+            QtyAccmps = new List<QtyAccmpListDto>();
         }
     }
 }

@@ -128,6 +128,10 @@ namespace Crt.Data.Repositories
             var project = await DbSet.AsNoTracking()
                 .Include(x => x.CrtTenders)
                     .ThenInclude(x => x.WinningCntrctrLkup)
+                .Include(x => x.CrtQtyAccmps)
+                    .ThenInclude(x => x.FiscalYearLkup)
+                .Include(x => x.CrtQtyAccmps)
+                    .ThenInclude(x => x.QtyAccmpLkup)
                 .FirstOrDefaultAsync(x => x.ProjectId == projectId);
 
             return Mapper.Map<ProjectTenderDto>(project);
@@ -136,10 +140,6 @@ namespace Crt.Data.Repositories
         public async Task<ProjectPlanDto> GetProjectPlanAsync(decimal projectId)
         {
             var project = await DbSet.AsNoTracking()
-                .Include(x => x.CrtQtyAccmps)
-                    .ThenInclude(x => x.FiscalYearLkup)
-                .Include(x => x.CrtQtyAccmps)
-                    .ThenInclude(x => x.QtyAccmpLkup)
                 .Include(x => x.CrtFinTargets)
                     .ThenInclude(x => x.FiscalYearLkup)
                 .Include(x => x.CrtFinTargets)

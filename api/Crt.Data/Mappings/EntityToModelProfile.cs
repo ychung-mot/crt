@@ -64,11 +64,10 @@ namespace Crt.Data.Mappings
                 .ForMember(x => x.RegionNumber, opt => opt.MapFrom(x => x.Region.RegionNumber))
                 .ForMember(x => x.RegionName, opt => opt.MapFrom(x => x.Region.RegionName));
             CreateMap<CrtProject, ProjectPlanDto>()
-                .ForMember(x => x.FinTargets, opt => opt.MapFrom(x => x.CrtFinTargets))
-                .ForMember(x => x.QtyAccmps, opt => opt.MapFrom(x => x.CrtQtyAccmps));
+                .ForMember(x => x.FinTargets, opt => opt.MapFrom(x => x.CrtFinTargets));
             CreateMap<CrtProject, ProjectTenderDto>()
-                .ForMember(x => x.Tenders, opt => opt.MapFrom(x => x.CrtTenders));
-
+                .ForMember(x => x.Tenders, opt => opt.MapFrom(x => x.CrtTenders))
+                .ForMember(x => x.QtyAccmps, opt => opt.MapFrom(x => x.CrtQtyAccmps));
             CreateMap<CrtNote, NoteDto>()
                 .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
                 .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.AppCreateTimestamp));

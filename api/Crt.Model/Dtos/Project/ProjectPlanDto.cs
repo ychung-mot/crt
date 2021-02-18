@@ -17,14 +17,15 @@ namespace Crt.Model.Dtos.Project
         public decimal RegionId { get; set; }
         [JsonPropertyName("projectNumber")]
         public string Project { get => $"{ProjectNumber}-{ProjectName}"; }
+        public decimal? AnncmentValue { get; set; }
+        public decimal? C035Value { get; set; }
+        public string AnncmentComment { get; set; }
 
         public List<FinTargetListDto> FinTargets { get; set; }
-        public List<QtyAccmpListDto> QtyAccmps { get; set; }
 
         public ProjectPlanDto()
         {
             FinTargets = new List<FinTargetListDto>();
-            QtyAccmps = new List<QtyAccmpListDto>();
         }
     }
 }
