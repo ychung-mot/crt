@@ -185,7 +185,7 @@ const ProjectTender = ({ match, history, showValidationErrorDialog, projectSearc
       </MaterialCard>
       <MaterialCard>
         <UIHeader>
-          Announcement Details
+          Public Project Information
           <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
             <FontAwesomeButton
               icon="edit"
