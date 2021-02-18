@@ -11,7 +11,7 @@ import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import SingleDropdown from '../ui/SingleDropdown';
-import { DisplayRow, ColumnGroup, ColumnTwoGroups } from './ProjectDisplayHelper';
+import { DisplayRow, ColumnTwoGroups, ColumnGroupWithMarkdown } from './ProjectDisplayHelper';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import NumberFormat from 'react-number-format';
 import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
@@ -256,7 +256,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
           />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Announcement Comment" label={data?.anncmentComment} />
+          <ColumnGroupWithMarkdown name="Announcement Comment" label={data?.anncmentComment} />
         </DisplayRow>
       </MaterialCard>
       <div className="text-right">
