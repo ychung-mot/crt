@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
 
 import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
