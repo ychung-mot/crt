@@ -59,7 +59,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsSuccessWhenQuantityFieldsAreValid(FieldValidatorService sut)
+        public void ReturnSuccessWhenQuantityFieldsAreValid(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -76,7 +76,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenInvalidQtyAccmpLkupId(FieldValidatorService sut)
+        public void ReturnErrorWhenInvalidQtyAccmpLkupId(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -92,7 +92,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenInvalidFiscalYearLkpId(FieldValidatorService sut)
+        public void ReturnErrorWhenInvalidFiscalYearLkpId(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -109,7 +109,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
         //Value must be a number of less than 8 digits optionally with maximum 3 decimal digits
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenInvalidForecastAmount(FieldValidatorService sut)
+        public void ReturnErrorWhenInvalidForecastAmount(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -125,7 +125,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenInvalidSchedule7Amount(FieldValidatorService sut)
+        public void ReturnErrorWhenInvalidSchedule7Amount(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -141,7 +141,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenInvalidActualAmount(FieldValidatorService sut)
+        public void ReturnErrorWhenInvalidActualAmount(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -157,7 +157,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenCommentExceedsLengthOf2000(FieldValidatorService sut)
+        public void ReturnErrorWhenCommentExceedsLengthOf2000(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
