@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import _ from 'lodash';
 
 import { useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -18,7 +19,12 @@ import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
 import EditProjectFormFields from '../components/forms/EditProjectFormFields';
 
-import { showValidationErrorDialog, setProjectSearchHistory } from '../redux/actions';
+import {
+  showValidationErrorDialog,
+  setProjectSearchHistory,
+  setProjectSearchFormikValues,
+  resetProjectSearchFormikValues,
+} from '../redux/actions';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -61,19 +67,15 @@ const isInProgress = [
   { id: 'complete', name: 'Completed' },
 ];
 
-const formikInitialValues = {
-  searchText: '',
-  regionIds: [],
-  projectManagerIds: [],
-  isInProgress: [isInProgress[0].id],
-};
-
-const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValidationErrorDialog }) => {
-  if (currentUser.isProjectMgr) {
-    defaultSearchOptions.projectManagerIds = currentUser.id;
-    formikInitialValues.projectManagerIds = [currentUser.id];
-  }
-
+const Projects = ({
+  currentUser,
+  projectMgr,
+  setProjectSearchHistory,
+  setProjectSearchFormikValues,
+  resetProjectSearchFormikValues,
+  showValidationErrorDialog,
+  formikInitialValues,
+}) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -105,6 +107,7 @@ const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValida
   }, [`${location.search}`]);
 
   const handleSearchFormSubmit = (values) => {
+    setProjectSearchFormikValues(values);
     const searchText = values.searchText.trim() || null;
     let isInProgress = null;
     if (values.isInProgress.length === 1) {
@@ -201,7 +204,9 @@ const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValida
                     <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
                       Search
                     </SubmitButton>
-                    <Button type="reset">Reset</Button>
+                    <Button type="reset" onClick={resetProjectSearchFormikValues}>
+                      Reset
+                    </Button>
                   </div>
                 </Col>
               </Row>
@@ -251,6 +256,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgr: Object.values(state.user.projectMgr),
+    formikInitialValues: state.projectSearchHistory.formikInitialValues,
   };
 };
 
@@ -258,6 +264,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     showValidationErrorDialog: (error) => dispatch(showValidationErrorDialog(error)),
     setProjectSearchHistory: (url) => dispatch(setProjectSearchHistory(url)),
+    setProjectSearchFormikValues: (values) => dispatch(setProjectSearchFormikValues(values)),
+    resetProjectSearchFormikValues: () => dispatch(resetProjectSearchFormikValues()),
   };
 };
 
