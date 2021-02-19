@@ -14,7 +14,7 @@ export const API_PATHS = {
   QUANTITIES: `${CODE_LOOKUP}/quantities`,
   ACCOMPLISHMENTS: `${CODE_LOOKUP}/accomplishments`,
   CONTRACTORS: `${CODE_LOOKUP}/contractors`,
-  FORECAST_TYPES: `${CODE_LOOKUP}/forecasttypes`,
+  FUNDING_TYPES: `${CODE_LOOKUP}/fundingtypes`,
   PERMISSIONS: '/permissions',
   ROLE: '/roles',
   USER: '/users',

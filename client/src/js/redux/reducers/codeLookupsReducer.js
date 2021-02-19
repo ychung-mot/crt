@@ -9,7 +9,7 @@ import {
   FETCH_QUANTITIES,
   FETCH_ACCOMPLISHMENTS,
   FETCH_CONTRACTORS,
-  FETCH_FORECAST_TYPES,
+  FETCH_FUNDING_TYPES,
 } from '../actions/types';
 
 const defaultState = {
@@ -27,7 +27,7 @@ const defaultState = {
   quantities: [],
   accomplishments: [],
   contractors: [],
-  forecastTypes: [],
+  fundingTypes: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -48,8 +48,8 @@ const codeLookupsReducer = (state = defaultState, action) => {
       return { ...state, accomplishments: _.orderBy(action.payload, ['name']) };
     case FETCH_CONTRACTORS:
       return { ...state, contractors: _.orderBy(action.payload, ['displayOrder']) };
-    case FETCH_FORECAST_TYPES:
-      return { ...state, forecastTypes: _.orderBy(action.payload, ['name']) };
+    case FETCH_FUNDING_TYPES:
+      return { ...state, fundingTypes: _.orderBy(action.payload, ['name']) };
     default:
       return state;
   }
