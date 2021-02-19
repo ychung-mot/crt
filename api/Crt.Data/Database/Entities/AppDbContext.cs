@@ -1136,123 +1136,151 @@ namespace Crt.Data.Database.Entities
 
                 entity.ToTable("CRT_PROJECT");
 
+                entity.HasComment("Defines CRT projects");
+
                 entity.HasIndex(e => new { e.ProjectNumber, e.CapIndxLkupId, e.NearstTwnLkupId, e.RcLkupId, e.ProjectMgrId }, "CRT_PROJECT_FK_I");
 
                 entity.Property(e => e.ProjectId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("PROJECT_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_ID_SEQ])");
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.AnncmentComment)
-                    .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("ANNCMENT_COMMENT");
+                    .HasColumnName("ANNCMENT_COMMENT")
+                    .HasComment("Comments on project announcements");
 
                 entity.Property(e => e.AnncmentValue)
                     .HasColumnType("numeric(10, 2)")
-                    .HasColumnName("ANNCMENT_VALUE");
+                    .HasColumnName("ANNCMENT_VALUE")
+                    .HasComment("Project value as communicated through announcement done by GCPE");
 
                 entity.Property(e => e.AppCreateTimestamp)
                     .HasColumnType("datetime")
-                    .HasColumnName("APP_CREATE_TIMESTAMP");
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
 
-                entity.Property(e => e.AppCreateUserGuid).HasColumnName("APP_CREATE_USER_GUID");
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
 
                 entity.Property(e => e.AppCreateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("APP_CREATE_USERID");
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
 
                 entity.Property(e => e.AppLastUpdateTimestamp)
                     .HasColumnType("datetime")
-                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP");
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
 
-                entity.Property(e => e.AppLastUpdateUserGuid).HasColumnName("APP_LAST_UPDATE_USER_GUID");
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.AppLastUpdateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("APP_LAST_UPDATE_USERID");
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.C035Value)
                     .HasColumnType("numeric(10, 2)")
-                    .HasColumnName("C035_VALUE");
+                    .HasColumnName("C035_VALUE")
+                    .HasComment("Value on the road side signs for the project value");
 
                 entity.Property(e => e.CapIndxLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("CAP_INDX_LKUP_ID");
+                    .HasColumnName("CAP_INDX_LKUP_ID")
+                    .HasComment("Capital index lookup ID associated with capital indices in the lookup table. A value assigned to indicate whether expenditures related to a project are capitalizable (contributes to extending the life of an asset) or expensable (does not materially contribute to extending the life of an asset)	");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
-                    .HasDefaultValueSql("((1))");
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
 
                 entity.Property(e => e.DbAuditCreateTimestamp)
                     .HasColumnType("datetime")
                     .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
-                    .HasDefaultValueSql("(getutcdate())");
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
 
                 entity.Property(e => e.DbAuditCreateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("DB_AUDIT_CREATE_USERID")
-                    .HasDefaultValueSql("(user_name())");
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
 
                 entity.Property(e => e.DbAuditLastUpdateTimestamp)
                     .HasColumnType("datetime")
                     .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
-                    .HasDefaultValueSql("(getutcdate())");
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
 
                 entity.Property(e => e.DbAuditLastUpdateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
-                    .HasDefaultValueSql("(user_name())");
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("DESCRIPTION");
+                    .HasColumnName("DESCRIPTION")
+                    .HasComment("Description of the selected project");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("END_DATE");
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
 
                 entity.Property(e => e.NearstTwnLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("NEARST_TWN_LKUP_ID");
+                    .HasColumnName("NEARST_TWN_LKUP_ID")
+                    .HasComment("Nearest town lookup ID is associated with nearest town to the project location. The ID maps to the lookup table");
 
                 entity.Property(e => e.ProjectMgrId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("PROJECT_MGR_ID");
+                    .HasColumnName("PROJECT_MGR_ID")
+                    .HasComment("Project manager mapped to system user ID");
 
                 entity.Property(e => e.ProjectName)
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("PROJECT_NAME");
+                    .HasColumnName("PROJECT_NAME")
+                    .HasComment("Name of project");
 
                 entity.Property(e => e.ProjectNumber)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("PROJECT_NUMBER");
+                    .HasColumnName("PROJECT_NUMBER")
+                    .HasComment("Number assigned to the project");
 
                 entity.Property(e => e.RcLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("RC_LKUP_ID");
+                    .HasColumnName("RC_LKUP_ID")
+                    .HasComment("RC lookup IDs associated with RC numbers");
 
                 entity.Property(e => e.RegionId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("REGION_ID");
+                    .HasColumnName("REGION_ID")
+                    .HasComment("Region ID associated with the Ministry regions");
 
                 entity.Property(e => e.Scope)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("SCOPE");
+                    .HasColumnName("SCOPE")
+                    .HasComment("Scope of the project ");
 
                 entity.HasOne(d => d.CapIndxLkup)
                     .WithMany(p => p.CrtProjectCapIndxLkups)
@@ -1300,13 +1328,14 @@ namespace Crt.Data.Database.Entities
                     .HasComment("A system generated unique identifier tracking Project history");
 
                 entity.Property(e => e.AnncmentComment)
-                    .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("ANNCMENT_COMMENT");
+                    .HasColumnName("ANNCMENT_COMMENT")
+                    .HasComment("Comments on project announcements");
 
                 entity.Property(e => e.AnncmentValue)
                     .HasColumnType("numeric(10, 2)")
-                    .HasColumnName("ANNCMENT_VALUE");
+                    .HasColumnName("ANNCMENT_VALUE")
+                    .HasComment("Project value as communicated through announcement done by GCPE");
 
                 entity.Property(e => e.AppCreateTimestamp)
                     .HasColumnType("datetime")
@@ -1342,7 +1371,8 @@ namespace Crt.Data.Database.Entities
 
                 entity.Property(e => e.C035Value)
                     .HasColumnType("numeric(10, 2)")
-                    .HasColumnName("C035_VALUE");
+                    .HasColumnName("C035_VALUE")
+                    .HasComment("Value on the road side signs for the project value");
 
                 entity.Property(e => e.CapIndxLkupId)
                     .HasColumnType("numeric(9, 0)")
@@ -3090,9 +3120,10 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Bid amount in response to tender");
 
                 entity.Property(e => e.Comment)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("COMMENT")
-                    .HasComment("Announcement comments on the tender item");
+                    .HasComment("Comments on the tender item");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
@@ -3229,9 +3260,10 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Bid amount in response to tender");
 
                 entity.Property(e => e.Comment)
+                    .HasMaxLength(2000)
                     .IsUnicode(false)
                     .HasColumnName("COMMENT")
-                    .HasComment("Announcement comments on the tender item");
+                    .HasComment("Comments on the tender item");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
