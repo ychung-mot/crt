@@ -15,7 +15,7 @@ namespace Crt.Data.Database.Entities
         public decimal? FiscalYearLkupId { get; set; }
         public decimal? ElementId { get; set; }
         public decimal? PhaseLkupId { get; set; }
-        public decimal? ForecastTypeLkupId { get; set; }
+        public decimal? FundingTypeLkupId { get; set; }
         public DateTime EffectiveDateHist { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime? EndDateHist { get; set; }

@@ -18,7 +18,7 @@ namespace Crt.Model.Dtos.FinTarget
         [JsonIgnore] 
         public CodeLookupDto PhaseLkup { get; set; }
         [JsonIgnore] 
-        public CodeLookupDto ForecastTypeLkup { get; set; }
+        public CodeLookupDto FundingTypeLkup { get; set; }
         [JsonIgnore]
         public ElementDto Element { get; set; }
 
@@ -26,6 +26,6 @@ namespace Crt.Model.Dtos.FinTarget
         public string ProjectPhase { get => PhaseLkup.Description; }
         [JsonPropertyName("element")]
         public string ElementCode { get => Element.Code; }
-        public string ForecastType { get => ForecastTypeLkup.Description; }
+        public string FundingType { get => FundingTypeLkup.Description; }
     }
 }

@@ -10,7 +10,7 @@ namespace Crt.Data.Database.Entities
         public CrtCodeLookup()
         {
             CrtFinTargetFiscalYearLkups = new HashSet<CrtFinTarget>();
-            CrtFinTargetForecastTypeLkups = new HashSet<CrtFinTarget>();
+            CrtFinTargetFundingTypeLkups = new HashSet<CrtFinTarget>();
             CrtFinTargetPhaseLkups = new HashSet<CrtFinTarget>();
             CrtProjectCapIndxLkups = new HashSet<CrtProject>();
             CrtProjectNearstTwnLkups = new HashSet<CrtProject>();
@@ -35,7 +35,7 @@ namespace Crt.Data.Database.Entities
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
         public virtual ICollection<CrtFinTarget> CrtFinTargetFiscalYearLkups { get; set; }
-        public virtual ICollection<CrtFinTarget> CrtFinTargetForecastTypeLkups { get; set; }
+        public virtual ICollection<CrtFinTarget> CrtFinTargetFundingTypeLkups { get; set; }
         public virtual ICollection<CrtFinTarget> CrtFinTargetPhaseLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectCapIndxLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectNearstTwnLkups { get; set; }

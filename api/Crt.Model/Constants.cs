@@ -101,7 +101,7 @@ namespace Crt.Model
         public const string FiscalYearLkupId = "FiscalYearLkupId";
         public const string ElementId = "ElementId";
         public const string PhaseLkupId = "PhaseLkupId";
-        public const string ForecastTypeLkupId = "ForecastTypeLkupId";
+        public const string FundingTypeLkupId = "FundingTypeLkupId";
 
         public const string QtyAccmpLkupId = "QtyAccmpLkupId";
         public const string Forecast = "Forecast";

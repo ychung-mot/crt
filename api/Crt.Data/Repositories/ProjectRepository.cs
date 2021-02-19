@@ -145,7 +145,7 @@ namespace Crt.Data.Repositories
                 .Include(x => x.CrtFinTargets)
                     .ThenInclude(x => x.PhaseLkup)
                 .Include(x => x.CrtFinTargets)
-                    .ThenInclude(x => x.ForecastTypeLkup)
+                    .ThenInclude(x => x.FundingTypeLkup)
                 .Include(x => x.CrtFinTargets)
                     .ThenInclude(x => x.Element)
                 .FirstOrDefaultAsync(x => x.ProjectId == projectId);
