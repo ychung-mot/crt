@@ -66,8 +66,29 @@ namespace Crt.Data.Repositories
             }
 
             query = query.Include(x => x.Region);
+            
+            var results = await Page<CrtProject, ProjectSearchDto>(query, pageSize, pageNumber, orderBy, direction);
 
-            return await Page<CrtProject, ProjectSearchDto>(query, pageSize, pageNumber, orderBy, direction);
+            foreach (var result in results.SourceList)
+            {
+                //get winning contractor name
+                var winningContractor = DbContext.CrtTenders.AsNoTracking()
+                    .Include(x => x.WinningCntrctrLkup)
+                    .Where(x => x.ProjectId == result.ProjectId && x.WinningCntrctrLkupId != null)
+                    .OrderBy(x => x.DbAuditLastUpdateTimestamp)
+                    .FirstOrDefault().WinningCntrctrLkup.CodeName;
+                
+                result.WinningContractorName = winningContractor;
+
+                //get sum of project value (using FinTarget Amounts)
+                var projectValue = DbContext.CrtFinTargets.AsNoTracking()
+                    .Where(x => x.ProjectId == result.ProjectId && x.Amount != null)
+                    .Sum(x => x.Amount);
+
+                result.ProjectValue = projectValue;
+            }
+
+            return results;
         }
 
         public async Task<ProjectDto> GetProjectAsync(decimal projectId)
