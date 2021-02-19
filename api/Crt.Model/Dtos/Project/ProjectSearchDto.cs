@@ -23,5 +23,8 @@ namespace Crt.Model.Dtos.Project
         public DateTime? EndDate { get; set; }
         public bool IsInProgress { get => EndDate == null || DateTime.Today < EndDate; }
 
+        //the following two fields are used to generate the links for Planning Target & Tender Details
+        public string WinningContractorName { get; set; }
+        public decimal? ProjectValue { get; set; }
     }
 }
