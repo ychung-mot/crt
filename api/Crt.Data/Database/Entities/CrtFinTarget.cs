@@ -14,7 +14,7 @@ namespace Crt.Data.Database.Entities
         public decimal FiscalYearLkupId { get; set; }
         public decimal ElementId { get; set; }
         public decimal PhaseLkupId { get; set; }
-        public decimal ForecastTypeLkupId { get; set; }
+        public decimal FundingTypeLkupId { get; set; }
         public DateTime? EndDate { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }
@@ -30,7 +30,7 @@ namespace Crt.Data.Database.Entities
 
         public virtual CrtElement Element { get; set; }
         public virtual CrtCodeLookup FiscalYearLkup { get; set; }
-        public virtual CrtCodeLookup ForecastTypeLkup { get; set; }
+        public virtual CrtCodeLookup FundingTypeLkup { get; set; }
         public virtual CrtCodeLookup PhaseLkup { get; set; }
         public virtual CrtProject Project { get; set; }
     }

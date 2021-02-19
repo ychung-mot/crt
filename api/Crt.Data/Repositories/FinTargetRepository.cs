@@ -35,7 +35,7 @@ namespace Crt.Data.Repositories
                 .Include(x => x.Project)
                 .Include(x => x.Element)
                 .Include(x => x.FiscalYearLkup)
-                .Include(x => x.ForecastTypeLkup)
+                .Include(x => x.FundingTypeLkup)
                 .Include(x => x.PhaseLkup)
                 .FirstOrDefaultAsync(x => x.FinTargetId == finTargetId);
 

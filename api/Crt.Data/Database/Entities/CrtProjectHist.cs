@@ -14,7 +14,7 @@ namespace Crt.Data.Database.Entities
         public string Description { get; set; }
         public string Scope { get; set; }
         public decimal RegionId { get; set; }
-        public decimal CapIndxLkupId { get; set; }
+        public decimal? CapIndxLkupId { get; set; }
         public string NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
         public decimal? ProjectMgrId { get; set; }
