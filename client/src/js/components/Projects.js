@@ -46,14 +46,23 @@ const tableColumns = [
   },
   {
     heading: 'Planning Targets',
-    key: 'planningTargets',
-    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`, heading: 'Planning Targets' },
+    key: 'projectValue',
+    link: {
+      path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`,
+      key: 'projectValue',
+      heading: 'Planning Targets',
+    },
+    currency: true,
     nosort: true,
   },
   {
     heading: 'Tender Details',
     key: 'tenderDetails',
-    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}`, heading: 'Tender Details' },
+    link: {
+      path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}`,
+      key: 'winningContractorName',
+      heading: 'Tender Details',
+    },
     nosort: true,
   },
   { heading: 'Location and Ratios', key: 'locationRatios', nosort: true },
