@@ -1,0 +1,11 @@
+
+/*
+Change codeset from forecast_type to funding_type on crt_code_lookup
+*/
+
+IF EXISTS 
+	(SELECT * FROM  [dbo].CRT_CODE_LOOKUP C WHERE C.CODE_SET = 'FORECAST_TYPE')
+
+	UPDATE [dbo].CRT_CODE_LOOKUP 
+		SET CODE_SET = 'FUNDING_TYPE', CONCURRENCY_CONTROL_NUMBER = CONCURRENCY_CONTROL_NUMBER+1
+		WHERE CODE_SET = 'FORECAST_TYPE';
