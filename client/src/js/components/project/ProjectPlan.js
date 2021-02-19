@@ -237,9 +237,15 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
         />
         <Container>
           <Row>
-            <Col className="float-right" xs={'auto'}>{`Total Project Estimate ${sumByFiscalYear(
-              displayAfterYearFilter(data.finTargets)
-            )}`}</Col>
+            <Col className="text-right">
+              <strong>Total Project Estimate</strong>
+              <NumberFormat
+                value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
+                prefix=" $"
+                thousandSeparator={true}
+                displayType="text"
+              />
+            </Col>
           </Row>
         </Container>
       </MaterialCard>
