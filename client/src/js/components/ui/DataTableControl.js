@@ -43,7 +43,15 @@ const DataTableControl = ({
   const displayFormatter = (item = {}, column = {}) => {
     //checks if item should be rendered as a special type. ie. currency, link or no formatting
     if (column.link) {
-      return <Link to={() => linkFormatter(item, column.link)}>{item[column.link?.key] || column.link?.heading}</Link>;
+      return (
+        <Link to={() => linkFormatter(item, column.link)}>
+          {(column.currency && (
+            <NumberFormat value={item[column.key]} prefix="$" thousandSeparator={true} displayType="text" />
+          )) ||
+            item[column.link?.key] ||
+            column.link?.heading}
+        </Link>
+      );
     }
 
     if (column.currency) {
