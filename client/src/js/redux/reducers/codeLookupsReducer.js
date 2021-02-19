@@ -39,7 +39,7 @@ const codeLookupsReducer = (state = defaultState, action) => {
     case FETCH_NEAREST_TOWNS:
       return { ...state, nearestTowns: _.orderBy(action.payload, ['name']) };
     case FETCH_PHASES:
-      return { ...state, phases: _.orderBy(action.payload, ['name']) };
+      return { ...state, phases: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_FISCAL_YEARS:
       return { ...state, fiscalYears: _.orderBy(action.payload, ['name']) };
     case FETCH_QUANTITIES:
@@ -47,7 +47,7 @@ const codeLookupsReducer = (state = defaultState, action) => {
     case FETCH_ACCOMPLISHMENTS:
       return { ...state, accomplishments: _.orderBy(action.payload, ['name']) };
     case FETCH_CONTRACTORS:
-      return { ...state, contractors: _.orderBy(action.payload, ['name']) };
+      return { ...state, contractors: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_FORECAST_TYPES:
       return { ...state, forecastTypes: _.orderBy(action.payload, ['name']) };
     default:

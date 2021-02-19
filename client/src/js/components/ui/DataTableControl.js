@@ -23,31 +23,35 @@ const DataTableControl = ({
     if (onEditClicked) onEditClicked(id);
   };
 
-  const linkFormatter = (item = {}, url = '') => {
+  const linkFormatter = (item = {}, link = {}) => {
     //finds all parts of the URL that have : to replace with attribute from item keys
-    let link = url;
+    let path = link.path;
     const regex = /:[a-z 0-9]*/gi;
-    let variableParams = link.match(regex);
+    let variableParams = path.match(regex);
 
     if (!variableParams) {
-      return link;
+      return path;
     }
 
     for (let each of variableParams) {
-      link = link.replace(each, item[each.slice(1)]);
+      path = path.replace(each, item[each.slice(1)]);
     }
 
-    return link;
+    return path;
   };
 
   const displayFormatter = (item = {}, column = {}) => {
     //checks if item should be rendered as a special type. ie. currency, link or no formatting
     if (column.link) {
-      return <Link to={() => linkFormatter(item, column.link)}>{item[column.key] || column.heading}</Link>;
+      return <Link to={() => linkFormatter(item, column.link)}>{item[column.link?.key] || column.link?.heading}</Link>;
     }
 
     if (column.currency) {
       return <NumberFormat value={item[column.key]} prefix="$" thousandSeparator={true} displayType="text" />;
+    }
+
+    if (column.thousandSeparator) {
+      return <NumberFormat value={item[column.key]} thousandSeparator={true} displayType="text" />;
     }
 
     return item[column.key];
@@ -149,9 +153,13 @@ DataTableControl.propTypes = {
         inactive: PropTypes.string.isRequired,
       }),
       //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
-      link: PropTypes.string,
-      //if true then format values as currency
-      currency: PropTypes.bool,
+      link: PropTypes.shape({
+        path: PropTypes.string,
+        key: PropTypes.string, //will display what is in item[key]. Key takes precedence over heading.
+        heading: PropTypes.string, //will display this string if item[key] doesn't exist.
+      }),
+      currency: PropTypes.bool, //if true then format values as currency
+      thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,

@@ -34,8 +34,14 @@ DataTableWithPaginaionControl.propTypes = {
         active: PropTypes.string.isRequired,
         inactive: PropTypes.string.isRequired,
       }),
-      link: PropTypes.string, //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
+      //link will be the url path of where you want to go. ie. /projects/:id <- will look at dataList item for id attribute
+      link: PropTypes.shape({
+        path: PropTypes.string,
+        key: PropTypes.string, //will display what is in item[key]. Key takes precedence over heading.
+        heading: PropTypes.string, //will display this string if item[key] doesn't exist.
+      }),
       currency: PropTypes.bool, //if true then format values as currency
+      thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,

@@ -78,7 +78,7 @@ const EditFinTargetFormFields = ({
       <FormRow name="elementId" label="Element*">
         <SingleDropdownField items={elements} name="elementId" />
       </FormRow>
-      <FormRow name="forecastTypeLkupId" label="Forecast Type*">
+      <FormRow name="forecastTypeLkupId" label="Funding Type*">
         <SingleDropdownField items={forecastTypes} name="forecastTypeLkupId" />
       </FormRow>
       <FormRow name="amount" label="Amount">

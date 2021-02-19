@@ -9,7 +9,7 @@ const defaultState = {
 const lookupsReducer = (state = defaultState, action) => {
   switch (action.type) {
     case FETCH_REGIONS:
-      return { ...state, regions: { ...state.regions, ..._.mapKeys(action.payload, 'id') } };
+      return { ...state, regions: _.orderBy(action.payload, ['regionNumber']) };
     case FETCH_ELEMENTS:
       return { ...state, elements: _.orderBy(action.payload, ['name']) };
     default:

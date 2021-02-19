@@ -50,7 +50,8 @@ const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidatio
       </FormRow>
       <FormRow name="anncmentComment" label="Annoucement Notes" helper="anncmentComment">
         <FormInput
-          type="textArea"
+          rows={5}
+          type="textarea"
           name="anncmentComment"
           placeholder="Insert Comment Here"
           id="anncmentComment"

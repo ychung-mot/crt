@@ -11,25 +11,34 @@ import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import SingleDropdown from '../ui/SingleDropdown';
+import { DisplayRow, ColumnTwoGroups, ColumnGroupWithMarkdown } from './ProjectDisplayHelper';
+import FontAwesomeButton from '../ui/FontAwesomeButton';
+import NumberFormat from 'react-number-format';
 import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
-import EditQtyAccmpFormFields from '../forms/EditQtyAccmpFormFields';
+import EditAnnouncementFormFields from '../forms/EditAnnouncementFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, projectSearchHistory }) => {
+const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorDialog, projectSearchHistory }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   const [fiscalYearsFilter, setFiscalYearsFilter] = useState('ALL');
-  const [qtyOrAccmpFilter, setqtyOrAccmpFIlter] = useState('ALL');
 
   useEffect(() => {
     api
       .getProjectPlan(match.params.id)
       .then((response) => {
-        setData(response.data);
+        //sort FinTarget and QtyAccmps
+        let data = response.data;
+        data = {
+          ...data,
+          finTargets: sortByFiscalYearAndPecos(data.finTargets),
+        };
+
+        setData(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -43,25 +52,9 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
     { heading: 'Project Phase', key: 'projectPhase', nosort: true },
     { heading: 'Element', key: 'element', nosort: true },
-    { heading: 'Type', key: 'forecastType', nosort: true },
+    { heading: 'Funding Type', key: 'forecastType', nosort: true },
     { heading: 'Amount', key: 'amount', currency: true, nosort: true },
     { heading: 'Description', key: 'description', nosort: true },
-  ];
-
-  const qaTableColumns = [
-    { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
-    { heading: 'Accomplishment/Quantity', key: 'qtyAccmpType', nosort: true },
-    { heading: 'Forecast', key: 'forecast', nosort: true },
-    { heading: 'Schedule7', key: 'schedule7', nosort: true },
-    { heading: 'Actual', key: 'actual', nosort: true },
-    { heading: 'Comment', key: 'comment', nosort: true },
-  ];
-
-  //temporary fix hard code quantity and accomplishments
-  const qtyAccmpArray = [
-    { id: 'ALL', name: 'Show All Qty/Accmp' },
-    { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
-    { id: 'QUANTITY', name: 'Quantity' },
   ];
 
   //Financial Target edit, delete, put, post functions.
@@ -110,61 +103,35 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     }
   };
 
-  //Quantity Accomplishments edit, delete, put, post functions.
-  const onQAEditClicked = (qtyAccmpId) => {
-    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.EDIT, { qtyAccmpId, projectId: data.id });
+  //Announcements Functions
+  const handleAnnouncementEditFormClick = (projectId) => {
+    announcementFormModal.openForm(Constants.FORM_TYPE.EDIT, { projectId: projectId });
   };
 
-  const onQADeleteClicked = (qtyAccmpId) => {
-    api.deleteQtyAccmp(data.id, qtyAccmpId).then(() => refreshData());
-  };
-
-  const addQAClicked = () => {
-    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.ADD);
-  };
-
-  const handleEditQtyAccmptFormSubmit = (values, formType) => {
-    if (!qtyAccmpFormModal.submitting) {
-      qtyAccmpFormModal.setSubmitting(true);
-      if (formType === Constants.FORM_TYPE.ADD) {
-        api
-          .postQtyAccmp(data.id, values)
-          .then(() => {
-            qtyAccmpFormModal.closeForm();
-            refreshData();
-          })
-          .catch((error) => {
-            console.log(error.response);
-            showValidationErrorDialog(error.response.data);
-          })
-          .finally(() => qtyAccmpFormModal.setSubmitting(false));
-      } else if (formType === Constants.FORM_TYPE.EDIT) {
-        api
-          .putQtyAccmp(data.id, values.id, values)
-          .then(() => {
-            qtyAccmpFormModal.closeForm();
-            refreshData();
-          })
-          .catch((error) => {
-            console.log(error.response);
-            showValidationErrorDialog(error.response.data);
-          })
-          .finally(() => qtyAccmpFormModal.setSubmitting(false));
-      }
+  const handleAnnouncementEditFormSubmit = (values) => {
+    if (!announcementFormModal.submitting) {
+      announcementFormModal.setSubmitting(true);
+      api
+        .putProject(values.id, { ...values })
+        .then(() => {
+          announcementFormModal.closeForm();
+          refreshData();
+        })
+        .catch((error) => {
+          console.log(error.response);
+          showValidationErrorDialog(error.response.data);
+        })
+        .finally(() => announcementFormModal.setSubmitting(false));
     }
   };
 
-  //filter helper functions
+  //filter/sort helper functions
   const onFiscalYearFilterChange = (fiscalId) => {
     const result =
       fiscalYears.find((fiscalYearItem) => {
         return fiscalYearItem.id === fiscalId;
       })?.codeName || 'ALL';
     setFiscalYearsFilter(result);
-  };
-
-  const onQtyAccmpFilterChange = (qtyAccmpName) => {
-    setqtyOrAccmpFIlter(qtyAccmpName);
   };
 
   const displayAfterYearFilter = (items) => {
@@ -176,20 +143,31 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     }
   };
 
-  const displayAfterQtyAccmpsFilter = (items) => {
-    let filteredResult = items;
-    if (qtyOrAccmpFilter === 'ALL') {
-      return filteredResult;
-    } else {
-      return filteredResult.filter((items) => items.qtyAccmpType === qtyOrAccmpFilter);
-    }
+  const sortFunctionFinPlan = (a, b) => {
+    let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
+    let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
+    let displayOrderPhaseA = phases.find((phase) => phase.name === a.projectPhase).displayOrder;
+    let displayOrderPhaseB = phases.find((phase) => phase.name === b.projectPhase).displayOrder;
+
+    return displayOrderYearA - displayOrderYearB || displayOrderPhaseA - displayOrderPhaseB;
+  };
+
+  const sortByFiscalYearAndPecos = (items = []) => {
+    return items.sort(sortFunctionFinPlan);
   };
 
   const refreshData = () => {
     api
       .getProjectPlan(data.id)
       .then((response) => {
-        setData(response.data);
+        //sort FinTarget and QtyAccmps
+        let data = response.data;
+        data = {
+          ...data,
+          finTargets: sortByFiscalYearAndPecos(data.finTargets),
+        };
+
+        setData(data);
       })
       .catch((error) => {
         console.log(error.response);
@@ -204,10 +182,10 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
     true
   );
 
-  const qtyAccmpFormModal = useFormModal(
-    'Quantities and Accomplishments',
-    <EditQtyAccmpFormFields />,
-    handleEditQtyAccmptFormSubmit,
+  const announcementFormModal = useFormModal(
+    'Announcement Details',
+    <EditAnnouncementFormFields />,
+    handleAnnouncementEditFormSubmit,
     true
   );
 
@@ -216,22 +194,24 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
   return (
     <React.Fragment>
       <UIHeader>
-        <Row>
-          <Col xs="auto">Project {data.id} Planning </Col>
-          <Col xs={3}>
-            <SingleDropdown
-              items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
-              handleOnChange={onFiscalYearFilterChange}
-              defaultTitle="Show All Fiscal Years"
-            />
-          </Col>
-        </Row>
+        <MaterialCard>
+          <Row>
+            <Col xs="auto">{data.projectNumber}</Col>
+          </Row>
+        </MaterialCard>
       </UIHeader>
       <MaterialCard>
         <UIHeader>
           <Container>
             <Row>
               <Col xs="auto">Financial Planning Targets</Col>
+              <Col xs={3}>
+                <SingleDropdown
+                  items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
+                  handleOnChange={onFiscalYearFilterChange}
+                  defaultTitle="Show All Fiscal Years"
+                />
+              </Col>
               <Col>
                 <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
                   <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
@@ -254,35 +234,30 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
       </MaterialCard>
       <MaterialCard>
         <UIHeader>
-          <Container>
-            <Row>
-              <Col xs="auto">Quantities/Accomplishments</Col>
-              <Col xs={3}>
-                <SingleDropdown
-                  items={qtyAccmpArray}
-                  handleOnChange={onQtyAccmpFilterChange}
-                  defaultTitle="Show All Qty/Accmp"
-                />
-              </Col>
-              <Col>
-                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={addQAClicked}>
-                    + Add
-                  </Button>
-                </Authorize>
-              </Col>
-            </Row>
-          </Container>
+          Public Project Information
+          <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+            <FontAwesomeButton
+              icon="edit"
+              className="float-right"
+              onClick={() => handleAnnouncementEditFormClick(data.id)}
+              title="Edit Record"
+              iconSize="lg"
+            />
+          </Authorize>
         </UIHeader>
-        <DataTableControl
-          dataList={displayAfterQtyAccmpsFilter(displayAfterYearFilter(data.qtyAccmps))}
-          tableColumns={qaTableColumns}
-          editable
-          deletable
-          editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onEditClicked={onQAEditClicked}
-          onDeleteClicked={onQADeleteClicked}
-        />
+        <DisplayRow>
+          <ColumnTwoGroups
+            name="Announcement Value"
+            label={<NumberFormat value={data?.anncmentValue} prefix="$" thousandSeparator={true} displayType="text" />}
+          />
+          <ColumnTwoGroups
+            name="C-035 Value"
+            label={<NumberFormat value={data?.c035Value} prefix="$" thousandSeparator={true} displayType="text" />}
+          />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnGroupWithMarkdown name="Announcement Comment" label={data?.anncmentComment} />
+        </DisplayRow>
       </MaterialCard>
       <div className="text-right">
         <Link to={`${Constants.PATHS.PROJECTS}/${data.id}`}>
@@ -296,7 +271,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
         </Button>
       </div>
       {finTargetsFormModal.formElement}
-      {qtyAccmpFormModal.formElement}
+      {announcementFormModal.formElement}
     </React.Fragment>
   );
 };
@@ -304,6 +279,7 @@ const ProjectPlan = ({ match, history, fiscalYears, showValidationErrorDialog, p
 const mapStateToProps = (state) => {
   return {
     fiscalYears: state.codeLookups.fiscalYears,
+    phases: state.codeLookups.phases,
     projectSearchHistory: state.projectSearchHistory.projectSearch,
   };
 };

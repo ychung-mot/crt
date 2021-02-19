@@ -18,7 +18,12 @@ import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
 import EditProjectFormFields from '../components/forms/EditProjectFormFields';
 
-import { showValidationErrorDialog, setProjectSearchHistory } from '../redux/actions';
+import {
+  showValidationErrorDialog,
+  setProjectSearchHistory,
+  setProjectSearchFormikValues,
+  resetProjectSearchFormikValues,
+} from '../redux/actions';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -34,17 +39,21 @@ const defaultSearchOptions = {
 
 const tableColumns = [
   { heading: 'Region', key: 'regionId' },
-  { heading: 'Project', key: 'projectNumber', link: `${Constants.PATHS.PROJECTS}/:id` },
+  {
+    heading: 'Project',
+    key: 'projectNumber',
+    link: { path: `${Constants.PATHS.PROJECTS}/:id`, key: 'projectNumber' },
+  },
   {
     heading: 'Planning Targets',
     key: 'planningTargets',
-    link: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`,
+    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`, heading: 'Planning Targets' },
     nosort: true,
   },
   {
     heading: 'Tender Details',
     key: 'tenderDetails',
-    link: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}`,
+    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}`, heading: 'Tender Details' },
     nosort: true,
   },
   { heading: 'Location and Ratios', key: 'locationRatios', nosort: true },
@@ -57,19 +66,15 @@ const isInProgress = [
   { id: 'complete', name: 'Completed' },
 ];
 
-const formikInitialValues = {
-  searchText: '',
-  regionIds: [],
-  projectManagerIds: [],
-  isInProgress: [isInProgress[0].id],
-};
-
-const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValidationErrorDialog }) => {
-  if (currentUser.isProjectMgr) {
-    defaultSearchOptions.projectManagerIds = currentUser.id;
-    formikInitialValues.projectManagerIds = [currentUser.id];
-  }
-
+const Projects = ({
+  currentUser,
+  projectMgr,
+  setProjectSearchHistory,
+  setProjectSearchFormikValues,
+  resetProjectSearchFormikValues,
+  showValidationErrorDialog,
+  formikInitialValues,
+}) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -101,6 +106,7 @@ const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValida
   }, [`${location.search}`]);
 
   const handleSearchFormSubmit = (values) => {
+    setProjectSearchFormikValues(values);
     const searchText = values.searchText.trim() || null;
     let isInProgress = null;
     if (values.isInProgress.length === 1) {
@@ -164,7 +170,12 @@ const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValida
             <Form>
               <Row form>
                 <Col>
-                  <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
+                  <MultiDropdownField
+                    {...formikProps}
+                    items={currentUser.regions.slice(0).sort((a, b) => a.regionNumber - b.regionNumber)}
+                    name="regionIds"
+                    title="Regions"
+                  />
                 </Col>
                 <Col>
                   <Field
@@ -192,7 +203,9 @@ const Projects = ({ currentUser, projectMgr, setProjectSearchHistory, showValida
                     <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
                       Search
                     </SubmitButton>
-                    <Button type="reset">Reset</Button>
+                    <Button type="reset" onClick={resetProjectSearchFormikValues}>
+                      Reset
+                    </Button>
                   </div>
                 </Col>
               </Row>
@@ -242,6 +255,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgr: Object.values(state.user.projectMgr),
+    formikInitialValues: state.projectSearchHistory.formikInitialValues,
   };
 };
 
@@ -249,6 +263,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     showValidationErrorDialog: (error) => dispatch(showValidationErrorDialog(error)),
     setProjectSearchHistory: (url) => dispatch(setProjectSearchHistory(url)),
+    setProjectSearchFormikValues: (values) => dispatch(setProjectSearchFormikValues(values)),
+    resetProjectSearchFormikValues: () => dispatch(resetProjectSearchFormikValues()),
   };
 };
 
