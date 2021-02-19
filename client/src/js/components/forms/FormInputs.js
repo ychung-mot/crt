@@ -54,7 +54,7 @@ export const FormNumberInput = ({ className, children, ...props }) => {
         value={props.value}
         onValueChange={(val) => {
           helpers.setTouched(true);
-          helpers.setValue(val.floatValue);
+          helpers.setValue(val.floatValue || 0);
         }}
         {...props}
       >
