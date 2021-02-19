@@ -14,7 +14,7 @@ const defaultValues = {
   fiscalYearLkupId: undefined,
   phaseLkupId: undefined,
   element: undefined,
-  forecastTypeLkupId: undefined,
+  fundingTypeLkupId: undefined,
   amount: 0,
   description: '',
   endDate: null,
@@ -25,7 +25,7 @@ const validationSchema = Yup.object({
   fiscalYearLkupId: Yup.number().required('Fiscal Year Required'),
   phaseLkupId: Yup.number().required('Phase Required'),
   elementId: Yup.number().required('Element Required'),
-  forecastTypeLkupId: Yup.number().required('Forecast Type Required'),
+  fundingTypeLkupId: Yup.number().required('Funding Type Required'),
   amount: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
 });
 
@@ -38,7 +38,7 @@ const EditFinTargetFormFields = ({
   formType,
   fiscalYears,
   phases,
-  forecastTypes,
+  fundingTypes,
   elements,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -78,8 +78,8 @@ const EditFinTargetFormFields = ({
       <FormRow name="elementId" label="Element*">
         <SingleDropdownField items={elements} name="elementId" />
       </FormRow>
-      <FormRow name="forecastTypeLkupId" label="Funding Type*">
-        <SingleDropdownField items={forecastTypes} name="forecastTypeLkupId" />
+      <FormRow name="fundingTypeLkupId" label="Funding Type*">
+        <SingleDropdownField items={fundingTypes} name="fundingTypeLkupId" />
       </FormRow>
       <FormRow name="amount" label="Amount">
         <FormNumberInput name="amount" id="amount" value={formValues.amount} />
@@ -95,7 +95,7 @@ const mapStateToProps = (state) => {
   return {
     fiscalYears: state.codeLookups.fiscalYears,
     phases: state.codeLookups.phases,
-    forecastTypes: state.codeLookups.forecastTypes,
+    fundingTypes: state.codeLookups.fundingTypes,
     elements: state.lookups.elements,
   };
 };

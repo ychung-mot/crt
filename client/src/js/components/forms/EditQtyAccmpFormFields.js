@@ -15,9 +15,9 @@ import * as api from '../../Api';
 const defaultValues = {
   fiscalYearLkupId: undefined,
   qtyAccmpLkupId: undefined,
-  forecast: undefined,
-  schedule7: undefined,
-  actual: undefined,
+  forecast: 0,
+  schedule7: 0,
+  actual: 0,
   comment: '',
 };
 
@@ -65,7 +65,7 @@ const EditQtyAccmpFormFields = ({
           setInitialValues({
             ...response.data,
             qtyOrAccmp: response.data.qtyAccmpLkup.codeSet,
-            endDate: response.data.endDate ? moment(response.data.endDate) : null,
+            comment: response.data.comment || '',
           });
           setQtyOrAccmp(response.data.qtyAccmpLkup.codeSet);
           setLoading(false);

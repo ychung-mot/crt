@@ -52,7 +52,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
     { heading: 'Fiscal Year', key: 'fiscalYear', nosort: true },
     { heading: 'Project Phase', key: 'projectPhase', nosort: true },
     { heading: 'Element', key: 'element', nosort: true },
-    { heading: 'Funding Type', key: 'forecastType', nosort: true },
+    { heading: 'Funding Type', key: 'fundingType', nosort: true },
     { heading: 'Amount', key: 'amount', currency: true, nosort: true },
     { heading: 'Description', key: 'description', nosort: true },
   ];
@@ -156,6 +156,10 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
     return items.sort(sortFunctionFinPlan);
   };
 
+  const sumByFiscalYear = (items = []) => {
+    return items.reduce((accumulator, finTarget) => accumulator + finTarget?.amount, 0);
+  };
+
   const refreshData = () => {
     api
       .getProjectPlan(data.id)
@@ -231,6 +235,19 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
           onEditClicked={onFinTargetEditClicked}
           onDeleteClicked={onFinTargetDeleteClicked}
         />
+        <Container>
+          <Row>
+            <Col className="text-right">
+              <strong>Total Project Estimate</strong>
+              <NumberFormat
+                value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
+                prefix=" $"
+                thousandSeparator={true}
+                displayType="text"
+              />
+            </Col>
+          </Row>
+        </Container>
       </MaterialCard>
       <MaterialCard>
         <UIHeader>

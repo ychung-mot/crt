@@ -31,7 +31,7 @@ export const ColumnGroupWithMarkdown = ({ name, label, helper }) => {
         {name}
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
-      <Col className="mt-2" sm="9">
+      <Col className="mt-2 markdown__container-overflow" sm="9">
         {label ? (
           <ReactMarkdown linkTarget="_blank" plugins={[gfm]}>
             {label}

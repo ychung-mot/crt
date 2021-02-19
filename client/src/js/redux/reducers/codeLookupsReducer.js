@@ -9,7 +9,7 @@ import {
   FETCH_QUANTITIES,
   FETCH_ACCOMPLISHMENTS,
   FETCH_CONTRACTORS,
-  FETCH_FORECAST_TYPES,
+  FETCH_FUNDING_TYPES,
 } from '../actions/types';
 
 const defaultState = {
@@ -27,29 +27,29 @@ const defaultState = {
   quantities: [],
   accomplishments: [],
   contractors: [],
-  forecastTypes: [],
+  fundingTypes: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
   switch (action.type) {
     case FETCH_CAPITAL_INDEXES:
-      return { ...state, capitalIndexes: _.orderBy(action.payload, ['id'], ['desc']) };
+      return { ...state, capitalIndexes: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_RC_NUMBERS:
-      return { ...state, rcNumbers: _.orderBy(action.payload, ['name']) };
+      return { ...state, rcNumbers: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_NEAREST_TOWNS:
-      return { ...state, nearestTowns: _.orderBy(action.payload, ['name']) };
+      return { ...state, nearestTowns: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_PHASES:
       return { ...state, phases: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_FISCAL_YEARS:
-      return { ...state, fiscalYears: _.orderBy(action.payload, ['name']) };
+      return { ...state, fiscalYears: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_QUANTITIES:
-      return { ...state, quantities: _.orderBy(action.payload, ['name']) };
+      return { ...state, quantities: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_ACCOMPLISHMENTS:
-      return { ...state, accomplishments: _.orderBy(action.payload, ['name']) };
+      return { ...state, accomplishments: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_CONTRACTORS:
       return { ...state, contractors: _.orderBy(action.payload, ['displayOrder']) };
-    case FETCH_FORECAST_TYPES:
-      return { ...state, forecastTypes: _.orderBy(action.payload, ['name']) };
+    case FETCH_FUNDING_TYPES:
+      return { ...state, fundingTypes: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }

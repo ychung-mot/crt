@@ -33,7 +33,6 @@ const EditTenderFormFields = ({
   tenderId,
   formType,
   contractors,
-  setFieldValue,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -73,18 +72,13 @@ const EditTenderFormFields = ({
         <SingleDateField name="actualDate" placeholder="Actual Date" />
       </FormRow>
       <FormRow name="tenderValue" label="Tender Value" helper="tenderValue">
-        <FormNumberInput
-          name="tenderValue"
-          id="tenderValue"
-          setFieldValue={setFieldValue}
-          value={formValues.tenderValue}
-        />
+        <FormNumberInput name="tenderValue" id="tenderValue" value={formValues.tenderValue} />
       </FormRow>
       <FormRow name="winningCntrctrLkupId" label="Winning Contractor" helper="winningCntrctrLkupId">
         <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable />
       </FormRow>
       <FormRow name="bidValue" label="Winning Bid" helper="bidValue">
-        <FormNumberInput name="bidValue" id="bidValue" setFieldValue={setFieldValue} value={formValues.bidValue} />
+        <FormNumberInput name="bidValue" id="bidValue" value={formValues.bidValue} />
       </FormRow>
       <FormRow name="comment" label="Comment">
         <FormInput

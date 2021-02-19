@@ -7,7 +7,7 @@ import {
   FETCH_QUANTITIES,
   FETCH_ACCOMPLISHMENTS,
   FETCH_CONTRACTORS,
-  FETCH_FORECAST_TYPES,
+  FETCH_FUNDING_TYPES,
 } from './types';
 
 import * as api from '../../Api';
@@ -68,9 +68,9 @@ export const fetchContractors = () => (dispatch) => {
   });
 };
 
-export const fetchForecastTypes = () => (dispatch) => {
-  return api.getForecastTypes().then((response) => {
+export const fetchFundingTypes = () => (dispatch) => {
+  return api.getFundingTypes().then((response) => {
     const data = response.data;
-    dispatch({ type: FETCH_FORECAST_TYPES, payload: data });
+    dispatch({ type: FETCH_FUNDING_TYPES, payload: data });
   });
 };
