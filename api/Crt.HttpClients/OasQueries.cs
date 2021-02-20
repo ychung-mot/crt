@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace Crt.Chris
+namespace Crt.HttpClients
 {
     public class OasQueries
     {

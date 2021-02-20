@@ -1,10 +1,10 @@
-﻿using Crt.Chris.Models;
+﻿using Crt.HttpClients.Models;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Crt.Chris
+namespace Crt.HttpClients
 {
     public interface IMapsApi
     {

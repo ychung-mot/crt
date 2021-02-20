@@ -1,4 +1,4 @@
-﻿namespace Crt.Chris.Models
+﻿namespace Crt.HttpClients.Models
 {
     public class SimpleFeature
     {

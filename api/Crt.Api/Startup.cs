@@ -1,5 +1,5 @@
 using Crt.Api.Extensions;
-using Crt.Chris;
+using Crt.HttpClients;
 using Crt.Data.Repositories;
 using Crt.Domain.Services;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +36,7 @@ namespace Crt.Api
             services.AddCrtApiVersioning();
             services.AddCrtTypes();
             services.AddCrtSwagger(_env);
-            services.AddChrisHttpClient(Configuration);
+            services.AddHttpClients(Configuration);
             services.AddCrtHealthCheck(connectionString);
         }
 
