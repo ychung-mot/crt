@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Crt.Chris
+namespace Crt.HttpClients
 {
     public interface IExportApi
     {

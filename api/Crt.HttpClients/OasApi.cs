@@ -1,4 +1,4 @@
-﻿using Crt.Chris.Models;
+﻿using Crt.HttpClients.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Crt.Chris
+namespace Crt.HttpClients
 {
     public interface IOasApi
     {

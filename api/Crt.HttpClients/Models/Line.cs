@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Crt.Chris.Models
+namespace Crt.HttpClients.Models
 {
     public class Line
     {

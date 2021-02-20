@@ -4,11 +4,11 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 
-namespace Crt.Chris
+namespace Crt.HttpClients
 {
-    public static class ChrisServiceCollectionExtensions
+    public static class HttpClientsServiceCollectionExtensions
     {
-        public static void AddChrisHttpClient(this IServiceCollection services, IConfiguration config)
+        public static void AddHttpClients(this IServiceCollection services, IConfiguration config)
         {
             services.AddHttpClient<IMapsApi, MapsApi>(client =>
             {

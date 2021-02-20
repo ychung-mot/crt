@@ -3,28 +3,28 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crt.Chris
+namespace Crt.HttpClients
 {
     public interface IApi
     {
-        Task<HttpResponseMessage> Get(HttpClient client, string path);
-        Task<HttpResponseMessage> Post(HttpClient client, string path, string body);
-        Task<HttpResponseMessage> GetWithRetry(HttpClient client, string path);
-        Task<HttpResponseMessage> PostWithRetry(HttpClient client, string path, string body);
+        Task<HttpResponseMessage> Get(System.Net.Http.HttpClient client, string path);
+        Task<HttpResponseMessage> Post(System.Net.Http.HttpClient client, string path, string body);
+        Task<HttpResponseMessage> GetWithRetry(System.Net.Http.HttpClient client, string path);
+        Task<HttpResponseMessage> PostWithRetry(System.Net.Http.HttpClient client, string path, string body);
 
     }
     public class Api : IApi
     {
         const int maxAttempt = 5;
 
-        public async Task<HttpResponseMessage> Get(HttpClient client, string path)
+        public async Task<HttpResponseMessage> Get(System.Net.Http.HttpClient client, string path)
         {
             var response = await client.GetAsync(path);
 
             return response;
         }
 
-        public async Task<HttpResponseMessage> Post(HttpClient client, string path, string body)
+        public async Task<HttpResponseMessage> Post(System.Net.Http.HttpClient client, string path, string body)
         {
             var response
                 = await client.PostAsync(path, new StringContent(body, Encoding.UTF8));
@@ -37,7 +37,7 @@ namespace Crt.Chris
             return response;
         }
 
-        public async Task<HttpResponseMessage> GetWithRetry(HttpClient client, string path)
+        public async Task<HttpResponseMessage> GetWithRetry(System.Net.Http.HttpClient client, string path)
         {
             var response = await client.GetAsync(path);
 
@@ -71,7 +71,7 @@ namespace Crt.Chris
             return response;
         }
 
-        public async Task<HttpResponseMessage> PostWithRetry(HttpClient client, string path, string body)
+        public async Task<HttpResponseMessage> PostWithRetry(System.Net.Http.HttpClient client, string path, string body)
         {
             var response
                 = await client.PostAsync(path, new StringContent(body, Encoding.UTF8));

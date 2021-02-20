@@ -1,6 +1,6 @@
 using Hangfire;
 using Crt.Api.Extensions;
-using Crt.Chris;
+using Crt.HttpClients;
 using Crt.Data.Repositories;
 using Crt.Domain.Services;
 using Microsoft.AspNetCore.Builder;
@@ -34,7 +34,7 @@ namespace Crt.Hangfire
             services.AddCrtDbContext(connectionString, _env.IsDevelopment());
             services.AddCrtAutoMapper();
             services.AddCrtTypes();
-            services.AddChrisHttpClient(Configuration);
+            services.AddHttpClients(Configuration);
             services.AddCrtHangfire(connectionString, runHangfireServer, workerCount);
             services.AddHealthChecks().AddTypeActivatedCheck<HangfireHealthCheck>("Hangfire", HealthStatus.Unhealthy, connectionString);
         }
