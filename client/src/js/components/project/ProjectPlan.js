@@ -251,16 +251,22 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
       </MaterialCard>
       <MaterialCard>
         <UIHeader>
-          Public Project Information
-          <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-            <FontAwesomeButton
-              icon="edit"
-              className="float-right"
-              onClick={() => handleAnnouncementEditFormClick(data.id)}
-              title="Edit Record"
-              iconSize="lg"
-            />
-          </Authorize>
+          <Container>
+            <Row>
+              <Col xs="auto">Public Project Information</Col>
+              <Col>
+                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                  <FontAwesomeButton
+                    icon="edit"
+                    className="float-right"
+                    onClick={() => handleAnnouncementEditFormClick(data.id)}
+                    title="Edit Record"
+                    iconSize="lg"
+                  />
+                </Authorize>
+              </Col>
+            </Row>
+          </Container>
         </UIHeader>
         <DisplayRow>
           <ColumnTwoGroups
