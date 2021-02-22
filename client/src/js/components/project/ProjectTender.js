@@ -328,9 +328,9 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
         <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_PLAN}`}>
           <Button color="secondary">{'< Project Planning'}</Button>
         </Link>
-        <Button color="primary" onClick={() => alert('temporary fix link to next section')}>
-          Continue
-        </Button>
+        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_SEGMENT}`}>
+          <Button color="primary">Continue</Button>
+        </Link>
         <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
           Close
         </Button>

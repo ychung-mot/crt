@@ -15,5 +15,15 @@ module.exports = function (app) {
         target: process.env.REACT_APP_API_HOST || 'http://localhost:27238',
         changeOrigin: true,
       })
+    ),
+    app.use(
+      '/twm',
+      createProxyMiddleware({
+        target: 'http://localhost:5500',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/twm/': '/',
+        },
+      })
     );
 };
