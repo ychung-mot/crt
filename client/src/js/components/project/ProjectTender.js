@@ -244,12 +244,14 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     return changedTenderArray;
   };
 
-  const tendersFormModal = useFormModal('Tender Details', <EditTenderFormFields />, handleEditTenderFormSubmit, true);
+  const tendersFormModal = useFormModal('Tender Details', <EditTenderFormFields />, handleEditTenderFormSubmit, {
+    saveCheck: true,
+  });
   const qtyAccmpFormModal = useFormModal(
     'Quantities and Accomplishments',
     <EditQtyAccmpFormFields />,
     handleEditQtyAccmptFormSubmit,
-    true
+    { saveCheck: true }
   );
 
   if (loading) return <PageSpinner />;

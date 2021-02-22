@@ -58,7 +58,9 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
     }
   };
 
-  const formModal = useFormModal('Project', <EditProjectFormFields />, handleEditProjectFormSubmit, true);
+  const formModal = useFormModal('Project', <EditProjectFormFields />, handleEditProjectFormSubmit, {
+    saveCheck: true,
+  });
 
   const onEditClicked = (projectId) => {
     formModal.openForm(Constants.FORM_TYPE.EDIT, { projectId });

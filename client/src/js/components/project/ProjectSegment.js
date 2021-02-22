@@ -9,6 +9,7 @@ import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import EditSegmentFormFields from '../forms/EditSegmentFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -37,12 +38,23 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
   };
 
   const addSegmentClicked = () => {
+    segmentsFormModal.openForm(Constants.FORM_TYPE.ADD);
     console.log('add');
   };
+
+  const handleEditSegmentFormSubmit = (values) => {
+    console.log('submitting');
+    console.log(values);
+  };
+
+  const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, handleEditSegmentFormSubmit, true, {
+    size: 'lg',
+  });
 
   if (loading) {
     return <PageSpinner />;
   }
+
   return (
     <React.Fragment>
       <UIHeader>
@@ -85,6 +97,7 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
           Close
         </Button>
       </div>
+      {segmentsFormModal.formElement}
     </React.Fragment>
   );
 }
