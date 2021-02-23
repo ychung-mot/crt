@@ -19,6 +19,7 @@ import Projects from './components/Projects';
 import ProjectDetails from './components/project/ProjectDetails';
 import ProjectPlan from './components/project/ProjectPlan';
 import ProjectTender from './components/project/ProjectTender';
+import ProjectSegment from './components/project/ProjectSegment';
 import Version from './components/Version';
 import ApiAccess from './components/ApiAccess';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -121,6 +122,7 @@ const ProjectRoutes = (currentUser) => {
       <Route path={`${Constants.PATHS.PROJECTS}/:id`} exact component={ProjectDetails} />
       <Route path={`${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`} component={ProjectPlan} />
       <Route path={`${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}`} component={ProjectTender} />
+      <Route path={`${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_SEGMENT}`} component={ProjectSegment} />
     </AuthorizedRoute>
   );
 };

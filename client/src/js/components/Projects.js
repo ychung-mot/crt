@@ -159,7 +159,7 @@ const Projects = ({
     }
   };
 
-  const formModal = useFormModal('Project', <EditProjectFormFields />, handleAddProjectFormSubmit, true);
+  const formModal = useFormModal('Project', <EditProjectFormFields />, handleAddProjectFormSubmit, { saveCheck: true });
 
   const data = Object.values(searchData.data).map((projects) => ({
     ...projects,

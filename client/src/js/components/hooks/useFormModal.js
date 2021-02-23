@@ -6,7 +6,7 @@ import SubmitButton from '../ui/SubmitButton';
 
 import * as Constants from '../../Constants';
 
-const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveCheck = false) => {
+const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, options) => {
   // This is needed until Formik fixes its own setSubmitting function
   const [submitting, setSubmitting] = useState(false);
   const [initialValues, setInitialValues] = useState(null);
@@ -16,6 +16,8 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
   const [validationSchema, setValidationSchema] = useState({});
   //saveCheck modal states:
   const [modalSaveCheckOpen, setModalSaveCheckOpen] = useState(false);
+
+  const { size = '', saveCheck = false } = options;
 
   const toggle = (dirty = false) => {
     if (dirty && saveCheck) {
@@ -51,7 +53,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
 
   const formModal = () => {
     return (
-      <Modal isOpen={isOpen} toggle={toggle} backdrop="static">
+      <Modal isOpen={isOpen} toggle={toggle} backdrop="static" size={size}>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
@@ -69,6 +71,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, saveC
                     formValues: values,
                     setInitialValues,
                     setValidationSchema,
+                    closeForm,
                   })}
               </ModalBody>
               <ModalFooter>

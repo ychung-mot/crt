@@ -183,14 +183,14 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
     'Financial Planning Targets',
     <EditFinTargetFormFields />,
     handleEditFinTargetFormSubmit,
-    true
+    { saveCheck: true }
   );
 
   const announcementFormModal = useFormModal(
     'Announcement Details',
     <EditAnnouncementFormFields />,
     handleAnnouncementEditFormSubmit,
-    true
+    { saveCheck: true, size: 'lg' }
   );
 
   if (loading) return <PageSpinner />;
