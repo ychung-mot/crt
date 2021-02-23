@@ -30,8 +30,4 @@
     <ProjectReference Include="..\Crt.Model\Crt.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UnitTests\Project\" />
-  </ItemGroup>
-
 </Project>
