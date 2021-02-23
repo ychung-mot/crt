@@ -71,6 +71,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
                     formValues: values,
                     setInitialValues,
                     setValidationSchema,
+                    closeForm,
                   })}
               </ModalBody>
               <ModalFooter>
