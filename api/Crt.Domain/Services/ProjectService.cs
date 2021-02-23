@@ -121,6 +121,11 @@ namespace Crt.Domain.Services
                 errors.AddItem(Fields.RegionId, $"Invalid or unauthorized region ID [{crtProject.RegionId}]");
             }
 
+            if (errors.Count > 0)
+            {
+                return (false, errors);
+            }
+
             await _projectRepo.DeleteProjectAsync(project);
 
             _unitOfWork.Commit();
