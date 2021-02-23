@@ -11,6 +11,7 @@ using Crt.Model.Dtos.QtyAccmp;
 using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.Role;
 using Crt.Model.Dtos.RolePermission;
+using Crt.Model.Dtos.Segments;
 using Crt.Model.Dtos.ServiceArea;
 using Crt.Model.Dtos.Tender;
 using Crt.Model.Dtos.User;
@@ -73,6 +74,10 @@ namespace Crt.Data.Mappings
             CreateMap<TenderDto, CrtTender>();
             CreateMap<TenderCreateDto, CrtTender>();
             CreateMap<TenderUpdateDto, CrtTender>();
+
+            CreateMap<SegmentDto, CrtSegment>();
+            CreateMap<SegmentCreateDto, CrtSegment>();
+            CreateMap<SegmentUpdateDto, CrtSegment>();
         }
     }
 }

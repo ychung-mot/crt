@@ -16,6 +16,7 @@ using Crt.Model.Dtos.FinTarget;
 using Crt.Model.Dtos.Element;
 using Crt.Model.Dtos.QtyAccmp;
 using Crt.Model.Dtos.Tender;
+using Crt.Model.Dtos.Segments;
 
 namespace Crt.Data.Mappings
 {
@@ -84,6 +85,9 @@ namespace Crt.Data.Mappings
 
             CreateMap<CrtTender, TenderDto>();
             CreateMap<CrtTender, TenderListDto>();
+
+            CreateMap<CrtSegment, SegmentDto>();
+            CreateMap<CrtSegment, SegmentListDto>();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Crt.Data.Database.Entities
             CrtFinTargets = new HashSet<CrtFinTarget>();
             CrtNotes = new HashSet<CrtNote>();
             CrtQtyAccmps = new HashSet<CrtQtyAccmp>();
+            CrtSegments = new HashSet<CrtSegment>();
             CrtTenders = new HashSet<CrtTender>();
         }
 
@@ -49,6 +50,7 @@ namespace Crt.Data.Database.Entities
         public virtual ICollection<CrtFinTarget> CrtFinTargets { get; set; }
         public virtual ICollection<CrtNote> CrtNotes { get; set; }
         public virtual ICollection<CrtQtyAccmp> CrtQtyAccmps { get; set; }
+        public virtual ICollection<CrtSegment> CrtSegments { get; set; }
         public virtual ICollection<CrtTender> CrtTenders { get; set; }
     }
 }
