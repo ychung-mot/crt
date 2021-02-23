@@ -119,7 +119,7 @@ namespace Crt.Tests.UnitTests.Project
             return pud;
         }
 
-        private void GetManuallyMockedObjects()
+        private void InitManuallyMockedObjects()
         {
             projectCreateDto = GetMockedProjectCreateDto();
             projectUpdateDto = GetMockedProjectUpdateDto();
@@ -134,7 +134,7 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
 
             mockUserRepo.Setup(x => x.GetManagersAsync())
@@ -163,7 +163,7 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
 
             projectCreateDto.RegionId = 99; //bad region submitted
@@ -194,7 +194,7 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
 
             projectCreateDto.ProjectMgrId = 99; //invalid manager id
@@ -225,7 +225,7 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
             
             mockUserRepo.Setup(x => x.GetManagersAsync())
@@ -254,7 +254,7 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
 
             mockUserRepo.Setup(x => x.GetManagersAsync())
@@ -283,10 +283,10 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
 
-            projectCreateDto.ProjectMgrId = 99; //invalid manager id
+            projectUpdateDto.ProjectMgrId = 99; //invalid manager id
 
             mockUserRepo.Setup(x => x.GetManagersAsync())
                 .Returns(Task.FromResult(GetMockedUserManagers()));
@@ -303,7 +303,7 @@ namespace Crt.Tests.UnitTests.Project
             var result = mockProjectService.UpdateProjectAsync(projectUpdateDto);
 
             //assert
-            mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
+            mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
         [Theory]
@@ -314,10 +314,10 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
 
-            projectCreateDto.RegionId = 99; //invalid region
+            projectUpdateDto.RegionId = 99; //invalid region
 
             mockUserRepo.Setup(x => x.GetManagersAsync())
                 .Returns(Task.FromResult(GetMockedUserManagers()));
@@ -334,7 +334,7 @@ namespace Crt.Tests.UnitTests.Project
             var result = mockProjectService.UpdateProjectAsync(projectUpdateDto);
 
             //assert
-            mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
+            mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
         [Theory]
@@ -345,7 +345,7 @@ namespace Crt.Tests.UnitTests.Project
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
-            GetManuallyMockedObjects();
+            InitManuallyMockedObjects();
             fieldValidator.CodeLookup = GetMockedCodeLookup();
 
             mockUserRepo.Setup(x => x.GetManagersAsync())
@@ -363,7 +363,65 @@ namespace Crt.Tests.UnitTests.Project
             var result = mockProjectService.UpdateProjectAsync(projectUpdateDto);
 
             //assert
-            mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
+            mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public void FailToDeleteProjectWhenProjectDoesntExist(FieldValidatorService fieldValidator,
+            [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
+            [Frozen] Mock<IUserRepository> mockUserRepo,
+            [Frozen] Mock<IProjectRepository> mockProjectRepo)
+        {
+            //arrange
+            InitManuallyMockedObjects();
+            fieldValidator.CodeLookup = GetMockedCodeLookup();
+
+            mockUserRepo.Setup(x => x.GetManagersAsync())
+                .Returns(Task.FromResult(GetMockedUserManagers()));
+
+            mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
+                .Returns(Task.FromResult<ProjectDto>(null));
+
+            //instantiate the project service with the mocked objects
+            var mockProjectService = new ProjectService(mockCurrentUser.Object
+                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockUserRepo.Object);
+
+            //act
+            var result = mockProjectService.DeleteProjectAsync(new ProjectDeleteDto { ProjectId = Lookup.ProjectId });
+
+            //assert
+            mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public void FailToDeleteProjectWhenUserIsntInRegion(FieldValidatorService fieldValidator,
+            [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
+            [Frozen] Mock<IUserRepository> mockUserRepo,
+            [Frozen] Mock<IProjectRepository> mockProjectRepo)
+        {
+            //arrange
+            InitManuallyMockedObjects();
+            fieldValidator.CodeLookup = GetMockedCodeLookup();
+
+            mockUserRepo.Setup(x => x.GetManagersAsync())
+                .Returns(Task.FromResult(GetMockedUserManagers()));
+
+            mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
+                .Returns(Task.FromResult(new ProjectDto { ProjectId = Lookup.ProjectId, RegionId = 99 }));
+
+            //instantiate the project service with the mocked objects
+            var mockProjectService = new ProjectService(mockCurrentUser.Object
+                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockUserRepo.Object);
+
+            //act
+            var result = mockProjectService.DeleteProjectAsync(new ProjectDeleteDto { ProjectId = Lookup.ProjectId });
+
+            //assert
+            mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
     }
 }
