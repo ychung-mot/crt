@@ -49,6 +49,7 @@ const EditTenderFormFields = ({
             ...response.data,
             plannedDate: response.data.plannedDate ? moment(response.data.plannedDate) : null,
             actualDate: response.data.actualDate ? moment(response.data.actualDate) : null,
+            comment: response.data.comment ? response.data.comment : '',
           });
           setLoading(false);
         })
