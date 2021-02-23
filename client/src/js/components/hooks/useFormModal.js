@@ -17,7 +17,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
   //saveCheck modal states:
   const [modalSaveCheckOpen, setModalSaveCheckOpen] = useState(false);
 
-  const { size = '', saveCheck = false } = options;
+  const { size = '', saveCheck = false, showHeaderFooter = true } = options;
 
   const toggle = (dirty = false) => {
     if (dirty && saveCheck) {
@@ -62,7 +62,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
         >
           {({ dirty, values }) => (
             <Form>
-              <ModalHeader toggle={() => toggle(dirty)}>{title}</ModalHeader>
+              {showHeaderFooter && <ModalHeader toggle={() => toggle(dirty)}>{title}</ModalHeader>}
               <ModalBody>
                 {isOpen &&
                   React.cloneElement(formFieldsChildElement, {
@@ -74,29 +74,31 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
                     closeForm,
                   })}
               </ModalBody>
-              <ModalFooter>
-                <SubmitButton size="sm" submitting={submitting} disabled={submitting || !dirty}>
-                  Submit
-                </SubmitButton>
-                <Button color="secondary" size="sm" onClick={() => toggle(dirty)}>
-                  Cancel
-                </Button>
-                <Modal isOpen={modalSaveCheckOpen}>
-                  <ModalHeader>You have unsaved changes.</ModalHeader>
-                  <ModalBody>
-                    If the screen is closed before saving these changes, they will be lost. Do you want to continue
-                    without saving?
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button size="sm" color="primary" onClick={handleConfirmLeave}>
-                      Leave
-                    </Button>
-                    <Button color="secondary" size="sm" onClick={toggleModalSaveCheck}>
-                      Go Back
-                    </Button>
-                  </ModalFooter>
-                </Modal>
-              </ModalFooter>
+              {showHeaderFooter && (
+                <ModalFooter>
+                  <SubmitButton size="sm" submitting={submitting} disabled={submitting || !dirty}>
+                    Submit
+                  </SubmitButton>
+                  <Button color="secondary" size="sm" onClick={() => toggle(dirty)}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              )}
+              <Modal isOpen={modalSaveCheckOpen}>
+                <ModalHeader>You have unsaved changes.</ModalHeader>
+                <ModalBody>
+                  If the screen is closed before saving these changes, they will be lost. Do you want to continue
+                  without saving?
+                </ModalBody>
+                <ModalFooter>
+                  <Button size="sm" color="primary" onClick={handleConfirmLeave}>
+                    Leave
+                  </Button>
+                  <Button color="secondary" size="sm" onClick={toggleModalSaveCheck}>
+                    Go Back
+                  </Button>
+                </ModalFooter>
+              </Modal>
             </Form>
           )}
         </Formik>

@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+import * as Constants from '../../Constants';
 
 function EditSegmentFormFields({ closeForm, ...rest }) {
+  let location = useLocation();
+  console.log('hi');
+  console.log(location.pathname);
+
   useEffect(() => {
     window.addEventListener('message', addEventListenerCloseForm);
 
@@ -22,13 +29,7 @@ function EditSegmentFormFields({ closeForm, ...rest }) {
     <React.Fragment>
       <div>Make sure you have TWM running on live server on PORT:5500</div>
 
-      <iframe
-        className="w-100"
-        style={{ height: '800px' }}
-        src={`http://localhost:3000/twm/`}
-        name="myiframe"
-        title="map"
-      />
+      <iframe className="w-100" style={{ height: '800px' }} src={Constants.PATHS.TWM} name="myiframe" title="map" />
     </React.Fragment>
   );
 }
