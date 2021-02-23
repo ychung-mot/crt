@@ -48,8 +48,8 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
   };
 
   const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, handleEditSegmentFormSubmit, {
-    saveCheck: true,
     size: 'xl',
+    showHeaderFooter: false,
   });
 
   if (loading) {
