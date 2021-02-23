@@ -6,7 +6,7 @@ import SubmitButton from '../ui/SubmitButton';
 
 import * as Constants from '../../Constants';
 
-const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, options) => {
+const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, options = {}) => {
   // This is needed until Formik fixes its own setSubmitting function
   const [submitting, setSubmitting] = useState(false);
   const [initialValues, setInitialValues] = useState(null);
