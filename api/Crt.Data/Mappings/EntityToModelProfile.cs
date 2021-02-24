@@ -87,7 +87,7 @@ namespace Crt.Data.Mappings
             CreateMap<CrtTender, TenderListDto>();
 
             CreateMap<CrtSegment, SegmentDto>();
-            CreateMap<CrtSegment, SegmentListDto>();
+            CreateMap<CrtSegment, SegmentCreateDto>();
         }
     }
 }

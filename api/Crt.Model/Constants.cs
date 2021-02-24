@@ -114,6 +114,8 @@ namespace Crt.Model
         public const string TenderValue = "TenderValue";
         public const string WinningCntrctrLkupId = "WinningCntrctrLkupId";
         public const string BidValue = "BidValue";
+
+        public const string SegmentRoute = "SegmentRoute";
     }
 
     public class DateColNames

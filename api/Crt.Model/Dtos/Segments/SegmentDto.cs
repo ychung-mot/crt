@@ -1,4 +1,5 @@
-﻿using NetTopologySuite.Geometries;
+﻿using Crt.Model.Dtos.Project;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace Crt.Model.Dtos.Segments
         public decimal? EndLatitude { get; set; }
         public decimal? EndLongitude { get; set; }
         public DateTime? EndDate { get; set; }
+        public virtual ProjectDto Project { get; set; }
     }
 }

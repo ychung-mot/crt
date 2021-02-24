@@ -1,4 +1,4 @@
-﻿using NetTopologySuite.Geometries;
+﻿using Crt.HttpClients.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.Segments
 {
-    public class SegmentCreateDto : SegmentSaveDto
+    public class SegmentCreateDto
     {
+        public decimal ProjectId { get; set; }
+        public decimal[][] Route { get; set; }
     }
 }
