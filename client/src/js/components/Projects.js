@@ -69,6 +69,13 @@ const tableColumns = [
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
+let formikInitialValues = {
+  searchText: '',
+  regionIds: [],
+  projectManagerIds: [],
+  isInProgress: ['inProgress'],
+};
+
 //temporary fix hardcode project status
 const isInProgress = [
   { id: 'inProgress', name: 'In Progress' },
@@ -82,7 +89,7 @@ const Projects = ({
   setProjectSearchFormikValues,
   resetProjectSearchFormikValues,
   showValidationErrorDialog,
-  formikInitialValues,
+  reduxFormikValues,
 }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
@@ -105,6 +112,8 @@ const Projects = ({
       ...searchInitialValues,
       searchText,
     });
+
+    formikInitialValues = { ...reduxFormikValues };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -264,7 +273,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgr: Object.values(state.user.projectMgr),
-    formikInitialValues: state.projectSearchHistory.formikInitialValues,
+    reduxFormikValues: state.projectSearchHistory.formikInitialValues,
   };
 };
 
