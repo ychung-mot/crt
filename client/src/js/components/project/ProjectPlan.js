@@ -279,7 +279,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
           />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroupWithMarkdown name="Announcement Comment" label={data?.anncmentComment} />
+          <ColumnGroupWithMarkdown name="Announcement Comment" label={data?.anncmentComment.replace(/\n/g, '  \n')} />
         </DisplayRow>
       </MaterialCard>
       <div className="text-right">
