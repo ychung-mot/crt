@@ -273,7 +273,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgr: Object.values(state.user.projectMgr),
-    reduxFormikValues: state.projectSearchHistory.formikInitialValues,
+    reduxFormikValues: state.projectSearchHistory.reduxFormikValues,
   };
 };
 

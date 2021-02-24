@@ -29,6 +29,7 @@ const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidatio
         .then((response) => {
           setInitialValues({
             ...response.data,
+            anncmentComment: response.data.anncmentComment || '',
           });
           setLoading(false);
         })

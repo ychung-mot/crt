@@ -14,7 +14,7 @@ const defaultFormikInitialValues = {
 
 const defaultState = {
   projectSearch: Constants.API_PATHS.PROJECTS,
-  formikInitialValues: defaultFormikInitialValues,
+  reduxFormikValues: defaultFormikInitialValues,
 };
 
 const projectSearchHistoryReducer = (state = defaultState, action) => {
@@ -23,9 +23,9 @@ const projectSearchHistoryReducer = (state = defaultState, action) => {
     case SET_PROJECT_SEARCH_HISTORY:
       return { ...state, projectSearch: action.payload };
     case SET_PROJECT_SEARCH_FORMIK_VALUES:
-      return { ...state, formikInitialValues: action.payload };
+      return { ...state, reduxFormikValues: action.payload };
     case RESET_PROJECT_SEARCH_FORMIK_VALUES:
-      return { ...state, formikInitialValues: defaultFormikInitialValues };
+      return { ...state, reduxFormikValues: defaultFormikInitialValues };
     default:
       return state;
   }
