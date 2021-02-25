@@ -39,8 +39,6 @@ export const updateQueryParamsFromHistory = (history, newParam, overwrite) => {
 
   if (!overwrite) processedParams = { ...params, ...processedParams };
 
-  console.log(newParam);
-
   // remove empty isActive
   if (newParam.isActive === null) processedParams = _.omit(processedParams, ['isActive']);
   else processedParams = { ...processedParams, isActive: newParam.isActive };
@@ -57,8 +55,6 @@ export const updateQueryParamsFromHistory = (history, newParam, overwrite) => {
 
   //remove empty projectManagerIds
   if (newParam.projectManagerIds === null) processedParams = _.omit(processedParams, ['projectManagerIds']);
-
-  console.log(newParam);
 
   return queryString.stringify(processedParams);
 };
