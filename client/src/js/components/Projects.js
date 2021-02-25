@@ -145,6 +145,7 @@ const Projects = ({
 
   const handleSearchFormReset = () => {
     setSearchInitialValues(defaultSearchFormValues);
+    resetProjectSearchFormikValues();
     searchData.refresh(true);
   };
 
@@ -180,8 +181,8 @@ const Projects = ({
       <MaterialCard>
         <UIHeader>Projects</UIHeader>
         <Formik
-          initialValues={formikInitialValues}
-          enableReinitialize={true}
+          initialValues={reduxFormikValues}
+          enableReinitialize={false}
           onSubmit={(values) => handleSearchFormSubmit(values)}
           onReset={handleSearchFormReset}
         >
