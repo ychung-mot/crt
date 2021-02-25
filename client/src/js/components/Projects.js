@@ -189,12 +189,7 @@ const Projects = ({
             <Form>
               <Row form>
                 <Col>
-                  <MultiDropdownField
-                    {...formikProps}
-                    items={currentUser.regions.slice(0).sort((a, b) => a.regionNumber - b.regionNumber)}
-                    name="regionIds"
-                    title="Regions"
-                  />
+                  <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
                 </Col>
                 <Col>
                   <Field
