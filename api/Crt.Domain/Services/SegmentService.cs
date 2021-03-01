@@ -17,7 +17,7 @@ namespace Crt.Domain.Services
 {
     public interface ISegmentService
     {
-        Task<SegmentDto> GetSegmentByIdAsync(decimal segmentID);
+        Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentID);
         Task<(decimal segmentId, Dictionary<string, List<string>> errors)> CreateSegmentAsync(SegmentCreateDto segment);
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId);
     }
@@ -61,12 +61,26 @@ namespace Crt.Domain.Services
 
         public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId)
         {
-            throw new NotImplementedException();
+            var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
+
+            if (segment == null || segment.ProjectId != projectId)
+            {
+                return (true, null);
+            }
+
+            //errors is returned but is always empty?
+            var errors = new Dictionary<string, List<string>>();
+
+            await _segmentRepo.DeleteSegmentAsync(segmentId);
+
+            _unitOfWork.Commit();
+
+            return (false, errors);
         }
 
-        public async Task<SegmentDto> GetSegmentByIdAsync(decimal segmentID)
+        public async Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentId)
         {
-            throw new NotImplementedException();
+            return await _segmentRepo.GetSegmentByIdAsync(segmentId);
         }
 
     }

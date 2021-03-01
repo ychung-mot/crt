@@ -5,6 +5,7 @@ using Crt.HttpClients.Models;
 using Crt.Model;
 using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
+using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using System;
@@ -20,6 +21,7 @@ namespace Crt.Data.Repositories
     {
         Task<CrtSegment> CreateSegmentAsync(SegmentCreateDto segment);
         Task DeleteSegmentAsync(decimal segmentId);
+        Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentId);
     }
 
     public class SegmentRepository : CrtRepositoryBase<CrtSegment>, ISegmentRepository
@@ -52,11 +54,20 @@ namespace Crt.Data.Repositories
             return crtSegment;
         }
 
-        public Task DeleteSegmentAsync(decimal segmentId)
+        public async Task DeleteSegmentAsync(decimal segmentId)
         {
-            throw new NotImplementedException();
+            var segment = await DbSet.FirstAsync(x => x.SegmentId == segmentId);
+
+            DbSet.Remove(segment);
         }
 
+        public async Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentId)
+        {
+            var segment = await DbSet.AsNoTracking()
+                .Include(x => x.Project)
+                .FirstOrDefaultAsync(x => x.SegmentId == segmentId);
+
+            return Mapper.Map<SegmentListDto>(segment);
+        }
     }
-    
 }

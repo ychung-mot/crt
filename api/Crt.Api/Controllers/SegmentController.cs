@@ -42,7 +42,23 @@ namespace Crt.Api.Controllers
                 return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
-            //return CreatedAtRoute("GetSegment", new { projectId = projectId, id = response.segmentId }, await _segmentService.GetSegmentByIdAsync(response.segmentId));
+            return CreatedAtRoute("GetSegment", new { projectId = projectId, id = response.segmentId }, await _segmentService.GetSegmentByIdAsync(response.segmentId));
+        }
+
+        [HttpGet("{id}", Name = "GetSegment")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<SegmentListDto>> GetSegmentByIdAsync(decimal projectId, decimal id)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var segment = await _segmentService.GetSegmentByIdAsync(id);
+            if (segment == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(segment);
         }
 
         [HttpDelete("{id}")]

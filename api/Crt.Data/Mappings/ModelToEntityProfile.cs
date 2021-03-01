@@ -77,6 +77,7 @@ namespace Crt.Data.Mappings
 
             CreateMap<SegmentDto, CrtSegment>();
             CreateMap<SegmentCreateDto, CrtSegment>();
+            CreateMap<SegmentListDto, CrtSegment>();
         }
     }
 }
