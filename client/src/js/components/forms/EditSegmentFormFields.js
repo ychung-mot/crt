@@ -31,7 +31,13 @@ function EditSegmentFormFields({ closeForm, ...rest }) {
     <React.Fragment>
       <div>Make sure you have TWM running on live server on PORT:5500</div>
 
-      <iframe className="w-100" style={{ height: '800px' }} src={Constants.PATHS.TWM} name="myiframe" title="map" />
+      <iframe
+        className="w-100"
+        style={{ height: '800px' }}
+        src={`${Constants.PATHS.TWM}`}
+        name="myiframe"
+        title="map"
+      />
       <Button className="float-right mb-2" onClick={closeForm}>
         Cancel
       </Button>
