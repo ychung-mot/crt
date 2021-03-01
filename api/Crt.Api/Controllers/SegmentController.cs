@@ -1,0 +1,105 @@
+﻿using Crt.Api.Authorization;
+using Crt.Api.Controllers.Base;
+using Crt.Domain.Services;
+using Crt.Model;
+using Crt.Model.Dtos.Segments;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static Crt.Domain.Services.SegmentService;
+
+namespace Crt.Api.Controllers
+{
+    [ApiVersion("1.0")]
+    [Route("api/projects/{projectId}/segment")]
+    [ApiController]
+    public class SegmentController : CrtControllerBase
+    {
+        private IProjectService _projectService;
+        private ISegmentService _segmentService;
+
+        public SegmentController(CrtCurrentUser currentUser, IProjectService projectService, ISegmentService segmentService)
+            : base(currentUser)
+        {
+            _projectService = projectService;
+            _segmentService = segmentService;
+        }
+
+        [HttpPost]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<SegmentCreateDto>> CreateSegment(decimal projectId, SegmentCreateDto segment)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            segment.ProjectId = projectId;
+
+            var response = await _segmentService.CreateSegmentAsync(segment);
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return CreatedAtRoute("GetSegment", new { projectId = projectId, id = response.segmentId }, await _segmentService.GetSegmentByIdAsync(response.segmentId));
+        }
+
+        [HttpGet("{id}", Name = "GetSegment")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<SegmentListDto>> GetSegmentByIdAsync(decimal projectId, decimal id)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var segment = await _segmentService.GetSegmentByIdAsync(id);
+            if (segment == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(segment);
+        }
+
+        [HttpDelete("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> DeleteSegment(decimal projectId, decimal id)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var response = await _segmentService.DeleteSegmentAsync(projectId, id);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
+        private async Task<ActionResult> IsProjectAuthorized(decimal projectId)
+        {
+            var project = await _projectService.GetProjectAsync(projectId);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            var problem = IsRegionIdAuthorized(project.RegionId);
+            if (problem != null)
+            {
+                return Unauthorized(problem);
+            }
+
+            return null;
+        }
+
+    }
+}
