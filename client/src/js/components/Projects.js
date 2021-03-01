@@ -113,9 +113,6 @@ const Projects = ({
       searchText,
     });
 
-    //temporary fix this is supposed to set the initial values to match history ,but it also sets redux initial values to not be default causing bugs
-    // formikInitialValues = { ...reduxFormikValues };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
