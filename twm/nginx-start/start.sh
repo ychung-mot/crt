@@ -1,4 +1,4 @@
 #!/bin/sh
 
 echo "---> Creating keycloak.json ..."
-# envsubst < ~/keycloak.json.tmpl > ~/keycloak.json
+envsubst < ~/src/keycloak.json.tmpl > ~/src/keycloak.json
