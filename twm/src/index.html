@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Meta -->
+		<meta charset="utf-8" />
+		<meta name="description" content="BC Ministry of Transportation and Infrastructure Web Map">
+		<meta name="keywords" content="TWM, Web Mapping Framework, BC Ministry of Transportation and Infrastructure, MoTI">
+		<meta name="author" content="BC Ministry of Transportation and Infrastructure">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no, user-scalable=no">
+		
+		<!-- Title -->
+		<title>Transportation Web Map</title>
+		
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="application/img/favicon.png">
+		
+		<!-- CSS -->
+		<link rel="stylesheet" href="application/lib/jquery-ui-1.12.1/jquery-ui.min.css">
+		<link rel="stylesheet" href="application/lib/jquery-scrolling-tabs-2.6.1/jquery.scrolling-tabs.min.css">
+		<link rel="stylesheet" href="application/lib/bootstrap-4.6.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="application/lib/bstreeview-1.2.0/bstreeview.min.css">
+		<link rel="stylesheet" href="application/lib/open-iconic-1.1.0/font/css/open-iconic-bootstrap.min.css">
+		<link rel="stylesheet" href="application/lib/openlayers-6.5.0/ol.css">
+		<link rel="stylesheet" href="application/lib/spin.js/spin.css">
+		<link rel="stylesheet" href="application/css/styles.css">
+		
+		<!-- JS -->
+		<script type="text/javascript" src="application/lib/keycloak-js-adapter-dist-12.0.3/keycloak.min.js"></script>
+		<script type="text/javascript" src="application/lib/jquery/jquery-3.5.1.min.js"></script>
+		<script type="text/javascript" src="application/lib/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="application/lib/jquery-scrolling-tabs-2.6.1/jquery.scrolling-tabs.min.js"></script>
+		<script type="text/javascript" src="application/lib/md5.min.js"></script>
+		<script type="text/javascript" src="application/lib/bootstrap-4.6.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="application/lib/bstreeview-1.2.0/bstreeview.min.js"></script>
+		<script type="text/javascript" src="application/lib/bootbox-5.5.2/bootbox.min.js"></script>
+		<script type="text/javascript" src="application/lib/bootbox-5.5.2/bootbox.locales.min.js"></script>
+		<script type="text/javascript" src="application/lib/openlayers-6.5.0/ol.js"></script>
+		<script type="text/javascript" src="application/lib/ol-mapbox-style-6.3.0/dist/olms.js"></script>
+		<script type="text/javascript" src="application/lib/proj4js-2.6.3/proj4.js"></script>
+		<script type="text/javascript" src="application/lib/spin.js/spin.js"></script>
+		<script type="text/javascript" src="application/inc/common.js"></script>
+		<script type="text/javascript" src="application/inc/init.js"></script>	
+	</head>
+	<body>
+		<!-- Header -->
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-bcgov">
+			<a class="navbar-brand" href="#">
+				<img id="appImage" src="application/img/header-bc-logo.png" width="126" height="30" class="d-inline-block align-top" alt="BC Logo">
+				<span id="appTitle" class="menu-collapsed">Loading...</span>
+			</a>
+			<div id="headerToolbox" class="ml-auto d-flex flex-nowrap">
+				<!-- UberSearch -->
+				<form id="frmUberSearch" class="form-inline ml-2 mr-2" style="display:none;">
+					<input id="uberSearch" class="form-control" type="text" placeholder="Search" aria-label="Search">
+				</form>
+			
+				<!-- Menu -->
+				<div id="mainMenu" class="btn-group" style="display:none;">
+					<button type="button" class="btn dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="navbar-toggler-icon">
+					</button>
+					<div id="mainMenuOptions" class="dropdown-menu dropdown-menu-right">
+						<!-- Menu items get inserted here -->
+					</div>
+				</div>
+			</div>
+		</nav>
+		
+		<!-- Main -->
+		<div class="container-fluid">
+			<div class="row">
+				
+				<!-- Sidebar -->
+				<div id="sidebar" class="sidebar">
+					<!-- Sidebar Collapser -->
+					<div class="sidebar-collapse-btn">
+						<span class="oi oi-x"></span>
+					</div>
+				
+					<!-- Tab Container -->
+					<div class="sidebar-tab-container">
+						<ul id="sidebar-tab-navs" class="nav nav-tabs" role="tablist"></ul>
+						<div id="sidebar-tab-content" class="tab-content card"></div>
+					</div>
+				</div>
+				
+				<!-- Sidebar Expander -->
+				<div id="sidebar-expander" class="sidebar-expander">
+					<div class="sidebar-expand-btn">
+						<span class="oi oi-media-play"></span>
+						<span class="oi oi-media-play"></span>
+						<span class="oi oi-media-play"></span>
+						<span class="oi oi-media-play"></span>
+					</div>
+				</div>
+
+				<!-- Content -->
+				<div id="content" class="content">
+					
+					<!-- Map -->
+					<div id="map" class="map"></div>
+					
+					<!-- Popup -->
+					<div id="popup" class="ol-popup">
+						<div id="popup-closer" class="ol-popup-closer"><span class="oi oi-x"></span></div>
+						<div id="popup-content" class="ol-popup-content"></div>
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+		
+	</body>
+</html>

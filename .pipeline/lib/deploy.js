@@ -29,6 +29,21 @@ module.exports = (settings) => {
   // The deployment of your cool app goes here ▼▼▼
   objects.push(
     ...oc.processDeploymentTemplate(
+      `${templatesLocalBaseUrl}/twm-deploy-config.yaml`,
+      {
+        param: {
+          NAME: `${phases[phase].name}-twm`,
+          SUFFIX: phases[phase].suffix,
+          VERSION: phases[phase].tag,
+          ENV: phases[phase].phase,
+          HOST: phases[phase].host,
+        },
+      }
+    )
+  );
+
+  objects.push(
+    ...oc.processDeploymentTemplate(
       `${templatesLocalBaseUrl}/client-deploy-config.yaml`,
       {
         param: {
