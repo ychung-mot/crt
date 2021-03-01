@@ -1,0 +1,6 @@
+{
+	name: "LayerFilter",				// Plugin Class Name - DO NOT MODIFY [required]
+	tabName: "Layer Filter",			// Tab name [required]
+	enabled: true,						// Whether plugin is enabled [required]
+	maxResultsPerLayer: 25 				// Max results to return per layer [required]
+}

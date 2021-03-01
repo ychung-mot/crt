@@ -10,7 +10,7 @@
 
 
 
-USE CRT_DEVDB;
+USE CRT_DEV;
 GO
 
 /*

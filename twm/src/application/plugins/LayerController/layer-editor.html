@@ -1,0 +1,53 @@
+<style>
+	.lc-filter-col-field {
+		padding-left: 16px;
+		width: 45%;
+	}
+	.lc-filter-col-operator {
+		padding-left: 5px;
+		width: 15%;
+	}
+	.lc-filter-col-value {
+		padding-left: 5px;
+		width: 30%;
+	}
+	.lc-filter-col-clear {
+		padding-left: 0px;
+		width: 10%;
+	}
+
+</style>
+<form class="lc-layer-editor-form">
+
+	<!-- Opacity -->
+	<div class="form-group">
+		<label class="col-form-label">Transparency</label>
+		<input id="lc-overlay-transparency" class="form-control-range" autocomplete="off" type="range" step="0.1" min="0" max="1">
+	</div>
+	
+	<!-- Filter -->
+	<div id="lc-overlay-filter" class="form-group" style="display:none;">
+		<label class="col-form-label">Filter</label>
+		<div class="row">
+			<div class="lc-filter-col-field">
+				<select id="lc-overlay-filter-field" class="custom-select custom-select-sm"></select>
+			</div>
+			<div class="lc-filter-col-operator">
+				<select id="lc-overlay-filter-operator" class="custom-select custom-select-sm">
+					<option value="=">=</option>
+					<option value="<>"><></option>
+					<option value=">">&gt;</option>
+					<option value="<">&lt;</option>
+					<option value="LIKE">LIKE</option>
+				</select>
+			</div>
+			<div class="lc-filter-col-value">
+				<input id="lc-overlay-filter-value" type="text" class="form-control form-control-sm">
+			</div>
+			<div class="lc-filter-col-clear">
+				<button id="lc-overlay-filter-clear" class="btn btn-sm" type="button" title="Clear filter"><span class="oi oi-x text-danger"></span></button>
+			</div>
+		</div>
+	</div>
+	
+</form>

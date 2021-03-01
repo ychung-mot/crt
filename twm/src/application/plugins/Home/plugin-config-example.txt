@@ -1,0 +1,5 @@
+{
+	name: "Home",						// Plugin Class Name - DO NOT MODIFY [required]
+	tabName: "About",					// Tab name [required]
+	enabled: true						// Whether plugin is enabled [required]
+}

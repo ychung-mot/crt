@@ -1,0 +1,127 @@
+<style>
+	.layer-switcher {
+		margin-bottom: 20px;
+	}
+	.layer-switcher legend {
+		font-size: 15px;
+		font-weight: bold;
+		margin-bottom: 0px;
+	}
+	.layer-switcher .lc-fs-content {
+		margin: 0px 6px 0px 12px;
+		border-bottom: 1px solid #DCDCDC;
+	}
+	.layer-switcher .form-check {
+		font-size: 13px;
+		line-height: 1.7;
+		border-top: 1px solid #DCDCDC;
+		padding-right: 85px;
+	}
+	.layer-switcher .form-check .form-check-label {
+		max-width: 100%;
+	}
+	.lc-layer-toolbox {
+		position: absolute;
+		top: 0px;
+		right: 2px;
+	}
+	.lc-overlay-error {
+		font-size: 10px;
+		margin-left: 2px;
+		color: red;
+	}
+	.lc-overlay-zoom2visible-btn {
+		font-size: 10px;
+		cursor: pointer;
+		margin-left: 2px;
+	}
+	.lc-remove-overlay-btn {
+		font-size: 10px;
+		cursor: pointer;
+		margin-left: 2px;
+	}
+	.lc-download-overlay-btn {
+		font-size: 10px;
+		cursor: pointer;
+		margin-left: 2px;
+	}
+	.lc-modify-overlay-btn {
+		font-size: 10px;
+		cursor: pointer;
+		margin-left: 2px;
+	}
+	.lc-overlay-legend-btn {
+		font-size: 10px;
+		cursor: pointer;
+		margin-left: 2px;
+	}
+	.lc-baselayer-toolbox {
+		position: absolute;
+		top: 0px;
+		right: 2px;
+	}
+	.lc-remove-baselayer-btn {
+		font-size: 10px;
+		cursor: pointer;
+		margin-left: 2px;
+	}
+	#lc-matching-layers {
+		height: 125px;
+	}
+</style>
+<fieldset class="border p-2 layer-switcher lc-fs-overlays" style="display:none;">
+	<legend class="w-auto">Layers</legend>
+	<div class="lc-fs-content">
+		<!-- overlay layers automatically inserted here -->
+	</div>
+</fieldset>
+<fieldset class="border p-2 layer-switcher lc-fs-baselayers">
+	<legend class="w-auto">Backgrounds</legend>
+	<div class="lc-fs-content">
+		<!-- base layers automatically inserted here -->
+	</div>
+</fieldset>
+
+<!-- Search additional sources (hidden by default) -->
+<fieldset class="border p-2 layer-switcher lc-fs-layer-adder" style="display:none;">
+	<legend class="w-auto">Layer Adder</legend>
+	<div class="input-group input-group-sm mb-2">
+		<input id="lc-search-input" type="text" class="form-control" placeholder="Search">
+	</div>
+	<div id="lc-matching-layers-ig" class="input-group input-group-sm mb-2">
+		<select id="lc-matching-layers" class="custom-select custom-select-sm" size="10"></select>
+	</div>
+	<div class="text-right">
+		<button id="lc-add-layer-btn" class="btn btn-sm btn-success" type="button" disabled>Add Layer</button>
+	</div>
+</fieldset>
+
+
+
+<!-- Hidden template for base layer control -->
+<div class="form-check lc-baselayer-template" style="display:none;">
+	<label class="form-check-label">
+		<input type="radio" layerId="" name="lc-base-layer-options" class="form-check-input lc-baselayer-radio">
+		<span class="title"></span>
+	</label>
+	<div class="lc-baselayer-toolbox">
+		<span class="oi oi-x lc-remove-baselayer-btn" title="Remove Layer" style="display:none;"></span>
+	</div>
+</div>
+
+<!-- Hidden template for overlay layer control -->
+<div class="form-check lc-overlay-template" style="display:none;">
+	<label class="form-check-label">
+		<input type="checkbox" class="form-check-input lc-overlay-chkbox">
+		<span class="title"></span>
+	</label>
+	<div class="lc-layer-toolbox">
+		<span class="oi oi-bug lc-overlay-error" title="Layer has errors" style="display:none;"></span>
+		<span class="oi oi-zoom-in lc-overlay-zoom2visible-btn" title="Zoom to Visible" style="display:none;"></span>
+		<span class="oi oi-x lc-remove-overlay-btn" title="Remove Layer" style="display:none;"></span>
+		<span class="oi oi-data-transfer-download lc-download-overlay-btn" title="Download" style="display:none;"></span>
+		<span class="oi oi-pencil lc-modify-overlay-btn" title="Modify Layer Properties"></span>
+		<span class="oi oi-list lc-overlay-legend-btn" title="Toggle Legend"></span>
+	</div>
+	<div class="lc-legend" style="display:none;"><img/></div>
+</div>

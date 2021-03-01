@@ -1,0 +1,131 @@
+<style>
+	.dr-with-chevron[aria-expanded='true'] span {
+		display: block;
+		transform: rotate(180deg) !important;
+	}
+	.dr-instructions {
+		font-size: 13px;
+		font-style: italic;
+	}
+	.dr-instructions ul {
+		margin-top: 5px;
+		list-style-type: none;
+		padding-left: 1.2em;
+	}
+	.dr-instructions ul li span {
+		width: 15px;
+		text-align: center;
+	}
+	.dr-route-statistics-table {
+		font-size:0.75rem;
+		max-width:100%;
+	}
+	#dr-travel-directions {
+		padding-left: 1.2em;
+	}
+	#dr-route-failure {
+		font-size: 14px;
+		font-style: italic;
+		font-weight: bold;
+		color: red;
+		text-align: center;
+		margin-bottom: 15px;
+	}
+	.dr-credits {
+		font-size: 9px;
+		font-style: italic;
+		text-align: center;
+	}
+</style>
+
+<!-- Instructions -->
+<div class="mb-3">
+	<a data-toggle="collapse" href="#dr-intructions-panel" role="button" aria-expanded="false" aria-controls="dr-intructions-panel" class="btn btn-sm btn-light btn-block shadow-sm dr-with-chevron">
+		<p class="d-flex align-items-center justify-content-between mb-0">Instructions<span class="oi oi-chevron-bottom"></span></p>
+	</a>
+	<div id="dr-intructions-panel" class="collapse shadow-sm">
+		<div class="card">
+			<div class="card-body dr-instructions">
+				<b>Generate a route by adding to/from locations by:</b>
+				<ul>
+					<li><span class="oi oi-map-marker"></span> - Selecting a location from the map</li>
+					<li><span class="oi oi-info"></span> - Entering keywords</li>
+					<li><span class="oi oi-location"></span> - Using your current location</li>
+					<li><span class="oi oi-x"></span> - Clearing/Removing locations</li>
+					<li id="dr-waypoint-add-instructions" style="display:none;"><span class="oi oi-plus"></span> - Add a way point</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<form id="simple-router-form">
+
+	<!-- Start Point Input -->
+	<div class="input-group input-group-sm mb-2 dr-start-point">
+		<div class="input-group-prepend">
+			<button class="btn btn-outline-secondary dr-get-location-from-map-btn" type="button" title="Define from map"><span class="oi oi-map-marker text-success"></span></button>
+		</div>
+		<input type="text" class="form-control dr-location-input" placeholder="Enter start location">
+		<div class="input-group-append">
+			<button class="btn btn-outline-secondary dr-get-geolocation-btn" type="button" title="Use current location"><span class="oi oi-location text-success"></span></button>
+			<button class="btn btn-outline-secondary dr-clear-input-btn" type="button" title="Clear"><span class="oi oi-x"></span></button>
+		</div>
+	</div>
+	
+	<!-- Waypoints (using template) inserted here -->
+	
+	<!-- Add Way Point Control (only shown if configured) -->
+	<div id="dr-waypoint-add-div" class="text-right mb-2" style="display:none;">
+		<button id="dr-waypoint-add-btn" class="btn btn-sm btn-outline-secondary" type="button" title="Add Way Point"><span class="oi oi-plus text-primary"></span></button>
+	</div>
+	
+	<!-- End Point Input -->
+	<div class="input-group input-group-sm mb-3 dr-end-point">
+		<div class="input-group-prepend">
+			<button class="btn btn-outline-secondary dr-get-location-from-map-btn" type="button" title="Define from map"><span class="oi oi-map-marker text-danger"></span></button>
+		</div>
+		<input type="text" class="form-control dr-location-input" placeholder="Enter end location">
+		<div class="input-group-append">
+			<button class="btn btn-outline-secondary dr-get-geolocation-btn" type="button" title="Use current location"><span class="oi oi-location text-success"></span></button>
+			<button class="btn btn-outline-secondary dr-clear-input-btn" type="button" title="Clear"><span class="oi oi-x"></span></button>
+		</div>
+	</div>
+	
+	<!-- Generated Route Statitics -->
+	<div id="dr-route-statistics" style="display:none;">
+		<table class="table table-sm table-striped dr-route-statistics-table">
+			<tbody>
+				<thead class='thead-dark'>
+					<tr><th scope="col" colspan="2">Travel Information</th></tr>
+				</thead>
+				<tr><td>Distance</td><td id="dr-travel-distance"></td></tr>
+				<tr><td>Time</td><td id="dr-travel-time"></td></tr>
+				<tr><td>Directions</td><td><ul id="dr-travel-directions"></ul></td></tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<!-- No Route Could Be Found -->
+	<div id="dr-route-failure" style="display:none;">
+		A route could not be found
+	</div>
+	
+	<!-- Credits -->
+	<div class="dr-credits">
+		BC Address Geocoder &amp; BC Route Planner services provided by DataBC
+	</div>
+	
+</form>
+
+<!-- Waypoint Template (hidden) -->
+<div class="input-group input-group-sm mb-2 dr-waypoint-template" style="display:none;">
+	<div class="input-group-prepend">
+		<button class="btn btn-outline-secondary dr-get-location-from-map-btn" type="button" title="Define from map"><span class="oi oi-map-marker text-primary"></span></button>
+	</div>
+	<input type="text" class="form-control dr-location-input" placeholder="Enter way point">
+	<div class="input-group-append">
+		<button class="btn btn-outline-secondary dr-get-geolocation-btn" type="button" title="Use current location"><span class="oi oi-location text-success"></span></button>
+		<button class="btn btn-outline-secondary dr-delete-waypoint-btn" type="button" title="Delete way point"><span class="oi oi-x text-danger"></span></button>
+	</div>
+</div>

@@ -1,0 +1,97 @@
+app.config = {
+	title: {
+		desktop: "My Application Name",
+		mobile: "MAN"
+	},
+	version: 1.0,
+	contact: {
+		name: "Application Administrator",
+		email: "Tran.IMB.Spatial@gov.bc.ca"
+	},
+	menuOptions: [
+		{ divider: true }, // Adds a menus divider
+		{
+			text: "Link to something",
+			iconCls: "oi oi-globe",
+			action: "link", // Options are link or dialog
+			url: "https://www2.gov.bc.ca/gov/content/governments/organizational-structure/ministries-organizations/ministries/transportation-and-infrastructure"
+		},
+		{ divider: true }, // Adds a menus divider
+		{
+			text: "About", // Since this menu's action is 'dialog', the text becomes the dialog's title as well
+			iconCls: "oi oi-info",
+			action: "dialog", // Options are link or dialog
+			url: "configuration/aggregate/about.html"
+		}
+	],
+	rememberState: true, 			// if enabled, uses local storage to 'remember' application state
+	allowSessionManagement: true, 	// rememberState must also be enabled for this to work
+	rewriteUrl: true, 				// changes the url to 'remember' parts of the application state (useful for sharing)
+	sidebar: {
+		width: 450,
+		openOnDesktopStart: true,
+		openOnMobileStart: false
+	},
+	plugins: [
+	
+		// ... please see each plugin's "plugin-config-example.txt" text file) ...
+	
+	],
+	map: {
+		default: {
+			centre: {
+				latitude: 54.5,
+				longitude: -123.0
+			},
+			zoom: 5
+		},
+		zoom: {
+			min: 4,
+			max: 17
+		},
+		layers: [
+		
+			//
+			// WMS Layer Configuration Example:
+			//
+			new ol.layer.Tile({
+				title: "MoTI Districts", 								// TWM added property used by TWM and it's numerous plugins [required]
+				type: "overlay",										// TWM added property used by TWM and it's numerous plugins [required]
+				removable: true,										// TWM added property used by LayerController plugin to allow layer to be removed [optional - defaults to false]
+				visible: false,											// Default OpenLayers property determining the layer's visible state [required]
+				source: new ol.source.TileWMS({							// Default OpenLayers object defining it's source [required]
+					url: "../ogs-internal/ows",									// Path (absolute or relative) [required]
+					params: {
+						LAYERS: "hwy:DSA_DISTRICT_BOUNDARY",					// Namespace and Layer Name [required]
+						CQL_FILTER: "CONTRACT_AREA_NUMBER IN (18,19)" 			// Filter [optional]
+					},
+					transition: 0
+				}),
+				fields: [												// TWM added object used by TWM and it's numerous plugins [optional]
+					{
+						name: "DISTRICT_NUMBER",											// Actual field name [required]
+						searchable: true,													// Whether this field is searchable [optional - defaults to false]
+						title: true,														// Whether this field is used to define the title [optional]
+						appendToField: "another_field_name",								// Used to append the value of this field to another.  Useful for addresses [optional]
+						nameTransform: function(name) { return false; },					// Javascript function used to transform the field name. If boolean false is returned, the field name will not be shown [optional]
+						valueTransform: function(value) { return "<b>" + value + "</b>"; } 	// Javascript function used to transform the field value. If boolean false is returned, entire field record will not be shown [optional]
+					}
+				]
+			}),
+			
+			//
+			// XYZ Tile Layer Configuration Example:
+			//
+			new ol.layer.Tile({
+				title: "ESRI Streets",
+				type: "base",
+				visible: true,
+				source: new ol.source.XYZ({
+					url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
+					attributions: "Tiles © <a target='_blank' href='https://services.arcgisonline.com/ArcGIS/rest/services/'>ESRI</a>"
+				})
+			}),
+			
+		]
+	}
+}
