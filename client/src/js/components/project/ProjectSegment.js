@@ -49,7 +49,8 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
 
   const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, handleEditSegmentFormSubmit, {
     size: 'xl',
-    showHeaderFooter: false,
+    showModalHeader: false,
+    showModalFooter: false,
   });
 
   if (loading) {

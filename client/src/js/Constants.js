@@ -47,7 +47,7 @@ export const PATHS = {
   PROJECTS: '/projects',
   PROJECT_PLAN: '/projectplan',
   PROJECT_TENDER: '/projecttender',
-  PROJECT_SEGMENT: '/projectsegment',
+  PROJECT_SEGMENT: '/segments',
   TWM: '/twm/',
 };
 

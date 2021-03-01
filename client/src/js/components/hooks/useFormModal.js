@@ -17,7 +17,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
   //saveCheck modal states:
   const [modalSaveCheckOpen, setModalSaveCheckOpen] = useState(false);
 
-  const { size = '', saveCheck = false, showHeaderFooter = true } = options;
+  const { size = '', saveCheck = false, showModalHeader = true, showModalFooter = true } = options;
 
   const toggle = (dirty = false) => {
     if (dirty && saveCheck) {
@@ -62,7 +62,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
         >
           {({ dirty, values }) => (
             <Form>
-              {showHeaderFooter && <ModalHeader toggle={() => toggle(dirty)}>{title}</ModalHeader>}
+              {showModalHeader && <ModalHeader toggle={() => toggle(dirty)}>{title}</ModalHeader>}
               <ModalBody>
                 {isOpen &&
                   React.cloneElement(formFieldsChildElement, {
@@ -74,7 +74,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
                     closeForm,
                   })}
               </ModalBody>
-              {showHeaderFooter && (
+              {showModalFooter && (
                 <ModalFooter>
                   <SubmitButton size="sm" submitting={submitting} disabled={submitting || !dirty}>
                     Submit

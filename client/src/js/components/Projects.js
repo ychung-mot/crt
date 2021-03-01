@@ -69,6 +69,13 @@ const tableColumns = [
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
+let formikInitialValues = {
+  searchText: '',
+  regionIds: [],
+  projectManagerIds: [],
+  isInProgress: ['inProgress'],
+};
+
 //temporary fix hardcode project status
 const isInProgress = [
   { id: 'inProgress', name: 'In Progress' },
@@ -82,7 +89,7 @@ const Projects = ({
   setProjectSearchFormikValues,
   resetProjectSearchFormikValues,
   showValidationErrorDialog,
-  formikInitialValues,
+  reduxFormikValues,
 }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
@@ -135,6 +142,7 @@ const Projects = ({
 
   const handleSearchFormReset = () => {
     setSearchInitialValues(defaultSearchFormValues);
+    resetProjectSearchFormikValues();
     searchData.refresh(true);
   };
 
@@ -170,8 +178,8 @@ const Projects = ({
       <MaterialCard>
         <UIHeader>Projects</UIHeader>
         <Formik
-          initialValues={formikInitialValues}
-          enableReinitialize={true}
+          initialValues={reduxFormikValues}
+          enableReinitialize={false}
           onSubmit={(values) => handleSearchFormSubmit(values)}
           onReset={handleSearchFormReset}
         >
@@ -179,12 +187,7 @@ const Projects = ({
             <Form>
               <Row form>
                 <Col>
-                  <MultiDropdownField
-                    {...formikProps}
-                    items={currentUser.regions.slice(0).sort((a, b) => a.regionNumber - b.regionNumber)}
-                    name="regionIds"
-                    title="Regions"
-                  />
+                  <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
                 </Col>
                 <Col>
                   <Field
@@ -212,7 +215,13 @@ const Projects = ({
                     <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
                       Search
                     </SubmitButton>
-                    <Button type="reset" onClick={resetProjectSearchFormikValues}>
+                    <Button
+                      type="reset"
+                      onClick={() => {
+                        //needed to reset form if formik initial values are not the default values
+                        formikProps.resetForm({ values: formikInitialValues });
+                      }}
+                    >
                       Reset
                     </Button>
                   </div>
@@ -264,7 +273,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgr: Object.values(state.user.projectMgr),
-    formikInitialValues: state.projectSearchHistory.formikInitialValues,
+    reduxFormikValues: state.projectSearchHistory.reduxFormikValues,
   };
 };
 
