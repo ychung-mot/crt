@@ -663,6 +663,11 @@ class CRTsegmentCreator {
     // Query the DataBC GeoCoder
     $.ajax({
       url: "api/spatial/router",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Pragma: "no-cache",
+        Authorization: "Bearer " + keycloak.token,
+      },
       data: params,
       timeout: 7500,
     })
