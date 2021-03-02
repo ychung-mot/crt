@@ -56,8 +56,8 @@ objects:
                     secretKeyRef:
                       name: sso-configs-${ENV}
                       key: CLIENT_SSO_REALM
-                - name: CRT_API_HOST
-                  value: ${HOST}
+                - name: CRT_DEPLOY_SUFFIX
+                  value: ${SUFFIX}
       test: false
       triggers:
         - imageChangeParams:
