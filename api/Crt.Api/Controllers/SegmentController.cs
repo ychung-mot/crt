@@ -13,7 +13,7 @@ using static Crt.Domain.Services.SegmentService;
 namespace Crt.Api.Controllers
 {
     [ApiVersion("1.0")]
-    [Route("api/projects/{projectId}/segment")]
+    [Route("api/projects/{projectId}/segments")]
     [ApiController]
     public class SegmentController : CrtControllerBase
     {
@@ -59,6 +59,18 @@ namespace Crt.Api.Controllers
             }
 
             return Ok(segment);
+        }
+
+        [HttpGet(Name = "GetSegments")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<List<SegmentListDto>>> GetSegmentsAsync(decimal projectId)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var segments = await _segmentService.GetSegmentsAsync(projectId);
+
+            return Ok(segments);
         }
 
         [HttpDelete("{id}")]

@@ -8,20 +8,19 @@ using Crt.Model.Utils;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Crt.Data.Repositories
 {
-    
+
     public interface ISegmentRepository
     {
         Task<CrtSegment> CreateSegmentAsync(SegmentCreateDto segment);
         Task DeleteSegmentAsync(decimal segmentId);
         Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentId);
+        Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId);
     }
 
     public class SegmentRepository : CrtRepositoryBase<CrtSegment>, ISegmentRepository
@@ -68,6 +67,15 @@ namespace Crt.Data.Repositories
                 .FirstOrDefaultAsync(x => x.SegmentId == segmentId);
 
             return Mapper.Map<SegmentListDto>(segment);
+        }
+
+        public async Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId)
+        {
+            var segments = await DbSet.AsNoTracking()
+                .Where(x => x.ProjectId == projectId)
+                .ToListAsync();
+
+            return Mapper.Map<List<SegmentListDto>>(segments);
         }
     }
 }
