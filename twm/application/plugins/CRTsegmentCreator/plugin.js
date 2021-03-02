@@ -1,3 +1,5 @@
+import { keycloak } from "../../../../client/src/js/Keycloak";
+
 class CRTsegmentCreator {
   /**
    * Function: constructor
@@ -256,11 +258,17 @@ class CRTsegmentCreator {
     // Query the DataBC GeoCoder
     $.ajax({
       url: "api/spatial/geocoder",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Pragma: "no-cache",
+        Authorization: "Bearer " + keycloak.token,
+      },
       data: params,
     })
 
       // Handle a successful result
       .done(function (data) {
+        keycloak.updateToken(5);
         var list = [];
         if (data.features && data.features.length > 0) {
           list = data.features.map(function (item) {
