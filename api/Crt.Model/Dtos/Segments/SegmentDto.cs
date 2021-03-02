@@ -9,17 +9,9 @@ using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.Segments
 {
-    public class SegmentDto
+    public class SegmentDto : SegmentSaveDto
     {
         [JsonPropertyName("id")]
         public decimal SegmentId { get; set; }
-        public decimal ProjectId { get; set; }
-        public Geometry Geometry { get; set; }
-        public decimal? StartLatitude { get; set; }
-        public decimal? StartLongitude { get; set; }
-        public decimal? EndLatitude { get; set; }
-        public decimal? EndLongitude { get; set; }
-        public DateTime? EndDate { get; set; }
-        public virtual ProjectDto Project { get; set; }
     }
 }
