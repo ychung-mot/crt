@@ -1,5 +1,3 @@
-import { keycloak } from "../../../../client/src/js/Keycloak";
-
 class CRTsegmentCreator {
   /**
    * Function: constructor
