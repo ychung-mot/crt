@@ -9,7 +9,7 @@ app.config = {
   },
   version: 1.0,
   sidebar: {
-    width: 450,
+    width: 300,
     openOnDesktopStart: true,
     openOnMobileStart: false,
   },
