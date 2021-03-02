@@ -782,42 +782,50 @@ class CRTsegmentCreator {
     });
 
     // Register the Save Segment button
-    $("#dr-post-segment-btn").click(function () {
-      console.log("click");
-      // transform web mercator line to 4326 for posting to database
-      var format = new ol.format.WKT();
-      var wkt = "";
-      var feature4326 = {};
-      // multilinestring
-      if (
-        app.plugins.CRTsegmentCreator.routeLayer.getSource().getFeatures()
-          .length > 1
-      ) {
-        var multiLine = new ol.geom.MultiLineString(
+    $("#dr-post-segment-btn")
+      .unbind("click")
+      .click(function () {
+        console.log("click");
+        // transform web mercator line to 4326 for posting to database
+        var format = new ol.format.WKT();
+        var wkt = "";
+        var feature4326 = {};
+        // multilinestring
+        if (
+          app.plugins.CRTsegmentCreator.routeLayer.getSource().getFeatures()
+            .length > 1
+        ) {
+          var multiLine = new ol.geom.MultiLineString(
+            app.plugins.CRTsegmentCreator.routeLayer
+              .getSource()
+              .getFeatures()[0]
+              .getGeometry()
+              .getCoordinates()
+          );
           app.plugins.CRTsegmentCreator.routeLayer
             .getSource()
-            .getFeatures()[0]
-            .getGeometry()
-            .getCoordinates()
-        );
-        app.plugins.CRTsegmentCreator.routeLayer
-          .getSource()
-          .getFeatures()
-          .forEach(function (feat) {
-            multiLine.appendLineString(feat.getGeometry().getCoordinates());
-          });
-        var multiFeature = new ol.Feature({ geometry: multiLine });
-        feature4326 = transformFeature(multiFeature, "EPSG:3857", "EPSG:4326");
-        wkt = format.writeFeature(feature4326, {});
-      } else {
-        feature4326 = transformFeature(
-          app.plugins.CRTsegmentCreator.routeLayer.getSource().getFeatures()[0],
-          "EPSG:3857",
-          "EPSG:4326"
-        );
-        wkt = format.writeFeature(feature4326, {});
-      }
-      /* Original Start and End Coordinates will be replaced with Route Start and End
+            .getFeatures()
+            .forEach(function (feat) {
+              multiLine.appendLineString(feat.getGeometry().getCoordinates());
+            });
+          var multiFeature = new ol.Feature({ geometry: multiLine });
+          feature4326 = transformFeature(
+            multiFeature,
+            "EPSG:3857",
+            "EPSG:4326"
+          );
+          wkt = format.writeFeature(feature4326, {});
+        } else {
+          feature4326 = transformFeature(
+            app.plugins.CRTsegmentCreator.routeLayer
+              .getSource()
+              .getFeatures()[0],
+            "EPSG:3857",
+            "EPSG:4326"
+          );
+          wkt = format.writeFeature(feature4326, {});
+        }
+        /* Original Start and End Coordinates will be replaced with Route Start and End
 			var startPoint = feature4326.getGeometry().getFirstCoordinate();
 			var endPoint = feature4326.getGeometry().getLastCoordinate();
 
@@ -832,22 +840,46 @@ class CRTsegmentCreator {
 			
 */
 
-      //Using dragged points as start and end
-      var associatedInput = $(".dr-location-input-start");
-      $("#dr-start-lon-input").val(
-        associatedInput.attr("longitude").slice(0, 11)
-      );
-      $("#dr-start-lat-input").val(
-        associatedInput.attr("latitude").slice(0, 9)
-      );
-      associatedInput = $(".dr-location-input-end");
-      $("#dr-end-lon-input").val(
-        associatedInput.attr("longitude").slice(0, 11)
-      );
-      $("#dr-end-lat-input").val(associatedInput.attr("latitude").slice(0, 9));
+        //Using dragged points as start and end
+        var associatedInput = $(".dr-location-input-start");
+        $("#dr-start-lon-input").val(
+          associatedInput.attr("longitude").slice(0, 11)
+        );
+        $("#dr-start-lat-input").val(
+          associatedInput.attr("latitude").slice(0, 9)
+        );
 
-      alert("POST this to the database:\n" + wkt);
-    });
+        let startLon = associatedInput.attr("longitude").slice(0, 11);
+        let startLat = associatedInput.attr("latitude").slice(0, 9);
+
+        associatedInput = $(".dr-location-input-end");
+        $("#dr-end-lon-input").val(
+          associatedInput.attr("longitude").slice(0, 11)
+        );
+        $("#dr-end-lat-input").val(
+          associatedInput.attr("latitude").slice(0, 9)
+        );
+
+        let endLon = associatedInput.attr("longitude").slice(0, 11);
+        let endLat = associatedInput.attr("latitude").slice(0, 9);
+
+        //temporary fix removed this alert function for now
+        //alert("POST this to the database:\n" + wkt);
+
+        //this tells the parent CRT to close dialog will send the points below it can send WKT too.
+        //start long, lat
+        //end long, lat
+        window.parent.postMessage(
+          {
+            message: "closeForm",
+            route: [
+              [startLon, startLat],
+              [endLon, endLat],
+            ],
+          },
+          "*"
+        );
+      });
 
     // Register the clear input buttons
     $("." + parentClass + " .dr-clear-input-btn").click(function () {
