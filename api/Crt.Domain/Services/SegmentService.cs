@@ -1,16 +1,12 @@
 ﻿using Crt.Data.Database;
 using Crt.Data.Repositories;
 using Crt.Domain.Services.Base;
-using Crt.HttpClients.Models;
 using Crt.Model;
 using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Crt.Domain.Services
@@ -20,6 +16,7 @@ namespace Crt.Domain.Services
         Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentID);
         Task<(decimal segmentId, Dictionary<string, List<string>> errors)> CreateSegmentAsync(SegmentCreateDto segment);
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId);
+        Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId);
     }
 
     public class SegmentService : CrtServiceBase, ISegmentService
@@ -83,5 +80,9 @@ namespace Crt.Domain.Services
             return await _segmentRepo.GetSegmentByIdAsync(segmentId);
         }
 
+        public async Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId)
+        {
+            return await _segmentRepo.GetSegmentsAsync(projectId);
+        }
     }
 }
