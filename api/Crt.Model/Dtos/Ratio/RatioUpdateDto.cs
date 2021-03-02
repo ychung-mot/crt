@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.Ratio
 {
-    public class RatioUpdateDto : RatioDto
+    public class RatioUpdateDto : RatioSaveDto
     {
+        public decimal RatioId { get; set; }
     }
 }

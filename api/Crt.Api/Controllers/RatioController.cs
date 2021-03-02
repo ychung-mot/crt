@@ -44,7 +44,7 @@ namespace Crt.Api.Controllers
 
         [HttpGet("{id}", Name = "GetRatio")]
         [RequiresPermission(Permissions.ProjectRead)]
-        public async Task<ActionResult<RatioDto>> GetSegmentByIdAsync(decimal projectId, decimal id)
+        public async Task<ActionResult<RatioDto>> GetRatioByIdAsync(decimal projectId, decimal id)
         {
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;

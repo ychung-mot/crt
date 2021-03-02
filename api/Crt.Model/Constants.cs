@@ -142,8 +142,7 @@ namespace Crt.Model
         public const string Accomplishment = "ACCOMPLISHMENT";
         public const string Contractor = "CONTRACTOR";
         public const string FundingType = "FUNDING_TYPE";
-        public const string RatioObject = "RATIO_OJBECT";
-        public const string RatioObjectType = "RATIO_OBJECT_TYPE";
+        public const string RatioObjectType = "RATIO_RECORD_TYPE";
     }
 
     public static class CrtEnvironments

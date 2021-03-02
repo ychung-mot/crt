@@ -3,6 +3,7 @@ using Crt.Data.Repositories;
 using Crt.Domain.Services.Base;
 using Crt.Model;
 using Crt.Model.Dtos.Ratio;
+using Crt.Model.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +38,9 @@ namespace Crt.Domain.Services
         public async Task<(decimal ratioId, Dictionary<string, List<string>> errors)> CreateRatioAsync(RatioCreateDto ratio)
         {
             var errors = new Dictionary<string, List<string>>();
+            errors = _validator.Validate(Entities.Ratio, ratio, errors);
 
-            //validations?
+            await ValidateRatio(ratio, errors);
 
             if (errors.Count > 0)
             {
@@ -91,6 +93,9 @@ namespace Crt.Domain.Services
             }
 
             var errors = new Dictionary<string, List<string>>();
+            errors = _validator.Validate(Entities.Ratio, ratio, errors);
+
+            await ValidateRatio(ratio, errors);
 
             if (errors.Count > 0)
             {
@@ -102,6 +107,25 @@ namespace Crt.Domain.Services
             _unitOfWork.Commit();
 
             return (false, errors);
+        }
+
+        private async Task ValidateRatio(RatioSaveDto ratio, Dictionary<string, List<string>> errors)
+        {
+            if (ratio.DistrictId != null)
+            {
+                if (!await _ratioRepo.DistrictExists((decimal)ratio.DistrictId))
+                {
+                    errors.AddItem(Fields.DistrictId, $"District ID [{ratio.DistrictId}] does not exist");
+                }
+            }
+
+            if (ratio.ServiceAreaId != null)
+            {
+                if (!await _ratioRepo.ServiceAreaExists((decimal)ratio.ServiceAreaId))
+                {
+                    errors.AddItem(Fields.ServiceAreaId, $"Service Area ID [{ratio.ServiceAreaId}] does not exist");
+                }
+            }
         }
     }
 }

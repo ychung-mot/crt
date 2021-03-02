@@ -31,6 +31,7 @@ namespace Crt.Domain.Services
             LoadQtyRules();
             LoadAccmpRules();
             LoadTenderEntityRules();
+            LoadRatioRules();
         }
 
         public IEnumerable<FieldValidationRule> GetFieldValidationRules(string entityName)
@@ -115,10 +116,7 @@ namespace Crt.Domain.Services
         private void LoadRatioRules()
         {
             _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.Ratio, FieldTypes.String, true, 1, 40, null, null, null, null, null, null));
-            _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.RatioObjectLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.RatioObject));
-            _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.RatioObjectTypeLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.RatioObjectType));
-            _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.ServiceAreaId, FieldTypes.String, false, null, null, null, null, null, null, null, null));
-            _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.DistrictId, FieldTypes.String, false, null, null, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.RatioObjectTypeLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.RatioObjectType));
             _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
 

@@ -10,8 +10,8 @@ namespace Crt.Data.Database.Entities
         public decimal RatioId { get; set; }
         public decimal ProjectId { get; set; }
         public decimal? Ratio { get; set; }
-        public decimal? RatioObjectLkupId { get; set; }
-        public decimal RatioObjectTypeLkupId { get; set; }
+        public decimal? RatioRecordLkupId { get; set; }
+        public decimal RatioRecordTypeLkupId { get; set; }
         public decimal? ServiceAreaId { get; set; }
         public decimal? DistrictId { get; set; }
         public DateTime? EndDate { get; set; }
@@ -28,7 +28,7 @@ namespace Crt.Data.Database.Entities
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
         public virtual CrtProject Project { get; set; }
-        public virtual CrtCodeLookup RatioObjectLkup { get; set; }
-        public virtual CrtCodeLookup RatioObjectTypeLkup { get; set; }
+        public virtual CrtCodeLookup RatioRecordLkup { get; set; }
+        public virtual CrtCodeLookup RatioRecordTypeLkup { get; set; }
     }
 }

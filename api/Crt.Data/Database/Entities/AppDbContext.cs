@@ -1774,7 +1774,7 @@ namespace Crt.Data.Database.Entities
 
                 entity.HasComment("Defines CRT financial targets");
 
-                entity.HasIndex(e => new { e.RatioId, e.ServiceAreaId, e.DistrictId, e.RatioObjectLkupId }, "CRT_RATIO_FK_I");
+                entity.HasIndex(e => new { e.RatioId, e.ServiceAreaId, e.DistrictId, e.RatioRecordLkupId }, "CRT_RATIO_FK_I");
 
                 entity.Property(e => e.RatioId)
                     .HasColumnType("numeric(9, 0)")
@@ -1867,15 +1867,15 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("RATIO")
                     .HasComment("Proportion of the project that falls within a ratio object e.g. electoral district,economic region, highway");
 
-                entity.Property(e => e.RatioObjectLkupId)
+                entity.Property(e => e.RatioRecordLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("RATIO_OBJECT_LKUP_ID")
-                    .HasComment("Link to code lookup table ratio object values for electoral district, economic region, highway");
+                    .HasColumnName("RATIO_RECORD_LKUP_ID")
+                    .HasComment("Link to code lookup table ratio record values for electoral district, economic region, highway");
 
-                entity.Property(e => e.RatioObjectTypeLkupId)
+                entity.Property(e => e.RatioRecordTypeLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("RATIO_OBJECT_TYPE_LKUP_ID")
-                    .HasComment("Link to code lookup table for type of object i.e. service area, electoral district, economic region, highway, district");
+                    .HasColumnName("RATIO_RECORD_TYPE_LKUP_ID")
+                    .HasComment("Link to code lookup table for type of record i.e. service area, electoral district, economic region, highway, district");
 
                 entity.Property(e => e.ServiceAreaId)
                     .HasColumnType("numeric(9, 0)")
@@ -1888,16 +1888,16 @@ namespace Crt.Data.Database.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_PROJECT_CRT_RATIO");
 
-                entity.HasOne(d => d.RatioObjectLkup)
-                    .WithMany(p => p.CrtRatioRatioObjectLkups)
-                    .HasForeignKey(d => d.RatioObjectLkupId)
-                    .HasConstraintName("CRT_CODE_LOOKUP_RATIO_OBJECT");
+                entity.HasOne(d => d.RatioRecordLkup)
+                    .WithMany(p => p.CrtRatioRatioRecordLkups)
+                    .HasForeignKey(d => d.RatioRecordLkupId)
+                    .HasConstraintName("CRT_CODE_LOOKUP_RATIO_RECORD");
 
-                entity.HasOne(d => d.RatioObjectTypeLkup)
-                    .WithMany(p => p.CrtRatioRatioObjectTypeLkups)
-                    .HasForeignKey(d => d.RatioObjectTypeLkupId)
+                entity.HasOne(d => d.RatioRecordTypeLkup)
+                    .WithMany(p => p.CrtRatioRatioRecordTypeLkups)
+                    .HasForeignKey(d => d.RatioRecordTypeLkupId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("CRT_CODE_LOOKUP_RATIO_OBJECT_TYPE");
+                    .HasConstraintName("CRT_CODE_LOOKUP_RATIO_RECORD_TYPE");
             });
 
             modelBuilder.Entity<CrtRatioHist>(entity =>
@@ -2014,15 +2014,15 @@ namespace Crt.Data.Database.Entities
                     .HasColumnName("RATIO_ID")
                     .HasComment("A system generated unique identifier.");
 
-                entity.Property(e => e.RatioObjectLkupId)
+                entity.Property(e => e.RatioRecordLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("RATIO_OBJECT_LKUP_ID")
-                    .HasComment("Link to code lookup table ratio object values for electoral district, economic region, highway");
+                    .HasColumnName("RATIO_RECORD_LKUP_ID")
+                    .HasComment("Link to code lookup table ratio record values for electoral district, economic region, highway");
 
-                entity.Property(e => e.RatioObjectTypeLkupId)
+                entity.Property(e => e.RatioRecordTypeLkupId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("RATIO_OBJECT_TYPE_LKUP_ID")
-                    .HasComment("Link to code lookup table for type of object i.e. service area, electoral district, economic region, highway, district");
+                    .HasColumnName("RATIO_RECORD_TYPE_LKUP_ID")
+                    .HasComment("Link to code lookup table for type of record i.e. service area, electoral district, economic region, highway, district");
 
                 entity.Property(e => e.ServiceAreaId)
                     .HasColumnType("numeric(9, 0)")

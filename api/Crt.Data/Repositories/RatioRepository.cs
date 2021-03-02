@@ -17,6 +17,8 @@ namespace Crt.Data.Repositories
         Task<CrtRatio> CreateRatioAsync(RatioCreateDto ratio);
         Task UpdateRatioAsync(RatioUpdateDto ratio);
         Task DeleteRatioAsync(decimal ratioId);
+        Task<bool> DistrictExists(decimal districtId);
+        Task<bool> ServiceAreaExists(decimal serviceAreaId);
     }
 
     public class RatioRepository : CrtRepositoryBase<CrtRatio>, IRatioRepository
@@ -49,8 +51,8 @@ namespace Crt.Data.Repositories
         {
             var ratio = await DbSet.AsNoTracking()
                 .Include(x => x.Project)
-                .Include(x => x.RatioObjectLkup)
-                .Include(x => x.RatioObjectTypeLkup)
+                .Include(x => x.RatioRecordLkup)
+                .Include(x => x.RatioRecordTypeLkup)
                 .FirstOrDefaultAsync(x => x.RatioId == ratioId);
 
             return Mapper.Map<RatioDto>(ratio);
@@ -58,7 +60,7 @@ namespace Crt.Data.Repositories
 
         public async Task<IEnumerable<RatioDto>> GetRatiosByRatioTypeAsync(decimal ratioTypeId)
         {
-            return await GetAllNoTrackAsync<RatioDto>(x => x.RatioObjectTypeLkupId == ratioTypeId);
+            return await GetAllNoTrackAsync<RatioDto>(x => x.RatioRecordTypeLkupId == ratioTypeId);
         }
 
         public async Task UpdateRatioAsync(RatioUpdateDto ratio)
@@ -69,6 +71,16 @@ namespace Crt.Data.Repositories
             ratio.EndDate = ratio.EndDate?.Date;
 
             Mapper.Map(ratio, crtRatio);
+        }
+
+        public async Task<bool> DistrictExists(decimal districtId)
+        {
+            return await DbContext.CrtDistricts.AnyAsync(x => x.DistrictId == districtId && (x.EndDate == null || x.EndDate > DateTime.Today));
+        }
+
+        public async Task<bool> ServiceAreaExists(decimal serviceAreaId)
+        {
+            return await DbContext.CrtServiceAreas.AnyAsync(x => x.ServiceAreaId == serviceAreaId && (x.EndDate == null || x.EndDate > DateTime.Today));
         }
     }
 }

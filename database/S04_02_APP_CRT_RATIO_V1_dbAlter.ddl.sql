@@ -5,7 +5,7 @@
 /* Project name:          Capital Rehabilitation Tracking Reporting       */
 /* Author:                Ayodeji Kuponiyi                                */
 /* Script type:           Alter database script                           */
-/* Created on:            2021-02-25 17:17                                */
+/* Created on:            2021-03-02 11:03                                */
 /* ---------------------------------------------------------------------- */
 
 USE CRT_DEVDB;
@@ -45,8 +45,8 @@ CREATE TABLE [dbo].[CRT_RATIO] (
     [RATIO_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_RATIO_ID_SEQ] NOT NULL,
     [PROJECT_ID] NUMERIC(9) NOT NULL,
     [RATIO] NUMERIC(9,5),
-    [RATIO_OBJECT_LKUP_ID] NUMERIC(9),
-    [RATIO_OBJECT_TYPE_LKUP_ID] NUMERIC(9) NOT NULL,
+    [RATIO_RECORD_LKUP_ID] NUMERIC(9),
+    [RATIO_RECORD_TYPE_LKUP_ID] NUMERIC(9) NOT NULL,
     [SERVICE_AREA_ID] NUMERIC(9),
     [DISTRICT_ID] NUMERIC(9),
     [END_DATE] DATETIME,
@@ -66,7 +66,7 @@ CREATE TABLE [dbo].[CRT_RATIO] (
 GO
 
 
-CREATE NONCLUSTERED INDEX [CRT_RATIO_FK_I] ON [dbo].[CRT_RATIO] ([RATIO_ID] ASC,[SERVICE_AREA_ID] ASC,[DISTRICT_ID] ASC,[RATIO_OBJECT_LKUP_ID] ASC)
+CREATE NONCLUSTERED INDEX [CRT_RATIO_FK_I] ON [dbo].[CRT_RATIO] ([RATIO_ID] ASC,[SERVICE_AREA_ID] ASC,[DISTRICT_ID] ASC,[RATIO_RECORD_LKUP_ID] ASC)
 GO
 
 
@@ -86,11 +86,11 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'Proportion of the project th
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table ratio object values for electoral district, economic region, highway', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO', 'COLUMN', N'RATIO_OBJECT_LKUP_ID'
+EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table ratio record values for electoral district, economic region, highway', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO', 'COLUMN', N'RATIO_RECORD_LKUP_ID'
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table for type of object i.e. service area, electoral district, economic region, highway, district', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO', 'COLUMN', N'RATIO_OBJECT_TYPE_LKUP_ID'
+EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table for type of record i.e. service area, electoral district, economic region, highway, district', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO', 'COLUMN', N'RATIO_RECORD_TYPE_LKUP_ID'
 GO
 
 
@@ -159,8 +159,8 @@ CREATE TABLE [dbo].[CRT_RATIO_HIST] (
     [RATIO_ID] NUMERIC(9) NOT NULL,
     [PROJECT_ID] NUMERIC(9) NOT NULL,
     [RATIO] NUMERIC(9,5),
-    [RATIO_OBJECT_LKUP_ID] NUMERIC(9),
-    [RATIO_OBJECT_TYPE_LKUP_ID] NUMERIC(9) NOT NULL,
+    [RATIO_RECORD_LKUP_ID] NUMERIC(9),
+    [RATIO_RECORD_TYPE_LKUP_ID] NUMERIC(9) NOT NULL,
     [SERVICE_AREA_ID] NUMERIC(9),
     [DISTRICT_ID] NUMERIC(9),
     [END_DATE] DATETIME,
@@ -202,11 +202,11 @@ EXECUTE sp_addextendedproperty N'MS_Description', N'Proportion of the project th
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table ratio object values for electoral district, economic region, highway', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO_HIST', 'COLUMN', N'RATIO_OBJECT_LKUP_ID'
+EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table ratio record values for electoral district, economic region, highway', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO_HIST', 'COLUMN', N'RATIO_RECORD_LKUP_ID'
 GO
 
 
-EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table for type of object i.e. service area, electoral district, economic region, highway, district', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO_HIST', 'COLUMN', N'RATIO_OBJECT_TYPE_LKUP_ID'
+EXECUTE sp_addextendedproperty N'MS_Description', N'Link to code lookup table for type of record i.e. service area, electoral district, economic region, highway, district', 'SCHEMA', N'dbo', 'TABLE', N'CRT_RATIO_HIST', 'COLUMN', N'RATIO_RECORD_TYPE_LKUP_ID'
 GO
 
 
@@ -275,13 +275,13 @@ ALTER TABLE [dbo].[CRT_RATIO] ADD CONSTRAINT [CRT_PROJECT_CRT_RATIO]
 GO
 
 
-ALTER TABLE [dbo].[CRT_RATIO] ADD CONSTRAINT [CRT_CODE_LOOKUP_RATIO_OBJECT] 
-    FOREIGN KEY ([RATIO_OBJECT_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+ALTER TABLE [dbo].[CRT_RATIO] ADD CONSTRAINT [CRT_CODE_LOOKUP_RATIO_RECORD] 
+    FOREIGN KEY ([RATIO_RECORD_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
 GO
 
 
-ALTER TABLE [dbo].[CRT_RATIO] ADD CONSTRAINT [CRT_CODE_LOOKUP_RATIO_OBJECT_TYPE] 
-    FOREIGN KEY ([RATIO_OBJECT_TYPE_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+ALTER TABLE [dbo].[CRT_RATIO] ADD CONSTRAINT [CRT_CODE_LOOKUP_RATIO_RECORD_TYPE] 
+    FOREIGN KEY ([RATIO_RECORD_TYPE_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
 GO
 
 
@@ -302,9 +302,9 @@ SET @curr_date = getutcdate();
     update CRT_RATIO_HIST set END_DATE_HIST = @curr_date where RATIO_ID in (select RATIO_ID from deleted) and END_DATE_HIST is null;
 
   IF EXISTS(SELECT * FROM inserted)
-    insert into CRT_RATIO_HIST ([RATIO_ID], [PROJECT_ID], [RATIO], [RATIO_OBJECT_LKUP_ID], [RATIO_OBJECT_TYPE_LKUP_ID], [SERVICE_AREA_ID], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], [RATIO_HIST_ID], [END_DATE_HIST], [EFFECTIVE_DATE_HIST])
+    insert into CRT_RATIO_HIST ([RATIO_ID], [PROJECT_ID], [RATIO], [RATIO_RECORD_LKUP_ID], [RATIO_RECORD_TYPE_LKUP_ID], [SERVICE_AREA_ID], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], [RATIO_HIST_ID], [END_DATE_HIST], [EFFECTIVE_DATE_HIST])
  
-	select [RATIO_ID], [PROJECT_ID], [RATIO], [RATIO_OBJECT_LKUP_ID], [RATIO_OBJECT_TYPE_LKUP_ID], [SERVICE_AREA_ID], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_RATIO_H_ID_SEQ]) as [RATIO_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
+	select [RATIO_ID], [PROJECT_ID], [RATIO], [RATIO_RECORD_LKUP_ID], [RATIO_RECORD_TYPE_LKUP_ID], [SERVICE_AREA_ID], [DISTRICT_ID], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_RATIO_H_ID_SEQ]) as [RATIO_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
 
 END TRY
 BEGIN CATCH
@@ -323,8 +323,8 @@ BEGIN TRY
   insert into CRT_RATIO ("RATIO_ID",
 	  "PROJECT_ID", 
 	  "RATIO",
-	  "RATIO_OBJECT_LKUP_ID", 
-	  "RATIO_OBJECT_TYPE_LKUP_ID", 
+	  "RATIO_RECORD_LKUP_ID", 
+	  "RATIO_RECORD_TYPE_LKUP_ID", 
 	  "SERVICE_AREA_ID",
 	  "DISTRICT_ID",
 	  "END_DATE",
@@ -338,8 +338,8 @@ BEGIN TRY
     select "RATIO_ID",
       "PROJECT_ID",
 	  "RATIO",
-	  "RATIO_OBJECT_LKUP_ID", 
-	  "RATIO_OBJECT_TYPE_LKUP_ID", 
+	  "RATIO_RECORD_LKUP_ID", 
+	  "RATIO_RECORD_TYPE_LKUP_ID", 
 	  "SERVICE_AREA_ID",
 	  "DISTRICT_ID",
 	  "END_DATE",
@@ -374,8 +374,8 @@ BEGIN TRY
     set "RATIO_ID" = inserted."RATIO_ID",
       "PROJECT_ID" = inserted."PROJECT_ID", 
 	  "RATIO" = inserted."RATIO",
-	  "RATIO_OBJECT_LKUP_ID" = inserted."RATIO_OBJECT_LKUP_ID", 
-	  "RATIO_OBJECT_TYPE_LKUP_ID" = inserted."RATIO_OBJECT_TYPE_LKUP_ID", 
+	  "RATIO_RECORD_LKUP_ID" = inserted."RATIO_RECORD_LKUP_ID", 
+	  "RATIO_RECORD_TYPE_LKUP_ID" = inserted."RATIO_RECORD_TYPE_LKUP_ID", 
 	  "SERVICE_AREA_ID" = inserted."SERVICE_AREA_ID",
 	  "DISTRICT_ID" = inserted."DISTRICT_ID",	  
       "END_DATE" = inserted."END_DATE",
