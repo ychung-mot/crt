@@ -17,13 +17,20 @@ module.exports = function (app) {
       })
     ),
     app.use(
-      '/twm',
+      '/twm/api',
       createProxyMiddleware({
-        target: 'http://localhost:5500',
+        target: process.env.REACT_APP_API_HOST || 'http://localhost:27238',
         changeOrigin: true,
         pathRewrite: {
           '^/twm/': '/',
         },
+      })
+    ),
+    app.use(
+      '/twm',
+      createProxyMiddleware({
+        target: 'http://localhost:5500',
+        changeOrigin: true,
       })
     );
 };
