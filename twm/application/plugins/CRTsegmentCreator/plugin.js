@@ -676,6 +676,8 @@ class CRTsegmentCreator {
       .done(function (data) {
         spinner.stop();
 
+        keycloak.updateToken(5);
+
         // Bail if a rout was not found
         if (!data.routeFound) {
           $("#dr-route-failure").show();

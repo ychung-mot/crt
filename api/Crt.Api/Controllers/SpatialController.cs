@@ -20,11 +20,11 @@ namespace Crt.Api.Controllers
         }
 
         [HttpGet("router")]
-        public async Task<JsonResult> GetRouteAsync(string criteria, string points, bool roundTrip)
+        public async Task<ActionResult<string>> GetRouteAsync(string criteria, string points, bool roundTrip)
         {
             var res = await _routerApi.GetRouteAsync(criteria, points, roundTrip);
 
-            return new JsonResult(res);
+            return Ok(res);
         }
     }
 }
