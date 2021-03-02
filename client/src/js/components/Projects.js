@@ -65,7 +65,12 @@ const tableColumns = [
     },
     nosort: true,
   },
-  { heading: 'Location and Ratios', key: 'locationRatios', nosort: true },
+  {
+    heading: 'Location and Ratios',
+    key: 'locationRatios',
+    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_SEGMENT}`, heading: 'Ratios' },
+    nosort: true,
+  },
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 

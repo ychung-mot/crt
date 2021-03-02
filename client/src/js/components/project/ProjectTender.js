@@ -192,6 +192,13 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
     }
   };
 
+  const displayOnlyValidFiscalYears = (fiscalYears = [], list = []) => {
+    //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
+    let listOfFiscalYears = list.map((item) => item.fiscalYear);
+
+    return fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
+  };
+
   const displayAfterQtyAccmpsFilter = (items) => {
     let filteredResult = items;
     if (qtyOrAccmpFilter === 'ALL') {
@@ -301,7 +308,9 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
               </Col>
               <Col xs={3}>
                 <SingleDropdown
-                  items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
+                  items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
+                    displayOnlyValidFiscalYears(fiscalYears, data.qtyAccmps)
+                  )}
                   handleOnChange={onFiscalYearFilterChange}
                   defaultTitle="Show All Fiscal Years"
                 />

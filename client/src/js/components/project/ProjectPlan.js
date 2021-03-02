@@ -143,6 +143,13 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
     }
   };
 
+  const displayOnlyValidFiscalYears = (fiscalYears = [], list = []) => {
+    //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
+    let listOfFiscalYears = list.map((item) => item.fiscalYear);
+
+    return fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
+  };
+
   const sortFunctionFinPlan = (a, b) => {
     let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
     let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
@@ -211,7 +218,9 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
               <Col xs="auto">Financial Planning Targets</Col>
               <Col xs={3}>
                 <SingleDropdown
-                  items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(fiscalYears)}
+                  items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
+                    displayOnlyValidFiscalYears(fiscalYears, data.finTargets)
+                  )}
                   handleOnChange={onFiscalYearFilterChange}
                   defaultTitle="Show All Fiscal Years"
                 />
