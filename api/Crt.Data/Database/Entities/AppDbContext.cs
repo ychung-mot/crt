@@ -2741,7 +2741,6 @@ namespace Crt.Data.Database.Entities
                 entity.Property(e => e.ProjectId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("PROJECT_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_PROJECT_ID_SEQ])")
                     .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.StartLatitude)
