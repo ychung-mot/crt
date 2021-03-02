@@ -73,6 +73,9 @@ namespace Crt.Data.Mappings
             CreateMap<CrtNote, NoteDto>()
                 .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.AppCreateUserid))
                 .ForMember(x => x.NoteDate, opt => opt.MapFrom(x => x.AppCreateTimestamp));
+            CreateMap<CrtProject, ProjectLocationDto>()
+                .ForMember(x => x.Ratios, opt => opt.MapFrom(x => x.CrtRatios))
+                .ForMember(x => x.Segments, opt => opt.MapFrom(x => x.CrtSegments));
 
             CreateMap<CrtNote, NoteCreateDto>();
 
@@ -93,6 +96,7 @@ namespace Crt.Data.Mappings
 
             CreateMap<CrtRatio, RatioDto>();
             CreateMap<CrtRatio, RatioCreateDto>();
+            CreateMap<CrtRatio, RatioListDto>();
         }
     }
 }
