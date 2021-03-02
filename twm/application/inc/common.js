@@ -836,6 +836,7 @@ function isValidTwmDomain() {
 		case "prd-www.th.gov.bc.ca":
 		case "motigeo.th.gov.bc.ca":
 		case "www.th.gov.bc.ca":
+		case "crt-twm-dev-2d982c-dev.apps.silver.devops.gov.bc.ca":
 			return true;
 		default:
 			return false;
