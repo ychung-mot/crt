@@ -82,6 +82,14 @@ http {
             proxy_pass http://crt-api${CRT_DEPLOY_SUFFIX}:8080;
         }
 
+        location /twm/api/ {
+            proxy_set_header HOST $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Real-IP $remote_addr;
+
+            proxy_pass http://crt-api${CRT_DEPLOY_SUFFIX}:8080/api/;;
+        }
+
         location /twm/ {
             proxy_set_header HOST $host;
             proxy_set_header X-Forwarded-Proto $scheme;
