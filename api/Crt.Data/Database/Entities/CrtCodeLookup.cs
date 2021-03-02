@@ -17,6 +17,8 @@ namespace Crt.Data.Database.Entities
             CrtProjectRcLkups = new HashSet<CrtProject>();
             CrtQtyAccmpFiscalYearLkups = new HashSet<CrtQtyAccmp>();
             CrtQtyAccmpQtyAccmpLkups = new HashSet<CrtQtyAccmp>();
+            CrtRatioRatioRecordLkups = new HashSet<CrtRatio>();
+            CrtRatioRatioRecordTypeLkups = new HashSet<CrtRatio>();
             CrtTenders = new HashSet<CrtTender>();
         }
 
@@ -42,6 +44,8 @@ namespace Crt.Data.Database.Entities
         public virtual ICollection<CrtProject> CrtProjectRcLkups { get; set; }
         public virtual ICollection<CrtQtyAccmp> CrtQtyAccmpFiscalYearLkups { get; set; }
         public virtual ICollection<CrtQtyAccmp> CrtQtyAccmpQtyAccmpLkups { get; set; }
+        public virtual ICollection<CrtRatio> CrtRatioRatioRecordLkups { get; set; }
+        public virtual ICollection<CrtRatio> CrtRatioRatioRecordTypeLkups { get; set; }
         public virtual ICollection<CrtTender> CrtTenders { get; set; }
     }
 }

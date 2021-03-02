@@ -31,6 +31,8 @@ namespace Crt.Data.Database.Entities
         public virtual DbSet<CrtProjectHist> CrtProjectHists { get; set; }
         public virtual DbSet<CrtQtyAccmp> CrtQtyAccmps { get; set; }
         public virtual DbSet<CrtQtyAccmpHist> CrtQtyAccmpHists { get; set; }
+        public virtual DbSet<CrtRatio> CrtRatios { get; set; }
+        public virtual DbSet<CrtRatioHist> CrtRatioHists { get; set; }
         public virtual DbSet<CrtRegion> CrtRegions { get; set; }
         public virtual DbSet<CrtRegionDistrict> CrtRegionDistricts { get; set; }
         public virtual DbSet<CrtRegionDistrictHist> CrtRegionDistrictHists { get; set; }
@@ -1761,6 +1763,271 @@ namespace Crt.Data.Database.Entities
                     .HasColumnType("numeric(10, 3)")
                     .HasColumnName("SCHEDULE7")
                     .HasComment("Forecast type allows users to plan their program outside the bounds of current fiscal/allocation	");
+            });
+
+            modelBuilder.Entity<CrtRatio>(entity =>
+            {
+                entity.HasKey(e => e.RatioId)
+                    .HasName("CRT_RATIO_PK");
+
+                entity.ToTable("CRT_RATIO");
+
+                entity.HasComment("Defines CRT financial targets");
+
+                entity.HasIndex(e => new { e.RatioId, e.ServiceAreaId, e.DistrictId, e.RatioRecordLkupId }, "CRT_RATIO_FK_I");
+
+                entity.Property(e => e.RatioId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RATIO_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_RATIO_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.DistrictId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("DISTRICT_ID")
+                    .HasComment("Unique idenifier for districts");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.Ratio)
+                    .HasColumnType("numeric(9, 5)")
+                    .HasColumnName("RATIO")
+                    .HasComment("Proportion of the project that falls within a ratio object e.g. electoral district,economic region, highway");
+
+                entity.Property(e => e.RatioRecordLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RATIO_RECORD_LKUP_ID")
+                    .HasComment("Link to code lookup table ratio record values for electoral district, economic region, highway");
+
+                entity.Property(e => e.RatioRecordTypeLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RATIO_RECORD_TYPE_LKUP_ID")
+                    .HasComment("Link to code lookup table for type of record i.e. service area, electoral district, economic region, highway, district");
+
+                entity.Property(e => e.ServiceAreaId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("SERVICE_AREA_ID")
+                    .HasComment("Unique idenifier for service area");
+
+                entity.HasOne(d => d.Project)
+                    .WithMany(p => p.CrtRatios)
+                    .HasForeignKey(d => d.ProjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_PROJECT_CRT_RATIO");
+
+                entity.HasOne(d => d.RatioRecordLkup)
+                    .WithMany(p => p.CrtRatioRatioRecordLkups)
+                    .HasForeignKey(d => d.RatioRecordLkupId)
+                    .HasConstraintName("CRT_CODE_LOOKUP_RATIO_RECORD");
+
+                entity.HasOne(d => d.RatioRecordTypeLkup)
+                    .WithMany(p => p.CrtRatioRatioRecordTypeLkups)
+                    .HasForeignKey(d => d.RatioRecordTypeLkupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("CRT_CODE_LOOKUP_RATIO_RECORD_TYPE");
+            });
+
+            modelBuilder.Entity<CrtRatioHist>(entity =>
+            {
+                entity.HasKey(e => e.RatioHistId)
+                    .HasName("CRT_RATIO_HIST_PK");
+
+                entity.ToTable("CRT_RATIO_HIST");
+
+                entity.HasComment("Defines CRT financial targets");
+
+                entity.Property(e => e.RatioHistId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RATIO_HIST_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_RATIO_H_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.DistrictId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("DISTRICT_ID")
+                    .HasComment("Unique identifier for district records");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.EndDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.Ratio)
+                    .HasColumnType("numeric(9, 5)")
+                    .HasColumnName("RATIO")
+                    .HasComment("Proportion of the project that falls within a ratio object e.g. electoral district,economic region, highway");
+
+                entity.Property(e => e.RatioId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RATIO_ID")
+                    .HasComment("A system generated unique identifier.");
+
+                entity.Property(e => e.RatioRecordLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RATIO_RECORD_LKUP_ID")
+                    .HasComment("Link to code lookup table ratio record values for electoral district, economic region, highway");
+
+                entity.Property(e => e.RatioRecordTypeLkupId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("RATIO_RECORD_TYPE_LKUP_ID")
+                    .HasComment("Link to code lookup table for type of record i.e. service area, electoral district, economic region, highway, district");
+
+                entity.Property(e => e.ServiceAreaId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("SERVICE_AREA_ID")
+                    .HasComment("Unique idenifier for service area");
             });
 
             modelBuilder.Entity<CrtRegion>(entity =>
@@ -3877,6 +4144,14 @@ namespace Crt.Data.Database.Entities
             modelBuilder.HasSequence("CRT_QTY_ACCMP_ID_SEQ")
                 .HasMin(1)
                 .HasMax(999999999999);
+
+            modelBuilder.HasSequence("CRT_RATIO_H_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
+
+            modelBuilder.HasSequence("CRT_RATIO_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
 
             modelBuilder.HasSequence("CRT_REG_DIST_H_ID_SEQ")
                 .HasMin(1)

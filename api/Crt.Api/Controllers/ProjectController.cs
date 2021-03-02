@@ -171,5 +171,25 @@ namespace Crt.Api.Controllers
 
             return projectPlan;
         }
+
+        [HttpGet("{id}/projectlocation")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<ProjectLocationDto>> GetProjectLocationAsync(decimal id)
+        {
+            var projectLocation = await _projectService.GetProjectLocationAsync(id);
+
+            if (projectLocation == null)
+            {
+                return NotFound();
+            }
+
+            var problem = IsRegionIdAuthorized(projectLocation.RegionId);
+            if (problem != null)
+            {
+                return Unauthorized(problem);
+            }
+
+            return projectLocation;
+        }
     }
 }

@@ -56,6 +56,8 @@ namespace Crt.Model
         public const string Qty = "qty";
         public const string Accmp = "accmp";
         public const string Tender = "tender";
+        public const string Segment = "segment";
+        public const string Ratio = "ratio";
     }
 
     public static class FieldTypes
@@ -116,6 +118,12 @@ namespace Crt.Model
         public const string BidValue = "BidValue";
 
         public const string SegmentRoute = "SegmentRoute";
+
+        public const string Ratio = "Ratio";
+        public const string RatioObjectLkupId = "RatioObjectLkupId";
+        public const string RatioObjectTypeLkupId = "RatioObjectTypeLkupId";
+        public const string ServiceAreaId = "ServiceAreaId";
+        public const string DistrictId = "DistrictId";
     }
 
     public class DateColNames
@@ -134,6 +142,7 @@ namespace Crt.Model
         public const string Accomplishment = "ACCOMPLISHMENT";
         public const string Contractor = "CONTRACTOR";
         public const string FundingType = "FUNDING_TYPE";
+        public const string RatioObjectType = "RATIO_RECORD_TYPE";
     }
 
     public static class CrtEnvironments

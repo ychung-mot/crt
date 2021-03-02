@@ -23,6 +23,7 @@ namespace Crt.Domain.Services
         Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteProjectAsync(ProjectDeleteDto project);
         Task<ProjectTenderDto> GetProjectTenderAsync(decimal projectId);
         Task<ProjectPlanDto> GetProjectPlanAsync(decimal projectId);
+        Task<ProjectLocationDto> GetProjectLocationAsync(decimal projectId);
     }
 
     public class ProjectService : CrtServiceBase, IProjectService
@@ -163,5 +164,11 @@ namespace Crt.Domain.Services
         {
             return await _projectRepo.GetProjectPlanAsync(projectId);
         }
+
+        public async Task<ProjectLocationDto> GetProjectLocationAsync(decimal projectId)
+        {
+            return await _projectRepo.GetProjectLocationAsync(projectId);
+        }
+
     }
 }
