@@ -16,16 +16,26 @@ import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
 const segmentTableColumns = [
-  { heading: 'Segment#', key: 'segment', nosort: true },
-  { heading: 'Segment start coordinates', key: 'segmentStart', nosort: true },
-  { heading: 'Segment end coordinates', key: 'segmentEnd', nosort: true },
+  { heading: 'Segment#', key: 'id', nosort: true },
+  { heading: 'Segment start coordinates', key: 'startCoordinates', nosort: true },
+  { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
 ];
 
 function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
   const [loading, setLoading] = useState(true);
+  const [segmentsData, setSegmentsData] = useState([]);
 
   useEffect(() => {
-    setLoading(false);
+    api
+      .getSegments(match.params.id)
+      .then((response) => {
+        setSegmentsData(response.data);
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setLoading(false);
+      });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -39,7 +49,6 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
 
   const addSegmentClicked = () => {
     segmentsFormModal.openForm(Constants.FORM_TYPE.ADD);
-    console.log('add');
   };
 
   const handleEditSegmentFormSubmit = (values) => {
@@ -81,12 +90,10 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
           </Row>
         </UIHeader>
         <DataTableControl
-          dataList={[]}
+          dataList={segmentsData}
           tableColumns={segmentTableColumns}
-          editable
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onEditClicked={editSegmentClicked}
           onDeleteClicked={deleteSegmentClicked}
         />
       </MaterialCard>

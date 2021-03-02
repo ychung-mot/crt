@@ -96,6 +96,8 @@ export const deleteTender = (projectId, tenderId) =>
 //Projects Locations/Ratios
 export const postSegment = (projectId, segmentData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}`, segmentData);
+export const getSegments = (projectId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
