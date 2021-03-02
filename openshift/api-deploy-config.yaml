@@ -119,6 +119,16 @@ objects:
                     secretKeyRef:
                       name: keycloak-service-account
                       key: clientSecret
+                - name: Router__ApiKey
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-keys-${ENV}
+                      key: router
+                - name: Geocoder__ApiKey
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-keys-${ENV}
+                      key: geocoder
                 - name: ASPNETCORE_ENVIRONMENT
                   value: ${ASPNETCORE_ENVIRONMENT}
               volumeMounts:

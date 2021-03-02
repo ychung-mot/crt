@@ -255,7 +255,7 @@ class CRTsegmentCreator {
 
     // Query the DataBC GeoCoder
     $.ajax({
-      url: "https://geocoder.api.gov.bc.ca/addresses.json",
+      url: "api/spatial/geocoder",
       data: params,
     })
 
@@ -656,7 +656,7 @@ class CRTsegmentCreator {
 
     // Query the DataBC GeoCoder
     $.ajax({
-      url: "https://router.api.gov.bc.ca/directions.json",
+      url: "api/spatial/router",
       data: params,
       timeout: 7500,
     })
