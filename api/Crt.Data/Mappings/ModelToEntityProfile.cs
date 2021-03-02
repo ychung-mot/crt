@@ -8,6 +8,7 @@ using Crt.Model.Dtos.Note;
 using Crt.Model.Dtos.Permission;
 using Crt.Model.Dtos.Project;
 using Crt.Model.Dtos.QtyAccmp;
+using Crt.Model.Dtos.Ratio;
 using Crt.Model.Dtos.Region;
 using Crt.Model.Dtos.Role;
 using Crt.Model.Dtos.RolePermission;
@@ -78,6 +79,9 @@ namespace Crt.Data.Mappings
             CreateMap<SegmentDto, CrtSegment>();
             CreateMap<SegmentCreateDto, CrtSegment>();
             CreateMap<SegmentListDto, CrtSegment>();
+
+            CreateMap<RatioDto, CrtRatio>();
+            CreateMap<RatioCreateDto, CrtRatio>();
         }
     }
 }

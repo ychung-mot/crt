@@ -17,6 +17,7 @@ using Crt.Model.Dtos.Element;
 using Crt.Model.Dtos.QtyAccmp;
 using Crt.Model.Dtos.Tender;
 using Crt.Model.Dtos.Segments;
+using Crt.Model.Dtos.Ratio;
 
 namespace Crt.Data.Mappings
 {
@@ -89,6 +90,9 @@ namespace Crt.Data.Mappings
             CreateMap<CrtSegment, SegmentDto>();
             CreateMap<CrtSegment, SegmentCreateDto>();
             CreateMap<CrtSegment, SegmentListDto>();
+
+            CreateMap<CrtRatio, RatioDto>();
+            CreateMap<CrtRatio, RatioCreateDto>();
         }
     }
 }
