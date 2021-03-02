@@ -90,10 +90,10 @@ namespace Crt.HttpClients
 
                 return features.numberMatched > 0;
             }
-            catch (Exception ex)
+            catch
             {
                 _logger.LogError($"Exception - IsPointOnRfiSegmentAsync: {body} - {content}");
-                throw ex;
+                throw;
             }
         }
 
@@ -131,10 +131,10 @@ namespace Crt.HttpClients
 
                 return lines;
             }
-            catch (Exception ex)
+            catch
             {
                 _logger.LogError($"Exception - GetLineFromOffsetMeasureOnRfiSegmentAsync: {query} - {content}");
-                throw ex;
+                throw;
             }
         }
 
@@ -158,10 +158,10 @@ namespace Crt.HttpClients
                     Convert.ToDecimal(features.features[0].properties.POINT_VARIANCE),
                     new Point(features.features[0].geometry.coordinates)));
             }
-            catch (Exception ex)
+            catch
             {
                 _logger.LogError($"Exception - GetOffsetMeasureFromPointAndRfiSegmentAsync: {query} - {content}");
-                throw ex;
+                throw;
             }
         }
 
@@ -182,10 +182,10 @@ namespace Crt.HttpClients
 
                 return new Point(features.features[0].geometry.coordinates);
             }
-            catch (Exception ex)
+            catch
             {
                 _logger.LogError($"Exception - GetPointFromOffsetMeasureOnRfiSegmentAsync: {query} - {content}");
-                throw ex;
+                throw;
             }
         }
 
@@ -211,10 +211,10 @@ namespace Crt.HttpClients
 
                 return new RfiSegment { Dimension = dimension, Length = Convert.ToDecimal(feature.properties.NE_LENGTH), Descr = feature.properties.NE_DESCR };
             }
-            catch (Exception ex)
+            catch
             {
                 _logger.LogError($"Exception - GetRfiSegmentDetailAsync: {query} - {content}");
-                throw ex;
+                throw;
             }
         }
     }

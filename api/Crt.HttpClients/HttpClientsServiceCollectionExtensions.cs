@@ -10,6 +10,13 @@ namespace Crt.HttpClients
     {
         public static void AddHttpClients(this IServiceCollection services, IConfiguration config)
         {
+            services.AddHttpClient<IRouterApi, RouterApi>(client =>
+            {
+                client.BaseAddress = new Uri(config.GetValue<string>("Router:Url"));
+                client.Timeout = new TimeSpan(0, 0, 15);
+                client.DefaultRequestHeaders.Clear();
+            });
+
             services.AddHttpClient<IMapsApi, MapsApi>(client =>
             {
                 client.BaseAddress = new Uri(config.GetValue<string>("CHRIS:MapUrl"));
