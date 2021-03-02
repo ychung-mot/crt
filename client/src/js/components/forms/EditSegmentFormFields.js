@@ -44,9 +44,6 @@ function EditSegmentFormFields({ closeForm, ...rest }) {
 
   return (
     <React.Fragment>
-      {/* temporary fix remove this message in the future */}
-      <div>Make sure you have TWM running on live server on PORT:5500</div>
-
       <iframe
         className="w-100"
         style={{ height: '800px' }}
