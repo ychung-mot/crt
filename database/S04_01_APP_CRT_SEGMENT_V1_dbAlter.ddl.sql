@@ -8,7 +8,7 @@
 /* Created on:            2021-02-23 10:02                                */
 /* ---------------------------------------------------------------------- */
 
-USE CRT_DEVDB;
+USE CRT_DEV;
 GO
 
 /* ---------------------------------------------------------------------- */
@@ -43,7 +43,7 @@ GO
 
 CREATE TABLE [dbo].[CRT_SEGMENT] (
     [SEGMENT_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_SEGMENT_ID_SEQ] NOT NULL,
-    [PROJECT_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_PROJECT_ID_SEQ] NOT NULL,
+    [PROJECT_ID] NUMERIC(9) NOT NULL,
     [START_LATITUDE] NUMERIC(16,8),
     [START_LONGITUDE] NUMERIC(16,8),
     [END_LATITUDE] NUMERIC(16,8),
