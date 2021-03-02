@@ -24,7 +24,7 @@ namespace Crt.Api.Controllers
         {
             var res = await _routerApi.GetRouteAsync(criteria, points, roundTrip);
 
-            return Ok(res);
+            return Content(res, "application/json");
         }
     }
 }
