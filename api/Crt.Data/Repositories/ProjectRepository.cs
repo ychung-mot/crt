@@ -177,15 +177,30 @@ namespace Crt.Data.Repositories
 
         public async Task<ProjectLocationDto> GetProjectLocationAsync(decimal projectId)
         {
-            var project = await DbSet.AsNoTracking()
-                .Include(x => x.CrtRatios)
-                    .ThenInclude(x => x.RatioRecordLkup)
+            var projects = await DbSet.AsNoTracking()
                 .Include(x => x.CrtRatios)
                     .ThenInclude(x => x.RatioRecordTypeLkup)
+                .Include(x => x.CrtRatios)
+                    .ThenInclude(x => x.RatioRecordLkup)
                 .Include(x => x.CrtSegments)
                 .FirstOrDefaultAsync(x => x.ProjectId == projectId);
 
-            return Mapper.Map<ProjectLocationDto>(project);
+            var entity = Mapper.Map<ProjectLocationDto>(projects);
+
+            foreach (var ratio in entity.Ratios)
+            {
+                var serviceArea = await DbContext.CrtServiceAreas.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.ServiceAreaId == ratio.ServiceAreaId);
+
+                ratio.ServiceAreaName = (serviceArea != null) ? serviceArea.ServiceAreaName : null;
+
+                var district = await DbContext.CrtDistricts.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.DistrictId == ratio.DistrictId);
+
+                ratio.DistrictName = (district != null) ? district.DistrictName : null;
+            }
+
+            return entity;
         }
     }
 }
