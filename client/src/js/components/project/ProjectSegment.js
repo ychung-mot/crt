@@ -50,7 +50,7 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
   };
 
   const addSegmentClicked = () => {
-    segmentsFormModal.openForm(Constants.FORM_TYPE.ADD);
+    segmentsFormModal.openForm(Constants.FORM_TYPE.ADD, { projectId: data.id, refreshData: refreshData });
   };
 
   const handleEditSegmentFormSubmit = (values) => {
@@ -65,6 +65,18 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
   });
 
   //helper functions
+
+  const refreshData = () => {
+    api
+      .getProjectLocations(match.params.id)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        showValidationErrorDialog(error.response.data);
+      });
+  };
 
   if (loading) {
     return <PageSpinner />;

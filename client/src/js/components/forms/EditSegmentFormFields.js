@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import _ from 'lodash';
 
 import { Button } from 'reactstrap';
@@ -8,9 +7,7 @@ import PageSpinner from '../ui/PageSpinner';
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
 
-function EditSegmentFormFields({ closeForm, ...rest }) {
-  let { id: projectId } = useParams();
-
+function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -32,6 +29,7 @@ function EditSegmentFormFields({ closeForm, ...rest }) {
         .postSegment(projectId, { route: data })
         .then(() => {
           setLoading(false);
+          refreshData();
           closeForm();
         })
         .catch((error) => {
