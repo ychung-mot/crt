@@ -45,7 +45,9 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
   const editSegmentClicked = () => {
     console.log('hi');
   };
-  const deleteSegmentClicked = () => {
+  const deleteSegmentClicked = (segmentId) => {
+    console.log(segmentId);
+    console.log(`projectId ${data.id}`);
     console.log('bye');
   };
 
