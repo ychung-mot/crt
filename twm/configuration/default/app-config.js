@@ -98,7 +98,6 @@ app.config = {
         visible: false,
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
-          headers: { host: window.location.hostname },
           params: {
             LAYERS: "crt:ProjectSegment",
           },
@@ -141,7 +140,6 @@ app.config = {
         visible: false,
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
-          headers: { host: window.location.hostname },
           params: {
             LAYERS: "cwr:V_NM_NLT_RFI_GRFI_SDO_DT",
           },
@@ -171,7 +169,6 @@ app.config = {
         visible: false,
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
-          headers: { host: window.location.hostname },
           params: {
             LAYERS: "crt:ProjectSegment",
           },
@@ -185,7 +182,6 @@ app.config = {
         visible: false,
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
-          headers: { host: window.location.hostname },
           params: {
             LAYERS: "hwy:DSA_REGION_BOUNDARY",
           },
