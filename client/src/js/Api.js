@@ -94,13 +94,18 @@ export const deleteTender = (projectId, tenderId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`);
 
 //Projects Locations/Ratios
+export const getProjectLocations = (projectId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_LOCATION}`);
 export const postSegment = (projectId, segmentData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}`, segmentData);
 export const getSegments = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}`);
+export const deleteSegment = (projectId, segmentId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}/${segmentId}`);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
+
 //Code Lookups
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
 export const getRCNumbers = () => instance.get(Constants.API_PATHS.RC_NUMBERS);
