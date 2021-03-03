@@ -49,13 +49,15 @@ function ProjectSegment({
   }, []);
 
   //segment helper functions
-  const editSegmentClicked = () => {
-    console.log('hi');
-  };
-  const deleteSegmentClicked = (segmentId) => {
-    console.log(segmentId);
-    console.log(`projectId ${data.id}`);
-    console.log('bye');
+  const onDeleteSegmentClicked = (segmentId) => {
+    api
+      .deleteSegment(data.id, segmentId)
+      .then(() => {
+        refreshData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const addSegmentClicked = () => {
@@ -119,7 +121,7 @@ function ProjectSegment({
           tableColumns={segmentTableColumns}
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onDeleteClicked={deleteSegmentClicked}
+          onDeleteClicked={onDeleteSegmentClicked}
         />
       </MaterialCard>
       <MaterialCard>
