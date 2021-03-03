@@ -27,6 +27,13 @@ module.exports = function (app) {
       })
     ),
     app.use(
+      '/ogs-internal',
+      createProxyMiddleware({
+        target: 'https://dev-motigeo.th.gov.bc.ca/ogs-internal',
+        changeOrigin: true,
+      })
+    ),
+    app.use(
       '/twm',
       createProxyMiddleware({
         target: 'http://localhost:5500',

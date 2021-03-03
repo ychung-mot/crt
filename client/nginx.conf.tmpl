@@ -98,6 +98,14 @@ http {
             proxy_pass http://crt-twm${CRT_DEPLOY_SUFFIX}:8080/;
         }
 
+        location /ogs-internal/ {
+            proxy_set_header HOST $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Real-IP $remote_addr;
+
+            proxy_pass https://dev-motigeo.th.gov.bc.ca/ogs-internal/;
+        }
+
         location /swagger/ {
             proxy_set_header HOST $host;
             proxy_set_header X-Forwarded-Proto $scheme;
