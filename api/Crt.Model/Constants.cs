@@ -120,8 +120,8 @@ namespace Crt.Model
         public const string SegmentRoute = "SegmentRoute";
 
         public const string Ratio = "Ratio";
-        public const string RatioObjectLkupId = "RatioObjectLkupId";
-        public const string RatioObjectTypeLkupId = "RatioObjectTypeLkupId";
+        public const string RatioRecordLkupId = "RatioRecordLkupId";
+        public const string RatioRecordTypeLkupId = "RatioRecordTypeLkupId";
         public const string ServiceAreaId = "ServiceAreaId";
         public const string DistrictId = "DistrictId";
     }
@@ -142,7 +142,7 @@ namespace Crt.Model
         public const string Accomplishment = "ACCOMPLISHMENT";
         public const string Contractor = "CONTRACTOR";
         public const string FundingType = "FUNDING_TYPE";
-        public const string RatioObjectType = "RATIO_RECORD_TYPE";
+        public const string RatioRecordType = "RATIO_RECORD_TYPE";
     }
 
     public static class CrtEnvironments

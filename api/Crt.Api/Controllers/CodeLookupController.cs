@@ -74,5 +74,11 @@ namespace Crt.Api.Controllers
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.FundingType));
         }
+
+        [HttpGet("ratiorecordtypes")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetRatioRecordTypes()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.RatioRecordType));
+        }
     }
 }
