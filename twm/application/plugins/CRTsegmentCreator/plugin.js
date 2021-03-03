@@ -785,7 +785,6 @@ class CRTsegmentCreator {
     $("#dr-post-segment-btn")
       .unbind("click")
       .click(function () {
-        console.log("click");
         // transform web mercator line to 4326 for posting to database
         var format = new ol.format.WKT();
         var wkt = "";
@@ -849,9 +848,6 @@ class CRTsegmentCreator {
           associatedInput.attr("latitude").slice(0, 9)
         );
 
-        let startLon = associatedInput.attr("longitude").slice(0, 11);
-        let startLat = associatedInput.attr("latitude").slice(0, 9);
-
         associatedInput = $(".dr-location-input-end");
         $("#dr-end-lon-input").val(
           associatedInput.attr("longitude").slice(0, 11)
@@ -860,22 +856,16 @@ class CRTsegmentCreator {
           associatedInput.attr("latitude").slice(0, 9)
         );
 
-        let endLon = associatedInput.attr("longitude").slice(0, 11);
-        let endLat = associatedInput.attr("latitude").slice(0, 9);
-
         //temporary fix removed this alert function for now
         //alert("POST this to the database:\n" + wkt);
 
-        //this tells the parent CRT to close dialog will send the points below it can send WKT too.
-        //start long, lat
-        //end long, lat
+        //grab all the points on the line from feature4236. Format Long Lat
+        let pointsArray = feature4326.values_.geometry.flatCoordinates;
+
         window.parent.postMessage(
           {
             message: "closeForm",
-            route: [
-              [startLon, startLat],
-              [endLon, endLat],
-            ],
+            route: pointsArray,
           },
           "*"
         );

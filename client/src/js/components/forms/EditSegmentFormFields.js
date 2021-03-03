@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import _ from 'lodash';
 
 import { Button } from 'reactstrap';
 import PageSpinner from '../ui/PageSpinner';
@@ -21,11 +22,14 @@ function EditSegmentFormFields({ closeForm, ...rest }) {
   //event functions
 
   const addEventListenerCloseForm = (event) => {
-    if (event.data.message === 'closeForm' && event.origin === 'http://localhost:3000') {
+    if (event.data.message === 'closeForm' && event.origin === `${window.location.protocol}//${window.location.host}`) {
       setLoading(true);
 
+      //convert route data into groups of 2. Represents lon and lat coordinates.
+      let data = _.chunk(event.data.route, 2);
+
       api
-        .postSegment(projectId, { route: event.data.route })
+        .postSegment(projectId, { route: data })
         .then(() => {
           setLoading(false);
           closeForm();

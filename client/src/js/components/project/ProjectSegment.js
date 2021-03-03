@@ -16,7 +16,6 @@ import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
 const segmentTableColumns = [
-  { heading: 'Segment#', key: 'id', nosort: true },
   { heading: 'Segment start coordinates', key: 'startCoordinates', nosort: true },
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
 ];
