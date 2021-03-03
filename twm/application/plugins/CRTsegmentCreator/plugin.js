@@ -785,7 +785,6 @@ class CRTsegmentCreator {
     $("#dr-post-segment-btn")
       .unbind("click")
       .click(function () {
-        console.log("click");
         // transform web mercator line to 4326 for posting to database
         var format = new ol.format.WKT();
         var wkt = "";

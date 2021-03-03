@@ -22,7 +22,7 @@ function EditSegmentFormFields({ closeForm, ...rest }) {
   //event functions
 
   const addEventListenerCloseForm = (event) => {
-    if (event.data.message === 'closeForm' && event.origin === 'http://localhost:3000') {
+    if (event.data.message === 'closeForm' && event.origin === `${window.location.protocol}//${window.location.host}`) {
       setLoading(true);
 
       //convert route data into groups of 2. Represents lon and lat coordinates.
