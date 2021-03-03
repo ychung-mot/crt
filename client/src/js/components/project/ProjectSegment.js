@@ -20,17 +20,20 @@ const segmentTableColumns = [
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
 ];
 
-function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
+function ProjectSegment({ showValidationErrorDialog, history, match, projectSearchHistory, ...props }) {
   const [loading, setLoading] = useState(true);
-  const [segmentsData, setSegmentsData] = useState([]);
+  const [data, setData] = useState({});
 
   useEffect(() => {
     api
-      .getSegments(match.params.id)
+      .getProjectLocations(match.params.id)
       .then((response) => {
-        setSegmentsData(response.data);
+        setData(response.data);
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {
+        console.log(error);
+        showValidationErrorDialog(error.response.data);
+      })
       .finally(() => {
         setLoading(false);
       });
@@ -61,6 +64,8 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
     showModalFooter: false,
   });
 
+  //helper functions
+
   if (loading) {
     return <PageSpinner />;
   }
@@ -70,7 +75,7 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
       <UIHeader>
         <MaterialCard>
           <Row>
-            <Col xs="auto">{'Project Title'}</Col>
+            <Col xs="auto">{data.projectNumber}</Col>
           </Row>
         </MaterialCard>
       </UIHeader>
@@ -89,7 +94,7 @@ function ProjectSegment({ history, match, projectSearchHistory, ...props }) {
           </Row>
         </UIHeader>
         <DataTableControl
-          dataList={segmentsData}
+          dataList={data.segments}
           tableColumns={segmentTableColumns}
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
@@ -116,4 +121,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ProjectSegment);
+export default connect(mapStateToProps, { showValidationErrorDialog })(ProjectSegment);
