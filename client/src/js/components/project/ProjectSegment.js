@@ -20,7 +20,14 @@ const segmentTableColumns = [
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
 ];
 
-function ProjectSegment({ showValidationErrorDialog, history, match, projectSearchHistory, ...props }) {
+function ProjectSegment({
+  showValidationErrorDialog,
+  ratioRecordTypes,
+  history,
+  match,
+  projectSearchHistory,
+  ...props
+}) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
@@ -115,6 +122,13 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
           onDeleteClicked={deleteSegmentClicked}
         />
       </MaterialCard>
+      <MaterialCard>
+        <UIHeader>
+          <Row>
+            <Col xs="auto">{'Project Ratios'}</Col>
+          </Row>
+        </UIHeader>
+      </MaterialCard>
       <div className="text-right">
         {/* temporary fix replace match with data.id */}
         <Link to={`${Constants.PATHS.PROJECTS}/${match.params.id}${Constants.PATHS.PROJECT_TENDER}`}>
@@ -132,6 +146,7 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
 const mapStateToProps = (state) => {
   return {
     projectSearchHistory: state.projectSearchHistory.projectSearch,
+    ratioRecordTypes: state.codeLookups.ratioRecordTypes,
   };
 };
 

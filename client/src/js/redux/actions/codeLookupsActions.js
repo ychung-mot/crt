@@ -8,6 +8,7 @@ import {
   FETCH_ACCOMPLISHMENTS,
   FETCH_CONTRACTORS,
   FETCH_FUNDING_TYPES,
+  FETCH_RATIO_RECORD_TYPES,
 } from './types';
 
 import * as api from '../../Api';
@@ -72,5 +73,12 @@ export const fetchFundingTypes = () => (dispatch) => {
   return api.getFundingTypes().then((response) => {
     const data = response.data;
     dispatch({ type: FETCH_FUNDING_TYPES, payload: data });
+  });
+};
+
+export const fetchRatioRecordTypes = () => (dispatch) => {
+  return api.getRatioRecordTypes().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_RATIO_RECORD_TYPES, payload: data });
   });
 };

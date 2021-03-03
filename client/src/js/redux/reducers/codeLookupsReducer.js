@@ -10,6 +10,7 @@ import {
   FETCH_ACCOMPLISHMENTS,
   FETCH_CONTRACTORS,
   FETCH_FUNDING_TYPES,
+  FETCH_RATIO_RECORD_TYPES,
 } from '../actions/types';
 
 const defaultState = {
@@ -28,6 +29,7 @@ const defaultState = {
   accomplishments: [],
   contractors: [],
   fundingTypes: [],
+  ratioRecordTypes: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -50,6 +52,8 @@ const codeLookupsReducer = (state = defaultState, action) => {
       return { ...state, contractors: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_FUNDING_TYPES:
       return { ...state, fundingTypes: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_RATIO_RECORD_TYPES:
+      return { ...state, ratioRecordTypes: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }

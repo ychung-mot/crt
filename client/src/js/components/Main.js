@@ -19,6 +19,7 @@ import {
   fetchContractors,
   fetchFundingTypes,
   fetchElements,
+  fetchRatioRecordTypes,
 } from '../redux/actions';
 
 const Main = ({
@@ -38,6 +39,7 @@ const Main = ({
   fetchContractors,
   fetchFundingTypes,
   fetchElements,
+  fetchRatioRecordTypes,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -57,6 +59,7 @@ const Main = ({
       fetchContractors(),
       fetchFundingTypes(),
       fetchElements(),
+      fetchRatioRecordTypes(),
     ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -90,4 +93,5 @@ export default connect(mapStateToProps, {
   fetchContractors,
   fetchFundingTypes,
   fetchElements,
+  fetchRatioRecordTypes,
 })(Main);
