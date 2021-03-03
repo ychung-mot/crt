@@ -18,13 +18,14 @@ namespace Crt.Model.Dtos.Ratio
         public virtual CodeLookupDto RatioRecordLkup { get; set; }
         [JsonIgnore]
         public virtual CodeLookupDto RatioRecordTypeLkup { get; set; }
-        [JsonIgnore]
+        /*[JsonIgnore]
         public virtual ServiceAreaDto ServiceAreaLkup { get; set; }
         [JsonIgnore]
-        public virtual DistrictDto DistrictLkup { get; set; }
-        public string RatioRecord { get => RatioRecordLkup?.Description; }
-        public string ServiceArea { get => ServiceAreaLkup?.Description; }
-        public string District { get => DistrictLkup?.Description; }
+        public virtual DistrictDto DistrictLkup { get; set; }*/
+        public string RatioRecordName { get => RatioRecordLkup?.Description; }
+        public string RatioRecordType { get => RatioRecordTypeLkup?.CodeName; }
+        public string ServiceAreaName { get; set; }
+        public string DistrictName { get; set; }
         public bool CanDelete { get => true; }
     }
 }
