@@ -1,5 +1,6 @@
 {
   "port": 5500,
   "files": ["../twm/**/*.{html,htm,css,js}"],
-  "server": { "baseDir": "../twm" }
+  "server": { "baseDir": "../twm" },
+  "open": false
 }
