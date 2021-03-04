@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
+import _ from 'lodash';
 
 import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
@@ -20,15 +21,24 @@ const segmentTableColumns = [
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
 ];
 
-function ProjectSegment({ showValidationErrorDialog, history, match, projectSearchHistory, ...props }) {
+function ProjectSegment({
+  showValidationErrorDialog,
+  ratioRecordTypes,
+  history,
+  match,
+  projectSearchHistory,
+  ...props
+}) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
+  const [ratioData, setRatioData] = useState({});
 
   useEffect(() => {
     api
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
+        setRatioData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
@@ -42,13 +52,15 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
   }, []);
 
   //segment helper functions
-  const editSegmentClicked = () => {
-    console.log('hi');
-  };
-  const deleteSegmentClicked = (segmentId) => {
-    console.log(segmentId);
-    console.log(`projectId ${data.id}`);
-    console.log('bye');
+  const onDeleteSegmentClicked = (segmentId) => {
+    api
+      .deleteSegment(data.id, segmentId)
+      .then(() => {
+        refreshData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const addSegmentClicked = () => {
@@ -73,11 +85,28 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
+        setRatioData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
         showValidationErrorDialog(error.response.data);
       });
+  };
+
+  const groupRatios = (ratios = []) => {
+    //takes array of ratios and returns an Object grouped by Ratio Record Type.
+
+    const camelCaseConvert = (item = {}) => {
+      let keyName = ratioRecordTypes.find((ratioType) => ratioType.id === item.ratioRecordTypeLkupId).codeName;
+      keyName = `${keyName[0].toLowerCase()}${keyName.slice(1, keyName.length)}`;
+      keyName = keyName.replace(/\b \b/g, '');
+
+      return keyName;
+    };
+
+    let groupedRatios = _.groupBy(ratios, camelCaseConvert);
+
+    return groupedRatios;
   };
 
   if (loading) {
@@ -112,8 +141,15 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
           tableColumns={segmentTableColumns}
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onDeleteClicked={deleteSegmentClicked}
+          onDeleteClicked={onDeleteSegmentClicked}
         />
+      </MaterialCard>
+      <MaterialCard>
+        <UIHeader>
+          <Row>
+            <Col xs="auto">{'Project Ratios'}</Col>
+          </Row>
+        </UIHeader>
       </MaterialCard>
       <div className="text-right">
         {/* temporary fix replace match with data.id */}
@@ -132,6 +168,7 @@ function ProjectSegment({ showValidationErrorDialog, history, match, projectSear
 const mapStateToProps = (state) => {
   return {
     projectSearchHistory: state.projectSearchHistory.projectSearch,
+    ratioRecordTypes: state.codeLookups.ratioRecordTypes,
   };
 };
 

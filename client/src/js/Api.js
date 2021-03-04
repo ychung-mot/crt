@@ -117,6 +117,7 @@ export const getPhases = () => instance.get(Constants.API_PATHS.PHASES);
 export const getContractors = () => instance.get(Constants.API_PATHS.CONTRACTORS);
 export const getFundingTypes = () => instance.get(Constants.API_PATHS.FUNDING_TYPES);
 export const getElements = () => instance.get(Constants.API_PATHS.ELEMENTS);
+export const getRatioRecordTypes = () => instance.get(Constants.API_PATHS.RATIO_RECORDS_TYPES);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);
