@@ -53,6 +53,7 @@ module.exports = (settings) => {
           VERSION: phases[phase].tag,
           ENV: phases[phase].phase,
           HOST: phases[phase].host,
+          OGS_SERVER: phases[phase].ogs_server,
         },
       }
     )
