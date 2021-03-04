@@ -38,13 +38,16 @@
     "yup": "^0.28.5"
   },
   "devDependencies": {
+    "concurrently": "^6.0.0",
+    "lite-server": "^2.6.1",
     "redux-immutable-state-invariant": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"react-scripts start\" \"lite-server \"",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "lite-server"
   },
   "eslintConfig": {
     "extends": "react-app"
