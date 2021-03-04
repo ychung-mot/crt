@@ -93,7 +93,7 @@ namespace Crt.Api.Controllers
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Highway));
         }
 
-        [HttpGet("economicregion")]
+        [HttpGet("economicregions")]
         public ActionResult<IEnumerable<CodeLookupDto>> GetEconomicRegions()
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.EconomicRegion));
