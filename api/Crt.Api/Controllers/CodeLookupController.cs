@@ -80,5 +80,23 @@ namespace Crt.Api.Controllers
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.RatioRecordType));
         }
+
+        [HttpGet("electoraldistricts")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetElectoralDistricts()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.ElectoralDistrict));
+        }
+
+        [HttpGet("highways")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetHighways()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Highway));
+        }
+
+        [HttpGet("economicregion")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetEconomicRegions()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.EconomicRegion));
+        }
     }
 }
