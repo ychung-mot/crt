@@ -28,7 +28,7 @@ const phases = {
     tag: `dev-${version}-${changeId}`,
     host: `crt-${changeId}-2d982c-dev.apps.silver.devops.gov.bc.ca`,
     url_prefix: "dev-",
-    export_server: "devoas1",
+    ogs_server: "http://vip-dev-geo.th.gov.bc.ca:8082/ogs-geoV06/",
     dotnet_env: "Development",
     transient: true,
   },
@@ -43,7 +43,7 @@ const phases = {
     tag: `test-${version}`,
     host: `crt-2d982c-test.apps.silver.devops.gov.bc.ca`,
     url_prefix: "tst-",
-    export_server: "tstoas2",
+    ogs_server: "http://vip-tst-geo.th.gov.bc.ca:8082/ogs-geoV06/",
     dotnet_env: "Staging",
   },
   uat: {
@@ -57,7 +57,7 @@ const phases = {
     tag: `uat-${version}`,
     host: `crt-2d982c-uat.apps.silver.devops.gov.bc.ca`,
     url_prefix: "uat-",
-    export_server: "tstoas2",
+    ogs_server: "http://vip-tst-geo.th.gov.bc.ca:8082/ogs-geoV06/",
     dotnet_env: "UAT",
   },
   prod: {
@@ -71,7 +71,7 @@ const phases = {
     tag: `prod-${version}`,
     host: `crt-2d982c-prod.apps.silver.devops.gov.bc.ca`,
     url_prefix: "",
-    export_server: "prdoas2",
+    ogs_server: "http://vip-prd-geo.th.gov.bc.ca:8083/ogs-geoV06/",
     dotnet_env: "Production",
   },
 };

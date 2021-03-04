@@ -37,6 +37,7 @@ module.exports = (settings) => {
           VERSION: phases[phase].tag,
           ENV: phases[phase].phase,
           HOST: phases[phase].host,
+          OGS_SERVER: phases[phase].ogs_server,
         },
       }
     )
@@ -93,7 +94,6 @@ module.exports = (settings) => {
       {
         param: {
           ENV: phases[phase].phase,
-          EXPORT_URL: `https://${phases[phase].export_server}.apps.th.gov.bc.ca`,
         },
       }
     )

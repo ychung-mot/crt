@@ -80,8 +80,3 @@ parameters:
     name: ENV
     required: true
     value: "dev"
-  - description: GeoServer Report Export URL
-    displayName: EXPORT_URL
-    name: EXPORT_URL
-    required: true
-    value: "https://devoas1.apps.th.gov.bc.ca"
