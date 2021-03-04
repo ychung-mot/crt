@@ -118,6 +118,9 @@ export const getContractors = () => instance.get(Constants.API_PATHS.CONTRACTORS
 export const getFundingTypes = () => instance.get(Constants.API_PATHS.FUNDING_TYPES);
 export const getElements = () => instance.get(Constants.API_PATHS.ELEMENTS);
 export const getRatioRecordTypes = () => instance.get(Constants.API_PATHS.RATIO_RECORDS_TYPES);
+export const getElectoralDistricts = () => instance.get(Constants.API_PATHS.ELECTORAL_DISTRICTS);
+export const getHighways = () => instance.get(Constants.API_PATHS.HIGHWAYS);
+export const getEconomicRegions = () => instance.get(Constants.API_PATHS.ECONOMIC_REGIONS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

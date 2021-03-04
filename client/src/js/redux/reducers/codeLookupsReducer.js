@@ -11,6 +11,9 @@ import {
   FETCH_CONTRACTORS,
   FETCH_FUNDING_TYPES,
   FETCH_RATIO_RECORD_TYPES,
+  FETCH_ELECTORAL_DISTRICTS,
+  FETCH_HIGHWAYS,
+  FETCH_ECONOMIC_REGIONS,
 } from '../actions/types';
 
 const defaultState = {
@@ -30,6 +33,9 @@ const defaultState = {
   contractors: [],
   fundingTypes: [],
   ratioRecordTypes: [],
+  electoralDistricts: [],
+  highways: [],
+  economicRegions: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -54,6 +60,12 @@ const codeLookupsReducer = (state = defaultState, action) => {
       return { ...state, fundingTypes: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_RATIO_RECORD_TYPES:
       return { ...state, ratioRecordTypes: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_ELECTORAL_DISTRICTS:
+      return { ...state, electoralDistricts: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_HIGHWAYS:
+      return { ...state, highways: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_ECONOMIC_REGIONS:
+      return { ...state, economicRegions: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }
