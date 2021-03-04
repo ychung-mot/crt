@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
+import _ from 'lodash';
 
 import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
@@ -30,12 +31,14 @@ function ProjectSegment({
 }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
+  const [ratioData, setRatioData] = useState({});
 
   useEffect(() => {
     api
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
+        setRatioData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
@@ -82,11 +85,28 @@ function ProjectSegment({
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
+        setRatioData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
         showValidationErrorDialog(error.response.data);
       });
+  };
+
+  const groupRatios = (ratios = []) => {
+    //takes array of ratios and returns an Object grouped by Ratio Record Type.
+
+    const camelCaseConvert = (item = {}) => {
+      let keyName = ratioRecordTypes.find((ratioType) => ratioType.id === item.ratioRecordTypeLkupId).codeName;
+      keyName = `${keyName[0].toLowerCase()}${keyName.slice(1, keyName.length)}`;
+      keyName = keyName.replace(/\b \b/g, '');
+
+      return keyName;
+    };
+
+    let groupedRatios = _.groupBy(ratios, camelCaseConvert);
+
+    return groupedRatios;
   };
 
   if (loading) {
