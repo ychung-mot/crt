@@ -56,6 +56,11 @@ objects:
                     secretKeyRef:
                       name: sso-configs-${ENV}
                       key: CLIENT_SSO_REALM
+                - name: CLIENT_SSO_CLIENTID
+                  valueFrom:
+                    secretKeyRef:
+                      name: sso-configs-${ENV}
+                      key: CLIENT_SSO_CLIENTID
                 - name: CRT_DEPLOY_SUFFIX
                   value: ${SUFFIX}
       test: false
