@@ -99,7 +99,7 @@ app.config = {
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
           params: {
-            LAYERS: "crt:ProjectSegment",
+            LAYERS: "crt:CRT_SEGMENT",
           },
           transition: 0,
         }),
@@ -170,7 +170,7 @@ app.config = {
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
           params: {
-            LAYERS: "crt:ProjectSegment",
+            LAYERS: "crt:CRT_SEGMENT",
           },
           transition: 0,
         }),

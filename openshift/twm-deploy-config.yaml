@@ -63,6 +63,8 @@ objects:
                       key: CLIENT_SSO_CLIENTID
                 - name: CRT_DEPLOY_SUFFIX
                   value: ${SUFFIX}
+                - name: OGS_SERVER
+                  value: ${OGS_SERVER}
       test: false
       triggers:
         - imageChangeParams:
@@ -116,6 +118,11 @@ parameters:
   - description: HOST
     displayName: HOST
     name: HOST
+    required: true
+    value: ""
+  - description: OGS_SERVER
+    displayName: OGS_SERVER
+    name: OGS_SERVER
     required: true
     value: ""
   - description: SOURCE_REPOSITORY_URL
