@@ -146,6 +146,8 @@ namespace Crt.Model
         public const string ElectoralDistrict = "ELECTORAL_DISTRICT";
         public const string Highway = "HIGHWAY";
         public const string EconomicRegion = "ECONOMIC_REGION";
+        public const string District = "DISTRICT";
+        public const string ServiceArea = "SERVICE_AREA";
 
     }
 
