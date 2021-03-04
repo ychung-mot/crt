@@ -105,6 +105,7 @@ export const deleteSegment = (projectId, segmentId) =>
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
+export const getDistricts = () => instance.get(Constants.API_PATHS.DISTRICTS);
 
 //Code Lookups
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);

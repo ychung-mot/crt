@@ -39,6 +39,7 @@ export const API_PATHS = {
   TENDER: '/tenders',
   PROJECT_SEGMENT: '/segments',
   PROJECT_LOCATION: '/projectlocation',
+  DISTRICTS: '/districts',
 };
 
 export const PATHS = {
