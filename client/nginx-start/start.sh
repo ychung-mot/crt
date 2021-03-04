@@ -10,3 +10,5 @@ echo "window.RUNTIME_REACT_APP_API_HOST='${REACT_APP_API_HOST}';" >> $JS_PATH
 
 echo "---> Creating nginx.conf ..."
 envsubst '${CRT_DEPLOY_SUFFIX} ${OGS_SERVER}' < /tmp/src/nginx.conf.tmpl > /etc/nginx/nginx.conf
+
+cat /etc/nginx/nginx.conf
