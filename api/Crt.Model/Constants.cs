@@ -143,6 +143,10 @@ namespace Crt.Model
         public const string Contractor = "CONTRACTOR";
         public const string FundingType = "FUNDING_TYPE";
         public const string RatioRecordType = "RATIO_RECORD_TYPE";
+        public const string ElectoralDistrict = "ELECTORAL_DISTRICT";
+        public const string Highway = "HIGHWAY";
+        public const string EconomicRegion = "ECONOMIC_REGION";
+
     }
 
     public static class CrtEnvironments
