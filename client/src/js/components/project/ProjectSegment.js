@@ -11,6 +11,7 @@ import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import EditSegmentFormFields from '../forms/EditSegmentFormFields';
+import EditHighwayFormFields from '../forms/EditHighwayFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -31,14 +32,14 @@ function ProjectSegment({
 }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
-  const [ratioData, setRatioData] = useState({});
+  const [ratiosData, setRatiosData] = useState({});
 
   useEffect(() => {
     api
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
-        setRatioData(groupRatios(response.data?.ratios));
+        setRatiosData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
@@ -78,6 +79,75 @@ function ProjectSegment({
     showModalFooter: false,
   });
 
+  //ratios highways
+  const addHighwayClicked = () => {
+    console.log('clicked');
+  };
+  const editHighwayClicked = () => {
+    console.log('edit');
+  };
+  const deleteHighwayClicked = () => {
+    console.log('delete');
+  };
+
+  const handleEditHighwayFormSubmit = (values, formType) => {
+    console.log(values);
+    console.log(formType);
+  };
+
+  const highwayTableColumns = [
+    { heading: 'Highway', key: 'ratioRecordName', nosort: true },
+    { heading: 'Ratios', key: 'ratio', nosort: true },
+  ];
+
+  const RatioTable = ({
+    title,
+    onAddClicked,
+    onEditClicked,
+    onDeleteClicked,
+    tableColumns,
+    editPermissionName,
+    formModalFields,
+    handleFormSubmit,
+    ...props
+  }) => {
+    const formModal = useFormModal(title, formModalFields, handleFormSubmit, { saveCheck: true });
+
+    return (
+      <Container>
+        <UIHeader>
+          <Row>
+            <Col xs="auto">{title}</Col>
+            <Col>
+              <Authorize requires={editPermissionName}>
+                <Button
+                  color="primary"
+                  className="float-right"
+                  onClick={() => {
+                    onAddClicked();
+                    formModal.openForm(Constants.FORM_TYPE.ADD);
+                  }}
+                >
+                  + Add
+                </Button>
+              </Authorize>
+            </Col>
+          </Row>
+        </UIHeader>
+        <DataTableControl
+          dataList={ratiosData.highway}
+          tableColumns={highwayTableColumns}
+          editable
+          deletable
+          editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+          onEditClicked={onEditClicked}
+          onDeleteClicked={onDeleteClicked}
+        />
+        {formModal.formElement}
+      </Container>
+    );
+  };
+
   //helper functions
 
   const refreshData = () => {
@@ -85,7 +155,7 @@ function ProjectSegment({
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
-        setRatioData(groupRatios(response.data?.ratios));
+        setRatiosData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
@@ -150,6 +220,20 @@ function ProjectSegment({
             <Col xs="auto">{'Project Ratios'}</Col>
           </Row>
         </UIHeader>
+        <Row>
+          <Col xs={5}>
+            <RatioTable
+              title="Highways"
+              tableColumns={highwayTableColumns}
+              onAddClicked={addHighwayClicked}
+              onDeleteClicked={deleteHighwayClicked}
+              onEditClicked={editHighwayClicked}
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              formModalFields={<EditHighwayFormFields />}
+              handleFormSubmit={handleEditHighwayFormSubmit}
+            />
+          </Col>
+        </Row>
       </MaterialCard>
       <div className="text-right">
         {/* temporary fix replace match with data.id */}
