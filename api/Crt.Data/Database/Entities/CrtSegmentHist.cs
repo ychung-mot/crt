@@ -11,6 +11,7 @@ namespace Crt.Data.Database.Entities
         public decimal SegmentHistId { get; set; }
         public decimal SegmentId { get; set; }
         public decimal ProjectId { get; set; }
+        public string Description { get; set; }
         public decimal? StartLatitude { get; set; }
         public decimal? StartLongitude { get; set; }
         public decimal? EndLatitude { get; set; }
