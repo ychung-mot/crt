@@ -80,38 +80,25 @@ function ProjectSegment({
   });
 
   //ratios highways
-  const addHighwayClicked = () => {
-    console.log('clicked');
-  };
-  const editHighwayClicked = () => {
-    console.log('edit');
-  };
-  const deleteHighwayClicked = () => {
-    console.log('delete');
-  };
-
-  const handleEditHighwayFormSubmit = (values, formType) => {
-    console.log(values);
-    console.log(formType);
-  };
 
   const highwayTableColumns = [
     { heading: 'Highway', key: 'ratioRecordName', nosort: true },
     { heading: 'Ratios', key: 'ratio', nosort: true },
   ];
 
+  //TO REFRACTOR OUT====================================================================
   const RatioTable = ({
     title,
-    onDeleteClicked,
+    ratioTypeName,
     tableColumns,
     editPermissionName,
     formModalFields,
     handleFormSubmit,
     projectId,
+    dataList = [],
     ...props
   }) => {
     const myHandleFormSubmit = (values, formType) => {
-      console.log(values);
       if (!formModal.submitting) {
         formModal.setSubmitting(true);
         if (formType === Constants.FORM_TYPE.ADD) {
@@ -142,15 +129,24 @@ function ProjectSegment({
       }
     };
 
-    const formModal = useFormModal(title, formModalFields, myHandleFormSubmit, { saveCheck: true });
-
     const onAddClicked = () => {
-      formModal.openForm(Constants.FORM_TYPE.ADD);
+      formModal.openForm(Constants.FORM_TYPE.ADD, { ratioTypeName: ratioTypeName });
     };
 
     const onEditClicked = (ratioId) => {
       formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioId, projectId: projectId });
     };
+
+    const onDeleteClicked = (ratioId) => {
+      api
+        .deleteRatio(projectId, ratioId)
+        .then(() => {
+          refreshData();
+        })
+        .catch((error) => console.log(error));
+    };
+
+    const formModal = useFormModal(title, formModalFields, myHandleFormSubmit, { saveCheck: true });
 
     return (
       <Container>
@@ -167,7 +163,7 @@ function ProjectSegment({
           </Row>
         </UIHeader>
         <DataTableControl
-          dataList={ratiosData.highway}
+          dataList={dataList}
           tableColumns={highwayTableColumns}
           editable
           deletable
@@ -179,6 +175,7 @@ function ProjectSegment({
       </Container>
     );
   };
+  //TO REFRACTOR OUT====================================================================
 
   //helper functions
 
@@ -256,14 +253,12 @@ function ProjectSegment({
           <Col xs={5}>
             <RatioTable
               title="Highways"
+              ratioTypeName="Highway"
+              dataList={ratiosData.highway}
               projectId={data.id}
               tableColumns={highwayTableColumns}
-              onAddClicked={addHighwayClicked}
-              onDeleteClicked={deleteHighwayClicked}
-              onEditClicked={editHighwayClicked}
               editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditHighwayFormFields />}
-              handleFormSubmit={handleEditHighwayFormSubmit}
               refreshData={refreshData}
             />
           </Col>

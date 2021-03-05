@@ -93,7 +93,7 @@ export const putTender = (projectId, tenderId, tenderData) =>
 export const deleteTender = (projectId, tenderId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`);
 
-//Projects Locations/Ratios
+//Projects Locations/Segments/Ratios
 export const getProjectLocations = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_LOCATION}`);
 export const postSegment = (projectId, segmentData) =>
@@ -104,10 +104,10 @@ export const deleteSegment = (projectId, segmentId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}/${segmentId}`);
 export const getRatio = (projectId, ratioId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
-export const postRatio = (projectId, ratioData) => {
+export const postRatio = (projectId, ratioData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}`, ratioData);
-};
-
+export const deleteRatio = (projectId, ratioId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 export const getDistricts = () => instance.get(Constants.API_PATHS.DISTRICTS);

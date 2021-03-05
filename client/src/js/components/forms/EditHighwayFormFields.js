@@ -12,6 +12,7 @@ import * as api from '../../Api';
 const defaultValues = {
   ratio: 0,
   ratioRecordLkupId: undefined,
+  ratioRecordTypeLkupId: undefined,
 };
 
 const validationSchema = Yup.object({
@@ -29,12 +30,17 @@ const EditHighwayFormFields = ({
   projectId,
   ratioId,
   formType,
+  ratioTypeName,
   highways,
+  ratioRecordTypes,
 }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setInitialValues(defaultValues);
+    setInitialValues({
+      ...defaultValues,
+      ratioRecordTypeLkupId: ratioRecordTypes.find((ratioType) => ratioType.codeName === ratioTypeName)?.id,
+    });
     setValidationSchema(validationSchema);
 
     if (formType === Constants.FORM_TYPE.EDIT) {
@@ -60,7 +66,7 @@ const EditHighwayFormFields = ({
         <SingleDropdownField items={highways} name="ratioRecordLkupId" searchable={true} />
       </FormRow>
       <FormRow name="ratio" label="Ratio*">
-        <FormInput type="number" name="ratio" placeholder="Value between 0 and 1" id={`ratio`} />
+        <FormInput type="number" name="ratio" placeholder="Value between 0 and 1" id={`ratio`} step={0.1} />
       </FormRow>
     </React.Fragment>
   );
@@ -69,6 +75,7 @@ const EditHighwayFormFields = ({
 const mapStateToProps = (state) => {
   return {
     highways: Object.values(state.codeLookups.highways),
+    ratioRecordTypes: Object.values(state.codeLookups.ratioRecordTypes),
   };
 };
 
