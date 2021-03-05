@@ -8,9 +8,15 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Button, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import RatioTable from './RatioTable';
 import EditSegmentFormFields from '../forms/EditSegmentFormFields';
+import EditHighwayFormFields from '../forms/EditHighwayFormFields';
+import EditElectoralDistrictFormFields from '../forms/EditElectoralDistrictFormFields';
+import EditServiceAreaFormFields from '../forms/EditServiceAreaFormFields';
+import EditDistrictFormFields from '../forms/EditDistrictFormFields';
+import EditEconomicRegionFormFields from '../forms/EditEconomicRegionFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -21,24 +27,42 @@ const segmentTableColumns = [
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
 ];
 
-function ProjectSegment({
-  showValidationErrorDialog,
-  ratioRecordTypes,
-  history,
-  match,
-  projectSearchHistory,
-  ...props
-}) {
+const highwayTableColumns = [
+  { heading: 'Highway', key: 'ratioRecordName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const electoralDistrictTableColumns = [
+  { heading: 'Electoral District', key: 'ratioRecordName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const economicRegionTableColumns = [
+  { heading: 'Economic Region', key: 'ratioRecordName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const serviceAreaTableColumns = [
+  { heading: 'Service Area', key: 'serviceAreaName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const districtTableColumns = [
+  { heading: 'District', key: 'districtName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, match, projectSearchHistory }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
-  const [ratioData, setRatioData] = useState({});
+  const [ratiosData, setRatiosData] = useState({});
 
   useEffect(() => {
     api
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
-        setRatioData(groupRatios(response.data?.ratios));
+        setRatiosData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
@@ -67,6 +91,7 @@ function ProjectSegment({
     segmentsFormModal.openForm(Constants.FORM_TYPE.ADD, { projectId: data.id, refreshData: refreshData });
   };
 
+  //temporary fix, useFormModal requires a handleEditSegmentFormSubmit, however we won't be using this.
   const handleEditSegmentFormSubmit = (values) => {
     console.log('submitting');
     console.log(values);
@@ -85,7 +110,7 @@ function ProjectSegment({
       .getProjectLocations(match.params.id)
       .then((response) => {
         setData(response.data);
-        setRatioData(groupRatios(response.data?.ratios));
+        setRatiosData(groupRatios(response.data?.ratios));
       })
       .catch((error) => {
         console.log(error);
@@ -150,6 +175,65 @@ function ProjectSegment({
             <Col xs="auto">{'Project Ratios'}</Col>
           </Row>
         </UIHeader>
+        <Row>
+          <Col xs={4}>
+            <RatioTable
+              title="Electoral Districts"
+              ratioTypeName="Electoral District"
+              dataList={ratiosData.electoralDistrict}
+              projectId={data.id}
+              tableColumns={electoralDistrictTableColumns}
+              formModalFields={<EditElectoralDistrictFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+          <Col xs={4}>
+            <RatioTable
+              title="Highways"
+              ratioTypeName="Highway"
+              dataList={ratiosData.highway}
+              projectId={data.id}
+              tableColumns={highwayTableColumns}
+              formModalFields={<EditHighwayFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+          <Col xs={4}>
+            <RatioTable
+              title="Service Areas"
+              ratioTypeName="Service Area"
+              dataList={ratiosData.serviceArea}
+              projectId={data.id}
+              tableColumns={serviceAreaTableColumns}
+              formModalFields={<EditServiceAreaFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={4}>
+            <RatioTable
+              title="Districts"
+              ratioTypeName="District"
+              dataList={ratiosData.district}
+              projectId={data.id}
+              tableColumns={districtTableColumns}
+              formModalFields={<EditDistrictFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+          <Col xs={4}>
+            <RatioTable
+              title="Economic Regions"
+              ratioTypeName="Economic Region"
+              dataList={ratiosData.economicRegion}
+              projectId={data.id}
+              tableColumns={economicRegionTableColumns}
+              formModalFields={<EditEconomicRegionFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+        </Row>
       </MaterialCard>
       <div className="text-right">
         {/* temporary fix replace match with data.id */}

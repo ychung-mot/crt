@@ -9,6 +9,9 @@ import {
   FETCH_CONTRACTORS,
   FETCH_FUNDING_TYPES,
   FETCH_RATIO_RECORD_TYPES,
+  FETCH_ELECTORAL_DISTRICTS,
+  FETCH_HIGHWAYS,
+  FETCH_ECONOMIC_REGIONS,
 } from './types';
 
 import * as api from '../../Api';
@@ -80,5 +83,24 @@ export const fetchRatioRecordTypes = () => (dispatch) => {
   return api.getRatioRecordTypes().then((response) => {
     const data = response.data;
     dispatch({ type: FETCH_RATIO_RECORD_TYPES, payload: data });
+  });
+};
+
+export const fetchElectoralDistricts = () => (dispatch) => {
+  return api.getElectoralDistricts().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_ELECTORAL_DISTRICTS, payload: data });
+  });
+};
+export const fetchHighways = () => (dispatch) => {
+  return api.getHighways().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_HIGHWAYS, payload: data });
+  });
+};
+export const fetchEconomicRegions = () => (dispatch) => {
+  return api.getEconomicRegions().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_ECONOMIC_REGIONS, payload: data });
   });
 };

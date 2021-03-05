@@ -93,7 +93,7 @@ export const putTender = (projectId, tenderId, tenderData) =>
 export const deleteTender = (projectId, tenderId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`);
 
-//Projects Locations/Ratios
+//Projects Locations/Segments/Ratios
 export const getProjectLocations = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_LOCATION}`);
 export const postSegment = (projectId, segmentData) =>
@@ -102,9 +102,19 @@ export const getSegments = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}`);
 export const deleteSegment = (projectId, segmentId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}/${segmentId}`);
+export const getRatio = (projectId, ratioId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
+export const postRatio = (projectId, ratioData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}`, ratioData);
+export const deleteRatio = (projectId, ratioId) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
+export const putRatio = (projectid, ratioId, ratioData) =>
+  instance.put(`${Constants.API_PATHS.PROJECTS}/${projectid}${Constants.API_PATHS.RATIO}/${ratioId}`, ratioData);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
+export const getDistricts = () => instance.get(Constants.API_PATHS.DISTRICTS);
+export const getServiceAreas = () => instance.get(Constants.API_PATHS.SERVICE_AREAS);
 
 //Code Lookups
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
@@ -118,6 +128,9 @@ export const getContractors = () => instance.get(Constants.API_PATHS.CONTRACTORS
 export const getFundingTypes = () => instance.get(Constants.API_PATHS.FUNDING_TYPES);
 export const getElements = () => instance.get(Constants.API_PATHS.ELEMENTS);
 export const getRatioRecordTypes = () => instance.get(Constants.API_PATHS.RATIO_RECORDS_TYPES);
+export const getElectoralDistricts = () => instance.get(Constants.API_PATHS.ELECTORAL_DISTRICTS);
+export const getHighways = () => instance.get(Constants.API_PATHS.HIGHWAYS);
+export const getEconomicRegions = () => instance.get(Constants.API_PATHS.ECONOMIC_REGIONS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

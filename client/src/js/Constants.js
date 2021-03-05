@@ -16,6 +16,9 @@ export const API_PATHS = {
   CONTRACTORS: `${CODE_LOOKUP}/contractors`,
   FUNDING_TYPES: `${CODE_LOOKUP}/fundingtypes`,
   RATIO_RECORDS_TYPES: `${CODE_LOOKUP}/ratiorecordtypes`,
+  ELECTORAL_DISTRICTS: `${CODE_LOOKUP}/electoraldistricts`,
+  HIGHWAYS: `${CODE_LOOKUP}/highways`,
+  ECONOMIC_REGIONS: `${CODE_LOOKUP}/economicregions`,
   PERMISSIONS: '/permissions',
   ROLE: '/roles',
   USER: '/users',
@@ -36,6 +39,9 @@ export const API_PATHS = {
   TENDER: '/tenders',
   PROJECT_SEGMENT: '/segments',
   PROJECT_LOCATION: '/projectlocation',
+  DISTRICTS: '/districts',
+  SERVICE_AREAS: '/serviceareas',
+  RATIO: '/ratio',
 };
 
 export const PATHS = {

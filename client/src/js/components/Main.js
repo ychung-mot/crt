@@ -20,6 +20,11 @@ import {
   fetchFundingTypes,
   fetchElements,
   fetchRatioRecordTypes,
+  fetchElectoralDistricts,
+  fetchHighways,
+  fetchEconomicRegions,
+  fetchDistricts,
+  fetchServiceAreas,
 } from '../redux/actions';
 
 const Main = ({
@@ -40,6 +45,11 @@ const Main = ({
   fetchFundingTypes,
   fetchElements,
   fetchRatioRecordTypes,
+  fetchElectoralDistricts,
+  fetchHighways,
+  fetchEconomicRegions,
+  fetchDistricts,
+  fetchServiceAreas,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -60,6 +70,11 @@ const Main = ({
       fetchFundingTypes(),
       fetchElements(),
       fetchRatioRecordTypes(),
+      fetchElectoralDistricts(),
+      fetchHighways(),
+      fetchEconomicRegions(),
+      fetchDistricts(),
+      fetchServiceAreas(),
     ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -94,4 +109,9 @@ export default connect(mapStateToProps, {
   fetchFundingTypes,
   fetchElements,
   fetchRatioRecordTypes,
+  fetchElectoralDistricts,
+  fetchHighways,
+  fetchEconomicRegions,
+  fetchDistricts,
+  fetchServiceAreas,
 })(Main);
