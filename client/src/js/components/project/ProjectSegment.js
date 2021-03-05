@@ -91,6 +91,12 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
     segmentsFormModal.openForm(Constants.FORM_TYPE.ADD, { projectId: data.id, refreshData: refreshData });
   };
 
+  //temporary fix, useFormModal requires a handleEditSegmentFormSubmit, however we won't be using this.
+  const handleEditSegmentFormSubmit = (values) => {
+    console.log('submitting');
+    console.log(values);
+  };
+
   const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, handleEditSegmentFormSubmit, {
     size: 'xl',
     showModalHeader: false,
@@ -177,7 +183,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               dataList={ratiosData.electoralDistrict}
               projectId={data.id}
               tableColumns={electoralDistrictTableColumns}
-              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditElectoralDistrictFormFields />}
               refreshData={refreshData}
             />
@@ -189,7 +194,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               dataList={ratiosData.highway}
               projectId={data.id}
               tableColumns={highwayTableColumns}
-              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditHighwayFormFields />}
               refreshData={refreshData}
             />
@@ -201,7 +205,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               dataList={ratiosData.serviceArea}
               projectId={data.id}
               tableColumns={serviceAreaTableColumns}
-              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditServiceAreaFormFields />}
               refreshData={refreshData}
             />
@@ -215,7 +218,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               dataList={ratiosData.district}
               projectId={data.id}
               tableColumns={districtTableColumns}
-              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditDistrictFormFields />}
               refreshData={refreshData}
             />
@@ -227,7 +229,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               dataList={ratiosData.economicRegion}
               projectId={data.id}
               tableColumns={economicRegionTableColumns}
-              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditEconomicRegionFormFields />}
               refreshData={refreshData}
             />
