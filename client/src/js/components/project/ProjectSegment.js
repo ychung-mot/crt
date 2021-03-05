@@ -102,16 +102,55 @@ function ProjectSegment({
 
   const RatioTable = ({
     title,
-    onAddClicked,
-    onEditClicked,
     onDeleteClicked,
     tableColumns,
     editPermissionName,
     formModalFields,
     handleFormSubmit,
+    projectId,
     ...props
   }) => {
-    const formModal = useFormModal(title, formModalFields, handleFormSubmit, { saveCheck: true });
+    const myHandleFormSubmit = (values, formType) => {
+      console.log(values);
+      if (!formModal.submitting) {
+        formModal.setSubmitting(true);
+        if (formType === Constants.FORM_TYPE.ADD) {
+          api
+            .postRatio(projectId, values)
+            .then(() => {
+              formModal.closeForm();
+              refreshData();
+            })
+            .catch((error) => {
+              console.log(error.response);
+              showValidationErrorDialog(error.response.data);
+            })
+            .finally(() => formModal.setSubmitting(false));
+        } else if (formType === Constants.FORM_TYPE.EDIT) {
+          api
+            .putTender(data.id, values.id, values)
+            .then(() => {
+              formModal.closeForm();
+              refreshData();
+            })
+            .catch((error) => {
+              console.log(error.response);
+              showValidationErrorDialog(error.response.data);
+            })
+            .finally(() => formModal.setSubmitting(false));
+        }
+      }
+    };
+
+    const formModal = useFormModal(title, formModalFields, myHandleFormSubmit, { saveCheck: true });
+
+    const onAddClicked = () => {
+      formModal.openForm(Constants.FORM_TYPE.ADD);
+    };
+
+    const onEditClicked = (ratioId) => {
+      formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioId, projectId: projectId });
+    };
 
     return (
       <Container>
@@ -120,14 +159,7 @@ function ProjectSegment({
             <Col xs="auto">{title}</Col>
             <Col>
               <Authorize requires={editPermissionName}>
-                <Button
-                  color="primary"
-                  className="float-right"
-                  onClick={() => {
-                    onAddClicked();
-                    formModal.openForm(Constants.FORM_TYPE.ADD);
-                  }}
-                >
+                <Button color="primary" className="float-right" onClick={onAddClicked}>
                   + Add
                 </Button>
               </Authorize>
@@ -224,6 +256,7 @@ function ProjectSegment({
           <Col xs={5}>
             <RatioTable
               title="Highways"
+              projectId={data.id}
               tableColumns={highwayTableColumns}
               onAddClicked={addHighwayClicked}
               onDeleteClicked={deleteHighwayClicked}
@@ -231,6 +264,7 @@ function ProjectSegment({
               editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditHighwayFormFields />}
               handleFormSubmit={handleEditHighwayFormSubmit}
+              refreshData={refreshData}
             />
           </Col>
         </Row>

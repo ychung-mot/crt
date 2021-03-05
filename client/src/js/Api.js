@@ -102,6 +102,11 @@ export const getSegments = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}`);
 export const deleteSegment = (projectId, segmentId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}/${segmentId}`);
+export const getRatio = (projectId, ratioId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
+export const postRatio = (projectId, ratioData) => {
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}`, ratioData);
+};
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);

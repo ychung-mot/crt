@@ -40,6 +40,7 @@ export const API_PATHS = {
   PROJECT_SEGMENT: '/segments',
   PROJECT_LOCATION: '/projectlocation',
   DISTRICTS: '/districts',
+  RATIO: '/ratio',
 };
 
 export const PATHS = {

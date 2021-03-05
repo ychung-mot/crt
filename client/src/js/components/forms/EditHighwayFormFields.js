@@ -39,7 +39,15 @@ const EditHighwayFormFields = ({
 
     if (formType === Constants.FORM_TYPE.EDIT) {
       setLoading(true);
-      //temporary fix, API call goes here
+      api
+        .getRatio(projectId, ratioId)
+        .then((response) => {
+          setInitialValues({
+            ...response.data,
+          });
+          setLoading(false);
+        })
+        .catch((error) => console.log(error.response));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
