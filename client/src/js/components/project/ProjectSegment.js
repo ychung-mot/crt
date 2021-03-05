@@ -8,8 +8,9 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Button, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import RatioTable from './RatioTable';
 import EditSegmentFormFields from '../forms/EditSegmentFormFields';
 import EditHighwayFormFields from '../forms/EditHighwayFormFields';
 import EditElectoralDistrictFormFields from '../forms/EditElectoralDistrictFormFields';
@@ -26,14 +27,32 @@ const segmentTableColumns = [
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
 ];
 
-function ProjectSegment({
-  showValidationErrorDialog,
-  ratioRecordTypes,
-  history,
-  match,
-  projectSearchHistory,
-  ...props
-}) {
+const highwayTableColumns = [
+  { heading: 'Highway', key: 'ratioRecordName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const electoralDistrictTableColumns = [
+  { heading: 'Electoral District', key: 'ratioRecordName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const economicRegionTableColumns = [
+  { heading: 'Economic Region', key: 'ratioRecordName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const serviceAreaTableColumns = [
+  { heading: 'Service Area', key: 'serviceAreaName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+const districtTableColumns = [
+  { heading: 'District', key: 'districtName', nosort: true },
+  { heading: 'Ratios', key: 'ratio', nosort: true },
+];
+
+function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, match, projectSearchHistory }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [ratiosData, setRatiosData] = useState({});
@@ -72,134 +91,11 @@ function ProjectSegment({
     segmentsFormModal.openForm(Constants.FORM_TYPE.ADD, { projectId: data.id, refreshData: refreshData });
   };
 
-  const handleEditSegmentFormSubmit = (values) => {
-    console.log('submitting');
-    console.log(values);
-  };
-
   const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, handleEditSegmentFormSubmit, {
     size: 'xl',
     showModalHeader: false,
     showModalFooter: false,
   });
-
-  //ratios
-
-  const highwayTableColumns = [
-    { heading: 'Highway', key: 'ratioRecordName', nosort: true },
-    { heading: 'Ratios', key: 'ratio', nosort: true },
-  ];
-
-  const electoralDistrictTableColumns = [
-    { heading: 'Electoral District', key: 'ratioRecordName', nosort: true },
-    { heading: 'Ratios', key: 'ratio', nosort: true },
-  ];
-
-  const economicRegionTableColumns = [
-    { heading: 'Economic Region', key: 'ratioRecordName', nosort: true },
-    { heading: 'Ratios', key: 'ratio', nosort: true },
-  ];
-
-  const serviceAreaTableColumns = [
-    { heading: 'Service Area', key: 'serviceAreaName', nosort: true },
-    { heading: 'Ratios', key: 'ratio', nosort: true },
-  ];
-
-  const districtTableColumns = [
-    { heading: 'District', key: 'districtName', nosort: true },
-    { heading: 'Ratios', key: 'ratio', nosort: true },
-  ];
-
-  //TO REFRACTOR OUT====================================================================
-  const RatioTable = ({
-    title,
-    ratioTypeName,
-    tableColumns,
-    editPermissionName,
-    formModalFields,
-    handleFormSubmit,
-    projectId,
-    dataList = [],
-    ...props
-  }) => {
-    const myHandleFormSubmit = (values, formType) => {
-      if (!formModal.submitting) {
-        formModal.setSubmitting(true);
-        if (formType === Constants.FORM_TYPE.ADD) {
-          api
-            .postRatio(projectId, values)
-            .then(() => {
-              formModal.closeForm();
-              refreshData();
-            })
-            .catch((error) => {
-              console.log(error.response);
-              showValidationErrorDialog(error.response.data);
-            })
-            .finally(() => formModal.setSubmitting(false));
-        } else if (formType === Constants.FORM_TYPE.EDIT) {
-          api
-            .putRatio(projectId, values.id, values)
-            .then(() => {
-              formModal.closeForm();
-              refreshData();
-            })
-            .catch((error) => {
-              console.log(error.response);
-              showValidationErrorDialog(error.response.data);
-            })
-            .finally(() => formModal.setSubmitting(false));
-        }
-      }
-    };
-
-    const onAddClicked = () => {
-      formModal.openForm(Constants.FORM_TYPE.ADD, { ratioTypeName: ratioTypeName });
-    };
-
-    const onEditClicked = (ratioId) => {
-      formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioId, projectId });
-    };
-
-    const onDeleteClicked = (ratioId) => {
-      api
-        .deleteRatio(projectId, ratioId)
-        .then(() => {
-          refreshData();
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const formModal = useFormModal(title, formModalFields, myHandleFormSubmit, { saveCheck: true });
-
-    return (
-      <Container>
-        <UIHeader>
-          <Row>
-            <Col xs="auto">{title}</Col>
-            <Col>
-              <Authorize requires={editPermissionName}>
-                <Button color="primary" className="float-right" onClick={onAddClicked}>
-                  + Add
-                </Button>
-              </Authorize>
-            </Col>
-          </Row>
-        </UIHeader>
-        <DataTableControl
-          dataList={dataList}
-          tableColumns={tableColumns}
-          editable
-          deletable
-          editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-          onEditClicked={onEditClicked}
-          onDeleteClicked={onDeleteClicked}
-        />
-        {formModal.formElement}
-      </Container>
-    );
-  };
-  //TO REFRACTOR OUT====================================================================
 
   //helper functions
 
