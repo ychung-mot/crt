@@ -11,7 +11,7 @@ import * as api from '../../Api';
 
 const defaultValues = {
   ratio: 0,
-  ratioRecordLkupId: undefined,
+  serviceAreaId: undefined,
   ratioRecordTypeLkupId: undefined,
 };
 
@@ -62,8 +62,8 @@ const EditHighwayFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="ratioRecordLkupId" label={`${ratioTypeName}*`}>
-        <SingleDropdownField items={highways} name="ratioRecordLkupId" searchable={true} />
+      <FormRow name="serviceAreaId" label={`${ratioTypeName}*`}>
+        <SingleDropdownField items={highways} name="serviceAreaId" searchable={true} />
       </FormRow>
       <FormRow name="ratio" label="Ratio*">
         <FormInput type="number" name="ratio" placeholder="Value between 0 and 1" id={`ratio`} step={0.1} />

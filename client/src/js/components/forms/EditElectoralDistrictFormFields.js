@@ -15,7 +15,7 @@ const defaultValues = {
   ratioRecordTypeLkupId: undefined,
 };
 
-const EditHighwayFormFields = ({
+const EditElectoralDistrictFormFields = ({
   setInitialValues,
   formValues,
   setValidationSchema,
@@ -23,7 +23,7 @@ const EditHighwayFormFields = ({
   ratioId,
   formType,
   ratioTypeName,
-  highways,
+  electoralDistricts,
   ratioRecordTypes,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -63,7 +63,7 @@ const EditHighwayFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="ratioRecordLkupId" label={`${ratioTypeName}*`}>
-        <SingleDropdownField items={highways} name="ratioRecordLkupId" searchable={true} />
+        <SingleDropdownField items={electoralDistricts} name="ratioRecordLkupId" searchable={true} />
       </FormRow>
       <FormRow name="ratio" label="Ratio*">
         <FormInput type="number" name="ratio" placeholder="Value between 0 and 1" id={`ratio`} step={0.1} />
@@ -74,9 +74,9 @@ const EditHighwayFormFields = ({
 
 const mapStateToProps = (state) => {
   return {
-    highways: Object.values(state.codeLookups.highways),
+    electoralDistricts: Object.values(state.codeLookups.electoralDistricts),
     ratioRecordTypes: Object.values(state.codeLookups.ratioRecordTypes),
   };
 };
 
-export default connect(mapStateToProps, null)(EditHighwayFormFields);
+export default connect(mapStateToProps, null)(EditElectoralDistrictFormFields);

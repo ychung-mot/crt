@@ -12,6 +12,7 @@ import { Button, Container, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import EditSegmentFormFields from '../forms/EditSegmentFormFields';
 import EditHighwayFormFields from '../forms/EditHighwayFormFields';
+import EditElectoralDistrictFormFields from '../forms/EditElectoralDistrictFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -79,10 +80,30 @@ function ProjectSegment({
     showModalFooter: false,
   });
 
-  //ratios highways
+  //ratios
 
   const highwayTableColumns = [
     { heading: 'Highway', key: 'ratioRecordName', nosort: true },
+    { heading: 'Ratios', key: 'ratio', nosort: true },
+  ];
+
+  const electoralDistrictTableColumns = [
+    { heading: 'Electoral District', key: 'ratioRecordName', nosort: true },
+    { heading: 'Ratios', key: 'ratio', nosort: true },
+  ];
+
+  const economicRegionTableColumns = [
+    { heading: 'Economic Region', key: 'ratioRecordName', nosort: true },
+    { heading: 'Ratios', key: 'ratio', nosort: true },
+  ];
+
+  const serviceAreaTableColumns = [
+    { heading: 'Service Area', key: 'serviceAreaName', nosort: true },
+    { heading: 'Ratios', key: 'ratio', nosort: true },
+  ];
+
+  const districtTableColumns = [
+    { heading: 'District', key: 'districtAreaName', nosort: true },
     { heading: 'Ratios', key: 'ratio', nosort: true },
   ];
 
@@ -164,7 +185,7 @@ function ProjectSegment({
         </UIHeader>
         <DataTableControl
           dataList={dataList}
-          tableColumns={highwayTableColumns}
+          tableColumns={tableColumns}
           editable
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
@@ -250,13 +271,37 @@ function ProjectSegment({
           </Row>
         </UIHeader>
         <Row>
-          <Col xs={5}>
+          <Col xs={4}>
+            <RatioTable
+              title="Electoral Districts"
+              ratioTypeName="Electoral District"
+              dataList={ratiosData.electoralDistrict}
+              projectId={data.id}
+              tableColumns={electoralDistrictTableColumns}
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              formModalFields={<EditElectoralDistrictFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+          <Col xs={4}>
             <RatioTable
               title="Highways"
               ratioTypeName="Highway"
               dataList={ratiosData.highway}
               projectId={data.id}
               tableColumns={highwayTableColumns}
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              formModalFields={<EditHighwayFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+          <Col xs={4}>
+            <RatioTable
+              title="Service Areas"
+              ratioTypeName="Service Area"
+              dataList={ratiosData.serviceArea}
+              projectId={data.id}
+              tableColumns={serviceAreaTableColumns}
               editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditHighwayFormFields />}
               refreshData={refreshData}
