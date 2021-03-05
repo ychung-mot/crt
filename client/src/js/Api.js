@@ -108,9 +108,11 @@ export const postRatio = (projectId, ratioData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}`, ratioData);
 export const deleteRatio = (projectId, ratioId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
+
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 export const getDistricts = () => instance.get(Constants.API_PATHS.DISTRICTS);
+export const getServiceAreas = () => instance.get(Constants.API_PATHS.SERVICE_AREAS);
 
 //Code Lookups
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
