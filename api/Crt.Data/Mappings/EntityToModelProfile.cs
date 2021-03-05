@@ -97,6 +97,7 @@ namespace Crt.Data.Mappings
             CreateMap<CrtRatio, RatioDto>();
             CreateMap<CrtRatio, RatioCreateDto>();
             CreateMap<CrtRatio, RatioListDto>();
+            CreateMap<CrtRatio, RatioUpdateDto>();
         }
     }
 }

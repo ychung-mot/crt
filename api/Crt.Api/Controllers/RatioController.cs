@@ -5,6 +5,7 @@ using Crt.Model;
 using Crt.Model.Dtos.Ratio;
 using Crt.Model.Dtos.Segments;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Controllers
@@ -24,6 +25,12 @@ namespace Crt.Api.Controllers
             _ratioService = ratioService;
         }
 
+        /// <summary>
+        /// Exposed API to create ratios
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="ratio"></param>
+        /// <returns></returns>
         [HttpPost]
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult<RatioDto>> CreateRatio(decimal projectId, RatioCreateDto ratio)
@@ -40,6 +47,35 @@ namespace Crt.Api.Controllers
             }
 
             return CreatedAtRoute("GetRatio", new { projectId = projectId, id = response.ratioId }, await _ratioService.GetRatioByIdAsync(response.ratioId));
+        }
+
+        [HttpPut("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> UpdateRatio(decimal projectId, decimal id, RatioUpdateDto ratio)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            ratio.ProjectId = projectId;
+
+            if (id != ratio.RatioId)
+            {
+                throw new Exception($"The ratio ID from the query string does not match that of the body.");
+            }
+
+            var response = await _ratioService.UpdateRatioAsync(ratio);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (response.Errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+            }
+
+            return NoContent();
         }
 
         [HttpGet("{id}", Name = "GetRatio")]
