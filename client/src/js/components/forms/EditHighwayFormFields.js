@@ -30,9 +30,9 @@ const EditHighwayFormFields = ({
 
   const validationSchema = Yup.object({
     ratio: Yup.number()
-      .positive('Must be a positive number')
       .min(0, 'Ratio must between 0 and 1')
-      .max(1, 'Ratio must be between 0 and 1'),
+      .max(1, 'Ratio must be between 0 and 1')
+      .test('2decimals', 'Only 2 decimal places allowed', (value) => /^\d*(\.\d{0,2})?$/.test(value)),
     ratioRecordLkupId: Yup.number().required(`${ratioTypeName} Required`),
   });
 

@@ -108,6 +108,8 @@ export const postRatio = (projectId, ratioData) =>
   instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}`, ratioData);
 export const deleteRatio = (projectId, ratioId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
+export const putRatio = (projectid, ratioId, ratioData) =>
+  instance.put(`${Constants.API_PATHS.PROJECTS}/${projectid}${Constants.API_PATHS.RATIO}/${ratioId}`, ratioData);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);

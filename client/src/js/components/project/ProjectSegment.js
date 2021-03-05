@@ -139,7 +139,7 @@ function ProjectSegment({
             .finally(() => formModal.setSubmitting(false));
         } else if (formType === Constants.FORM_TYPE.EDIT) {
           api
-            .putTender(data.id, values.id, values)
+            .putRatio(projectId, values.id, values)
             .then(() => {
               formModal.closeForm();
               refreshData();
