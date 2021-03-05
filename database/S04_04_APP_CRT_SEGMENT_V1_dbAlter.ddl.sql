@@ -13,7 +13,7 @@ Changes:
 	- Added DESCRIPTION to CRT_SEGMENT and history and managed the triggers
 */
 
-USE CRT_DEVDB;
+USE CRT_DEV;
 GO
 
 /* ---------------------------------------------------------------------- */
