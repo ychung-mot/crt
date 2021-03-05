@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import EditSegmentFormFields from '../forms/EditSegmentFormFields';
 import EditHighwayFormFields from '../forms/EditHighwayFormFields';
 import EditElectoralDistrictFormFields from '../forms/EditElectoralDistrictFormFields';
+import EditServiceAreaFormFields from '../forms/EditServiceAreaFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -303,7 +304,7 @@ function ProjectSegment({
               projectId={data.id}
               tableColumns={serviceAreaTableColumns}
               editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-              formModalFields={<EditHighwayFormFields />}
+              formModalFields={<EditServiceAreaFormFields />}
               refreshData={refreshData}
             />
           </Col>

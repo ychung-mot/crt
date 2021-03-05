@@ -15,7 +15,7 @@ const defaultValues = {
   ratioRecordTypeLkupId: undefined,
 };
 
-const EditHighwayFormFields = ({
+const EditServiceAreaFormFields = ({
   setInitialValues,
   formValues,
   setValidationSchema,
@@ -23,7 +23,7 @@ const EditHighwayFormFields = ({
   ratioId,
   formType,
   ratioTypeName,
-  highways,
+  serviceAreas,
   ratioRecordTypes,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const EditHighwayFormFields = ({
       .positive('Must be a positive number')
       .min(0, 'Ratio must between 0 and 1')
       .max(1, 'Ratio must be between 0 and 1'),
-    ratioRecordLkupId: Yup.number().required(`${ratioTypeName} Required`),
+    serviceAreaId: Yup.number().required(`${ratioTypeName} Required`),
   });
 
   useEffect(() => {
@@ -43,6 +43,7 @@ const EditHighwayFormFields = ({
     });
     setValidationSchema(validationSchema);
 
+    //temporary fix, need to create get for serviceArea
     if (formType === Constants.FORM_TYPE.EDIT) {
       setLoading(true);
       api
@@ -63,7 +64,7 @@ const EditHighwayFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="serviceAreaId" label={`${ratioTypeName}*`}>
-        <SingleDropdownField items={highways} name="serviceAreaId" searchable={true} />
+        <SingleDropdownField items={serviceAreas} name="serviceAreaId" searchable={true} />
       </FormRow>
       <FormRow name="ratio" label="Ratio*">
         <FormInput type="number" name="ratio" placeholder="Value between 0 and 1" id={`ratio`} step={0.1} />
@@ -74,9 +75,9 @@ const EditHighwayFormFields = ({
 
 const mapStateToProps = (state) => {
   return {
-    highways: Object.values(state.codeLookups.highways),
+    serviceAreas: Object.values(state.lookups.serviceAreas),
     ratioRecordTypes: Object.values(state.codeLookups.ratioRecordTypes),
   };
 };
 
-export default connect(mapStateToProps, null)(EditHighwayFormFields);
+export default connect(mapStateToProps, null)(EditServiceAreaFormFields);
