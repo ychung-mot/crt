@@ -14,6 +14,7 @@ import EditSegmentFormFields from '../forms/EditSegmentFormFields';
 import EditHighwayFormFields from '../forms/EditHighwayFormFields';
 import EditElectoralDistrictFormFields from '../forms/EditElectoralDistrictFormFields';
 import EditServiceAreaFormFields from '../forms/EditServiceAreaFormFields';
+import EditDistrictFormFields from '../forms/EditDistrictFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -104,7 +105,7 @@ function ProjectSegment({
   ];
 
   const districtTableColumns = [
-    { heading: 'District', key: 'districtAreaName', nosort: true },
+    { heading: 'District', key: 'districtName', nosort: true },
     { heading: 'Ratios', key: 'ratio', nosort: true },
   ];
 
@@ -156,7 +157,7 @@ function ProjectSegment({
     };
 
     const onEditClicked = (ratioId) => {
-      formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioId, projectId: projectId });
+      formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioId, projectId });
     };
 
     const onDeleteClicked = (ratioId) => {
@@ -305,6 +306,20 @@ function ProjectSegment({
               tableColumns={serviceAreaTableColumns}
               editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditServiceAreaFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={4}>
+            <RatioTable
+              title="Districts"
+              ratioTypeName="District"
+              dataList={ratiosData.district}
+              projectId={data.id}
+              tableColumns={districtTableColumns}
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              formModalFields={<EditDistrictFormFields />}
               refreshData={refreshData}
             />
           </Col>

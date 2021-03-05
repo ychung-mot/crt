@@ -11,11 +11,11 @@ import * as api from '../../Api';
 
 const defaultValues = {
   ratio: 0,
-  serviceAreaId: undefined,
+  districtId: undefined,
   ratioRecordTypeLkupId: undefined,
 };
 
-const EditServiceAreaFormFields = ({
+const EditDistrictFormFields = ({
   setInitialValues,
   formValues,
   setValidationSchema,
@@ -23,7 +23,7 @@ const EditServiceAreaFormFields = ({
   ratioId,
   formType,
   ratioTypeName,
-  serviceAreas,
+  districts,
   ratioRecordTypes,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const EditServiceAreaFormFields = ({
       .positive('Must be a positive number')
       .min(0, 'Ratio must between 0 and 1')
       .max(1, 'Ratio must be between 0 and 1'),
-    serviceAreaId: Yup.number().required(`${ratioTypeName} Required`),
+    districtId: Yup.number().required(`${ratioTypeName} Required`),
   });
 
   useEffect(() => {
@@ -62,8 +62,8 @@ const EditServiceAreaFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="serviceAreaId" label={`${ratioTypeName}*`}>
-        <SingleDropdownField items={serviceAreas} name="serviceAreaId" searchable={true} />
+      <FormRow name="districtId" label={`${ratioTypeName}*`}>
+        <SingleDropdownField items={districts} name="districtId" searchable={true} />
       </FormRow>
       <FormRow name="ratio" label="Ratio*">
         <FormInput type="number" name="ratio" placeholder="Value between 0 and 1" id={`ratio`} step={0.1} />
@@ -74,9 +74,9 @@ const EditServiceAreaFormFields = ({
 
 const mapStateToProps = (state) => {
   return {
-    serviceAreas: Object.values(state.lookups.serviceAreas),
+    districts: Object.values(state.lookups.districts),
     ratioRecordTypes: Object.values(state.codeLookups.ratioRecordTypes),
   };
 };
 
-export default connect(mapStateToProps, null)(EditServiceAreaFormFields);
+export default connect(mapStateToProps, null)(EditDistrictFormFields);
