@@ -15,6 +15,7 @@ import EditHighwayFormFields from '../forms/EditHighwayFormFields';
 import EditElectoralDistrictFormFields from '../forms/EditElectoralDistrictFormFields';
 import EditServiceAreaFormFields from '../forms/EditServiceAreaFormFields';
 import EditDistrictFormFields from '../forms/EditDistrictFormFields';
+import EditEconomicRegionFormFields from '../forms/EditEconomicRegionFormFields';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -320,6 +321,18 @@ function ProjectSegment({
               tableColumns={districtTableColumns}
               editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               formModalFields={<EditDistrictFormFields />}
+              refreshData={refreshData}
+            />
+          </Col>
+          <Col xs={4}>
+            <RatioTable
+              title="Economic Regions"
+              ratioTypeName="Economic Region"
+              dataList={ratiosData.economicRegion}
+              projectId={data.id}
+              tableColumns={economicRegionTableColumns}
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              formModalFields={<EditEconomicRegionFormFields />}
               refreshData={refreshData}
             />
           </Col>
