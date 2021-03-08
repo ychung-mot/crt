@@ -158,6 +158,18 @@
     </div>
   </div>
 
+  <!--Description input-->
+  <label for="segment-description">Description</label>
+  <div class="input-group input-group-sm mb-2">
+    <textarea
+      class="form-control"
+      form="simple-router-form"
+      id="segment-description"
+      placeholder="Insert description here"
+      rows="10"
+    ></textarea>
+  </div>
+
   <!-- Post Calculated Line to Database button -->
   <div class="text-right mb-3">
     <button
@@ -168,99 +180,6 @@
     >
       Save Segment
     </button>
-  </div>
-
-  <!-- Display Start  Point Lat/Long -->
-  <div class="input-group input-group-sm mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Start Lat</span>
-    </div>
-    <input
-      id="dr-start-lat-input"
-      type="number"
-      class="form-control"
-      aria-label="Start Point Latitude"
-      value=""
-    />
-    <div class="input-group-append"></div>
-  </div>
-  <div class="input-group input-group-sm mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Start Long</span>
-    </div>
-    <input
-      id="dr-start-lon-input"
-      type="number"
-      class="form-control"
-      aria-label="Start Point Longitude"
-      value=""
-    />
-    <div class="input-group-append"></div>
-  </div>
-  <!-- Use Start Point button -->
-  <div class="text-right mb-3">
-    <button id="dr-use-start-btn" class="btn btn-sm btn-success" type="button">
-      Use Start Point
-    </button>
-  </div>
-
-  <!-- Display End Point Lat/Long -->
-  <div class="input-group input-group-sm mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">End Lat</span>
-    </div>
-    <input
-      id="dr-end-lat-input"
-      type="number"
-      class="form-control"
-      aria-label="End Point Latitude"
-      value=""
-    />
-    <div class="input-group-append"></div>
-  </div>
-  <div class="input-group input-group-sm mb-3">
-    <div class="input-group-prepend">
-      <span class="input-group-text">End Long</span>
-    </div>
-    <input
-      id="dr-end-lon-input"
-      type="number"
-      class="form-control"
-      aria-label="End Point Longitude"
-      value=""
-    />
-    <div class="input-group-append"></div>
-  </div>
-  <!-- Use Start Point button -->
-  <div class="text-right mb-3">
-    <button id="dr-use-end-btn" class="btn btn-sm btn-success" type="button">
-      Use End Point
-    </button>
-  </div>
-
-  <!-- Generated Route Statitics -->
-  <div id="dr-route-statistics" style="display: none">
-    <table class="table table-sm table-striped dr-route-statistics-table">
-      <tbody>
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col" colspan="2">Travel Information</th>
-          </tr>
-        </thead>
-        <tr>
-          <td>Distance</td>
-          <td id="dr-travel-distance"></td>
-        </tr>
-        <tr>
-          <td>Time</td>
-          <td id="dr-travel-time"></td>
-        </tr>
-        <tr>
-          <td>Directions</td>
-          <td><ul id="dr-travel-directions"></ul></td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 
   <!-- No Route Could Be Found -->

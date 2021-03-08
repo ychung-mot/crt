@@ -25,6 +25,7 @@ import * as Constants from '../../Constants';
 const segmentTableColumns = [
   { heading: 'Segment start coordinates', key: 'startCoordinates', nosort: true },
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
+  { heading: 'Description', key: 'description', nosort: true },
 ];
 
 const highwayTableColumns = [
