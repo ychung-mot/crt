@@ -88,7 +88,7 @@ const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, proje
         <Row>
           <Col xs="auto">
             {title}
-            {warning && (
+            {dataList.length !== 0 && warning && (
               <MouseoverTooltip id={`ratio-${id}`} color="warning" icon={`exclamation-circle`}>
                 <div>
                   Ratio sum needs to be 1. Current total is <strong>{ratioTotal}</strong>
