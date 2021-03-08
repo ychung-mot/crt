@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import _ from 'lodash';
 
-import { Button } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PageSpinner from '../ui/PageSpinner';
 
 import * as Constants from '../../Constants';
@@ -9,6 +9,7 @@ import * as api from '../../Api';
 
 function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
   const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     window.addEventListener('message', addEventListenerCloseForm);
@@ -45,7 +46,18 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
     window.removeEventListener('message', addEventListenerCloseForm);
   };
 
-  //helper functions
+  //modal helper functions
+  const toggle = () => {
+    setModalOpen(!modalOpen);
+  };
+
+  const handleClose = () => {
+    if (!dirtyCheck) {
+      closeForm();
+    } else {
+      toggle();
+    }
+  };
 
   const dirtyCheck = () => {
     // check if iFrame form is empty. if it's dirty we should ask user to confirm leaving
@@ -75,10 +87,24 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
         title="map"
         ref={myIframe}
       />
-      <Button className="float-right mb-2" onClick={closeForm}>
+      <Button className="float-right mb-2" onClick={handleClose}>
         Cancel
       </Button>
-      <Button onClick={dirtyCheck}>Test</Button>
+      <Modal isOpen={modalOpen}>
+        <ModalHeader>You have unsaved changes.</ModalHeader>
+        <ModalBody>
+          If the screen is closed before saving these changes, they will be lost. Do you want to continue without
+          saving?
+        </ModalBody>
+        <ModalFooter>
+          <Button size="sm" color="primary" onClick={closeForm}>
+            Leave
+          </Button>
+          <Button color="secondary" size="sm" onClick={toggle}>
+            Go Back
+          </Button>
+        </ModalFooter>
+      </Modal>
     </React.Fragment>
   );
 }
