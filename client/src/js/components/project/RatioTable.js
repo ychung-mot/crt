@@ -6,12 +6,15 @@ import Authorize from '../fragments/Authorize';
 import UIHeader from '../ui/UIHeader';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
+import MouseoverTooltip from '../ui/MouseoverTooltip';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
 const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, projectId, dataList = [], refreshData }) => {
+  //used to generate ID for popover. Need to remove all spaces from title
+  const id = title.replace(/\b \b/g, '');
   const myHandleFormSubmit = (values, formType) => {
     if (!formModal.submitting) {
       formModal.setSubmitting(true);
@@ -66,7 +69,12 @@ const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, proje
     <Container>
       <UIHeader>
         <Row>
-          <Col xs="auto">{title}</Col>
+          <Col xs="auto">
+            {title}
+            <MouseoverTooltip id={`ratio-${id}`} color="warning" icon={`exclamation-circle`}>
+              Sum of ratios needs to be 1
+            </MouseoverTooltip>
+          </Col>
           <Col>
             <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
               <Button color="primary" className="float-right" onClick={onAddClicked}>
