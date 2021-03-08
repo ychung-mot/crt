@@ -115,7 +115,7 @@ namespace Crt.Domain.Services
 
         private void LoadRatioRules()
         {
-            _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.Ratio, FieldTypes.String, true, 1, 40, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.Ratio, FieldTypes.String, true, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.RatioValue), null));
             _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.RatioRecordTypeLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.RatioRecordType));
             _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
