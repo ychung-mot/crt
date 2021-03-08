@@ -11,13 +11,13 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const myIframe = useRef(null);
+
   useEffect(() => {
     window.addEventListener('message', addEventListenerCloseForm);
 
     return removeEventListenerCloseForm;
   });
-
-  const myIframe = useRef(null);
 
   //event functions
 
@@ -25,7 +25,7 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
     if (event.data.message === 'closeForm' && event.origin === `${window.location.protocol}//${window.location.host}`) {
       setLoading(true);
 
-      //convert route data into groups of 2. Represents lon and lat coordinates.
+      //convert route lineString data into groups of 2. Represents lon and lat coordinates.
       let data = _.chunk(event.data.route, 2);
       let description = event.data.description;
 
@@ -47,6 +47,7 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
   };
 
   //modal helper functions
+
   const toggle = () => {
     setModalOpen(!modalOpen);
   };
@@ -62,8 +63,7 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
   const dirtyCheck = () => {
     // check if iFrame form is empty. if it's dirty we should ask user to confirm leaving
     let myForm = myIframe.current.contentWindow.document.forms['simple-router-form'];
-    var dirtyFlag = false;
-
+    let dirtyFlag = false;
     for (let i = 0; i < myForm.elements.length; i++) {
       let fieldValue = myForm.elements[i].value;
       if (fieldValue) {
