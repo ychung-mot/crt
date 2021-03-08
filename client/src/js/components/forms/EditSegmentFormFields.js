@@ -53,7 +53,7 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
   };
 
   const handleClose = () => {
-    if (!dirtyCheck) {
+    if (dirtyCheck()) {
       closeForm();
     } else {
       toggle();
@@ -71,7 +71,7 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
       }
     }
 
-    return dirtyFlag;
+    return !dirtyFlag;
   };
 
   if (loading) return <PageSpinner />;
