@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { showValidationErrorDialog } from '../../redux/actions';
 import PropTypes from 'prop-types';
 
@@ -6,12 +6,23 @@ import Authorize from '../fragments/Authorize';
 import UIHeader from '../ui/UIHeader';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
+import MouseoverTooltip from '../ui/MouseoverTooltip';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
 const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, projectId, dataList = [], refreshData }) => {
+  const [ratioTotal, setRatioTotal] = useState(0);
+  const [warning, setWarning] = useState(false);
+  //used to generate ID for popover. Need to remove all spaces from title
+  const id = title.replace(/\b \b/g, '');
+
+  useEffect(() => {
+    ratioCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataList.length]);
+
   const myHandleFormSubmit = (values, formType) => {
     if (!formModal.submitting) {
       formModal.setSubmitting(true);
@@ -60,13 +71,31 @@ const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, proje
       .catch((error) => console.log(error));
   };
 
+  const ratioCheck = () => {
+    //checks if ratios add up to 1.
+    let total = dataList.reduce((acc, val) => acc + (val.ratio * 100) / 100, 0);
+    //needed to round off numbers to 2 decimal places. Fixes floating error bug.
+    total = Math.round(total * 100) / 100;
+    setRatioTotal(total);
+    setWarning(total !== 1);
+  };
+
   const formModal = useFormModal(title, formModalFields, myHandleFormSubmit, { saveCheck: true });
 
   return (
     <Container>
       <UIHeader>
         <Row>
-          <Col xs="auto">{title}</Col>
+          <Col xs="auto">
+            {title}
+            {warning && (
+              <MouseoverTooltip id={`ratio-${id}`} color="warning" icon={`exclamation-circle`}>
+                <div>
+                  Ratio sum needs to be 1. Current total is <strong>{ratioTotal}</strong>
+                </div>
+              </MouseoverTooltip>
+            )}
+          </Col>
           <Col>
             <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
               <Button color="primary" className="float-right" onClick={onAddClicked}>

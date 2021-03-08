@@ -53,10 +53,10 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
   };
 
   const handleClose = () => {
-    if (!dirtyCheck) {
-      closeForm();
-    } else {
+    if (dirtyCheck()) {
       toggle();
+    } else {
+      closeForm();
     }
   };
 
@@ -64,6 +64,12 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
     // check if iFrame form is empty. if it's dirty we should ask user to confirm leaving
     let myForm = myIframe.current.contentWindow.document.forms['simple-router-form'];
     let dirtyFlag = false;
+
+    //fixes crash if myiFrame hasn't loaded.
+    if (!myForm) {
+      return dirtyFlag;
+    }
+
     for (let i = 0; i < myForm.elements.length; i++) {
       let fieldValue = myForm.elements[i].value;
       if (fieldValue) {

@@ -92,13 +92,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
     segmentsFormModal.openForm(Constants.FORM_TYPE.ADD, { projectId: data.id, refreshData: refreshData });
   };
 
-  //temporary fix, useFormModal requires a handleEditSegmentFormSubmit, however we won't be using this.
-  const handleEditSegmentFormSubmit = (values) => {
-    console.log('submitting');
-    console.log(values);
-  };
-
-  const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, handleEditSegmentFormSubmit, {
+  const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, null, {
     size: 'xl',
     showModalHeader: false,
     showModalFooter: false,
@@ -237,8 +231,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
         </Row>
       </MaterialCard>
       <div className="text-right">
-        {/* temporary fix replace match with data.id */}
-        <Link to={`${Constants.PATHS.PROJECTS}/${match.params.id}${Constants.PATHS.PROJECT_TENDER}`}>
+        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_TENDER}`}>
           <Button color="secondary">{'< Project Tender'}</Button>
         </Link>
         <Button color="primary" onClick={() => history.push(projectSearchHistory)}>
