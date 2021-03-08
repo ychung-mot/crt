@@ -237,8 +237,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
         </Row>
       </MaterialCard>
       <div className="text-right">
-        {/* temporary fix replace match with data.id */}
-        <Link to={`${Constants.PATHS.PROJECTS}/${match.params.id}${Constants.PATHS.PROJECT_TENDER}`}>
+        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_TENDER}`}>
           <Button color="secondary">{'< Project Tender'}</Button>
         </Link>
         <Button color="primary" onClick={() => history.push(projectSearchHistory)}>
