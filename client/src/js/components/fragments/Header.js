@@ -96,9 +96,11 @@ const Header = ({ currentUser }) => {
                   Quick Links
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem tag={Link} to={`${Constants.PATHS.ADMIN}${Constants.PATHS.CODE_TABLES}`}>
-                    Code Tables
-                  </DropdownItem>
+                  <Authorize requires={Constants.PERMISSIONS.CODE_R}>
+                    <DropdownItem tag={Link} to={`${Constants.PATHS.ADMIN}${Constants.PATHS.CODE_TABLES}`}>
+                      Code Tables
+                    </DropdownItem>
+                  </Authorize>
                   <DropdownItem tag={Link} to={Constants.PATHS.API_ACCESS}>
                     API Access
                   </DropdownItem>
