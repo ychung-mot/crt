@@ -21,7 +21,7 @@ const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, proje
   useEffect(() => {
     ratioCheck();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataList.length]);
+  }, [dataList]);
 
   const myHandleFormSubmit = (values, formType) => {
     if (!formModal.submitting) {
