@@ -839,33 +839,18 @@ class CRTsegmentCreator {
 			
 */
 
-        //Using dragged points as start and end
-        var associatedInput = $(".dr-location-input-start");
-        $("#dr-start-lon-input").val(
-          associatedInput.attr("longitude").slice(0, 11)
-        );
-        $("#dr-start-lat-input").val(
-          associatedInput.attr("latitude").slice(0, 9)
-        );
-
-        associatedInput = $(".dr-location-input-end");
-        $("#dr-end-lon-input").val(
-          associatedInput.attr("longitude").slice(0, 11)
-        );
-        $("#dr-end-lat-input").val(
-          associatedInput.attr("latitude").slice(0, 9)
-        );
-
         //temporary fix removed this alert function for now
         //alert("POST this to the database:\n" + wkt);
 
         //grab all the points on the line from feature4236. Format Long Lat
         let pointsArray = feature4326.values_.geometry.flatCoordinates;
+        let description = $("#segment-description").val();
 
         window.parent.postMessage(
           {
             message: "closeForm",
             route: pointsArray,
+            description,
           },
           "*"
         );

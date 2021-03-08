@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import _ from 'lodash';
 
 import { Button } from 'reactstrap';
@@ -16,6 +16,8 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
     return removeEventListenerCloseForm;
   });
 
+  const myIframe = useRef(null);
+
   //event functions
 
   const addEventListenerCloseForm = (event) => {
@@ -24,9 +26,10 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
 
       //convert route data into groups of 2. Represents lon and lat coordinates.
       let data = _.chunk(event.data.route, 2);
+      let description = event.data.description;
 
       api
-        .postSegment(projectId, { route: data })
+        .postSegment(projectId, { route: data, description })
         .then(() => {
           setLoading(false);
           refreshData();
@@ -42,6 +45,23 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
     window.removeEventListener('message', addEventListenerCloseForm);
   };
 
+  //helper functions
+
+  const dirtyCheck = () => {
+    // check if iFrame form is empty. if it's dirty we should ask user to confirm leaving
+    let myForm = myIframe.current.contentWindow.document.forms['simple-router-form'];
+    var dirtyFlag = false;
+
+    for (let i = 0; i < myForm.elements.length; i++) {
+      let fieldValue = myForm.elements[i].value;
+      if (fieldValue) {
+        dirtyFlag = true;
+      }
+    }
+
+    return dirtyFlag;
+  };
+
   if (loading) return <PageSpinner />;
 
   return (
@@ -50,12 +70,15 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
         className="w-100"
         style={{ height: '800px' }}
         src={`${Constants.PATHS.TWM}`}
-        name="myiframe"
+        name="myIframe"
+        id="myIframe"
         title="map"
+        ref={myIframe}
       />
       <Button className="float-right mb-2" onClick={closeForm}>
         Cancel
       </Button>
+      <Button onClick={dirtyCheck}>Test</Button>
     </React.Fragment>
   );
 }
