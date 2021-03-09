@@ -22,6 +22,14 @@ const DataTableWithPaginaionControl = ({ searchPagination, onPageNumberChange, o
   );
 };
 
+const isOverflowY = (props, propName, componentName) => {
+  if (props[propName]) {
+    return new Error(
+      `${propName} is not a valid prop for ${componentName}. ${propName} does not work well with pagination`
+    );
+  }
+};
+
 DataTableWithPaginaionControl.propTypes = {
   dataList: PropTypes.arrayOf(PropTypes.object).isRequired,
   tableColumns: PropTypes.arrayOf(
@@ -60,6 +68,7 @@ DataTableWithPaginaionControl.propTypes = {
   onEditClicked: PropTypes.func,
   onDeleteClicked: PropTypes.func,
   onHeadingSortClicked: PropTypes.func,
+  overflowY: isOverflowY, //should not use overflowY in this component.
 };
 
 DataTableWithPaginaionControl.defaultProps = {

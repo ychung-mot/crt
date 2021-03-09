@@ -18,6 +18,7 @@ const DataTableControl = ({
   onEditClicked,
   onDeleteClicked,
   onHeadingSortClicked,
+  overflowY,
 }) => {
   const handleEditClicked = (id) => {
     if (onEditClicked) onEditClicked(id);
@@ -65,85 +66,100 @@ const DataTableControl = ({
     return item[column.key];
   };
 
+  const ConditionalWrapper = ({ condition, children, wrapper }) => {
+    return condition ? wrapper(children) : children;
+  };
+
   return (
     <React.Fragment>
-      <Table size="sm" responsive hover>
-        <thead className="thead-dark">
-          <tr>
-            {tableColumns.map((column) => {
-              let style = { whiteSpace: 'nowrap' };
+      <ConditionalWrapper
+        condition={overflowY}
+        wrapper={(children) => (
+          <div className={'overflow-auto'} style={{ maxHeight: '25vh' }}>
+            {children}
+          </div>
+        )}
+      >
+        <Table size="sm" responsive hover>
+          <thead className="thead-dark">
+            <tr>
+              {tableColumns.map((column) => {
+                let style = { whiteSpace: 'nowrap' };
 
-              if (column.maxWidth) style.maxWidth = column.maxWidth;
+                if (column.maxWidth) style.maxWidth = column.maxWidth;
 
+                return (
+                  <th key={column.heading} style={style}>
+                    {column.heading}
+                    {!column.nosort && (
+                      <FontAwesomeButton icon="sort" onClick={() => onHeadingSortClicked(column.key)} />
+                    )}
+                  </th>
+                );
+              })}
+              {(editable || deletable) && (
+                <Authorize requires={editPermissionName}>
+                  <th></th>
+                </Authorize>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {dataList.map((item, index) => {
               return (
-                <th key={column.heading} style={style}>
-                  {column.heading}
-                  {!column.nosort && <FontAwesomeButton icon="sort" onClick={() => onHeadingSortClicked(column.key)} />}
-                </th>
-              );
-            })}
-            {(editable || deletable) && (
-              <Authorize requires={editPermissionName}>
-                <th></th>
-              </Authorize>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {dataList.map((item, index) => {
-            return (
-              <tr key={index}>
-                {tableColumns.map((column) => {
-                  if (column.badge)
+                <tr key={index}>
+                  {tableColumns.map((column) => {
+                    if (column.badge)
+                      return (
+                        <td key={column.key}>
+                          {item[column.key] ? (
+                            <Badge color="success">{column.badge.active}</Badge>
+                          ) : (
+                            <Badge color="danger">{column.badge.inactive}</Badge>
+                          )}
+                        </td>
+                      );
+
+                    let style = { position: 'relative' };
+                    if (column.maxWidth) {
+                      style.maxWidth = column.maxWidth;
+                    }
                     return (
-                      <td key={column.key}>
-                        {item[column.key] ? (
-                          <Badge color="success">{column.badge.active}</Badge>
-                        ) : (
-                          <Badge color="danger">{column.badge.inactive}</Badge>
-                        )}
+                      <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
+                        {displayFormatter(item, column)}
                       </td>
                     );
-
-                  let style = { position: 'relative' };
-                  if (column.maxWidth) {
-                    style.maxWidth = column.maxWidth;
-                  }
-                  return (
-                    <td key={column.key} className={column.maxWidth ? 'text-overflow-hiden' : ''} style={style}>
-                      {displayFormatter(item, column)}
-                    </td>
-                  );
-                })}
-                {(editable || deletable) && (
-                  <Authorize requires={editPermissionName}>
-                    <td style={{ width: '1%', whiteSpace: 'nowrap' }}>
-                      {editable && (
-                        <FontAwesomeButton
-                          icon="edit"
-                          className="mr-1"
-                          onClick={() => handleEditClicked(item.id)}
-                          title="Edit Record"
-                        />
-                      )}
-                      {deletable && (
-                        <DeleteButton
-                          itemId={item.id}
-                          buttonId={`item_${item.id}_delete`}
-                          defaultEndDate={item.endDate}
-                          onDeleteClicked={onDeleteClicked}
-                          permanentDelete={item.canDelete}
-                          title={item.canDelete ? 'Delete Record' : 'Disable Record'}
-                        ></DeleteButton>
-                      )}
-                    </td>
-                  </Authorize>
-                )}
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+                  })}
+                  {(editable || deletable) && (
+                    <Authorize requires={editPermissionName}>
+                      <td style={{ width: '1%', whiteSpace: 'nowrap' }}>
+                        {editable && (
+                          <FontAwesomeButton
+                            icon="edit"
+                            className="mr-1"
+                            onClick={() => handleEditClicked(item.id)}
+                            title="Edit Record"
+                          />
+                        )}
+                        {deletable && (
+                          <DeleteButton
+                            itemId={item.id}
+                            buttonId={`item_${item.id}_delete`}
+                            defaultEndDate={item.endDate}
+                            onDeleteClicked={onDeleteClicked}
+                            permanentDelete={item.canDelete}
+                            title={item.canDelete ? 'Delete Record' : 'Disable Record'}
+                          ></DeleteButton>
+                        )}
+                      </td>
+                    </Authorize>
+                  )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </ConditionalWrapper>
     </React.Fragment>
   );
 };
@@ -175,11 +191,13 @@ DataTableControl.propTypes = {
   onEditClicked: PropTypes.func,
   onDeleteClicked: PropTypes.func,
   onHeadingSortClicked: PropTypes.func,
+  overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
 };
 
 DataTableControl.defaultProps = {
   editable: false,
   deletable: false,
+  overflowY: false,
 };
 
 export default DataTableControl;

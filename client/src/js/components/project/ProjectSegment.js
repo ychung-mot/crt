@@ -162,6 +162,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
           deletable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
           onDeleteClicked={onDeleteSegmentClicked}
+          overflowY={true}
         />
       </MaterialCard>
       <MaterialCard>
@@ -180,6 +181,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               tableColumns={electoralDistrictTableColumns}
               formModalFields={<EditElectoralDistrictFormFields />}
               refreshData={refreshData}
+              overflowY={true}
             />
           </Col>
           <Col xs={4}>
@@ -191,6 +193,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               tableColumns={highwayTableColumns}
               formModalFields={<EditHighwayFormFields />}
               refreshData={refreshData}
+              overflowY={true}
             />
           </Col>
           <Col xs={4}>
@@ -202,6 +205,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               tableColumns={serviceAreaTableColumns}
               formModalFields={<EditServiceAreaFormFields />}
               refreshData={refreshData}
+              overflowY={true}
             />
           </Col>
         </Row>
@@ -215,6 +219,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               tableColumns={districtTableColumns}
               formModalFields={<EditDistrictFormFields />}
               refreshData={refreshData}
+              overflowY={true}
             />
           </Col>
           <Col xs={4}>
@@ -226,6 +231,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
               tableColumns={economicRegionTableColumns}
               formModalFields={<EditEconomicRegionFormFields />}
               refreshData={refreshData}
+              overflowY={true}
             />
           </Col>
         </Row>

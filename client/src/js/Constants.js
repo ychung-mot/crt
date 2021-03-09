@@ -58,6 +58,7 @@ export const PATHS = {
   PROJECT_TENDER: '/projecttender',
   PROJECT_SEGMENT: '/segments',
   TWM: '/twm/',
+  CODE_TABLES: '/codetables',
 };
 
 export const MESSAGE_DATE_FORMAT = 'YYYY-MM-DD hh:mmA';
