@@ -12,7 +12,16 @@ import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, projectId, dataList = [], refreshData }) => {
+const RatioTable = ({
+  title,
+  ratioTypeName,
+  tableColumns,
+  formModalFields,
+  projectId,
+  dataList = [],
+  refreshData,
+  overflowY,
+}) => {
   const [ratioTotal, setRatioTotal] = useState(0);
   const [warning, setWarning] = useState(false);
   //used to generate ID for popover. Need to remove all spaces from title
@@ -113,6 +122,7 @@ const RatioTable = ({ title, ratioTypeName, tableColumns, formModalFields, proje
         editPermissionName={Constants.PERMISSIONS.PROJECT_W}
         onEditClicked={onEditClicked}
         onDeleteClicked={onDeleteClicked}
+        overflowY={overflowY}
       />
       {formModal.formElement}
     </Container>
@@ -147,4 +157,5 @@ RatioTable.propTypes = {
   ).isRequired,
   formModalFields: PropTypes.element.isRequired, //these will be displayed when dialog opens
   refreshData: PropTypes.func.isRequired, //used to refresh page when data is changed
+  overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
 };
