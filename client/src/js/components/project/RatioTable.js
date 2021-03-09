@@ -100,7 +100,7 @@ const RatioTable = ({
             {dataList.length !== 0 && warning && (
               <MouseoverTooltip id={`ratio-${id}`} color="warning" icon={`exclamation-circle`}>
                 <div>
-                  Ratio sum needs to be 1. Current total is <strong>{ratioTotal}</strong>
+                  Sum of {title} ratios needs to be 1. Current total is <strong>{ratioTotal}</strong>
                 </div>
               </MouseoverTooltip>
             )}
