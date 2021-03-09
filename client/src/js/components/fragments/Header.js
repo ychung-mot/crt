@@ -77,30 +77,37 @@ const Header = ({ currentUser }) => {
           <Collapse isOpen={!collapsed} navbar>
             <Nav className="navbar-nav">
               <React.Fragment>
-                <Authorize requires={Constants.PERMISSIONS.USER_R}>
-                  <NavLinkWithMatch hideNavbar={hideNavbar} to={Constants.PATHS.ADMIN_USERS} text="Users" />
-                </Authorize>
-                <Authorize requires={Constants.PERMISSIONS.ROLE_R}>
-                  <NavLinkWithMatch
-                    hideNavbar={hideNavbar}
-                    to={Constants.PATHS.ADMIN_ROLES}
-                    text="Roles and Permissions"
-                  />
-                </Authorize>
                 <Authorize requires={Constants.PERMISSIONS.PROJECT_R}>
                   <NavLinkWithMatch hideNavbar={hideNavbar} to={Constants.PATHS.PROJECTS} text="Projects" />
                 </Authorize>
               </React.Fragment>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
-                  Quick Links
+                  Admin
                 </DropdownToggle>
                 <DropdownMenu>
                   <Authorize requires={Constants.PERMISSIONS.CODE_R}>
-                    <DropdownItem tag={Link} to={`${Constants.PATHS.ADMIN}${Constants.PATHS.CODE_TABLES}`}>
+                    <DropdownItem tag={Link} to={Constants.PATHS.ADMIN_USERS}>
+                      Users
+                    </DropdownItem>
+                  </Authorize>
+                  <Authorize requires={Constants.PERMISSIONS.CODE_R}>
+                    <DropdownItem tag={Link} to={Constants.PATHS.ADMIN_ROLES}>
+                      Roles and Permissions
+                    </DropdownItem>
+                  </Authorize>
+                  <Authorize requires={Constants.PERMISSIONS.CODE_R}>
+                    <DropdownItem tag={Link} to={Constants.PATHS.ADMIN_CODE_TABLES}>
                       Code Tables
                     </DropdownItem>
                   </Authorize>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Quick Links
+                </DropdownToggle>
+                <DropdownMenu>
                   <DropdownItem tag={Link} to={Constants.PATHS.API_ACCESS}>
                     API Access
                   </DropdownItem>

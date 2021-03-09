@@ -209,6 +209,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
             />
           </Col>
         </Row>
+        <div className="border-bottom mt-3 mb-3"></div>
         <Row>
           <Col xs={4}>
             <RatioTable
