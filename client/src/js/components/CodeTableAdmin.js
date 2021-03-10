@@ -13,9 +13,9 @@ import MultiDropdownField from './ui/MultiDropdownField';
 import SingleDropdownField from './ui/SingleDropdownField';
 import DataTableWithPaginaionControl from './ui/DataTableWithPaginaionControl';
 import SubmitButton from './ui/SubmitButton';
-import PageSpinner from './ui/PageSpinner';
 import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
+import PageSpinner from './ui/PageSpinner';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -38,6 +38,13 @@ const validationSchema = Yup.object({
 const isActive = [
   { id: 'active', name: 'Active' },
   { id: 'inactive', name: 'Inactive' },
+];
+
+const tableColumns = [
+  { heading: 'Code Value^', key: 'codeValue', nosort: true },
+  { heading: 'Code Description', key: 'description', nosort: true },
+  { heading: 'Order Number', key: 'displayOrder', nosort: true },
+  { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'InActive' }, nosort: true },
 ];
 
 //temporary fix to create codeTableList POC
@@ -112,6 +119,18 @@ const CodeTableAdmin = (props) => {
     console.log('reset');
   };
 
+  const onDeleteClicked = () => {
+    console.log('delete');
+  };
+
+  const onEditClicked = () => {
+    console.log('edit');
+  };
+
+  const data = Object.values(searchData.data).map((values) => ({
+    ...values,
+  }));
+
   return (
     <React.Fragment>
       <MaterialCard>
@@ -148,6 +167,44 @@ const CodeTableAdmin = (props) => {
           )}
         </Formik>
       </MaterialCard>
+      <Authorize requires={Constants.PERMISSIONS.CODE_W}>
+        <Row>
+          <Col>
+            <Button
+              size="sm"
+              color="secondary"
+              className="float-right mb-3 ml-2"
+              onClick={() => console.log('SET ORDER')}
+            >
+              Set Order
+            </Button>
+            <Button size="sm" color="primary" className="float-right mb-3" onClick={() => console.log('OPEN ME')}>
+              Add New
+            </Button>
+          </Col>
+        </Row>
+      </Authorize>
+      {searchData.loading && <PageSpinner />}
+      {!searchData.loading && (
+        <MaterialCard>
+          {data.length > 0 && (
+            <DataTableWithPaginaionControl
+              dataList={data}
+              tableColumns={tableColumns}
+              searchPagination={searchData.pagination}
+              onPageNumberChange={searchData.handleChangePage}
+              onPageSizeChange={searchData.handleChangePageSize}
+              editable
+              deletable
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              onEditClicked={onEditClicked}
+              onDeleteClicked={onDeleteClicked}
+              onHeadingSortClicked={searchData.handleHeadingSortClicked}
+            />
+          )}
+          {searchData.data.length <= 0 && <div>No records found</div>}
+        </MaterialCard>
+      )}
     </React.Fragment>
   );
 };
