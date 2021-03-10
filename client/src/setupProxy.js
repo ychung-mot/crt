@@ -29,7 +29,7 @@ module.exports = function (app) {
     app.use(
       '/ogs-internal',
       createProxyMiddleware({
-        target: 'http://vip-dev-geo.th.gov.bc.ca:8082/ogs-geoV06/',
+        target: 'http://vip-dev-geo.th.gov.bc.ca:8081/ogs-geoV06/',
         pathRewrite: {
           '^/ogs-internal/': '/',
         },
