@@ -1,14 +1,21 @@
 ﻿using Crt.Model.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Crt.Model.Dtos.CodeLookup
 {
-    public class CodeLookupDto : CodeLookupBaseDto
+    public class CodeLookupListDto : CodeLookupBaseDto
     {
         [JsonPropertyName("id")]
         public decimal CodeLookupId { get; set; }
-        public decimal? CodeValueNum { get; set; }
+        [JsonIgnore]
         public string CodeValueFormat { get; set; }
+        [JsonIgnore]
+        public decimal? CodeValueNum { get; set; }
         [JsonPropertyName("name")]
         public string Description
         {
