@@ -28,7 +28,7 @@ const phases = {
     tag: `dev-${version}-${changeId}`,
     host: `crt-${changeId}-2d982c-dev.apps.silver.devops.gov.bc.ca`,
     url_prefix: "dev-",
-    ogs_server: "http://vip-dev-geo.th.gov.bc.ca:8082/ogs-geoV06/",
+    ogs_server: "http://vip-dev-geo.th.gov.bc.ca:8081/ogs-geoV06/",
     dotnet_env: "Development",
     transient: true,
   },
