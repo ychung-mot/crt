@@ -87,7 +87,7 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
       <iframe
         className="w-100"
         style={{ height: '800px' }}
-        src={`${Constants.PATHS.TWM}`}
+        src={`${Constants.PATHS.TWM}?project=${projectId}`}
         name="myIframe"
         id="myIframe"
         title="map"

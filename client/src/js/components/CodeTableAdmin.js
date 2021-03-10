@@ -67,15 +67,14 @@ const codeTables = codeTableAdd([
   'Program',
   'Program Category',
   'Quantity',
-  'Ratio Type',
   'RC Number',
   'Service Line',
 ]);
 
 const formikInitialValues = {
   searchText: '',
-  isActive: [],
-  codeTypeLkupId: undefined,
+  isActive: ['active'],
+  codeTypeLkupId: 0,
 };
 
 const CodeTableAdmin = (props) => {
