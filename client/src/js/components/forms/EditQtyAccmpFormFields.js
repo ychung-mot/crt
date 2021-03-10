@@ -25,7 +25,7 @@ const validationSchema = Yup.object({
   fiscalYearLkupId: Yup.number().required('Fiscal Year Required'),
   qtyAccmpLkupId: Yup.number().required('Please choose Quantity or Accomplishment'),
   forecast: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
-  //schedule7: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
+  schedule7: Yup.number().lessThan(10000000, 'Value must be less than 10 million').nullable(true),
   actual: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
 });
 
@@ -78,7 +78,7 @@ const EditQtyAccmpFormFields = ({
   const handleOnChange = (type) => {
     setQtyOrAccmp(type);
     setFieldTouched('qtyAccmpLkupId', false);
-    setValues({ ...values, qtyAccmpLkupId: undefined, schedule7: undefined });
+    setValues({ ...values, qtyAccmpLkupId: undefined, schedule7: type === 'QUANTITY' ? 0 : undefined });
   };
 
   if (loading || formValues === null) return <PageSpinner />;
