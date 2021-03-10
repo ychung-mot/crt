@@ -25,7 +25,7 @@ const validationSchema = Yup.object({
   fiscalYearLkupId: Yup.number().required('Fiscal Year Required'),
   qtyAccmpLkupId: Yup.number().required('Please choose Quantity or Accomplishment'),
   forecast: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
-  schedule7: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
+  //schedule7: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
   actual: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
 });
 
@@ -94,6 +94,7 @@ const EditQtyAccmpFormFields = ({
           name="qtyOrAccmp"
           handleOnChange={handleOnChange}
           defaultTitle={qtyOrAccmp}
+          disabled={formType === Constants.FORM_TYPE.EDIT}
         />
       </FormRow>
       {qtyOrAccmp && (
