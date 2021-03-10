@@ -113,8 +113,10 @@ function onLoginSuccess() {
   });
 
   // Determine which app config was called and try to load it
+ // projectId = getUrlParameterByName("project");
   var configName = getUrlParameterByName("c");
   loadConfig(configName, 0);
+  app.projectId = getUrlParameterByName("project");
 }
 
 /**

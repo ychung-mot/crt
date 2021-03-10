@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Crt.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Crt.Api.Controllers.RatioController.CreateRatio(System.Decimal,Crt.Model.Dtos.Ratio.RatioCreateDto)">
+            <summary>
+            Exposed API to create ratios
+            </summary>
+            <param name="projectId"></param>
+            <param name="ratio"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Crt.Api.Controllers.UsersController.GetUsersAsync(System.String,System.String,System.Nullable{System.Boolean},System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Search users
+            </summary>
+            <param name="regions">Region IDs</param>
+            <param name="searchText">Search text for first name, last name, orgnization name, username</param>
+            <param name="isActive">True or false</param>
+            <param name="pageSize">Page size</param>
+            <param name="pageNumber">Page number</param>
+            <param name="orderBy">Order by column(s). Example: orderby=username</param>
+            <param name="direction">Oder by direction.  Example: asc, desc</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

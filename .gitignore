@@ -4,3 +4,4 @@ node_modules/
 chris.json
 debug.log
 keycloak.json
+.DS_Store
