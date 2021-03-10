@@ -1,6 +1,6 @@
 app.config = {
   title: {
-    desktop: "CRT Web Map",
+    desktop: "Captial and Rehabilitation Project Tracking",
     mobile: "CRT",
   },
   contact: {
@@ -40,17 +40,11 @@ app.config = {
           name: "MoTI",
           url: "../ogs-public/ows",
         },
-
         {
-          name: "MoTI",
+          name: "MoTI (Int)",
           url: " ../ogs-internal/ows",
         },
-
-        {
-          name: "BCGW (Int)",
-          url: "https://apps.gov.bc.ca/ext/sgw/geo.allgov",
-        },
-        {
+       {
           name: "BCGW",
           url: "https://openmaps.gov.bc.ca/geo/ows",
         },
@@ -93,23 +87,32 @@ app.config = {
       // Overlay Layers
 
       new ol.layer.Image({
-        title: "Project Segments",
+        title: "Segments",
         type: "overlay",
-        visible: false,
+        visible: true,
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
           params: {
-            LAYERS: "crt:CRT_SEGMENT",
+            LAYERS: "crt:SEGMENT_RECORD",
+            CQL_FILTER: "project_id="+app.projectId,
           },
-          transition: 0,
+        fields: [
+          {
+            name: "description",
+            searchable: true,
+            nameTransform: function (name) {
+              return "Desciption:";
+            },
+          },
+        ],          transition: 0,
         }),
       }),
 
-      new ol.layer.Tile({
+      new ol.layer.Image({
         title: "Digital Road Atlas",
         type: "overlay",
         visible: true,
-        source: new ol.source.TileWMS({
+        source: new ol.source.ImageWMS({
           url: "https://openmaps.gov.bc.ca/geo/ows",
           params: {
             LAYERS: "pub:WHSE_BASEMAPPING.DRA_DGTL_ROAD_ATLAS_MPAR_SP",
@@ -164,43 +167,118 @@ app.config = {
       }),
 
       new ol.layer.Image({
-        title: "Project Segments",
+        title: "Electoral Districts",
         type: "overlay",
         visible: false,
         source: new ol.source.ImageWMS({
-          url: " ../ogs-internal/ows",
+          url: "https://openmaps.gov.bc.ca/geo/ows",
           params: {
-            LAYERS: "crt:CRT_SEGMENT",
-          },
-          transition: 0,
-        }),
-      }),
-
-      new ol.layer.Image({
-        title: "MoTI Regions",
-        type: "overlay",
-        visible: false,
-        source: new ol.source.ImageWMS({
-          url: " ../ogs-internal/ows",
-          params: {
-            LAYERS: "hwy:DSA_REGION_BOUNDARY",
+            LAYERS: "pub:WHSE_ADMIN_BOUNDARIES.EBC_PROV_ELECTORAL_DIST_SVW",
           },
           transition: 0,
         }),
         fields: [
           {
-            name: "REGION_NUMBER",
+            name: "ED_ABBREVIATION",
+            searchable: true,
+            title: true,
+            nameTransform: function (name) {
+              return "";
+            },
+          },
+          {
+            name: "ED_NAME",
+            searchable: true,
+            nameTransform: function (name) {
+              return "District Name:";
+            },
+          },
+        ],
+      }),
+
+      new ol.layer.Image({
+        title: "MoTI Service Area",
+        type: "overlay",
+        visible: false,
+        source: new ol.source.ImageWMS({
+          url: " ../ogs-internal/ows",
+          params: {
+            LAYERS: "hwy:DSA_CONTRACT_AREA",
+          },
+          transition: 0,
+        }),
+        fields: [
+          {
+            name: "CONTRACT_AREA_NUMBER",
+            searchable: true,
+            nameTransform: function (name) {
+              return "Service Area No";
+            },
+          },
+          {
+            name: "CONTRACT_AREA_NAME",
+            searchable: true,
+            title: true,
+            nameTransform: function (name) {
+              return "Name";
+            },
+          },
+        ],
+      }),
+      
+      new ol.layer.Image({
+        title: "MoTI District",
+        type: "overlay",
+        visible: false,
+        source: new ol.source.ImageWMS({
+          url: " ../ogs-internal/ows",
+          params: {
+            LAYERS: "hwy:DSA_DISTRICT_BOUNDARY",
+          },
+          transition: 0,
+        }),
+        fields: [
+          {
+            name: "DISTRICT_NUMBER",
             searchable: true,
             nameTransform: function (name) {
               return "Region No";
             },
           },
           {
-            name: "REGION_NAME",
+            name: "DISTRICT_NAME",
             searchable: true,
-            title: true,
             nameTransform: function (name) {
               return "Region Name";
+            },
+          },
+        ],
+      }),
+
+
+      new ol.layer.Image({
+        title: "Economic Regions",
+        type: "overlay",
+        visible: false,
+        source: new ol.source.ImageWMS({
+          url: "https://openmaps.gov.bc.ca/geo/ows",
+          params: {
+            LAYERS: "pub:WHSE_HUMAN_CULTURAL_ECONOMIC.CEN_ECONOMIC_REGIONS_SVW",
+          },
+          transition: 0,
+        }),
+        fields: [
+          {
+            name: "CENSUS_YEAR",
+            nameTransform: function (name) {
+              return "Census Year";
+            },
+          },
+          {
+            name: "ECONOMIC_REGION_NAME",
+            searchable: true,
+            nameTransform: function (name) {
+              return "Name:";
             },
           },
         ],
