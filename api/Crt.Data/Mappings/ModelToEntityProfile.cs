@@ -83,6 +83,8 @@ namespace Crt.Data.Mappings
             CreateMap<RatioDto, CrtRatio>();
             CreateMap<RatioCreateDto, CrtRatio>();
             CreateMap<RatioUpdateDto, CrtRatio>();
+
+            CreateMap<CodeLookupListDto, CrtCodeLookup>();
         }
     }
 }
