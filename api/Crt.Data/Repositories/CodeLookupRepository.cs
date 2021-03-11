@@ -21,6 +21,7 @@ namespace Crt.Data.Repositories
         Task<CrtCodeLookup> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup);
         Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId);
         Task UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
+        Task<bool> DoesCodeLookupExistAsync(string codeName, string codeSet);
     }
 
     public class CodeLookupRepository : CrtRepositoryBase<CrtCodeLookup>, ICodeLookupRepository
@@ -89,6 +90,11 @@ namespace Crt.Data.Repositories
             crtCodeLookup.EndDate = codeLookup.EndDate?.Date;
 
             Mapper.Map(codeLookup, crtCodeLookup);
+        }
+
+        public async Task<bool> DoesCodeLookupExistAsync(string codeName, string codeSet)
+        {
+            return await DbSet.AnyAsync(x => x.CodeName == codeName && x.CodeSet == codeSet);
         }
     }
 }

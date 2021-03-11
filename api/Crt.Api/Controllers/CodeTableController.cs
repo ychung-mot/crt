@@ -41,10 +41,6 @@ namespace Crt.Api.Controllers
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult<CodeLookupCreateDto>> CreateCodeLookup(CodeLookupCreateDto codeLookup)
         {
-            // need to validate that the Code Name doesn't already exist
-            //var result = await IsProjectAuthorized(projectId);
-            //if (result != null) return result;
-
             var response = await _codeTableService.CreateCodeLookupAsync(codeLookup);
             if (response.errors.Count > 0)
             {

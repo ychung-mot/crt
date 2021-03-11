@@ -45,11 +45,14 @@ namespace Crt.Domain.Services
         public async Task<(decimal codeLookupId, Dictionary<string, List<string>> errors)> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup)
         {
             codeLookup.TrimStringFields();
-
+            
             var errors = new Dictionary<string, List<string>>();
             errors = _validator.Validate(Entities.CodeTable, codeLookup, errors);
 
-            //await ValidateFinTarget(finTarget, errors);
+            if (await _codeLookupRepo.DoesCodeLookupExistAsync(codeLookup.CodeName, codeLookup.CodeSet))
+            {
+                errors.AddItem("Code Lookup", $"Code Lookup [{codeLookup.CodeName}] in Code Set [{codeLookup.CodeSet}] already exists");
+            }
 
             if (errors.Count > 0)
             {
