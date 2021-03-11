@@ -16,6 +16,7 @@ import SubmitButton from './ui/SubmitButton';
 import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
 import PageSpinner from './ui/PageSpinner';
+import EditCodeSetFormFields from './forms/EditCodeSetFormFields';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -148,9 +149,19 @@ const CodeTableAdmin = (props) => {
     console.log('edit');
   };
 
+  const onAddClicked = () => {
+    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeSetName: 'variableName here' });
+  };
+
+  const handleCodeSetFormSubmit = (values) => {
+    console.log(values);
+  };
+
   const data = Object.values(searchData.data).map((values) => ({
     ...values,
   }));
+
+  const codeSetFormModal = useFormModal(`Codeset`, <EditCodeSetFormFields />, handleCodeSetFormSubmit);
 
   return (
     <React.Fragment>
@@ -204,7 +215,7 @@ const CodeTableAdmin = (props) => {
             >
               Set Order
             </Button>
-            <Button size="sm" color="primary" className="float-right mb-3" onClick={() => console.log('OPEN ME')}>
+            <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
               Add New
             </Button>
           </Col>
@@ -231,6 +242,7 @@ const CodeTableAdmin = (props) => {
           {searchData.data.length <= 0 && <div>No records found</div>}
         </MaterialCard>
       )}
+      {codeSetFormModal.formElement}
     </React.Fragment>
   );
 };
