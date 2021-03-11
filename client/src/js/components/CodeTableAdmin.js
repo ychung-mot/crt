@@ -36,7 +36,7 @@ const defaultSearchOptions = {
 const formikInitialValues = {
   searchText: '',
   isActive: ['active'],
-  codeSet: [0],
+  codeSet: 0,
 };
 
 const validationSchema = Yup.object({
