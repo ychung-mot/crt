@@ -58,6 +58,7 @@ namespace Crt.Model
         public const string Tender = "tender";
         public const string Segment = "segment";
         public const string Ratio = "ratio";
+        public const string CodeTable = "codetable";
     }
 
     public static class FieldTypes
@@ -148,6 +149,7 @@ namespace Crt.Model
         public const string EconomicRegion = "ECONOMIC_REGION";
         public const string District = "DISTRICT";
         public const string ServiceArea = "SERVICE_AREA";
+        public const string CodeSetLookup = "CODE_SET_LOOKUP";
 
     }
 

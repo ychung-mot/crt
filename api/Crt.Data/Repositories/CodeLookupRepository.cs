@@ -18,6 +18,8 @@ namespace Crt.Data.Repositories
     {
         IEnumerable<CodeLookupDto> GetCodeLookups();
         Task<PagedDto<CodeLookupListDto>> GetCodeTablesAsync(string codeSet, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
+        Task<CrtCodeLookup> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup);
+        Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId);
     }
 
     public class CodeLookupRepository : CrtRepositoryBase<CrtCodeLookup>, ICodeLookupRepository
@@ -59,5 +61,24 @@ namespace Crt.Data.Repositories
 
         }
 
+        public async Task<CrtCodeLookup> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup)
+        {
+            var crtCodeLookup = new CrtCodeLookup();
+
+            Mapper.Map(codeLookup, crtCodeLookup);
+            crtCodeLookup.CodeValueFormat = "STRING";
+
+            await DbSet.AddAsync(crtCodeLookup);
+
+            return crtCodeLookup;
+        }
+
+        public async Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId)
+        {
+            var codeLookup = await DbSet.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.CodeLookupId == codeLookupId);
+
+            return Mapper.Map<CodeLookupDto>(codeLookup);
+        }
     }
 }
