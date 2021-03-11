@@ -155,15 +155,16 @@ const CodeTableAdmin = (props) => {
 
   const handleCodeSetFormSubmit = (values, formType) => {
     if (formType === Constants.FORM_TYPE.ADD) {
-      api
-        .postCodeTable(values)
-        .then(() => {
-          codeSetFormModal.closeForm();
-          searchData.refresh();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      //temporary fix. Uncomment out when CodeSet List is received.
+      // api
+      //   .postCodeTable(values)
+      //   .then(() => {
+      //     codeSetFormModal.closeForm();
+      //     searchData.refresh();
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     } else if (formType === Constants.FORM_TYPE.EDIT) {
       api
         .putCodeTable(values.id, values)
