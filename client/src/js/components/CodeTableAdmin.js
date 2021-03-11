@@ -36,7 +36,7 @@ const defaultSearchOptions = {
 const formikInitialValues = {
   searchText: '',
   isActive: ['active'],
-  codeSet: 0,
+  codeSet: 1,
 };
 
 const validationSchema = Yup.object({
@@ -62,7 +62,7 @@ const codeTableAdd = (nameList) => {
   let codeTablesList = [];
 
   for (let each in nameList) {
-    codeTablesList.push({ id: parseInt(each), name: nameList[each] });
+    codeTablesList.push({ id: parseInt(each) + 1, name: nameList[each] });
   }
 
   return codeTablesList;
@@ -121,6 +121,7 @@ const CodeTableAdmin = (props) => {
       isActive = values.isActive[0] === 'active';
     }
 
+    //temporary fix until code set exists
     let codeSet = codeTables.find((set) => set.id === values.codeSet).name.toLowerCase();
     codeSet = codeSet.replace(/\s/g, '_');
 
@@ -166,7 +167,12 @@ const CodeTableAdmin = (props) => {
             <Form>
               <Row form>
                 <Col>
-                  <SingleDropdownField {...formikProps} items={codeTables} defaultTitle="Choose Type" name="codeSet" />
+                  <SingleDropdownField
+                    {...formikProps}
+                    items={codeTables}
+                    defaultTitle="Choose Codeset"
+                    name="codeSet"
+                  />
                 </Col>
                 <Col>
                   <Field type="text" name="searchText" placeholder="Search" className="form-control" />

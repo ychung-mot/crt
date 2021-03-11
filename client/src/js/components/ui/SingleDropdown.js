@@ -21,9 +21,8 @@ const SingleDropdown = (props) => {
     const item = items.find((o) => {
       // disable strict type checking
       // eslint-disable-next-line
-      return o.id == value;
+      return o.id === value;
     });
-
     if (item) setTitle(item.name);
   }, [value, items]);
 
