@@ -37,5 +37,34 @@ namespace Crt.Api.Controllers
             return await _codeTableService.GetCodeTablesAsync(codeSet, searchText, isActive, pageSize, pageNumber, orderBy, direction);
         }
 
+        [HttpPost]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<CodeLookupCreateDto>> CreateCodeLookup(decimal projectId, CodeLookupCreateDto codeLookup)
+        {
+            // need to validate that the Code Name doesn't already exist
+            //var result = await IsProjectAuthorized(projectId);
+            //if (result != null) return result;
+
+            var response = await _codeTableService.CreateCodeLookupAsync(codeLookup);
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return CreatedAtRoute("GetCodeLookup", new { id = response.codeLookupId }, await _codeTableService.GetCodeLookupByIdAsync(response.codeLookupId));
+        }
+
+        [HttpGet("{id}", Name = "GetCodeLookup")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<CodeLookupDto>> GetCodeLookupByIdAsync(decimal id)
+        {
+            var codeLookup = await _codeTableService.GetCodeLookupByIdAsync(id);
+            if (codeLookup == null)
+            {
+                return NotFound();
+            }
+
+            return codeLookup;
+        }
     }
 }

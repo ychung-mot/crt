@@ -98,5 +98,11 @@ namespace Crt.Api.Controllers
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.EconomicRegion));
         }
+
+        [HttpGet("codesets")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetCodeSetLookupss()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.CodeSetLookup));
+        }
     }
 }
