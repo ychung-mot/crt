@@ -19,6 +19,7 @@ export const API_PATHS = {
   ELECTORAL_DISTRICTS: `${CODE_LOOKUP}/electoraldistricts`,
   HIGHWAYS: `${CODE_LOOKUP}/highways`,
   ECONOMIC_REGIONS: `${CODE_LOOKUP}/economicregions`,
+  CODESETS: `${CODE_LOOKUP}/codesets`,
   PERMISSIONS: '/permissions',
   ROLE: '/roles',
   USER: '/users',

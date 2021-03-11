@@ -25,6 +25,7 @@ import {
   fetchEconomicRegions,
   fetchDistricts,
   fetchServiceAreas,
+  fetchCodesets,
 } from '../redux/actions';
 
 const Main = ({
@@ -50,6 +51,7 @@ const Main = ({
   fetchEconomicRegions,
   fetchDistricts,
   fetchServiceAreas,
+  fetchCodesets,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -75,6 +77,7 @@ const Main = ({
       fetchEconomicRegions(),
       fetchDistricts(),
       fetchServiceAreas(),
+      fetchCodesets(),
     ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -114,4 +117,5 @@ export default connect(mapStateToProps, {
   fetchEconomicRegions,
   fetchDistricts,
   fetchServiceAreas,
+  fetchCodesets,
 })(Main);

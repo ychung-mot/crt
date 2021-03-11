@@ -131,6 +131,7 @@ export const getRatioRecordTypes = () => instance.get(Constants.API_PATHS.RATIO_
 export const getElectoralDistricts = () => instance.get(Constants.API_PATHS.ELECTORAL_DISTRICTS);
 export const getHighways = () => instance.get(Constants.API_PATHS.HIGHWAYS);
 export const getEconomicRegions = () => instance.get(Constants.API_PATHS.ECONOMIC_REGIONS);
+export const getCodesets = () => instance.get(Constants.API_PATHS.CODESETS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);
