@@ -86,12 +86,12 @@ const Header = ({ currentUser }) => {
                   Admin
                 </DropdownToggle>
                 <DropdownMenu>
-                  <Authorize requires={Constants.PERMISSIONS.CODE_R}>
+                  <Authorize requires={Constants.PERMISSIONS.USER_R}>
                     <DropdownItem tag={Link} to={Constants.PATHS.ADMIN_USERS}>
                       Users
                     </DropdownItem>
                   </Authorize>
-                  <Authorize requires={Constants.PERMISSIONS.CODE_R}>
+                  <Authorize requires={Constants.PERMISSIONS.ROLE_R}>
                     <DropdownItem tag={Link} to={Constants.PATHS.ADMIN_ROLES}>
                       Roles and Permissions
                     </DropdownItem>
@@ -101,13 +101,6 @@ const Header = ({ currentUser }) => {
                       Code Tables
                     </DropdownItem>
                   </Authorize>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Quick Links
-                </DropdownToggle>
-                <DropdownMenu>
                   <DropdownItem tag={Link} to={Constants.PATHS.API_ACCESS}>
                     API Access
                   </DropdownItem>

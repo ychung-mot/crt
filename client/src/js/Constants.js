@@ -42,6 +42,7 @@ export const API_PATHS = {
   DISTRICTS: '/districts',
   SERVICE_AREAS: '/serviceareas',
   RATIO: '/ratio',
+  CODE_TABLE: '/codetable',
 };
 
 export const PATHS = {

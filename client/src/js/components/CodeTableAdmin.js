@@ -13,9 +13,9 @@ import MultiDropdownField from './ui/MultiDropdownField';
 import SingleDropdownField from './ui/SingleDropdownField';
 import DataTableWithPaginaionControl from './ui/DataTableWithPaginaionControl';
 import SubmitButton from './ui/SubmitButton';
-import PageSpinner from './ui/PageSpinner';
 import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
+import PageSpinner from './ui/PageSpinner';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -23,21 +23,37 @@ import * as api from '../Api';
 const defaultSearchFormValues = {
   searchText: '',
   statusId: [Constants.ACTIVE_STATUS.ACTIVE],
+  codeSet: 'accomplishment',
 };
 
 const defaultSearchOptions = {
   searchText: '',
   isActive: true,
-  dataPath: Constants.API_PATHS.USER, //temporary fix change to code_tables
+  codeSet: 'accomplishment',
+  dataPath: Constants.API_PATHS.CODE_TABLE,
+};
+
+const formikInitialValues = {
+  searchText: '',
+  isActive: ['active'],
+  codeSet: 0,
 };
 
 const validationSchema = Yup.object({
   searchText: Yup.string().max(32).trim(),
+  codeSet: Yup.number().required(),
 });
 
 const isActive = [
   { id: 'active', name: 'Active' },
   { id: 'inactive', name: 'Inactive' },
+];
+
+const tableColumns = [
+  { heading: 'Code Value^', key: 'codeValueText', nosort: true },
+  { heading: 'Code Description', key: 'codeName', nosort: true },
+  { heading: 'Order Number', key: 'displayOrder', nosort: true },
+  { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
 
 //temporary fix to create codeTableList POC
@@ -46,7 +62,7 @@ const codeTableAdd = (nameList) => {
   let codeTablesList = [];
 
   for (let each in nameList) {
-    codeTablesList.push({ id: each, name: nameList[each] });
+    codeTablesList.push({ id: parseInt(each), name: nameList[each] });
   }
 
   return codeTablesList;
@@ -70,12 +86,6 @@ const codeTables = codeTableAdd([
   'RC Number',
   'Service Line',
 ]);
-
-const formikInitialValues = {
-  searchText: '',
-  isActive: ['active'],
-  codeTypeLkupId: 0,
-};
 
 const CodeTableAdmin = (props) => {
   const location = useLocation();
@@ -104,13 +114,42 @@ const CodeTableAdmin = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSearchFormSubmit = () => {
-    console.log('submit');
+  const handleSearchFormSubmit = (values) => {
+    const searchText = values.searchText.trim() || null;
+    let isActive = null;
+    if (values.isActive.length === 1) {
+      isActive = values.isActive[0] === 'active';
+    }
+
+    let codeSet = codeTables.find((set) => set.id === values.codeSet).name.toLowerCase();
+    codeSet = codeSet.replace(/\s/g, '_');
+
+    const options = {
+      ...searchData.searchOptions,
+      isActive,
+      searchText,
+      codeSet: codeSet,
+      pageNumber: 1,
+    };
+    searchData.updateSearchOptions(options);
   };
 
   const handleSearchFormReset = () => {
-    console.log('reset');
+    setSearchInitialValues(defaultSearchFormValues);
+    searchData.refresh(true);
   };
+
+  const onDeleteClicked = () => {
+    console.log('delete');
+  };
+
+  const onEditClicked = () => {
+    console.log('edit');
+  };
+
+  const data = Object.values(searchData.data).map((values) => ({
+    ...values,
+  }));
 
   return (
     <React.Fragment>
@@ -127,7 +166,7 @@ const CodeTableAdmin = (props) => {
             <Form>
               <Row form>
                 <Col>
-                  <SingleDropdownField items={codeTables} defaultTitle="Choose Type" name="codeTypeLkupId" />
+                  <SingleDropdownField {...formikProps} items={codeTables} defaultTitle="Choose Type" name="codeSet" />
                 </Col>
                 <Col>
                   <Field type="text" name="searchText" placeholder="Search" className="form-control" />
@@ -148,6 +187,44 @@ const CodeTableAdmin = (props) => {
           )}
         </Formik>
       </MaterialCard>
+      <Authorize requires={Constants.PERMISSIONS.CODE_W}>
+        <Row>
+          <Col>
+            <Button
+              size="sm"
+              color="secondary"
+              className="float-right mb-3 ml-2"
+              onClick={() => console.log('SET ORDER')}
+            >
+              Set Order
+            </Button>
+            <Button size="sm" color="primary" className="float-right mb-3" onClick={() => console.log('OPEN ME')}>
+              Add New
+            </Button>
+          </Col>
+        </Row>
+      </Authorize>
+      {searchData.loading && <PageSpinner />}
+      {!searchData.loading && (
+        <MaterialCard>
+          {data.length > 0 && (
+            <DataTableWithPaginaionControl
+              dataList={data}
+              tableColumns={tableColumns}
+              searchPagination={searchData.pagination}
+              onPageNumberChange={searchData.handleChangePage}
+              onPageSizeChange={searchData.handleChangePageSize}
+              editable
+              deletable
+              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              onEditClicked={onEditClicked}
+              onDeleteClicked={onDeleteClicked}
+              onHeadingSortClicked={searchData.handleHeadingSortClicked}
+            />
+          )}
+          {searchData.data.length <= 0 && <div>No records found</div>}
+        </MaterialCard>
+      )}
     </React.Fragment>
   );
 };
