@@ -111,6 +111,10 @@ export const deleteRatio = (projectId, ratioId) =>
 export const putRatio = (projectid, ratioId, ratioData) =>
   instance.put(`${Constants.API_PATHS.PROJECTS}/${projectid}${Constants.API_PATHS.RATIO}/${ratioId}`, ratioData);
 
+//Code Table
+export const getCodeTable = (codeTableId) => instance.get(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`);
+export const postCodeTable = (codeTableData) => instance.post(`${Constants.API_PATHS.CODE_TABLE}`, codeTableData);
+
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 export const getDistricts = () => instance.get(Constants.API_PATHS.DISTRICTS);
