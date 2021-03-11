@@ -114,6 +114,8 @@ export const putRatio = (projectid, ratioId, ratioData) =>
 //Code Table
 export const getCodeTable = (codeTableId) => instance.get(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`);
 export const postCodeTable = (codeTableData) => instance.post(`${Constants.API_PATHS.CODE_TABLE}`, codeTableData);
+export const putCodeTable = (codeTableId, codeTableData) =>
+  instance.put(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`, codeTableData);
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
