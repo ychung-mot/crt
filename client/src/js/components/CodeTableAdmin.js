@@ -145,16 +145,36 @@ const CodeTableAdmin = (props) => {
     console.log('delete');
   };
 
-  const onEditClicked = () => {
-    console.log('edit');
+  const onEditClicked = (codeSetId) => {
+    codeSetFormModal.openForm(Constants.FORM_TYPE.EDIT, { codeSetId: codeSetId });
   };
 
   const onAddClicked = () => {
     codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeSetName: 'variableName here' });
   };
 
-  const handleCodeSetFormSubmit = (values) => {
-    console.log(values);
+  const handleCodeSetFormSubmit = (values, formType) => {
+    if (formType === Constants.FORM_TYPE.ADD) {
+      api
+        .postCodeTable(values)
+        .then(() => {
+          codeSetFormModal.closeForm();
+          searchData.refresh();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (formType === Constants.FORM_TYPE.EDIT) {
+      api
+        .putCodeTable(values.id, values)
+        .then(() => {
+          codeSetFormModal.closeForm();
+          searchData.refresh();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   const data = Object.values(searchData.data).map((values) => ({
