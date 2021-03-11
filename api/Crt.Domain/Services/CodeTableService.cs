@@ -18,6 +18,8 @@ namespace Crt.Domain.Services
         Task<PagedDto<CodeLookupListDto>> GetCodeTablesAsync(string codeSet, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
         Task<(decimal codeLookupId, Dictionary<string, List<string>> errors)> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup);
         Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId);
+        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
+
     }
 
     public class CodeTableService : CrtServiceBase, ICodeTableService
@@ -59,6 +61,32 @@ namespace Crt.Domain.Services
             _unitOfWork.Commit();
 
             return (crtCodeLookup.CodeLookupId, errors);
+        }
+
+        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup)
+        {
+            codeLookup.TrimStringFields();
+
+            var crtCodeLookup = await _codeLookupRepo.GetCodeLookupByIdAsync(codeLookup.CodeLookupId);
+
+            if (crtCodeLookup == null)
+            {
+                return (true, null);
+            }
+
+            var errors = new Dictionary<string, List<string>>();
+            errors = _validator.Validate(Entities.CodeTable, codeLookup, errors);
+
+            if (errors.Count > 0)
+            {
+                return (false, errors);
+            }
+
+            await _codeLookupRepo.UpdateCodeLookupAsync(codeLookup);
+
+            _unitOfWork.Commit();
+
+            return (false, errors);
         }
     }
 }
