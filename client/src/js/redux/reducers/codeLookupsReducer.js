@@ -14,6 +14,7 @@ import {
   FETCH_ELECTORAL_DISTRICTS,
   FETCH_HIGHWAYS,
   FETCH_ECONOMIC_REGIONS,
+  FETCH_CODESETS,
 } from '../actions/types';
 
 const defaultState = {
@@ -36,6 +37,7 @@ const defaultState = {
   electoralDistricts: [],
   highways: [],
   economicRegions: [],
+  codesets: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -66,6 +68,8 @@ const codeLookupsReducer = (state = defaultState, action) => {
       return { ...state, highways: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_ECONOMIC_REGIONS:
       return { ...state, economicRegions: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_CODESETS:
+      return { ...state, codesets: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }

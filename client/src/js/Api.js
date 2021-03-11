@@ -111,6 +111,12 @@ export const deleteRatio = (projectId, ratioId) =>
 export const putRatio = (projectid, ratioId, ratioData) =>
   instance.put(`${Constants.API_PATHS.PROJECTS}/${projectid}${Constants.API_PATHS.RATIO}/${ratioId}`, ratioData);
 
+//Code Table
+export const getCodeTable = (codeTableId) => instance.get(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`);
+export const postCodeTable = (codeTableData) => instance.post(`${Constants.API_PATHS.CODE_TABLE}`, codeTableData);
+export const putCodeTable = (codeTableId, codeTableData) =>
+  instance.put(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`, codeTableData);
+
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 export const getDistricts = () => instance.get(Constants.API_PATHS.DISTRICTS);
@@ -131,6 +137,7 @@ export const getRatioRecordTypes = () => instance.get(Constants.API_PATHS.RATIO_
 export const getElectoralDistricts = () => instance.get(Constants.API_PATHS.ELECTORAL_DISTRICTS);
 export const getHighways = () => instance.get(Constants.API_PATHS.HIGHWAYS);
 export const getEconomicRegions = () => instance.get(Constants.API_PATHS.ECONOMIC_REGIONS);
+export const getCodesets = () => instance.get(Constants.API_PATHS.CODESETS);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

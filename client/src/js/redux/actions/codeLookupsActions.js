@@ -12,6 +12,7 @@ import {
   FETCH_ELECTORAL_DISTRICTS,
   FETCH_HIGHWAYS,
   FETCH_ECONOMIC_REGIONS,
+  FETCH_CODESETS,
 } from './types';
 
 import * as api from '../../Api';
@@ -92,15 +93,24 @@ export const fetchElectoralDistricts = () => (dispatch) => {
     dispatch({ type: FETCH_ELECTORAL_DISTRICTS, payload: data });
   });
 };
+
 export const fetchHighways = () => (dispatch) => {
   return api.getHighways().then((response) => {
     const data = response.data;
     dispatch({ type: FETCH_HIGHWAYS, payload: data });
   });
 };
+
 export const fetchEconomicRegions = () => (dispatch) => {
   return api.getEconomicRegions().then((response) => {
     const data = response.data;
     dispatch({ type: FETCH_ECONOMIC_REGIONS, payload: data });
+  });
+};
+
+export const fetchCodesets = () => (dispatch) => {
+  return api.getCodesets().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_CODESETS, payload: data });
   });
 };
