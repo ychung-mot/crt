@@ -7,9 +7,16 @@ import { FormRow, FormInput } from './FormInputs';
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
 
-const defaultValues = { codeValue: '', codeName: '', displayOrder: undefined };
+const defaultValues = { codeValueText: '', codeName: '', displayOrder: undefined };
 
-const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSchema, formType, codeSetName }) => {
+const EditCodeSetFormFields = ({
+  setInitialValues,
+  formValues,
+  setValidationSchema,
+  formType,
+  codeSetId,
+  codeSetName,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
@@ -23,7 +30,7 @@ const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSche
     if (formType === Constants.FORM_TYPE.EDIT) {
       setLoading(true);
       api
-        .getCodeTable()
+        .getCodeTable(codeSetId)
         .then((response) => {
           setInitialValues({ ...response.data });
           setLoading(false);
@@ -38,10 +45,10 @@ const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSche
   return (
     <React.Fragment>
       <FormRow name="codeSet" label="Code Set">
-        <FormInput type="text" name="codeSet" id={`codeSet`} value={codeSetName} disabled />
+        <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
       </FormRow>
-      <FormRow name="codeValue" label="Code Value">
-        <FormInput type="text" name="codeValue" id={`codeValue`} />
+      <FormRow name="codeValueText" label="Code Value">
+        <FormInput type="text" name="codeValueText" id={`codeValue`} />
       </FormRow>
       <FormRow name="codeName" label="Code Name">
         <FormInput type="text" name="codeName" id={`codeName`} />
