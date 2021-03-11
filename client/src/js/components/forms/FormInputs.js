@@ -45,16 +45,17 @@ export const FormInput = ({ children, ...props }) => {
 
 export const FormNumberInput = ({ className, children, ...props }) => {
   const [field, meta, helpers] = useField({ ...props, type: 'checkbox' });
+
   return (
     <React.Fragment>
       <Input type="hidden" {...field} {...props} invalid={meta.error && meta.touched} />
       <NumberFormat
         className={classNames('form-control', className)}
         thousandSeparator={true}
-        value={props.value}
+        value={props.value || undefined}
         onValueChange={(val) => {
           helpers.setTouched(true);
-          helpers.setValue(val.floatValue || 0);
+          helpers.setValue(val.floatValue);
         }}
         {...props}
       >

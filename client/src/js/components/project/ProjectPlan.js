@@ -280,11 +280,15 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
         <DisplayRow>
           <ColumnTwoGroups
             name="Announcement Value"
-            label={<NumberFormat value={data?.anncmentValue} prefix="$" thousandSeparator={true} displayType="text" />}
+            label={
+              <NumberFormat value={data?.anncmentValue || ''} prefix="$" thousandSeparator={true} displayType="text" />
+            }
           />
           <ColumnTwoGroups
             name="C-035 Value"
-            label={<NumberFormat value={data?.c035Value} prefix="$" thousandSeparator={true} displayType="text" />}
+            label={
+              <NumberFormat value={data?.c035Value || ''} prefix="$" thousandSeparator={true} displayType="text" />
+            }
           />
         </DisplayRow>
         <DisplayRow>
