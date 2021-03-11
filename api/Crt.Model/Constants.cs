@@ -125,6 +125,9 @@ namespace Crt.Model
         public const string RatioRecordTypeLkupId = "RatioRecordTypeLkupId";
         public const string ServiceAreaId = "ServiceAreaId";
         public const string DistrictId = "DistrictId";
+
+        public const string CodeName = "CodeName";
+        public const string CodeValueText = "CodeValueText";
     }
 
     public class DateColNames
