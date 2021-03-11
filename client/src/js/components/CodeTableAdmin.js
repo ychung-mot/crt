@@ -23,16 +23,25 @@ import * as api from '../Api';
 const defaultSearchFormValues = {
   searchText: '',
   statusId: [Constants.ACTIVE_STATUS.ACTIVE],
+  codeSet: 'accomplishment',
 };
 
 const defaultSearchOptions = {
   searchText: '',
   isActive: true,
-  dataPath: Constants.API_PATHS.USER, //temporary fix change to code_tables
+  codeSet: 'accomplishment',
+  dataPath: Constants.API_PATHS.CODE_TABLE,
+};
+
+const formikInitialValues = {
+  searchText: '',
+  isActive: ['active'],
+  codeSet: [0],
 };
 
 const validationSchema = Yup.object({
   searchText: Yup.string().max(32).trim(),
+  codeSet: Yup.number().required(),
 });
 
 const isActive = [
@@ -41,10 +50,10 @@ const isActive = [
 ];
 
 const tableColumns = [
-  { heading: 'Code Value^', key: 'codeValue', nosort: true },
-  { heading: 'Code Description', key: 'description', nosort: true },
+  { heading: 'Code Value^', key: 'codeValueText', nosort: true },
+  { heading: 'Code Description', key: 'codeName', nosort: true },
   { heading: 'Order Number', key: 'displayOrder', nosort: true },
-  { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'InActive' }, nosort: true },
+  { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
 
 //temporary fix to create codeTableList POC
@@ -53,7 +62,7 @@ const codeTableAdd = (nameList) => {
   let codeTablesList = [];
 
   for (let each in nameList) {
-    codeTablesList.push({ id: each, name: nameList[each] });
+    codeTablesList.push({ id: parseInt(each), name: nameList[each] });
   }
 
   return codeTablesList;
@@ -77,12 +86,6 @@ const codeTables = codeTableAdd([
   'RC Number',
   'Service Line',
 ]);
-
-const formikInitialValues = {
-  searchText: '',
-  isActive: ['active'],
-  codeTypeLkupId: 0,
-};
 
 const CodeTableAdmin = (props) => {
   const location = useLocation();
@@ -111,12 +114,29 @@ const CodeTableAdmin = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSearchFormSubmit = () => {
-    console.log('submit');
+  const handleSearchFormSubmit = (values) => {
+    const searchText = values.searchText.trim() || null;
+    let isActive = null;
+    if (values.isActive.length === 1) {
+      isActive = values.isActive[0] === 'active';
+    }
+
+    let codeSet = codeTables.find((set) => set.id === values.codeSet).name.toLowerCase();
+    codeSet = codeSet.replace(/\s/g, '_');
+
+    const options = {
+      ...searchData.searchOptions,
+      isActive,
+      searchText,
+      codeSet: codeSet,
+      pageNumber: 1,
+    };
+    searchData.updateSearchOptions(options);
   };
 
   const handleSearchFormReset = () => {
-    console.log('reset');
+    setSearchInitialValues(defaultSearchFormValues);
+    searchData.refresh(true);
   };
 
   const onDeleteClicked = () => {
@@ -146,7 +166,7 @@ const CodeTableAdmin = (props) => {
             <Form>
               <Row form>
                 <Col>
-                  <SingleDropdownField items={codeTables} defaultTitle="Choose Type" name="codeTypeLkupId" />
+                  <SingleDropdownField {...formikProps} items={codeTables} defaultTitle="Choose Type" name="codeSet" />
                 </Col>
                 <Col>
                   <Field type="text" name="searchText" placeholder="Search" className="form-control" />
