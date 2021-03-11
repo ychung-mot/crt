@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
 import * as Yup from 'yup';
 
 import PageSpinner from '../ui/PageSpinner';
@@ -27,9 +28,10 @@ const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidatio
       api
         .getProject(projectId)
         .then((response) => {
+          let data = _.omitBy(response.data, _.isNil);
           setInitialValues({
-            ...response.data,
-            anncmentComment: response.data.anncmentComment || '',
+            ...defaultValues,
+            ...data,
           });
           setLoading(false);
         })
