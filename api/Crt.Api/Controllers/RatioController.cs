@@ -41,9 +41,9 @@ namespace Crt.Api.Controllers
             ratio.ProjectId = projectId;
 
             var response = await _ratioService.CreateRatioAsync(ratio);
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return CreatedAtRoute("GetRatio", new { projectId = projectId, id = response.ratioId }, await _ratioService.GetRatioByIdAsync(response.ratioId));
@@ -70,9 +70,9 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();
@@ -108,9 +108,9 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();

@@ -17,9 +17,9 @@ namespace Crt.Domain.Services
     {
         Task<RatioDto> GetRatioByIdAsync(decimal ratioId);
         Task<IEnumerable<RatioDto>> GetRatiosByRatioTypeAsync(decimal ratioTypeId);
-        Task<(decimal ratioId, Dictionary<string, List<string>> Errors)> CreateRatioAsync(RatioCreateDto ratio);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateRatioAsync(RatioUpdateDto ratio);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteRatioAsync(decimal projectId, decimal ratioId);
+        Task<(decimal ratioId, Dictionary<string, List<string>> errors)> CreateRatioAsync(RatioCreateDto ratio);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateRatioAsync(RatioUpdateDto ratio);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteRatioAsync(decimal projectId, decimal ratioId);
     }
 
     public class RatioService : CrtServiceBase, IRatioService
@@ -35,7 +35,7 @@ namespace Crt.Domain.Services
             _userRepo = userRepo;
         }
 
-        public async Task<(decimal ratioId, Dictionary<string, List<string>> Errors)> CreateRatioAsync(RatioCreateDto ratio)
+        public async Task<(decimal ratioId, Dictionary<string, List<string>> errors)> CreateRatioAsync(RatioCreateDto ratio)
         {
             var errors = new Dictionary<string, List<string>>();
             errors = _validator.Validate(Entities.Ratio, ratio, errors);
@@ -54,7 +54,7 @@ namespace Crt.Domain.Services
             return (crtRatio.RatioId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteRatioAsync(decimal projectId, decimal ratioId)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteRatioAsync(decimal projectId, decimal ratioId)
         {
             var ratio = await _ratioRepo.GetRatioByIdAsync(ratioId);
 
@@ -83,7 +83,7 @@ namespace Crt.Domain.Services
             return await _ratioRepo.GetRatiosByRatioTypeAsync(ratioTypeId);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateRatioAsync(RatioUpdateDto ratio)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateRatioAsync(RatioUpdateDto ratio)
         {
             var crtRatio = await _ratioRepo.GetRatioByIdAsync(ratio.RatioId);
 

@@ -14,8 +14,8 @@ namespace Crt.Domain.Services
     {
         Task<QtyAccmpDto> GetQtyAccmpByIdAsync(decimal qtyAccmpId);
         Task<(decimal qtyAccmpId, Dictionary<string, List<string>> errors)> CreateQtyAccmpAsync(QtyAccmpCreateDto qtyAccmp);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateQtyAccmpAsync(QtyAccmpUpdateDto qtyAccmp);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteQtyAccmpAsync(decimal projectId, decimal qtyAccmpId);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateQtyAccmpAsync(QtyAccmpUpdateDto qtyAccmp);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteQtyAccmpAsync(decimal projectId, decimal qtyAccmpId);
     }
 
     public class QtyAccmpService : CrtServiceBase, IQtyAccmpService
@@ -66,7 +66,7 @@ namespace Crt.Domain.Services
             return (crtQtyAccmp.QtyAccmpId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateQtyAccmpAsync(QtyAccmpUpdateDto qtyAccmp)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateQtyAccmpAsync(QtyAccmpUpdateDto qtyAccmp)
         {
             qtyAccmp.TrimStringFields();
 
@@ -103,7 +103,7 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteQtyAccmpAsync(decimal projectId, decimal qtyAccmpId)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteQtyAccmpAsync(decimal projectId, decimal qtyAccmpId)
         {
             var crtQtyAccmp = await _qtyAccmpRepo.GetQtyAccmpByIdAsync(qtyAccmpId);
 

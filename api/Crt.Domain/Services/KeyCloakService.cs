@@ -20,7 +20,7 @@ namespace Crt.Domain.Services
     public interface IKeycloakService
     {
         Task<KeycloakClientDto> GetUserClientAsync();
-        Task<(Dictionary<string, List<string>> Errors, KeycloakClientDto Client)> CreateUserClientAsync();
+        Task<(Dictionary<string, List<string>> errors, KeycloakClientDto Client)> CreateUserClientAsync();
         Task<(bool NotFound, string Error)> RegenerateUserClientSecretAsync();
     }
 
@@ -97,7 +97,7 @@ namespace Crt.Domain.Services
                 throw;
             }
         }
-        public async Task<(Dictionary<string, List<string>> Errors, KeycloakClientDto Client)> CreateUserClientAsync()
+        public async Task<(Dictionary<string, List<string>> errors, KeycloakClientDto Client)> CreateUserClientAsync()
         {
             try
             {

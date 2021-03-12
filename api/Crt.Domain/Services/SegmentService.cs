@@ -14,8 +14,8 @@ namespace Crt.Domain.Services
     public interface ISegmentService
     {
         Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentID);
-        Task<(decimal segmentId, Dictionary<string, List<string>> Errors)> CreateSegmentAsync(SegmentCreateDto segment);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId);
+        Task<(decimal segmentId, Dictionary<string, List<string>> errors)> CreateSegmentAsync(SegmentCreateDto segment);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId);
         Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId);
     }
 
@@ -34,7 +34,7 @@ namespace Crt.Domain.Services
             _geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
         }
 
-        public async Task<(decimal segmentId, Dictionary<string, List<string>> Errors)> CreateSegmentAsync(SegmentCreateDto segment)
+        public async Task<(decimal segmentId, Dictionary<string, List<string>> errors)> CreateSegmentAsync(SegmentCreateDto segment)
         {
             var errors = new Dictionary<string, List<string>>();
 
@@ -56,7 +56,7 @@ namespace Crt.Domain.Services
             return (crtSegment.SegmentId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId)
         {
             var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
 

@@ -124,7 +124,7 @@ namespace Crt.Tests.UnitTests.FinTargets
             var result = sut.UpdateFinTargetAsync(finTargetUpdateDto).Result;
 
             //assert
-            Assert.Empty(result.Errors);
+            Assert.Empty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
         }
 
@@ -156,7 +156,7 @@ namespace Crt.Tests.UnitTests.FinTargets
             var result = sut.UpdateFinTargetAsync(finTargetUpdateDto).Result;
 
             //assert
-            Assert.Null(result.Errors);
+            Assert.Null(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
     }

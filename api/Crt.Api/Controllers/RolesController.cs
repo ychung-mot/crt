@@ -50,9 +50,9 @@ namespace Crt.Api.Controllers
         {
             var response = await _roleSvc.CreateRoleAsync(role);
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return CreatedAtRoute("GetRole", new { id = response.RoleId }, await _roleSvc.GetRoleAsync(response.RoleId));
@@ -74,9 +74,9 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();
@@ -98,9 +98,9 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();

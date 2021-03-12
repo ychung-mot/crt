@@ -18,8 +18,9 @@ namespace Crt.Domain.Services
         Task<PagedDto<CodeLookupListDto>> GetCodeTablesAsync(string codeSet, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
         Task<(decimal codeLookupId, Dictionary<string, List<string>> errors)> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup);
         Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
 
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)>
     }
 
     public class CodeTableService : CrtServiceBase, ICodeTableService
@@ -66,7 +67,7 @@ namespace Crt.Domain.Services
             return (crtCodeLookup.CodeLookupId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup)
         {
             codeLookup.TrimStringFields();
 

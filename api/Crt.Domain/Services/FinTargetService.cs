@@ -17,8 +17,8 @@ namespace Crt.Domain.Services
     {
         Task<FinTargetDto> GetFinTargetByIdAsync(decimal finTargetId);
         Task<(decimal finTargetId, Dictionary<string, List<string>> errors)> CreateFinTargetAsync(FinTargetCreateDto finTarget);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateFinTargetAsync(FinTargetUpdateDto finTarget);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteFinTargetAsync(decimal projectId, decimal finTargetId);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateFinTargetAsync(FinTargetUpdateDto finTarget);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteFinTargetAsync(decimal projectId, decimal finTargetId);
     }
 
     public class FinTargetService : CrtServiceBase, IFinTargetService
@@ -60,7 +60,7 @@ namespace Crt.Domain.Services
             return (crtFinTarget.FinTargetId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateFinTargetAsync(FinTargetUpdateDto finTarget)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateFinTargetAsync(FinTargetUpdateDto finTarget)
         {
             finTarget.TrimStringFields();
 
@@ -88,7 +88,7 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteFinTargetAsync(decimal projectId, decimal finTargetId)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteFinTargetAsync(decimal projectId, decimal finTargetId)
         {
             var crtFinTarget = await _finTargetRepo.GetFinTargetByIdAsync(finTargetId);
 

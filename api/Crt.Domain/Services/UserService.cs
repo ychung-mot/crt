@@ -23,9 +23,9 @@ namespace Crt.Domain.Services
         Task<PagedDto<UserSearchDto>> GetUsersAsync(decimal[]? regionIds, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
         Task<UserDto> GetUserAsync(decimal systemUserId);
         Task<AdAccountDto> GetAdAccountAsync(string username);
-        Task<(decimal SystemUserId, Dictionary<string, List<string>> Errors)> CreateUserAsync(UserCreateDto user);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateUserAsync(UserUpdateDto user);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteUserAsync(UserDeleteDto user);
+        Task<(decimal SystemUserId, Dictionary<string, List<string>> errors)> CreateUserAsync(UserCreateDto user);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateUserAsync(UserUpdateDto user);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteUserAsync(UserDeleteDto user);
         Task<CrtSystemUser> GetActiveUserEntityAsync(Guid userGuid);
         Task<int> UpdateUserFromAdAsync(string username, long concurrencyControlNumber);
         Task<IEnumerable<UserManagerDto>> GetManagersAsync();
@@ -91,7 +91,7 @@ namespace Crt.Domain.Services
             return null;
         }
 
-        public async Task<(decimal SystemUserId, Dictionary<string, List<string>> Errors)> CreateUserAsync(UserCreateDto user)
+        public async Task<(decimal SystemUserId, Dictionary<string, List<string>> errors)> CreateUserAsync(UserCreateDto user)
         {
             var account = _ldap.LdapSearch(LdapAttrs.SamAccountName, user.Username);
 
@@ -120,7 +120,7 @@ namespace Crt.Domain.Services
             return (userEntity.SystemUserId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateUserAsync(UserUpdateDto user)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateUserAsync(UserUpdateDto user)
         {
             var userFromDb = await GetUserAsync(user.SystemUserId);
 
@@ -187,7 +187,7 @@ namespace Crt.Domain.Services
             }
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteUserAsync(UserDeleteDto user)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteUserAsync(UserDeleteDto user)
         {
             //todo: if user has no log-in history, we can delete user instead of deactivating it. 
             var userFromDb = await GetUserAsync(user.SystemUserId);
