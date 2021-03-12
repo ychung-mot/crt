@@ -37,9 +37,9 @@ namespace Crt.Api.Controllers
             segment.ProjectId = projectId;
 
             var response = await _segmentService.CreateSegmentAsync(segment);
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return CreatedAtRoute("GetSegment", new { projectId = projectId, id = response.segmentId }, await _segmentService.GetSegmentByIdAsync(response.segmentId));
@@ -87,9 +87,9 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();

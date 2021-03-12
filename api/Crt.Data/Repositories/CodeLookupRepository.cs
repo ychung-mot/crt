@@ -21,6 +21,9 @@ namespace Crt.Data.Repositories
         Task<CrtCodeLookup> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup);
         Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId);
         Task UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
+        Task<bool> DoesCodeLookupExistAsync(string codeName, string codeSet);
+        Task<bool> IsCodeLookupInUseAsync(decimal id);
+        Task DeleteCodeLookupAsync(decimal id);
     }
 
     public class CodeLookupRepository : CrtRepositoryBase<CrtCodeLookup>, ICodeLookupRepository
@@ -58,6 +61,11 @@ namespace Crt.Data.Repositories
 
             var results = await Page<CrtCodeLookup, CodeLookupListDto>(query, pageSize, pageNumber, orderBy, direction);
 
+            foreach (var result in results.SourceList)
+            {
+                result.IsReferenced = await IsCodeLookupInUseAsync(result.CodeLookupId);
+            }
+
             return results;
 
         }
@@ -89,6 +97,35 @@ namespace Crt.Data.Repositories
             crtCodeLookup.EndDate = codeLookup.EndDate?.Date;
 
             Mapper.Map(codeLookup, crtCodeLookup);
+        }
+
+        public async Task DeleteCodeLookupAsync(decimal id)
+        {
+            var codeLookup = await DbSet.FirstAsync(x => x.CodeLookupId == id);
+
+            DbSet.Remove(codeLookup);
+        }
+
+        public async Task<bool> DoesCodeLookupExistAsync(string codeName, string codeSet)
+        {
+            return await DbSet.AnyAsync(x => x.CodeName == codeName && x.CodeSet == codeSet);
+        }
+
+        public async Task<bool> IsCodeLookupInUseAsync(decimal id)
+        {
+            var inFinTarget = await DbContext.CrtFinTargets.AsNoTracking()
+                .AnyAsync(x => x.FiscalYearLkupId == id || x.FundingTypeLkupId == id);
+            var inProject = await DbContext.CrtProjects.AsNoTracking()
+                .AnyAsync(x => x.NearstTwnLkupId == id || x.RegionId == id
+                || x.CapIndxLkupId == id || x.RcLkupId == id);
+            var inQtyAccmp = await DbContext.CrtQtyAccmps.AsNoTracking()
+                .AnyAsync(x => x.FiscalYearLkupId == id || x.QtyAccmpLkupId == id);
+            var inRatio = await DbContext.CrtRatios.AsNoTracking()
+                .AnyAsync(x => x.RatioRecordLkupId == id);
+            var inTender = await DbContext.CrtTenders.AsNoTracking()
+                .AnyAsync(x => x.WinningCntrctrLkupId == id);
+
+            return (inFinTarget || inProject || inQtyAccmp || inRatio || inTender);
         }
     }
 }

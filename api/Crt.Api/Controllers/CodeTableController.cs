@@ -41,10 +41,6 @@ namespace Crt.Api.Controllers
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult<CodeLookupCreateDto>> CreateCodeLookup(CodeLookupCreateDto codeLookup)
         {
-            // need to validate that the Code Name doesn't already exist
-            //var result = await IsProjectAuthorized(projectId);
-            //if (result != null) return result;
-
             var response = await _codeTableService.CreateCodeLookupAsync(codeLookup);
             if (response.errors.Count > 0)
             {
@@ -83,9 +79,28 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [RequiresPermission(Permissions.CodeWrite)]
+        public async Task<ActionResult> DeleteActivityCode(decimal id)
+        {
+            var response = await _codeTableService.DeleteCodeLookupAsync(id);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();

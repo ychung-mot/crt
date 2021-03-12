@@ -144,7 +144,7 @@ namespace Crt.Tests.UnitTests.Tender
             var result = sut.UpdateTenderAsync(tenderUpdate).Result;
 
             //assert
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 

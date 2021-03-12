@@ -108,9 +108,9 @@ namespace Crt.Api.Controllers
         {
             var response = await _userService.CreateUserAsync(user);
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return CreatedAtRoute("GetUser", new { id = response.SystemUserId }, await _userService.GetUserAsync(response.SystemUserId));
@@ -132,9 +132,9 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();
@@ -157,9 +157,9 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return NoContent();
@@ -191,9 +191,9 @@ namespace Crt.Api.Controllers
         {
             var response = await _keyCloakService.CreateUserClientAsync();
 
-            if (response.Errors.Count > 0)
+            if (response.errors.Count > 0)
             {
-                return ValidationUtils.GetValidationErrorResult(response.Errors, ControllerContext);
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
             }
 
             return CreatedAtRoute("GetUserKeycloakClient", await _keyCloakService.GetUserClientAsync());

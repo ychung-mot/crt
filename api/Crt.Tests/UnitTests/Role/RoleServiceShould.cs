@@ -60,7 +60,7 @@ namespace Crt.Tests.Role
 
             var result = sut.CreateRoleAsync(role).Result;
 
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
@@ -83,7 +83,7 @@ namespace Crt.Tests.Role
 
             var result = sut.CreateRoleAsync(role).Result;
 
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
@@ -106,7 +106,7 @@ namespace Crt.Tests.Role
 
             var result = sut.CreateRoleAsync(role).Result;
 
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
     }

@@ -30,7 +30,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.CreateRatioAsync(ratioCreateDto).Result;
 
             //assert
-            Assert.Empty(result.Errors);
+            Assert.Empty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
         }
 
@@ -49,7 +49,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.CreateRatioAsync(ratioCreateDto).Result;
 
             //assert
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
@@ -68,7 +68,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.CreateRatioAsync(ratioCreateDto).Result;
 
             //assert
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
@@ -89,7 +89,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.DeleteRatioAsync(projectId, It.IsAny<decimal>()).Result;
 
             //assert
-            Assert.Empty(result.Errors);
+            Assert.Empty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
         }
 
@@ -107,7 +107,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.DeleteRatioAsync(It.IsAny<decimal>(), It.IsAny<decimal>()).Result;
 
             //assert
-            Assert.Null(result.Errors);
+            Assert.Null(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
@@ -126,7 +126,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.DeleteRatioAsync(1, It.IsAny<decimal>()).Result;
 
             //assert
-            Assert.Null(result.Errors);
+            Assert.Null(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
@@ -151,7 +151,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.UpdateRatioAsync(ratioUpdateDto).Result;
 
             //assert
-            Assert.Empty(result.Errors);
+            Assert.Empty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
 
         }
@@ -177,7 +177,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.UpdateRatioAsync(ratioUpdateDto).Result;
 
             //assert
-            Assert.Empty(result.Errors);
+            Assert.Empty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Once);
 
         }
@@ -199,7 +199,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.UpdateRatioAsync(ratioUpdateDto).Result;
 
             //assert
-            Assert.Null(result.Errors);
+            Assert.Null(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
 
         }
@@ -225,7 +225,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.UpdateRatioAsync(ratioUpdateDto).Result;
 
             //assert
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
 
         }
@@ -251,7 +251,7 @@ namespace Crt.Tests.UnitTests.Ratio
             var result = sut.UpdateRatioAsync(ratioUpdateDto).Result;
 
             //assert
-            Assert.NotEmpty(result.Errors);
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
 
         }

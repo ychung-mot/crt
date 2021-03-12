@@ -18,8 +18,9 @@ namespace Crt.Domain.Services
         Task<PagedDto<CodeLookupListDto>> GetCodeTablesAsync(string codeSet, string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
         Task<(decimal codeLookupId, Dictionary<string, List<string>> errors)> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup);
         Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
 
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteCodeLookupAsync(decimal id);
     }
 
     public class CodeTableService : CrtServiceBase, ICodeTableService
@@ -45,11 +46,14 @@ namespace Crt.Domain.Services
         public async Task<(decimal codeLookupId, Dictionary<string, List<string>> errors)> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup)
         {
             codeLookup.TrimStringFields();
-
+            
             var errors = new Dictionary<string, List<string>>();
             errors = _validator.Validate(Entities.CodeTable, codeLookup, errors);
 
-            //await ValidateFinTarget(finTarget, errors);
+            if (await _codeLookupRepo.DoesCodeLookupExistAsync(codeLookup.CodeName, codeLookup.CodeSet))
+            {
+                errors.AddItem(Fields.CodeLookup, $"Code Lookup [{codeLookup.CodeName}] in Code Set [{codeLookup.CodeSet}] already exists");
+            }
 
             if (errors.Count > 0)
             {
@@ -63,7 +67,7 @@ namespace Crt.Domain.Services
             return (crtCodeLookup.CodeLookupId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup)
         {
             codeLookup.TrimStringFields();
 
@@ -88,5 +92,35 @@ namespace Crt.Domain.Services
 
             return (false, errors);
         }
+
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteCodeLookupAsync(decimal id)
+        {
+            var errors = new Dictionary<string, List<string>>();
+
+            var codeLookupFromDB = await GetCodeLookupByIdAsync(id);
+
+            if (codeLookupFromDB == null)
+            {
+                return (true, null);
+            }
+
+            if (await _codeLookupRepo.IsCodeLookupInUseAsync(codeLookupFromDB.CodeLookupId))
+            {
+                errors.AddItem(Fields.CodeLookup, $"Code Lookup ID: [{codeLookupFromDB.CodeLookupId}], Name: [{codeLookupFromDB.CodeName}] is in use and cannot be deleted.");
+            }
+
+            if (errors.Count > 0)
+            {
+                return (false, errors);
+            }
+
+            await _codeLookupRepo.DeleteCodeLookupAsync(id);
+
+            _unitOfWork.Commit();
+
+            return (false, errors);
+        }
+
+        
     }
 }

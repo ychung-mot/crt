@@ -15,9 +15,9 @@ namespace Crt.Domain.Services
         Task<int> CountActiveRoleIdsAsync(IEnumerable<decimal> roles);
         Task<PagedDto<RoleSearchDto>> GetRolesAync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
         Task<RoleDto> GetRoleAsync(decimal roleId);
-        Task<(decimal RoleId, Dictionary<string, List<string>> Errors)> CreateRoleAsync(RoleCreateDto role);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateRoleAsync(RoleUpdateDto role);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteRoleAsync(RoleDeleteDto role);
+        Task<(decimal RoleId, Dictionary<string, List<string>> errors)> CreateRoleAsync(RoleCreateDto role);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateRoleAsync(RoleUpdateDto role);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteRoleAsync(RoleDeleteDto role);
     }
     public class RoleService : IRoleService
     {
@@ -44,7 +44,7 @@ namespace Crt.Domain.Services
             return await _roleRepo.CountActiveRoleIdsAsync(roles);
         }
 
-        public async Task<(decimal RoleId, Dictionary<string, List<string>> Errors)> CreateRoleAsync(RoleCreateDto role)
+        public async Task<(decimal RoleId, Dictionary<string, List<string>> errors)> CreateRoleAsync(RoleCreateDto role)
         {
             var errors = await ValidateRoleDtoAsync(role);
 
@@ -83,7 +83,7 @@ namespace Crt.Domain.Services
             return errors;
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteRoleAsync(RoleDeleteDto role)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteRoleAsync(RoleDeleteDto role)
         {
             var roleFromDb = await GetRoleAsync(role.RoleId);
 
@@ -150,7 +150,7 @@ namespace Crt.Domain.Services
             return true;
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateRoleAsync(RoleUpdateDto role)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateRoleAsync(RoleUpdateDto role)
         {
             var roleFromDb = await GetRoleAsync(role.RoleId);
 

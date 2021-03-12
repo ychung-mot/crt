@@ -16,6 +16,8 @@ namespace Crt.Model.Dtos.CodeLookup
         public string CodeValueFormat { get; set; }
         [JsonIgnore]
         public decimal? CodeValueNum { get; set; }
+        public bool IsActive => EndDate == null || EndDate > DateTime.Today;
+        public bool IsReferenced { get; set; }
         [JsonPropertyName("name")]
         public string Description
         {

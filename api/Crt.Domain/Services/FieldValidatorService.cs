@@ -32,6 +32,7 @@ namespace Crt.Domain.Services
             LoadAccmpRules();
             LoadTenderEntityRules();
             LoadRatioRules();
+            LoadCodeLookupRules();
         }
 
         public IEnumerable<FieldValidationRule> GetFieldValidationRules(string entityName)
@@ -118,6 +119,13 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.Ratio, FieldTypes.String, true, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.RatioValue), null));
             _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.RatioRecordTypeLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.RatioRecordType));
             _rules.Add(new FieldValidationRule(Entities.Ratio, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
+        }
+
+        private void LoadCodeLookupRules()
+        {
+            _rules.Add(new FieldValidationRule(Entities.CodeTable, Fields.CodeName, FieldTypes.String, true, 1, 255, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.CodeTable, Fields.CodeValueText, FieldTypes.String, true, 1, 20, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.CodeTable, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
 
         public Dictionary<string, List<string>> Validate<T>(string entityName, T entity, Dictionary<string, List<string>> errors, int rowNum = 0, params string[] fieldsToSkip)

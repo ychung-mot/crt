@@ -19,8 +19,8 @@ namespace Crt.Domain.Services
             int pageSize, int pageNumber, string orderBy, string direction);
         Task<ProjectDto> GetProjectAsync(decimal projectId);
         Task<(decimal projectId, Dictionary<string, List<string>> errors)> CreateProjectAsync(ProjectCreateDto project);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateProjectAsync(ProjectUpdateDto project);
-        Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteProjectAsync(ProjectDeleteDto project);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateProjectAsync(ProjectUpdateDto project);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteProjectAsync(ProjectDeleteDto project);
         Task<ProjectTenderDto> GetProjectTenderAsync(decimal projectId);
         Task<ProjectPlanDto> GetProjectPlanAsync(decimal projectId);
         Task<ProjectLocationDto> GetProjectLocationAsync(decimal projectId);
@@ -77,7 +77,7 @@ namespace Crt.Domain.Services
             return (crtProject.ProjectId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> UpdateProjectAsync(ProjectUpdateDto project)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateProjectAsync(ProjectUpdateDto project)
         {
             project.TrimStringFields();
 
@@ -106,7 +106,7 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> Errors)> DeleteProjectAsync(ProjectDeleteDto project)
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteProjectAsync(ProjectDeleteDto project)
         {
             var crtProject = await _projectRepo.GetProjectAsync(project.ProjectId);
 
