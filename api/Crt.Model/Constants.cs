@@ -128,6 +128,7 @@ namespace Crt.Model
 
         public const string CodeName = "CodeName";
         public const string CodeValueText = "CodeValueText";
+        public const string CodeLookup = "CodeLookup";
     }
 
     public class DateColNames
