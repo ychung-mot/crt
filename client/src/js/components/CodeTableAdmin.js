@@ -54,6 +54,7 @@ const tableColumns = [
   { heading: 'Code Value^', key: 'codeValueText', nosort: true },
   { heading: 'Code Description', key: 'codeName', nosort: true },
   { heading: 'Order Number', key: 'displayOrder', nosort: true },
+  { heading: 'Referenced', key: 'isReferenced', badge: { active: 'Ref', inactive: 'No Ref' }, nosort: true },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
 
@@ -141,7 +142,10 @@ const CodeTableAdmin = (props) => {
     searchData.refresh(true);
   };
 
-  const onDeleteClicked = () => {
+  const onDeleteClicked = (codeSetId, date, permanentDelete) => {
+    console.log(permanentDelete);
+    console.log(date);
+    console.log(codeSetId);
     console.log('delete');
   };
 

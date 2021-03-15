@@ -709,18 +709,21 @@ class CRTsegmentCreator {
         $.each(data.directions, function (index, direction) {
           $("#dr-travel-directions").append("<li>" + direction.text + "</li>");
         });
-        
+
         // Create segment description based on starting point
         if (data.directions[0].name) {
-	        $("#segment-description").html(data.directions[0].name);
-	        console.log(data.directions[0].name);
-	    }
-	    if (data.directions.length > 2) {
-			if (data.directions[data.directions.length-2].name) {
-				$("#segment-description").append(" to " + data.directions[data.directions.length-2].name);
-				console.log(data.directions[0].name);
-			}
-		}
+          $("#segment-description").html(data.directions[0].name);
+          console.log(data.directions[0].name);
+        }
+        if (data.directions.length > 2) {
+          if (data.directions[data.directions.length - 2].name) {
+            $("#segment-description").append(
+              " to " + data.directions[data.directions.length - 2].name
+            );
+            console.log(data.directions[0].name);
+          }
+        }
+
         // Zoom to the route
         if (isMobile()) hideSidebar();
         zoomToFeature(routeFeature);
@@ -856,6 +859,7 @@ class CRTsegmentCreator {
         let pointsArray = feature4326.values_.geometry.flatCoordinates;
         let description = $("#segment-description").val();
 
+        //send the pointsArray and description to parent react application and close dialog
         window.parent.postMessage(
           {
             message: "closeForm",
