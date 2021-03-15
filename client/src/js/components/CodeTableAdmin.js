@@ -180,14 +180,31 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
     searchData.refresh(true);
   };
 
-  const onDeleteClicked = (codeSetId, date) => {
-    api
-      .deleteCodeTable(codeSetId, date)
-      .then(() => searchData.refresh())
-      .catch((error) => {
-        showValidationErrorDialog(error.response.data);
-        console.log(error);
-      });
+  const onDeleteClicked = (codeSetId, date, permanentDelete) => {
+    console.log(permanentDelete);
+    if (permanentDelete) {
+      api
+        .deleteCodeTable(codeSetId)
+        .then(() => searchData.refresh())
+        .catch((error) => {
+          showValidationErrorDialog(error.response.data);
+          console.log(error);
+        });
+    } else if (permanentDelete === false) {
+      api
+        .getCodeTable(codeSetId)
+        .then((response) => {
+          let data = { ...response.data, endDate: date };
+          debugger;
+          api.putCodeTable(codeSetId, data).then(() => searchData.refresh());
+        })
+        .catch((error) => {
+          showValidationErrorDialog(error.response.data);
+          console.log(error);
+        });
+
+      // api.putCodeTable(codeSetId, { endDate: date });
+    }
   };
 
   const onEditClicked = (codeSetId) => {
