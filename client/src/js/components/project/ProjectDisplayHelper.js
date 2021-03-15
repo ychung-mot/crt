@@ -10,10 +10,11 @@ export const DisplayRow = ({ children }) => {
   return <Row>{children}</Row>;
 };
 
-export const ColumnGroup = ({ name, label, helper }) => {
+export const ColumnGroup = ({ name, label, helper, ...props }) => {
+  let { sm = 2 } = props;
   return (
     <>
-      <Col className="mt-2 font-weight-bold" sm="3">
+      <Col className="mt-2 font-weight-bold" sm={sm}>
         {name}
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
@@ -24,10 +25,11 @@ export const ColumnGroup = ({ name, label, helper }) => {
   );
 };
 
-export const ColumnGroupWithMarkdown = ({ name, label, helper }) => {
+export const ColumnGroupWithMarkdown = ({ name, label, helper, ...props }) => {
+  let { sm = 3 } = props;
   return (
     <>
-      <Col className="mt-2 font-weight-bold" sm="3">
+      <Col className="mt-2 font-weight-bold" sm={sm}>
         {name}
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
@@ -44,10 +46,11 @@ export const ColumnGroupWithMarkdown = ({ name, label, helper }) => {
   );
 };
 
-export const ColumnTwoGroups = ({ name, label, helper }) => {
+export const ColumnTwoGroups = ({ name, label, helper, ...props }) => {
+  let { sm = 2 } = props;
   return (
     <>
-      <Col className="mt-2 font-weight-bold" sm="3">
+      <Col className="mt-2 font-weight-bold" sm={sm}>
         {name}
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
