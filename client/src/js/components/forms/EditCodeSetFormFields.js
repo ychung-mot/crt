@@ -9,14 +9,7 @@ import * as api from '../../Api';
 
 const defaultValues = { codeValueText: '', codeName: '', displayOrder: 0 };
 
-const EditCodeSetFormFields = ({
-  setInitialValues,
-  formValues,
-  setValidationSchema,
-  formType,
-  codeSetId,
-  codeSetName,
-}) => {
+const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSchema, formType, codeSetId }) => {
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
@@ -45,9 +38,11 @@ const EditCodeSetFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="codeSet" label="Code Set">
-        <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
-      </FormRow>
+      {formType === Constants.FORM_TYPE.EDIT && (
+        <FormRow name="codeSet" label="Code Set">
+          <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
+        </FormRow>
+      )}
       <FormRow name="codeValueText" label="Code Value">
         <FormInput type="text" name="codeValueText" id={`codeValue`} />
       </FormRow>
