@@ -7,7 +7,7 @@ import { FormRow, FormInput } from './FormInputs';
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
 
-const defaultValues = { codeValueText: '', codeName: '', displayOrder: undefined };
+const defaultValues = { codeValueText: '', codeName: '', displayOrder: 0 };
 
 const EditCodeSetFormFields = ({
   setInitialValues,
@@ -24,6 +24,7 @@ const EditCodeSetFormFields = ({
   });
 
   useEffect(() => {
+    debugger;
     setInitialValues(defaultValues);
     setValidationSchema(validationSchema);
 
