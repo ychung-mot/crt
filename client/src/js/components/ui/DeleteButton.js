@@ -74,6 +74,7 @@ const DeleteButton = ({
                 showClearDate={true}
                 inputIconPosition="after"
                 placeholder="End Date"
+                openDirection="up"
               />
             </div>
           )}
