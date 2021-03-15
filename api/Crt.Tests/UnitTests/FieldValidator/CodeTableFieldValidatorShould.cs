@@ -54,6 +54,26 @@ namespace Crt.Tests.UnitTests.FieldValidator
         [Theory]
         [AutoMoqData]
 
+        public void ReturnErrorWhenCodeNameIsMissing(FieldValidatorService sut)
+        {
+            //arrange
+            var errors = new Dictionary<string, List<string>>();
+            CodeLookupDto codeLookupDto = new CodeLookupDto
+            {
+                CodeName = null,
+                CodeValueText = "CodeValueTest"
+            };
+
+            //act
+            errors = sut.Validate(Entities.CodeTable, codeLookupDto, errors);
+
+            //assert
+            Assert.NotEmpty(errors);
+        }
+
+        [Theory]
+        [AutoMoqData]
+
         public void ReturnErrorWhenCodeValueExceeds20Chars(FieldValidatorService sut)
         {
             //arrange

@@ -124,7 +124,7 @@ namespace Crt.Domain.Services
         private void LoadCodeLookupRules()
         {
             _rules.Add(new FieldValidationRule(Entities.CodeTable, Fields.CodeName, FieldTypes.String, true, 1, 255, null, null, null, null, null, null));
-            _rules.Add(new FieldValidationRule(Entities.CodeTable, Fields.CodeValueText, FieldTypes.String, true, 1, 20, null, null, null, null, null, null));
+            _rules.Add(new FieldValidationRule(Entities.CodeTable, Fields.CodeValueText, FieldTypes.String, false, 1, 20, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.CodeTable, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
         }
 
