@@ -142,11 +142,13 @@ const CodeTableAdmin = (props) => {
     searchData.refresh(true);
   };
 
-  const onDeleteClicked = (codeSetId, date, permanentDelete) => {
-    console.log(permanentDelete);
-    console.log(date);
-    console.log(codeSetId);
-    console.log('delete');
+  const onDeleteClicked = (codeSetId, date) => {
+    api
+      .deleteCodeTable(codeSetId, date)
+      .then(() => searchData.refresh())
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const onEditClicked = (codeSetId) => {
