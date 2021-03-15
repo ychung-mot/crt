@@ -85,6 +85,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
       })
       .catch((error) => {
         console.log(error);
+        showValidationErrorDialog(error.response.data);
       });
   };
 
