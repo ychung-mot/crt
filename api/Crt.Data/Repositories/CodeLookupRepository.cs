@@ -64,6 +64,7 @@ namespace Crt.Data.Repositories
             foreach (var result in results.SourceList)
             {
                 result.IsReferenced = await IsCodeLookupInUseAsync(result.CodeLookupId);
+                result.canDelete = !result.IsReferenced;
             }
 
             return results;
