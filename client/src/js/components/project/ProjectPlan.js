@@ -283,16 +283,22 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
             label={
               <NumberFormat value={data?.anncmentValue || ''} prefix="$" thousandSeparator={true} displayType="text" />
             }
+            sm={2}
           />
           <ColumnTwoGroups
             name="C-035 Value"
             label={
               <NumberFormat value={data?.c035Value || ''} prefix="$" thousandSeparator={true} displayType="text" />
             }
+            sm={'auto'}
           />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroupWithMarkdown name="Announcement Comment" label={data.anncmentComment?.replace(/\n/g, '  \n')} />
+          <ColumnGroupWithMarkdown
+            name="Announcement Comment"
+            label={data.anncmentComment?.replace(/\n/g, '  \n')}
+            sm={2}
+          />
         </DisplayRow>
       </MaterialCard>
       <div className="text-right">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { showValidationErrorDialog } from '../../redux/actions';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Authorize from '../fragments/Authorize';
 import UIHeader from '../ui/UIHeader';
@@ -13,6 +14,7 @@ import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
 const RatioTable = ({
+  showValidationErrorDialog,
   title,
   ratioTypeName,
   tableColumns,
@@ -129,7 +131,7 @@ const RatioTable = ({
   );
 };
 
-export default RatioTable;
+export default connect(null, { showValidationErrorDialog })(RatioTable);
 
 RatioTable.propTypes = {
   title: PropTypes.string.isRequired, //title for the dialog

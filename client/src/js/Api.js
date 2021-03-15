@@ -116,6 +116,8 @@ export const getCodeTable = (codeTableId) => instance.get(`${Constants.API_PATHS
 export const postCodeTable = (codeTableData) => instance.post(`${Constants.API_PATHS.CODE_TABLE}`, codeTableData);
 export const putCodeTable = (codeTableId, codeTableData) =>
   instance.put(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`, codeTableData);
+export const deleteCodeTable = (codeTableId, endDate) =>
+  instance.delete(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`, { data: { id: codeTableId, endDate } });
 
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
