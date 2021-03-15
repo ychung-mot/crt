@@ -20,11 +20,11 @@ const EditCodeSetFormFields = ({
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
+    codeValueText: Yup.string().max(20, 'Must be less than 20 characters'),
     displayOrder: Yup.number().integer('Order number must be an integer e.g. 1,2,3').required(),
   });
 
   useEffect(() => {
-    debugger;
     setInitialValues(defaultValues);
     setValidationSchema(validationSchema);
 
