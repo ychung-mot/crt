@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import queryString from 'query-string';
 import * as Yup from 'yup';
 import { useLocation } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 //components
 import { Row, Col, Button } from 'reactstrap';
@@ -17,6 +18,8 @@ import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
 import PageSpinner from './ui/PageSpinner';
 import EditCodeSetFormFields from './forms/EditCodeSetFormFields';
+
+import { showValidationErrorDialog } from '../redux/actions';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
@@ -89,7 +92,7 @@ const codeTables = codeTableAdd([
   'Service Line',
 ]);
 
-const CodeTableAdmin = (props) => {
+const CodeTableAdmin = ({ showValidationErrorDialog }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
@@ -147,6 +150,7 @@ const CodeTableAdmin = (props) => {
       .deleteCodeTable(codeSetId, date)
       .then(() => searchData.refresh())
       .catch((error) => {
+        showValidationErrorDialog(error.response.data);
         console.log(error);
       });
   };
@@ -169,6 +173,7 @@ const CodeTableAdmin = (props) => {
       //     searchData.refresh();
       //   })
       //   .catch((error) => {
+      //     showValidationErrorDialog(error.response.data);
       //     console.log(error);
       //   });
     } else if (formType === Constants.FORM_TYPE.EDIT) {
@@ -179,6 +184,7 @@ const CodeTableAdmin = (props) => {
           searchData.refresh();
         })
         .catch((error) => {
+          showValidationErrorDialog(error.response.data);
           console.log(error);
         });
     }
@@ -274,4 +280,4 @@ const CodeTableAdmin = (props) => {
   );
 };
 
-export default CodeTableAdmin;
+export default connect(null, { showValidationErrorDialog })(CodeTableAdmin);
