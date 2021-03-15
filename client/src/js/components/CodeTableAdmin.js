@@ -53,13 +53,35 @@ const isActive = [
   { id: 'inactive', name: 'Inactive' },
 ];
 
-const tableColumns = [
+const codeLookupColumns = [
   { heading: 'Code Value^', key: 'codeValueText', nosort: true },
   { heading: 'Code Description', key: 'codeName', nosort: true },
   { heading: 'Order Number', key: 'displayOrder', nosort: true },
   { heading: 'Referenced', key: 'isReferenced', badge: { active: 'Ref', inactive: 'No Ref' }, nosort: true },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
+
+const elementsTableColumns = [
+  { heading: 'Element^', key: 'code', nosort: true },
+  { heading: 'Element Description', key: 'description', nosort: true },
+  { heading: 'Program Category', key: 'tba', nosort: true },
+  { heading: 'Program', key: 'tba1', nosort: true },
+  { heading: 'Service Line', key: 'tba2', nosort: true },
+  { heading: 'Order Number', key: 'displayOrder', nosort: true },
+  { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
+];
+
+//to future proof in case there will be more than 2 table views
+const codeSetsEnum = {
+  ELEMENT: 'element',
+  CODE_LOOKUP: 'codeLookup',
+  properties: {
+    element: { tableColumns: elementsTableColumns },
+    codeLookup: { tableColumns: codeLookupColumns },
+  },
+};
+
+Object.freeze(codeSetsEnum);
 
 //temporary fix to create codeTableList POC
 
@@ -96,6 +118,8 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
+  const [columnView, setColumnView] = useState(codeSetsEnum.CODE_LOOKUP);
+  const [codeSetName, setCodeSetName] = useState('Accomplishment');
 
   // Run on load, parse URL query params
   useEffect(() => {
@@ -127,7 +151,15 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
     }
 
     //temporary fix until code set exists
-    let codeSet = codeTables.find((set) => set.id === values.codeSet).name.toLowerCase();
+    let codeSet = codeTables.find((set) => set.id === values.codeSet).name;
+    setCodeSetName(codeSet);
+    codeSet = codeSet.toLowerCase();
+    if (codeSet === 'elements') {
+      setColumnView(codeSetsEnum.ELEMENT);
+    } else {
+      setColumnView(codeSetsEnum.CODE_LOOKUP);
+    }
+
     codeSet = codeSet.replace(/\s/g, '_');
 
     const options = {
@@ -141,6 +173,9 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
   };
 
   const handleSearchFormReset = () => {
+    //temporary fix confirm when code sets are returned
+    setCodeSetName('Accomplishment');
+    setColumnView(codeSetsEnum.CODE_LOOKUP);
     setSearchInitialValues(defaultSearchFormValues);
     searchData.refresh(true);
   };
@@ -156,11 +191,11 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
   };
 
   const onEditClicked = (codeSetId) => {
-    codeSetFormModal.openForm(Constants.FORM_TYPE.EDIT, { codeSetId: codeSetId });
+    codeSetFormModal.openForm(Constants.FORM_TYPE.EDIT, { codeSetId: codeSetId, codeSetName });
   };
 
   const onAddClicked = () => {
-    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeSetName: 'variableName here' });
+    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeSetName });
   };
 
   const handleCodeSetFormSubmit = (values, formType) => {
@@ -194,7 +229,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
     ...values,
   }));
 
-  const codeSetFormModal = useFormModal(`Codeset`, <EditCodeSetFormFields />, handleCodeSetFormSubmit);
+  const codeSetFormModal = useFormModal(`${codeSetName}`, <EditCodeSetFormFields />, handleCodeSetFormSubmit);
 
   return (
     <React.Fragment>
@@ -249,7 +284,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
               Set Order
             </Button>
             <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
-              Add New
+              {`Add New ${codeSetName}`}
             </Button>
           </Col>
         </Row>
@@ -260,7 +295,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
           {data.length > 0 && (
             <DataTableWithPaginaionControl
               dataList={data}
-              tableColumns={tableColumns}
+              tableColumns={codeSetsEnum.properties[columnView].tableColumns}
               searchPagination={searchData.pagination}
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}

@@ -9,22 +9,15 @@ import * as api from '../../Api';
 
 const defaultValues = { codeValueText: '', codeName: '', displayOrder: 0 };
 
-const EditCodeSetFormFields = ({
-  setInitialValues,
-  formValues,
-  setValidationSchema,
-  formType,
-  codeSetId,
-  codeSetName,
-}) => {
+const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSchema, formType, codeSetId }) => {
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
+    codeValueText: Yup.string().max(20, 'Must be less than 20 characters'),
     displayOrder: Yup.number().integer('Order number must be an integer e.g. 1,2,3').required(),
   });
 
   useEffect(() => {
-    debugger;
     setInitialValues(defaultValues);
     setValidationSchema(validationSchema);
 
@@ -45,9 +38,11 @@ const EditCodeSetFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="codeSet" label="Code Set">
-        <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
-      </FormRow>
+      {formType === Constants.FORM_TYPE.EDIT && (
+        <FormRow name="codeSet" label="Code Set">
+          <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
+        </FormRow>
+      )}
       <FormRow name="codeValueText" label="Code Value">
         <FormInput type="text" name="codeValueText" id={`codeValue`} />
       </FormRow>
