@@ -7,9 +7,16 @@ import { FormRow, FormInput } from './FormInputs';
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
 
-const defaultValues = { codeValueText: '', codeName: '', displayOrder: 0 };
+const EditCodeSetFormFields = ({
+  setInitialValues,
+  formValues,
+  setValidationSchema,
+  formType,
+  codeSetId,
+  codeValueText,
+}) => {
+  const defaultValues = { codeValueText: '', codeName: '', displayOrder: 0, codeSet: codeValueText };
 
-const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSchema, formType, codeSetId }) => {
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
@@ -39,11 +46,9 @@ const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSche
 
   return (
     <React.Fragment>
-      {formType === Constants.FORM_TYPE.EDIT && (
-        <FormRow name="codeSet" label="Code Set">
-          <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
-        </FormRow>
-      )}
+      <FormRow name="codeSet" label="Code Set">
+        <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
+      </FormRow>
       <FormRow name="codeValueText" label="Code Value" helper="codeValueText">
         <FormInput type="text" name="codeValueText" id={`codeValue`} />
       </FormRow>

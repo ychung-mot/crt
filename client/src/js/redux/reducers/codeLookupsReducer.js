@@ -37,7 +37,7 @@ const defaultState = {
   electoralDistricts: [],
   highways: [],
   economicRegions: [],
-  codesets: [],
+  codeSets: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -69,7 +69,7 @@ const codeLookupsReducer = (state = defaultState, action) => {
     case FETCH_ECONOMIC_REGIONS:
       return { ...state, economicRegions: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_CODESETS:
-      return { ...state, codesets: _.orderBy(action.payload, ['displayOrder']) };
+      return { ...state, codeSets: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }
