@@ -20,4 +20,6 @@ export const HELPER_TEXT = {
   anncmentComment: `Comments on project announcements`,
 
   //codetables
+  codeValueText: `Representative values for descriptive fields (e.g. C for Construct). For records with no such values this field can be left empty, and just Code Name can be provide, (e.g. names of towns)`,
+  codeName: `Description for Code Value (e.g. Construct), or independent look up value where no code value is applicable (e.g. Town names - Abbotsford)`,
 };
