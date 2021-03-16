@@ -26,7 +26,7 @@ namespace Crt.Domain.Services
     public class CodeTableService : CrtServiceBase, ICodeTableService
     {
         private ICodeLookupRepository _codeLookupRepo;
-
+        
         public CodeTableService(CrtCurrentUser currentUser, IFieldValidatorService validator, IUnitOfWork unitOfWork, 
             ICodeLookupRepository codeLookupRepo) : base(currentUser, validator, unitOfWork)
         {
@@ -64,6 +64,9 @@ namespace Crt.Domain.Services
 
             _unitOfWork.Commit();
 
+            //need to reload the codelookup singleton
+            _validator.CodeLookup = _codeLookupRepo.GetCodeLookups();
+
             return (crtCodeLookup.CodeLookupId, errors);
         }
 
@@ -89,6 +92,9 @@ namespace Crt.Domain.Services
             await _codeLookupRepo.UpdateCodeLookupAsync(codeLookup);
 
             _unitOfWork.Commit();
+
+            //need to reload the codelookup singleton
+            _validator.CodeLookup = _codeLookupRepo.GetCodeLookups();
 
             return (false, errors);
         }
@@ -117,6 +123,9 @@ namespace Crt.Domain.Services
             await _codeLookupRepo.DeleteCodeLookupAsync(id);
 
             _unitOfWork.Commit();
+
+            //need to reload the codelookup singleton
+            _validator.CodeLookup = _codeLookupRepo.GetCodeLookups();
 
             return (false, errors);
         }
