@@ -57,7 +57,6 @@ const codeLookupColumns = [
   { heading: 'Code Value', key: 'codeValueText' },
   { heading: 'Code Name', key: 'codeName' },
   { heading: 'Order Number', key: 'displayOrder' },
-  { heading: 'Referenced', key: 'isReferenced', badge: { active: 'Ref', inactive: 'No Ref' }, nosort: true },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
 
