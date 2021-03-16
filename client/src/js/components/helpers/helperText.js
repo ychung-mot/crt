@@ -1,4 +1,5 @@
-export const PROJECT_HELPER_TEXT = {
+export const HELPER_TEXT = {
+  //projects
   projectNumber: `Manually assigned by financial ee's using an H0277 form`,
   projectName: `Typically created by project manager using project naming conventions`,
   description: `Non-technical description of the project; meant for public consumption`,
@@ -17,4 +18,8 @@ export const PROJECT_HELPER_TEXT = {
   anncmentValue: `Project value as communicated through announcement done by GCPE`,
   c035Value: `Value on the road side signs for the project value`,
   anncmentComment: `Comments on project announcements`,
+
+  //codetables
+  codeValueText: `Representative values for descriptive fields (e.g. C for Construct). For records with no such values this field can be left empty, and just Code Name can be provide, (e.g. names of towns)`,
+  codeName: `Description for Code Value (e.g. Construct), or independent look up value where no code value is applicable (e.g. Town names - Abbotsford)`,
 };

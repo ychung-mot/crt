@@ -14,6 +14,7 @@ const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSche
 
   const validationSchema = Yup.object({
     codeValueText: Yup.string().max(20, 'Must be less than 20 characters'),
+    codeName: Yup.string().required(`Code name is required`),
     displayOrder: Yup.number().integer('Order number must be an integer e.g. 1,2,3').required(),
   });
 
@@ -43,10 +44,10 @@ const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSche
           <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
         </FormRow>
       )}
-      <FormRow name="codeValueText" label="Code Value">
+      <FormRow name="codeValueText" label="Code Value" helper="codeValueText">
         <FormInput type="text" name="codeValueText" id={`codeValue`} />
       </FormRow>
-      <FormRow name="codeName" label="Code Name">
+      <FormRow name="codeName" label="Code Name" helper="codeName">
         <FormInput type="text" name="codeName" id={`codeName`} />
       </FormRow>
       <FormRow name="displayOrder" label="Order Number">

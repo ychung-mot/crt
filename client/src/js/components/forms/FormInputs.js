@@ -5,7 +5,7 @@ import MouseoverTooltip from '../ui/MouseoverTooltip';
 import NumberFormat from 'react-number-format';
 import classNames from 'classnames';
 
-import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
+import { HELPER_TEXT } from '../helpers/helperText';
 
 export const FormRow = ({ name, label, children, helper = '' }) => {
   return (
@@ -13,7 +13,7 @@ export const FormRow = ({ name, label, children, helper = '' }) => {
       <Col sm={3}>
         <Label for={name}>
           {label}
-          {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+          {helper && <MouseoverTooltip id={`${helper}__tooltip`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
         </Label>
       </Col>
       <Col sm={9}>{children}</Col>
