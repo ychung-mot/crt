@@ -95,7 +95,7 @@ namespace Crt.Data.Repositories
         {
             var crtCodeLookup = await DbSet.FirstAsync(x => x.CodeLookupId == codeLookup.CodeLookupId);
 
-            crtCodeLookup.EndDate = codeLookup.EndDate?.Date;
+            codeLookup.EndDate = codeLookup.EndDate?.Date;
 
             Mapper.Map(codeLookup, crtCodeLookup);
         }
