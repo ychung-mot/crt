@@ -4,7 +4,7 @@ import MouseoverTooltip from '../ui/MouseoverTooltip';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 
-import { PROJECT_HELPER_TEXT } from '../project/ProjectHelperText';
+import { HELPER_TEXT } from '../helpers/helperText';
 
 export const DisplayRow = ({ children }) => {
   return <Row>{children}</Row>;
@@ -16,7 +16,7 @@ export const ColumnGroup = ({ name, label, helper, ...props }) => {
     <>
       <Col className="mt-2 font-weight-bold" sm={sm}>
         {name}
-        {helper && <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+        {helper && <MouseoverTooltip id={`project-details__${helper}`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
       <Col className="mt-2" sm="9">
         {label ? label : 'None'}
@@ -31,7 +31,7 @@ export const ColumnGroupWithMarkdown = ({ name, label, helper, ...props }) => {
     <>
       <Col className="mt-2 font-weight-bold" sm={sm}>
         {name}
-        {helper && <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+        {helper && <MouseoverTooltip id={`project-details__${helper}`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
       <Col className="mt-2 markdown__container-overflow" sm="9">
         {label ? (
@@ -52,7 +52,7 @@ export const ColumnTwoGroups = ({ name, label, helper, ...props }) => {
     <>
       <Col className="mt-2 font-weight-bold" sm={sm}>
         {name}
-        {helper && <MouseoverTooltip id={`project-details__${helper}`}>{PROJECT_HELPER_TEXT[helper]}</MouseoverTooltip>}
+        {helper && <MouseoverTooltip id={`project-details__${helper}`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
       <Col className="mt-2" sm="3">
         {label ? label : 'None'}

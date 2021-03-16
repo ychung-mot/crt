@@ -1,4 +1,5 @@
-export const PROJECT_HELPER_TEXT = {
+export const HELPER_TEXT = {
+  //projects
   projectNumber: `Manually assigned by financial ee's using an H0277 form`,
   projectName: `Typically created by project manager using project naming conventions`,
   description: `Non-technical description of the project; meant for public consumption`,
@@ -17,4 +18,6 @@ export const PROJECT_HELPER_TEXT = {
   anncmentValue: `Project value as communicated through announcement done by GCPE`,
   c035Value: `Value on the road side signs for the project value`,
   anncmentComment: `Comments on project announcements`,
+
+  //codetables
 };
