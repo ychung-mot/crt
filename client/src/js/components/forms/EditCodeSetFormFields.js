@@ -14,6 +14,7 @@ const EditCodeSetFormFields = ({ setInitialValues, formValues, setValidationSche
 
   const validationSchema = Yup.object({
     codeValueText: Yup.string().max(20, 'Must be less than 20 characters'),
+    codeName: Yup.string().required(`Code name is required`),
     displayOrder: Yup.number().integer('Order number must be an integer e.g. 1,2,3').required(),
   });
 

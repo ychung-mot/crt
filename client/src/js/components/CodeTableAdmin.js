@@ -54,15 +54,15 @@ const isActive = [
 ];
 
 const codeLookupColumns = [
-  { heading: 'Code Value^', key: 'codeValueText', nosort: true },
-  { heading: 'Code Description', key: 'codeName', nosort: true },
-  { heading: 'Order Number', key: 'displayOrder', nosort: true },
+  { heading: 'Code Value', key: 'codeValueText' },
+  { heading: 'Code Name', key: 'codeName' },
+  { heading: 'Order Number', key: 'displayOrder' },
   { heading: 'Referenced', key: 'isReferenced', badge: { active: 'Ref', inactive: 'No Ref' }, nosort: true },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
 
 const elementsTableColumns = [
-  { heading: 'Element^', key: 'code', nosort: true },
+  { heading: 'Element', key: 'code', nosort: true },
   { heading: 'Element Description', key: 'description', nosort: true },
   { heading: 'Program Category', key: 'tba', nosort: true },
   { heading: 'Program', key: 'tba1', nosort: true },
@@ -180,7 +180,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
     searchData.refresh(true);
   };
 
-  const onDeleteClicked = (codeSetId, date, permanentDelete) => {
+  const onDeleteClicked = (codeSetId, endDate, permanentDelete) => {
     console.log(permanentDelete);
     if (permanentDelete) {
       api
@@ -194,16 +194,13 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
       api
         .getCodeTable(codeSetId)
         .then((response) => {
-          let data = { ...response.data, endDate: date };
-          debugger;
+          let data = { ...response.data, endDate };
           api.putCodeTable(codeSetId, data).then(() => searchData.refresh());
         })
         .catch((error) => {
           showValidationErrorDialog(error.response.data);
           console.log(error);
         });
-
-      // api.putCodeTable(codeSetId, { endDate: date });
     }
   };
 
@@ -292,6 +289,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
       <Authorize requires={Constants.PERMISSIONS.CODE_W}>
         <Row>
           <Col>
+            {/* temporary fix hide set order button until functionality is implemented
             <Button
               size="sm"
               color="secondary"
@@ -299,7 +297,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
               onClick={() => console.log('SET ORDER')}
             >
               Set Order
-            </Button>
+            </Button> */}
             <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
               {`Add New ${codeSetName}`}
             </Button>
