@@ -24,30 +24,6 @@ import { showValidationErrorDialog } from '../redux/actions';
 import * as Constants from '../Constants';
 import * as api from '../Api';
 
-const defaultSearchFormValues = {
-  searchText: '',
-  statusId: [Constants.ACTIVE_STATUS.ACTIVE],
-  codeSet: 'accomplishment',
-};
-
-const defaultSearchOptions = {
-  searchText: '',
-  isActive: true,
-  codeSet: 'accomplishment',
-  dataPath: Constants.API_PATHS.CODE_TABLE,
-};
-
-const formikInitialValues = {
-  searchText: '',
-  isActive: ['active'],
-  codeSet: 1,
-};
-
-const validationSchema = Yup.object({
-  searchText: Yup.string().max(32).trim(),
-  codeSet: Yup.number().required(),
-});
-
 const isActive = [
   { id: 'active', name: 'Active' },
   { id: 'inactive', name: 'Inactive' },
@@ -82,43 +58,40 @@ const codeSetsEnum = {
 
 Object.freeze(codeSetsEnum);
 
-//temporary fix to create codeTableList POC
+const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
+  //fields for default search, formik fields and helper functions
+  const defaultSearchFormValues = {
+    searchText: '',
+    statusId: [Constants.ACTIVE_STATUS.ACTIVE],
+    codeSet: codeSets[0].codeValueText,
+  };
 
-const codeTableAdd = (nameList) => {
-  let codeTablesList = [];
+  const defaultSearchOptions = {
+    searchText: '',
+    isActive: true,
+    codeSet: codeSets[0].codeValueText,
+    dataPath: Constants.API_PATHS.CODE_TABLE,
+  };
 
-  for (let each in nameList) {
-    codeTablesList.push({ id: parseInt(each) + 1, name: nameList[each] });
-  }
+  const formikInitialValues = {
+    searchText: '',
+    isActive: ['active'],
+    codeSet: codeSets[0].id,
+  };
 
-  return codeTablesList;
-};
+  const validationSchema = Yup.object({
+    searchText: Yup.string().max(32).trim(),
+    codeSet: Yup.number().required(),
+  });
 
-const codeTables = codeTableAdd([
-  `Accomplishment`,
-  `Capital Index`,
-  `Contractor`,
-  `Economic Region`,
-  `Electoral District`,
-  `Elements`,
-  `Fiscal Year`,
-  'Funding Type',
-  'Highway',
-  'Nearest Town',
-  'Phase',
-  'Program',
-  'Program Category',
-  'Quantity',
-  'RC Number',
-  'Service Line',
-]);
-
-const CodeTableAdmin = ({ showValidationErrorDialog }) => {
   const location = useLocation();
   const searchData = useSearchData(defaultSearchOptions);
+
+  //Hooks
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
   const [columnView, setColumnView] = useState(codeSetsEnum.CODE_LOOKUP);
-  const [codeSetName, setCodeSetName] = useState('Accomplishment');
+  const [codeSetName, setCodeSetName] = useState(codeSets[0].codeName); //used to change title of add button and dialog
+  const [codeValueText, setcodeValueText] = useState(codeSets[0].codeValueText); //used to tell what code set we are adding to for formik
 
   // Run on load, parse URL query params
   useEffect(() => {
@@ -149,17 +122,17 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
       isActive = values.isActive[0] === 'active';
     }
 
-    //temporary fix until code set exists
-    let codeSet = codeTables.find((set) => set.id === values.codeSet).name;
-    setCodeSetName(codeSet);
-    codeSet = codeSet.toLowerCase();
+    let codeSetValue = codeSets.find((set) => set.id === values.codeSet);
+    let codeSet = codeSetValue.codeValueText;
+    setCodeSetName(codeSetValue.codeName);
+    setcodeValueText(codeSet);
+
+    //temporary fix check to see if this will still work when the elements table is added. Probably use CODE_SET TO determine this
     if (codeSet === 'elements') {
       setColumnView(codeSetsEnum.ELEMENT);
     } else {
       setColumnView(codeSetsEnum.CODE_LOOKUP);
     }
-
-    codeSet = codeSet.replace(/\s/g, '_');
 
     const options = {
       ...searchData.searchOptions,
@@ -173,7 +146,8 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
 
   const handleSearchFormReset = () => {
     //temporary fix confirm when code sets are returned
-    setCodeSetName('Accomplishment');
+    setCodeSetName(codeSets[0].codeName);
+    setcodeValueText(codeSets[0].codeValueText);
     setColumnView(codeSetsEnum.CODE_LOOKUP);
     setSearchInitialValues(defaultSearchFormValues);
     searchData.refresh(true);
@@ -208,22 +182,21 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
   };
 
   const onAddClicked = () => {
-    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeSetName });
+    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeValueText, codeSetName });
   };
 
   const handleCodeSetFormSubmit = (values, formType) => {
     if (formType === Constants.FORM_TYPE.ADD) {
-      //temporary fix. Uncomment out when CodeSet List is received.
-      // api
-      //   .postCodeTable(values)
-      //   .then(() => {
-      //     codeSetFormModal.closeForm();
-      //     searchData.refresh();
-      //   })
-      //   .catch((error) => {
-      //     showValidationErrorDialog(error.response.data);
-      //     console.log(error);
-      //   });
+      api
+        .postCodeTable(values)
+        .then(() => {
+          codeSetFormModal.closeForm();
+          searchData.refresh();
+        })
+        .catch((error) => {
+          showValidationErrorDialog(error.response.data);
+          console.log(error);
+        });
     } else if (formType === Constants.FORM_TYPE.EDIT) {
       api
         .putCodeTable(values.id, values)
@@ -261,7 +234,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
                 <Col>
                   <SingleDropdownField
                     {...formikProps}
-                    items={codeTables}
+                    items={codeSets}
                     defaultTitle="Choose Codeset"
                     name="codeSet"
                     searchable={true}
@@ -330,4 +303,9 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
   );
 };
 
-export default connect(null, { showValidationErrorDialog })(CodeTableAdmin);
+const mapStateToProps = (state) => {
+  return {
+    codeSets: state.codeLookups.codeSets,
+  };
+};
+export default connect(mapStateToProps, { showValidationErrorDialog })(CodeTableAdmin);

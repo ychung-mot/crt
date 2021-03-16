@@ -78,7 +78,7 @@ const SingleDropdown = (props) => {
         <DropdownToggle caret onBlur={handleOnBlur}>
           {title}
         </DropdownToggle>
-        <DropdownMenu className="multi">
+        <DropdownMenu className="multi dropdown__single-scroll">
           {searchable && (
             <div className="multi-item select-all p-2">
               <Input
