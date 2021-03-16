@@ -28,6 +28,7 @@ const SingleDropdownField = (props) => {
 
   return (
     <SingleDropdown
+      name={name}
       items={items}
       value={field.value}
       defaultTitle={title}
