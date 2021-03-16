@@ -264,6 +264,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog }) => {
                     items={codeTables}
                     defaultTitle="Choose Codeset"
                     name="codeSet"
+                    searchable={true}
                   />
                 </Col>
                 <Col>

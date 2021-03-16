@@ -3,6 +3,7 @@ import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem, FormF
 
 const SingleDropdown = (props) => {
   const {
+    name,
     items,
     defaultTitle,
     value,
@@ -79,14 +80,17 @@ const SingleDropdown = (props) => {
         </DropdownToggle>
         <DropdownMenu className="dropdown__single-scroll">
           {searchable && (
-            <Input
-              type="textbox"
-              placeholder="Search"
-              value={textFilter}
-              onChange={(e) => {
-                setTextFilter(e.target.value);
-              }}
-            />
+            <div className="multi-item select-all p-2">
+              <Input
+                name={name}
+                type="textbox"
+                placeholder="Search"
+                value={textFilter}
+                onChange={(e) => {
+                  setTextFilter(e.target.value);
+                }}
+              />
+            </div>
           )}
           {renderMenuItems()}
         </DropdownMenu>
