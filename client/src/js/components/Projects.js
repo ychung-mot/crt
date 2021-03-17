@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import queryString from 'query-string';
+import moment from 'moment';
 
 //components
 import Authorize from './fragments/Authorize';
@@ -156,10 +157,18 @@ const Projects = ({
   };
 
   const handleAddProjectFormSubmit = (values, formType) => {
+    //required to convert boolean complete to a date/null for the backend
+    let data;
+    if (values.endDate === true) {
+      data = { ...values, endDate: moment().format(Constants.DATE_DISPLAY_FORMAT) };
+    } else {
+      data = { ...values, endDate: null };
+    }
+
     if (!formModal.submitting) {
       formModal.setSubmitting(true);
       api
-        .postProject(values)
+        .postProject(data)
         .then(() => {
           formModal.closeForm();
           searchData.refresh();
