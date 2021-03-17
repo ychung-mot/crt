@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 //components
 import Authorize from '../fragments/Authorize';
@@ -38,10 +39,18 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
   }, []);
 
   const handleEditProjectFormSubmit = (values) => {
+    //required to convert boolean complete to a date/null for the backend
+    let data;
+    if (values.endDate === true) {
+      data = { ...values, endDate: moment().format(Constants.DATE_DISPLAY_FORMAT) };
+    } else {
+      data = { ...values, endDate: null };
+    }
+
     if (!formModal.submitting) {
       formModal.setSubmitting(true);
       api
-        .putProject(values.id, values)
+        .putProject(values.id, data)
         .then(() => {
           formModal.closeForm();
           setLoading(true);

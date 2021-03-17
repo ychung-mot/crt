@@ -6,7 +6,7 @@ import moment from 'moment';
 import SingleDropdownField from '../ui/SingleDropdownField';
 import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput } from './FormInputs';
+import { FormRow, FormInput, FormCheckboxInput } from './FormInputs';
 
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
@@ -55,7 +55,7 @@ const EditProjectFormFields = ({
     if (formType === Constants.FORM_TYPE.EDIT) {
       setLoading(true);
       api.getProject(projectId).then((response) => {
-        setInitialValues({ ...response.data, endDate: response.data.endDate ? moment(response.data.endDate) : null });
+        setInitialValues({ ...response.data, endDate: response.data.endDate ? true : false });
         setLoading(false);
       });
     }
@@ -99,8 +99,8 @@ const EditProjectFormFields = ({
       <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
         <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
       </FormRow>
-      <FormRow name="endDate" label="End Date" helper="endDate">
-        <SingleDateField name="endDate" placeholder="End Date" />
+      <FormRow name="endDate" label="Project Complete" helper="endDate">
+        <FormCheckboxInput name="endDate" type="checkbox" />
       </FormRow>
     </React.Fragment>
   );
