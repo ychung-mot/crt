@@ -67,10 +67,10 @@ const EditTenderFormFields = ({
         <FormInput type="text" name="tenderNumber" placeholder="Tender Number" id="tenderNumber" />
       </FormRow>
       <FormRow name="plannedDate" label="Planned Date" helper="plannedDate">
-        <SingleDateField name="plannedDate" placeholder="Planned Date" isOutsideRange={() => false} />
+        <SingleDateField name="plannedDate" placeholder={Constants.DATE_DISPLAY_FORMAT} isOutsideRange={() => false} />
       </FormRow>
       <FormRow name="actualDate" label="Actual Date" helper="actualDate">
-        <SingleDateField name="actualDate" placeholder="Actual Date" isOutsideRange={() => false} />
+        <SingleDateField name="actualDate" placeholder={Constants.DATE_DISPLAY_FORMAT} isOutsideRange={() => false} />
       </FormRow>
       <FormRow name="tenderValue" label="Tender Value" helper="tenderValue">
         <FormNumberInput name="tenderValue" id="tenderValue" value={formValues.tenderValue} />
