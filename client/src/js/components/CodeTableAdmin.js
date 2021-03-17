@@ -182,7 +182,11 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
   };
 
   const onAddClicked = () => {
-    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeValueText, codeSetName });
+    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, {
+      codeValueText,
+      codeSetName,
+      defaultDisplayOrder: searchData.pagination.totalCount + 10,
+    });
   };
 
   const handleCodeSetFormSubmit = (values, formType) => {
@@ -271,9 +275,11 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
             >
               Set Order
             </Button> */}
-            <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
-              {`Add New ${codeSetName}`}
-            </Button>
+            <Authorize requires={Constants.PERMISSIONS.CODE_W}>
+              <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
+                {`Add New ${codeSetName}`}
+              </Button>
+            </Authorize>
           </Col>
         </Row>
       </Authorize>

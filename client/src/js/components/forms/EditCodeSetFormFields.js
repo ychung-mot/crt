@@ -14,8 +14,9 @@ const EditCodeSetFormFields = ({
   formType,
   codeSetId,
   codeValueText,
+  defaultDisplayOrder,
 }) => {
-  const defaultValues = { codeValueText: '', codeName: '', displayOrder: 0, codeSet: codeValueText };
+  const defaultValues = { codeValueText: '', codeName: '', displayOrder: defaultDisplayOrder, codeSet: codeValueText };
 
   const [loading, setLoading] = useState(false);
 
