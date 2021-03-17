@@ -24,13 +24,7 @@ app.config = {
       geoCoderEnabled: true,
       geoCoderMaxResults: 5,
     },
-    {
-      name: "Identify2Tab",
-      tabName: "Features",
-      enabled: true,
-      maxResults: 10,
-    },
-    {
+   {
       name: "LayerController",
       tabName: "Layers",
       enabled: true,
@@ -38,7 +32,7 @@ app.config = {
       additionalSources: [
         {
           name: "MoTI",
-          url: "../ogs-public/ows",
+          url: "https://maps.th.gov.bc.ca/geoV05/ows",
         },
         {
           name: "MoTI (Int)",
@@ -49,11 +43,6 @@ app.config = {
           url: "https://openmaps.gov.bc.ca/geo/ows",
         },
       ],
-    },
-    {
-      name: "Home",
-      tabName: "About",
-      enabled: true,
     },
     {
       name: "UberSearchBCGeoCoderAddOn",
@@ -71,6 +60,11 @@ app.config = {
       maxResults: 5,
     },
   ],
+	init: function() {
+		// If given a segment id, set up router endpoints
+
+    console.log("got this projectId: "+app.projectId) ;
+	},  
   map: {
     default: {
       centre: {
