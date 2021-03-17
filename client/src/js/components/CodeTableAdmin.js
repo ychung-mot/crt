@@ -271,9 +271,11 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
             >
               Set Order
             </Button> */}
-            <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
-              {`Add New ${codeSetName}`}
-            </Button>
+            <Authorize requires={Constants.PERMISSIONS.CODE_W}>
+              <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
+                {`Add New ${codeSetName}`}
+              </Button>
+            </Authorize>
           </Col>
         </Row>
       </Authorize>
