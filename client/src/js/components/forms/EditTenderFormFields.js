@@ -67,19 +67,19 @@ const EditTenderFormFields = ({
         <FormInput type="text" name="tenderNumber" placeholder="Tender Number" id="tenderNumber" />
       </FormRow>
       <FormRow name="plannedDate" label="Planned Date" helper="plannedDate">
-        <SingleDateField name="plannedDate" placeholder="Planned Date" />
+        <SingleDateField name="plannedDate" placeholder={Constants.DATE_DISPLAY_FORMAT} isOutsideRange={() => false} />
       </FormRow>
       <FormRow name="actualDate" label="Actual Date" helper="actualDate">
-        <SingleDateField name="actualDate" placeholder="Actual Date" />
+        <SingleDateField name="actualDate" placeholder={Constants.DATE_DISPLAY_FORMAT} isOutsideRange={() => false} />
       </FormRow>
       <FormRow name="tenderValue" label="Tender Value" helper="tenderValue">
-        <FormNumberInput name="tenderValue" id="tenderValue" value={formValues.tenderValue} />
+        <FormNumberInput name="tenderValue" id="tenderValue" prefix="$" value={formValues.tenderValue} />
       </FormRow>
       <FormRow name="winningCntrctrLkupId" label="Winning Contractor" helper="winningCntrctrLkupId">
         <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable />
       </FormRow>
       <FormRow name="bidValue" label="Winning Bid" helper="bidValue">
-        <FormNumberInput name="bidValue" id="bidValue" value={formValues.bidValue} />
+        <FormNumberInput name="bidValue" id="bidValue" prefix="$" value={formValues.bidValue} />
       </FormRow>
       <FormRow name="comment" label="Comment">
         <FormInput

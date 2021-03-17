@@ -52,6 +52,7 @@ export const FormNumberInput = ({ className, children, ...props }) => {
       <NumberFormat
         className={classNames('form-control', className)}
         thousandSeparator={true}
+        prefix={props.prefix}
         value={props.value || undefined}
         onValueChange={(val) => {
           helpers.setTouched(true);
