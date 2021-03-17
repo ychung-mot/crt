@@ -21,6 +21,7 @@ namespace Crt.Domain.Services
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
 
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteCodeLookupAsync(decimal id);
+        Task UpdateCodeLookupDisplayOrder(string codeSet);
     }
 
     public class CodeTableService : CrtServiceBase, ICodeTableService
@@ -64,6 +65,8 @@ namespace Crt.Domain.Services
 
             _unitOfWork.Commit();
 
+            await UpdateCodeLookupDisplayOrder(codeLookup.CodeSet);
+
             //need to reload the codelookup singleton
             _validator.CodeLookup = _codeLookupRepo.GetCodeLookups();
 
@@ -90,8 +93,10 @@ namespace Crt.Domain.Services
             }
 
             await _codeLookupRepo.UpdateCodeLookupAsync(codeLookup);
-
+            
             _unitOfWork.Commit();
+
+            await UpdateCodeLookupDisplayOrder(codeLookup.CodeSet);
 
             //need to reload the codelookup singleton
             _validator.CodeLookup = _codeLookupRepo.GetCodeLookups();
@@ -130,6 +135,10 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        
+        public async Task UpdateCodeLookupDisplayOrder(string codeSet)
+        {
+            await _codeLookupRepo.UpdateCodeLookupDisplayOrder(codeSet);
+            _unitOfWork.Commit();
+        }
     }
 }

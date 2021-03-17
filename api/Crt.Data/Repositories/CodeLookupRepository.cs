@@ -24,6 +24,7 @@ namespace Crt.Data.Repositories
         Task<bool> DoesCodeLookupExistAsync(string codeName, string codeSet);
         Task<bool> IsCodeLookupInUseAsync(decimal id);
         Task DeleteCodeLookupAsync(decimal id);
+        Task UpdateCodeLookupDisplayOrder(string codeSet);
     }
 
     public class CodeLookupRepository : CrtRepositoryBase<CrtCodeLookup>, ICodeLookupRepository
@@ -68,7 +69,6 @@ namespace Crt.Data.Repositories
             }
 
             return results;
-
         }
 
         public async Task<CrtCodeLookup> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup)
@@ -127,6 +127,22 @@ namespace Crt.Data.Repositories
                 .AnyAsync(x => x.WinningCntrctrLkupId == id);
 
             return (inFinTarget || inProject || inQtyAccmp || inRatio || inTender);
+        }
+
+        public async Task UpdateCodeLookupDisplayOrder(string codeSet)
+        {
+            var crtCodeLookups = await DbSet
+                .Where(x => x.CodeSet == codeSet)
+                .OrderBy(x => x.DisplayOrder)
+                .ToListAsync();
+
+            var newDisplayOrder = 10;
+
+            foreach (var lookup in crtCodeLookups)
+            {
+                lookup.DisplayOrder = newDisplayOrder;
+                newDisplayOrder += 10;
+            }
         }
     }
 }
