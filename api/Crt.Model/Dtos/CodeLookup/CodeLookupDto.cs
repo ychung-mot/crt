@@ -15,7 +15,7 @@ namespace Crt.Model.Dtos.CodeLookup
             get
             {
                 var code = CodeValueFormat == "NUMBER" ? CodeValueNum?.ToString() : CodeValueText;
-                return code.IsEmpty() ? CodeName : $"{code}-{CodeName}";
+                return code.IsEmpty() || CodeSet == Crt.Model.CodeSet.CodeSetLookup ? CodeName : $"{code}-{CodeName}";
             }
         }
     }
