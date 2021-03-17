@@ -182,7 +182,11 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
   };
 
   const onAddClicked = () => {
-    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, { codeValueText, codeSetName });
+    codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, {
+      codeValueText,
+      codeSetName,
+      defaultDisplayOrder: searchData.pagination.totalCount + 10,
+    });
   };
 
   const handleCodeSetFormSubmit = (values, formType) => {
