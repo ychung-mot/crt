@@ -82,7 +82,7 @@ const EditFinTargetFormFields = ({
         <SingleDropdownField items={fundingTypes} name="fundingTypeLkupId" />
       </FormRow>
       <FormRow name="amount" label="Amount">
-        <FormNumberInput name="amount" id="amount" value={formValues.amount} />
+        <FormNumberInput name="amount" id="amount" prefix="$" value={formValues.amount} />
       </FormRow>
       <FormRow name="description" label="Description">
         <FormInput type="textarea" name="description" placeholder="Description" id="description" />
