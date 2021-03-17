@@ -115,8 +115,10 @@ function onLoginSuccess() {
   // Determine which app config was called and try to load it
  // projectId = getUrlParameterByName("project");
   var configName = getUrlParameterByName("c");
-  loadConfig(configName, 0);
+  // project parameter is CRT specific
   app.projectId = getUrlParameterByName("project");
+
+  loadConfig(configName, 0);
 }
 
 /**
@@ -382,6 +384,12 @@ function init() {
     }
   }, 25);
 
+ 	// Execute config specific init (if it exists)
+   if ("init" in app.config && isFunction(app.config.init)) {
+		app.config.init();
+	}
+	
+ 
   // Redo the layout
   doLayout();
 

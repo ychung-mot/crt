@@ -254,15 +254,11 @@ class CRTsegmentCreator {
     $.extend(params, options);
 
     // Query the DataBC GeoCoder
-    $.ajax({
-      url: "api/spatial/geocoder",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Pragma: "no-cache",
-        Authorization: "Bearer " + keycloak.token,
-      },
-      data: params,
-    })
+ 		$.ajax({
+			url: "https://geocoder.api.gov.bc.ca/addresses.json",
+			data: params
+		})
+
 
       // Handle a successful result
       .done(function (data) {

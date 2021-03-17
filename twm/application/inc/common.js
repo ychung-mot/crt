@@ -441,6 +441,7 @@ function formatTimestamp(timestamp) {
  * Function that loads and initializes a plugin
  */
 function loadPlugin(name) {
+	console.log("loadPlugin: "+name);
 	var file = "application/plugins/"+name+"/plugin.js";
 	$.ajax({
 		async: false, // need to do this to keep tab order - may cause a browser warning
@@ -482,6 +483,16 @@ function getUrlParameterByName(name) {
     if (!results) return null;
     if (!results[2]) return null;
     return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+/**
+ * Function: isFunction
+ * @params (function) f
+ * @returns (boolean) 
+ * Function that returns the boolean state of whether a passed variable is a function
+ */
+function isFunction(f) {
+	if (typeof f === "function") { return true; } else { return false; }
 }
 
 /**
@@ -726,9 +737,20 @@ function doLayout() {
 		$("#appTitle").text(app.config.title.desktop);
 	}
 	
-	// Adjust popup if exists
+	// Adjust popup's max height
 	var popupMaxHeight = $("#map").height() - 100;
-	$("#popup-content").css("max-height", popupMaxHeight+"px")
+	$("#popup-content").css("max-height", popupMaxHeight+"px");
+	
+	// Adjust popup's min & max width (desktop vs mobile)
+	var popupMinWidth = 400;
+	var popupMaxWidth = $("#map").width() - 60;
+	if (isMobile()) {
+		popupMinWidth = popupMaxWidth;
+	} else {
+		if (popupMaxWidth < popupMinWidth) popupMinWidth = popupMaxWidth;
+	}
+	$("#popup-content").css("min-width", popupMinWidth+"px");
+	$("#popup-content").css("max-width", popupMaxWidth+"px");
 	
 	// Hide/show sidebar
 	if ($("#sidebar").is(":visible")) {
@@ -754,6 +776,12 @@ function doLayout() {
 	} else {
 		$("#mainMenu").hide();
 	}
+	
+	// Accomodate for a header height change
+	var headerHeight = $(".twm-header").outerHeight(true);
+	$("#sidebar").css("top", headerHeight);
+	$(".sidebar-expander").css("top", headerHeight);
+	$(".content").css("top", headerHeight);
 }
 
 /**
@@ -823,7 +851,23 @@ function hideSidebar() {
  * Function that determines if the domain from which TWM was called is valid
  */
 function isValidTwmDomain() {
-	return true;
+	switch (window.location.hostname.toLowerCase()) {
+		case "localhost":
+		case "127.0.0.1":
+		case "dev-motigeo.th.gov.bc.ca":
+		case "dev-www.th.gov.bc.ca":
+		case "tst-motigeo.th.gov.bc.ca":
+		case "tst-www.th.gov.bc.ca":
+		case "stg-motigeo.th.gov.bc.ca":
+		case "stg-www.th.gov.bc.ca":
+		case "prd-motigeo.th.gov.bc.ca":
+		case "prd-www.th.gov.bc.ca":
+		case "motigeo.th.gov.bc.ca":
+		case "www.th.gov.bc.ca":
+			return true;
+		default:
+			return false;
+	}
 }
 
 /**
@@ -878,8 +922,8 @@ function returnEnvironmentUrl(endPoint) {
 			
 		// Default: UNKNOWN ENDPOINT REQUESTED
 		default:
-			return "Unknown end-point requested";
-			
+//			return "Unknown end-point requested";
+			return "../..";
 	}
 }
 
@@ -890,12 +934,24 @@ function returnEnvironmentUrl(endPoint) {
  * Function that zooms the map view to a slightly padded extent of the passed feature
  */
 function zoomToFeature(feature) {
-	// Ordinary GeoJSON features have proper extents. KML sourced features extents are weirdly buried, see ELSE statement below
+	// Ordinary OpenLayers features have proper extents. KML sourced features extents are weirdly buried, see ELSE statement below
 	if (isFinite(feature.getGeometry().getExtent()[0])) {
 		app.map.getView().fit(feature.getGeometry().getExtent(), {padding: [20,20,20,20]});
 	} else {
 		app.map.getView().fit(feature.getProperties("properties").properties.geometry.extent_, {padding: [20,20,20,20]});
 	}	
+}
+
+/**
+ * Function: centreOnFeature
+ * @param (object) feature
+ * @returns () nothing
+ * Function that centers the map view on the passed feature
+ */
+function centreOnFeature(feature) {
+	var extent = feature.getGeometry().getExtent();
+	var centre = ol.extent.getCenter(extent);
+	app.map.getView().setCenter(centre);
 }
 
 /**
@@ -1110,7 +1166,6 @@ function rememberState() {
 				l.visible = layer.getVisible();
 				l.opacity = layer.getOpacity();
 				l.zIndex = layer.getZIndex();
-				//l.cqlFilterStack = layer.get("cqlFilterStack"); // On hold for now...
 				
 				// Add Source info
 				l.source = new Object();
@@ -1159,7 +1214,6 @@ function rememberState() {
 		
 	// Store the application state object
 	lsStoreItem("state-"+app.config.name, state);
-	
 }
 
 /**
@@ -1224,10 +1278,17 @@ function restoreState() {
 			l.found = false;  // assume layer is not present until it's found
 			$.each(app.map.getLayers().getArray(), function(index, layer) {
 				if (l.title == layer.get("title")) {
+					// Restore visibility, opacity, and layer stacking
 					if (typeof l.visible !== "undefined") layer.setVisible(l.visible);
 					if (typeof l.opacity !== "undefined") layer.setOpacity(l.opacity);
 					if (typeof l.zIndex !== "undefined") layer.setZIndex(l.zIndex);
-					l.found = true; // Mark layer as found
+
+					// Restore layer filter settings
+					
+							// TODO
+				
+					// Mark layer as found
+					l.found = true; 
 				}
 			});
 		});
@@ -1474,6 +1535,9 @@ function resetDefaultMapSingleClickFunction() {
 	$("#map").css("cursor", "default");
 	if (app.eventKeys.singleClick) ol.Observable.unByKey(app.eventKeys.singleClick);
 	app.eventKeys.singleClick = app.map.on("click", function(e) {
+		// Stop button event from bubbling up to.
+		if (e.originalEvent.target.className === 'edit-btn') return;
+
 		e.preventDefault();
 		app.defaultMapSingleClickFunction(e);
 	});
@@ -1763,12 +1827,9 @@ function setCqlFilter(layer, type, filter) {
 	var layerParams = layer.getSource().getParams();
 	layerParams["CQL_FILTER"] = cqlFilter;
 	layer.getSource().updateParams(layerParams);
-	
+	console.log(cqlFilter)
 	// Remember application state if available and configured
 	rememberState();
-	
-	// Return the CQL filter
-	return cqlFilter;
 }
 
 /**
@@ -1783,3 +1844,100 @@ function downloadFile(filePath){
 	link.download = filePath.substr(filePath.lastIndexOf("/") + 1);
 	link.click();
 }
+
+/**
+ * Function: getGeoLocation
+ * @param (function) callback function
+ * @returns () nothing
+ * Function that gets and the user's device location and runs a callback with the resultant coordinates (lon/lat)
+ */
+function getGeoLocation(callback) {
+	// Get current location if possible
+	if (navigator.geolocation) {
+		var options = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+		var geoLocationSuccess = function(position) {
+			callback([position.coords.longitude, position.coords.latitude]);
+		}
+		var geoLocationError = function(error) {
+			callback([]);
+		}
+		navigator.geolocation.getCurrentPosition(geoLocationSuccess, geoLocationError, options);
+	} else {
+		callback([]);
+	}
+}
+
+/**
+ * Function: showGeoLocationOnMap
+ * @param () none
+ * @returns () nothing
+ * Function that shows the current device's location on the map
+ */
+function showGeoLocationOnMap() {
+	getGeoLocation(function(geoLoc){
+		var geoLocInMapCoords = ol.proj.transform(geoLoc, "EPSG:4326", app.map.getView().getProjection().getCode());
+		var geoLocFeature = new ol.Feature({ geometry: new ol.geom.Point(geoLocInMapCoords) });
+		app.currentLocationLayer.getSource().clear();
+		app.currentLocationLayer.getSource().addFeature(geoLocFeature);
+	});
+}
+
+/**
+ * Function: removeGeoLocationFromMap
+ * @param () none
+ * @returns () nothing
+ * Function that removes the current device's location from the map
+ */
+function removeGeoLocationFromMap() {
+	app.currentLocationLayer.getSource().clear();
+}
+
+/**
+ * Function: navigateToUsingDefaultApp
+ * @param (number) sLatitude
+ * @param (number) sLongitude
+ * @param (number) dLatitude
+ * @param (number) dLongitude
+ * @returns () nothing
+ * Function that uses the devices native app to navigate to a passed lat/lon
+ * Notes: 
+ * 			https://maps.google.com/?saddr=45.34802,-75.91903&daddr=45.424807,-75.699234
+ */
+function navigateToUsingDefaultApp(sLatitude, sLongitude, dLatitude, dLongitude) {
+	// Get the navigator platform
+	var np = navigator.platform;
+	
+	// If it's an Apple Product
+	if ((np.indexOf("iPhone") != -1) || (np.indexOf("iPad") != -1) || (np.indexOf("iPod") != -1)) {
+		window.open("maps://maps.google.com/maps?saddr="+sLatitude+","+sLongitude+"&daddr="+dLatitude+","+dLongitude+"&amp;ll=");
+		
+	// If its anything else
+	} else {
+		window.open("https://maps.google.com/maps?saddr="+sLatitude+","+sLongitude+"&daddr="+dLatitude+","+dLongitude+"&amp;ll=");
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
