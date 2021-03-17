@@ -101,7 +101,12 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
           <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.name}`} helper="capIndxLkupId" />
+          <ColumnGroup
+            name="Capital Index"
+            label={`${data.capIndxLkup?.codeValueText}`}
+            hoverTitle={`${data.capIndxLkup?.codeName}`}
+            helper="capIndxLkupId"
+          />
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
@@ -113,7 +118,12 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkup?.codeName} helper="nearstTwnLkupId" />
-          <ColumnTwoGroups name="RC Number" label={data.rcLkup?.codeName} helper="rcLkupId" />
+          <ColumnTwoGroups
+            name="RC Number"
+            label={data.rcLkup?.codeValueText}
+            hoverTitle={data.rcLkup?.codeName}
+            helper="rcLkupId"
+          />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Project End Date" label={data.endDate} helper="endDate" />

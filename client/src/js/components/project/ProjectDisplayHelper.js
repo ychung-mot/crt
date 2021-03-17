@@ -10,7 +10,7 @@ export const DisplayRow = ({ children }) => {
   return <Row>{children}</Row>;
 };
 
-export const ColumnGroup = ({ name, label, helper, ...props }) => {
+export const ColumnGroup = ({ name, label, helper, hoverTitle, ...props }) => {
   let { sm = 2 } = props;
   return (
     <>
@@ -18,7 +18,7 @@ export const ColumnGroup = ({ name, label, helper, ...props }) => {
         {name}
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
-      <Col className="mt-2" sm="9">
+      <Col className="mt-2" sm="9" title={hoverTitle} style={{ cursor: hoverTitle ? 'help' : 'auto' }}>
         {label ? label : 'None'}
       </Col>
     </>
@@ -46,7 +46,7 @@ export const ColumnGroupWithMarkdown = ({ name, label, helper, ...props }) => {
   );
 };
 
-export const ColumnTwoGroups = ({ name, label, helper, ...props }) => {
+export const ColumnTwoGroups = ({ name, label, helper, hoverTitle, ...props }) => {
   let { sm = 2 } = props;
   return (
     <>
@@ -54,7 +54,7 @@ export const ColumnTwoGroups = ({ name, label, helper, ...props }) => {
         {name}
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
-      <Col className="mt-2" sm="3">
+      <Col className="mt-2" sm="3" title={hoverTitle} style={{ cursor: hoverTitle ? 'help' : 'auto' }}>
         {label ? label : 'None'}
       </Col>
     </>
