@@ -39,7 +39,7 @@ module.exports = (settings) => {
           HOST: phases[phase].host,
           OGS_SERVER: phases[phase].ogs_server,
           CPU: phases[phase].twm_cpu,
-          MEMORY: phase[phase].twm_memory,
+          MEMORY: phases[phase].twm_memory,
         },
       }
     )
@@ -57,7 +57,7 @@ module.exports = (settings) => {
           HOST: phases[phase].host,
           OGS_SERVER: phases[phase].ogs_server,
           CPU: phases[phase].client_cpu,
-          MEMORY: phase[phase].client_memory,
+          MEMORY: phases[phase].client_memory,
         },
       }
     )
@@ -117,7 +117,7 @@ module.exports = (settings) => {
           ENV: phases[phase].phase,
           ASPNETCORE_ENVIRONMENT: phases[phase].dotnet_env,
           CPU: phases[phase].api_cpu,
-          MEMORY: phase[phase].api_memory,
+          MEMORY: phases[phase].api_memory,
         },
       }
     )
