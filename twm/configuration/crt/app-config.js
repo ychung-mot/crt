@@ -24,13 +24,7 @@ app.config = {
       geoCoderEnabled: true,
       geoCoderMaxResults: 5,
     },
-    {
-      name: "Identify2Tab",
-      tabName: "Features",
-      enabled: true,
-      maxResults: 10,
-    },
-    {
+   {
       name: "LayerController",
       tabName: "Layers",
       enabled: true,
@@ -38,7 +32,7 @@ app.config = {
       additionalSources: [
         {
           name: "MoTI",
-          url: "../ogs-public/ows",
+          url: "https://maps.th.gov.bc.ca/geoV05/ows",
         },
         {
           name: "MoTI (Int)",
@@ -49,11 +43,6 @@ app.config = {
           url: "https://openmaps.gov.bc.ca/geo/ows",
         },
       ],
-    },
-    {
-      name: "Home",
-      tabName: "About",
-      enabled: true,
     },
     {
       name: "UberSearchBCGeoCoderAddOn",
@@ -71,6 +60,54 @@ app.config = {
       maxResults: 5,
     },
   ],
+	init: function() {
+
+    // zoom map to area of interest
+
+    var spinner = new Spinner(app.spinnerOptionsMedium).spin(
+      $(app.plugins.CRTsegmentCreator.tabContent)[0]
+    );
+	
+    console.log("got this projectId: "+app.projectId) ;
+    var url = " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ASEGMENT_RECORD&outputFormat=application%2Fjson&cql_filter=project_id="+app.projectId;
+    if (app.segmentId) {
+      url = url+"%20AND%20segment_id="+app.segmentId;
+      // TO DO If given a segment id, set up router endpoints to allow editing
+    }
+    // otherwise, just zoom to project extent
+    console.log("got this projectId: "+app.projectId) ;
+      $.ajax({
+        url: url,  
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Pragma: "no-cache",
+          Authorization: "Bearer " + keycloak.token,
+        },
+        timeout: 7500,
+      })
+      // Handle a successful result
+      .done(function (data) {
+        console.log("heere it is");
+        var lowerBound = [data.bbox[0],data.bbox[1]]; // [-125.20585,48.9071,-118.45954,55.88242]
+        var upperBound = [data.bbox[2],data.bbox[3]]; // [-125.20585,48.9071,-118.45954,55.88242]
+        var zoomLower = ol.proj.transform(lowerBound, 'EPSG:4326', 'EPSG:3857');
+        var zoomUpper = ol.proj.transform(upperBound, 'EPSG:4326', 'EPSG:3857');
+        var zoomExtent = [zoomLower[0],zoomLower[1],zoomUpper[0],zoomUpper[1]];
+        if (isFinite(zoomExtent[0])) {
+          app.map.getView().fit(zoomExtent, {padding: [20,20,20,20]});
+        } 
+        spinner.stop();
+      })
+      // Handle a failure
+      .fail(function (jqxhr, settings, exception) {
+        spinner.stop();
+        console.log('argh '+ exception);
+        logger("ERROR", app.plugins.CRTsegmentCreator.name + ": Router Error");
+      });
+  
+    
+
+	},  
   map: {
     default: {
       centre: {

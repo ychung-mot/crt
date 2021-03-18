@@ -8,8 +8,8 @@
  *       Creator: Volker Schunicht
  *       Purpose:
  *	    Required:
- *       Changes:
- *		   Notes:
+ *       Changes: Modified for CRT by Peter Spry and Young-Jin Chung
+ *		   Notes: Added KeyCloak authentication, and new url parameters
  *
  * ------------------------------------------------------------------------------
  * ------------------------------------------------------------------------------
@@ -115,8 +115,12 @@ function onLoginSuccess() {
   // Determine which app config was called and try to load it
  // projectId = getUrlParameterByName("project");
   var configName = getUrlParameterByName("c");
-  loadConfig(configName, 0);
+  // project parameter is CRT specific
   app.projectId = getUrlParameterByName("project");
+  app.segmentId = getUrlParameterByName("segment");
+  
+
+  loadConfig(configName, 0);
 }
 
 /**
@@ -382,6 +386,12 @@ function init() {
     }
   }, 25);
 
+ 	// Execute config specific init (if it exists)
+   if ("init" in app.config && isFunction(app.config.init)) {
+		app.config.init();
+	}
+	
+ 
   // Redo the layout
   doLayout();
 
