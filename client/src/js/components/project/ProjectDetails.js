@@ -69,6 +69,7 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
 
   const formModal = useFormModal('Project', <EditProjectFormFields />, handleEditProjectFormSubmit, {
     saveCheck: true,
+    size: 'lg',
   });
 
   const onEditClicked = (projectId) => {
@@ -101,20 +102,7 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
           <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnTwoGroups
-            name="Capital Index"
-            label={`${data.capIndxLkup?.codeValueText}`}
-            hoverTitle={`${data.capIndxLkup?.codeName}`}
-            helper="capIndxLkupId"
-          />
           <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
-        </DisplayRow>
-        <DisplayRow>
-          <ColumnTwoGroups
-            name="Project Manager"
-            label={data.projectMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
-            helper={'projectMgrId'}
-          />
           <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkup?.codeName} helper="nearstTwnLkupId" />
         </DisplayRow>
         <DisplayRow>
@@ -123,6 +111,19 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
             label={data.rcLkup?.codeValueText}
             hoverTitle={data.rcLkup?.codeName}
             helper="rcLkupId"
+          />
+          <ColumnTwoGroups
+            name="Project Manager"
+            label={data.projectMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
+            helper={'projectMgrId'}
+          />
+        </DisplayRow>
+        <DisplayRow>
+          <ColumnTwoGroups
+            name="Capital Index"
+            label={`${data.capIndxLkup?.codeValueText}`}
+            hoverTitle={`${data.capIndxLkup?.codeName}`}
+            helper="capIndxLkupId"
           />
           <ColumnTwoGroups name="Project Completed?" label={data.endDate ? 'Yes' : 'No'} helper="endDate" />
         </DisplayRow>
