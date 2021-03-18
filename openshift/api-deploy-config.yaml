@@ -60,8 +60,8 @@ objects:
                   cpu: ${CPU}
                   memory: ${MEMORY}
                 limits:
-                  cpu: 750m
-                  memory: 768Mi
+                  cpu: ${CPU}
+                  memory: ${MEMORY}
               livenessProbe:
                 httpGet:
                   path: /healthz

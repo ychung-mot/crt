@@ -43,8 +43,8 @@ objects:
                   cpu: ${CPU}
                   memory: ${MEMORY}
                 limits:
-                  cpu: 250m
-                  memory: 64Mi
+                  cpu: ${CPU}
+                  memory: ${MEMORY}
               env:
                 - name: CLIENT_SSO_HOST
                   valueFrom:
