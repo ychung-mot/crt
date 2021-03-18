@@ -74,7 +74,7 @@ const EditProjectFormFields = ({
       </FormMultiRow>
       <FormMultiRow>
         <FormRow name="regionId" label="MoTI Region*">
-          <SingleDropdownField items={userRegionIds} name="regionId" clearable />
+          <SingleDropdownField items={userRegionIds} name="regionId" />
         </FormRow>
         <FormRow name="nearstTwnLkupId" label="Nearest Town" helper="nearstTwnLkupId">
           <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable clearable />
@@ -82,14 +82,14 @@ const EditProjectFormFields = ({
       </FormMultiRow>
       <FormMultiRow>
         <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
-          <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable clearable />
+          <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
         </FormRow>
         <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
           <SingleDropdownField items={projectMgr} name="projectMgrId" clearable />
         </FormRow>
       </FormMultiRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
-        <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" clearable />
+        <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" />
       </FormRow>
       <FormRow name="description" label="Project Description" helper="description">
         <FormInput type="textarea" rows={5} name="description" placeholder="Project Description" id="description" />

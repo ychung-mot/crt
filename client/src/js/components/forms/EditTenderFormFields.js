@@ -76,7 +76,7 @@ const EditTenderFormFields = ({
         <FormNumberInput name="tenderValue" id="tenderValue" prefix="$" value={formValues.tenderValue} />
       </FormRow>
       <FormRow name="winningCntrctrLkupId" label="Winning Contractor" helper="winningCntrctrLkupId">
-        <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable />
+        <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable clearable />
       </FormRow>
       <FormRow name="bidValue" label="Winning Bid" helper="bidValue">
         <FormNumberInput name="bidValue" id="bidValue" prefix="$" value={formValues.bidValue} />
