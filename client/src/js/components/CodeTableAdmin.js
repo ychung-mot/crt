@@ -154,7 +154,6 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
   };
 
   const onDeleteClicked = (codeSetId, endDate, permanentDelete) => {
-    console.log(permanentDelete);
     if (permanentDelete) {
       api
         .deleteCodeTable(codeSetId)
@@ -299,6 +298,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
               onEditClicked={onEditClicked}
               onDeleteClicked={onDeleteClicked}
               onHeadingSortClicked={searchData.handleHeadingSortClicked}
+              easyDelete
             />
           )}
           {searchData.data.length <= 0 && <div>No records found</div>}

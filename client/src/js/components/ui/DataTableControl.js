@@ -19,6 +19,7 @@ const DataTableControl = ({
   onDeleteClicked,
   onHeadingSortClicked,
   overflowY,
+  easyDelete,
 }) => {
   const handleEditClicked = (id) => {
     if (onEditClicked) onEditClicked(id);
@@ -149,6 +150,7 @@ const DataTableControl = ({
                             onDeleteClicked={onDeleteClicked}
                             permanentDelete={item.canDelete}
                             title={item.canDelete ? 'Delete Record' : 'Disable Record'}
+                            easyDelete={easyDelete}
                           ></DeleteButton>
                         )}
                       </td>
@@ -192,12 +194,14 @@ DataTableControl.propTypes = {
   onDeleteClicked: PropTypes.func,
   onHeadingSortClicked: PropTypes.func,
   overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
+  easyDelete: PropTypes.bool, //allows user to not set end date to disable record
 };
 
 DataTableControl.defaultProps = {
   editable: false,
   deletable: false,
   overflowY: false,
+  easyDelete: false,
 };
 
 export default DataTableControl;
