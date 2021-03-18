@@ -101,22 +101,30 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
           <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Capital Index" label={`${data.capIndxLkup.name}`} helper="capIndxLkupId" />
+          <ColumnTwoGroups
+            name="Capital Index"
+            label={`${data.capIndxLkup?.codeValueText}`}
+            hoverTitle={`${data.capIndxLkup?.codeName}`}
+            helper="capIndxLkupId"
+          />
+          <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
         </DisplayRow>
         <DisplayRow>
-          <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
           <ColumnTwoGroups
             name="Project Manager"
             label={data.projectMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
             helper={'projectMgrId'}
           />
-        </DisplayRow>
-        <DisplayRow>
           <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkup?.codeName} helper="nearstTwnLkupId" />
-          <ColumnTwoGroups name="RC Number" label={data.rcLkup?.codeName} helper="rcLkupId" />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Project End Date" label={data.endDate} helper="endDate" />
+          <ColumnTwoGroups
+            name="RC Number"
+            label={data.rcLkup?.codeValueText}
+            hoverTitle={data.rcLkup?.codeName}
+            helper="rcLkupId"
+          />
+          <ColumnTwoGroups name="Project Completed?" label={data.endDate ? 'Yes' : 'No'} helper="endDate" />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Project Description" label={data.description} helper="description" />

@@ -97,7 +97,7 @@ const RatioTable = ({
     <Container>
       <UIHeader>
         <Row>
-          <Col xs="auto">
+          <Col xs="8">
             {title}
             {dataList.length !== 0 && warning && (
               <MouseoverTooltip id={`ratio-${id}`} color="warning" icon={`exclamation-circle`}>

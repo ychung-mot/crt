@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
-import moment from 'moment';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
-import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
 import { FormRow, FormInput, FormCheckboxInput } from './FormInputs';
 
