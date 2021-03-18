@@ -13,6 +13,7 @@ const DeleteButton = ({
   onDeleteClicked,
   onComplete,
   permanentDelete,
+  easyDelete,
   ...props
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -20,6 +21,10 @@ const DeleteButton = ({
   const [focusedInput, setFocusedInput] = useState(false);
   const [focusClassName, setFocusClassName] = useState('');
   const [buttonText, setButtonText] = useState('Disable');
+
+  if (easyDelete) {
+    console.log('I EASY');
+  }
 
   useEffect(() => {
     if (defaultEndDate) {

@@ -299,6 +299,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
               onEditClicked={onEditClicked}
               onDeleteClicked={onDeleteClicked}
               onHeadingSortClicked={searchData.handleHeadingSortClicked}
+              easyDelete
             />
           )}
           {searchData.data.length <= 0 && <div>No records found</div>}
