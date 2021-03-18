@@ -4,10 +4,10 @@ import { useFormikContext, useField } from 'formik';
 import SingleDropdown from './SingleDropdown';
 
 const SingleDropdownField = (props) => {
-  const { items, name, defaultTitle, disabled, searchable } = props;
+  const { items, name, defaultTitle, disabled, searchable, clearable } = props;
   const { values, setFieldValue, setFieldTouched } = useFormikContext();
   const [title, setTitle] = useState(values[name] && values[name].length > 0 ? values[name] : defaultTitle);
-  const [field, meta] = useField(props);
+  const [field, meta, helpers] = useField(props);
 
   useEffect(() => {
     if (field.value) setTitle(items.find((o) => o.id === field.value)?.name || defaultTitle);
@@ -38,7 +38,13 @@ const SingleDropdownField = (props) => {
       isInvalidClassName={isInvalidClassName}
       errorStyle={style}
       fieldMeta={meta}
+      helpers={helpers}
+      resetFieldValue={() => {
+        setFieldValue(name, '', true); // temporary fix '' needed instead of undefined due to formik setValue bug https://github.com/formium/formik/issues/2332 "formik version": "^2.2.5",
+        setFieldTouched(name, true);
+      }}
       searchable={searchable}
+      clearable={clearable}
     />
   );
 };

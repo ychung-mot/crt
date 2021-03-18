@@ -63,7 +63,7 @@ const EditServiceAreaFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="serviceAreaId" label={`${ratioTypeName}*`}>
-        <SingleDropdownField items={serviceAreas} name="serviceAreaId" searchable={true} />
+        <SingleDropdownField items={serviceAreas} name="serviceAreaId" searchable />
       </FormRow>
       <FormRow name="ratio" label="Ratio*">
         <FormInput

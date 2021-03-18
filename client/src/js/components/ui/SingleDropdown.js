@@ -14,8 +14,10 @@ const SingleDropdown = (props) => {
     handleOnBlur,
     isInvalidClassName,
     fieldMeta,
+    resetFieldValue,
     errorStyle,
     searchable,
+    clearable,
   } = props;
   const [title, setTitle] = useState(defaultTitle);
   const [textFilter, setTextFilter] = useState('');
@@ -98,15 +100,17 @@ const SingleDropdown = (props) => {
             {renderMenuItems()}
           </DropdownMenu>
         </UncontrolledDropdown>
-        <InputGroupAddon addonType="append">
-          <FontAwesomeButton
-            onClick={(e) => {
-              e.preventDefault();
-              console.log('hi');
-            }}
-            icon={['fa', 'times-circle']}
-          ></FontAwesomeButton>
-        </InputGroupAddon>
+        {clearable && value && (
+          <InputGroupAddon addonType="append">
+            <FontAwesomeButton
+              onClick={(e) => {
+                e.preventDefault();
+                resetFieldValue();
+              }}
+              icon={['fa', 'times-circle']}
+            ></FontAwesomeButton>
+          </InputGroupAddon>
+        )}
       </InputGroup>
 
       {fieldMeta && fieldMeta.touched && fieldMeta.error && (

@@ -77,7 +77,7 @@ const EditProjectFormFields = ({
           <SingleDropdownField items={userRegionIds} name="regionId" />
         </FormRow>
         <FormRow name="nearstTwnLkupId" label="Nearest Town" helper="nearstTwnLkupId">
-          <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable />
+          <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable clearable />
         </FormRow>
       </FormMultiRow>
       <FormMultiRow>
@@ -85,13 +85,7 @@ const EditProjectFormFields = ({
           <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
         </FormRow>
         <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
-          <SingleDropdownField
-            items={projectMgr}
-            name="projectMgrId"
-            defaultTitle={
-              formValues.projectMgr ? `${formValues.projectMgr.firstName} ${formValues.projectMgr?.lastName}` : ``
-            }
-          />
+          <SingleDropdownField items={projectMgr} name="projectMgrId" clearable />
         </FormRow>
       </FormMultiRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
