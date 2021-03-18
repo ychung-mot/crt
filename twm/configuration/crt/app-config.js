@@ -61,6 +61,7 @@ app.config = {
     },
   ],
 	init: function() {
+
     // zoom map to area of interest
 
     var spinner = new Spinner(app.spinnerOptionsMedium).spin(
@@ -105,6 +106,7 @@ app.config = {
       });
   
     
+
 	},  
   map: {
     default: {

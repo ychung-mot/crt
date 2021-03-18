@@ -119,6 +119,7 @@ function onLoginSuccess() {
   app.projectId = getUrlParameterByName("project");
   app.segmentId = getUrlParameterByName("segment");
   
+
   loadConfig(configName, 0);
 }
 
