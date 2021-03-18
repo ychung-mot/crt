@@ -126,7 +126,7 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
           />
         </DisplayRow>
         <DisplayRow>
-          <ColumnGroup name="Project End Date" label={data.endDate} helper="endDate" />
+          <ColumnGroup name="Project Completed?" label={data.endDate ? 'Yes' : 'No'} helper="endDate" />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Project Description" label={data.description} helper="description" />
