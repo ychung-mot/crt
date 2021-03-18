@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem, FormFeedback, Input } from 'reactstrap';
+import { InputGroup, InputGroupAddon } from 'reactstrap';
+import FontAwesomeButton from './FontAwesomeButton';
 
 const SingleDropdown = (props) => {
   const {
@@ -70,31 +72,43 @@ const SingleDropdown = (props) => {
 
   return (
     <div style={{ padding: '0' }}>
-      <UncontrolledDropdown
-        className={`form-control form-input ${disabled ? 'disabled' : ''} ${isInvalidClassName}`}
-        disabled={disabled}
-        style={{ padding: '0' }}
-      >
-        <DropdownToggle caret onBlur={handleOnBlur}>
-          {title}
-        </DropdownToggle>
-        <DropdownMenu className="multi dropdown__single-scroll">
-          {searchable && (
-            <div className="multi-item select-all p-2">
-              <Input
-                name={name}
-                type="textbox"
-                placeholder="Search"
-                value={textFilter}
-                onChange={(e) => {
-                  setTextFilter(e.target.value);
-                }}
-              />
-            </div>
-          )}
-          {renderMenuItems()}
-        </DropdownMenu>
-      </UncontrolledDropdown>
+      <InputGroup>
+        <UncontrolledDropdown
+          className={`form-control form-input ${disabled ? 'disabled' : ''} ${isInvalidClassName}`}
+          disabled={disabled}
+          style={{ padding: '0' }}
+        >
+          <DropdownToggle caret onBlur={handleOnBlur}>
+            <div>{title}</div>
+          </DropdownToggle>
+          <DropdownMenu className="multi dropdown__single-scroll">
+            {searchable && (
+              <div className="multi-item select-all p-2">
+                <Input
+                  name={name}
+                  type="textbox"
+                  placeholder="Search"
+                  value={textFilter}
+                  onChange={(e) => {
+                    setTextFilter(e.target.value);
+                  }}
+                />
+              </div>
+            )}
+            {renderMenuItems()}
+          </DropdownMenu>
+        </UncontrolledDropdown>
+        <InputGroupAddon addonType="append">
+          <FontAwesomeButton
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('hi');
+            }}
+            icon={['fa', 'times-circle']}
+          ></FontAwesomeButton>
+        </InputGroupAddon>
+      </InputGroup>
+
       {fieldMeta && fieldMeta.touched && fieldMeta.error && (
         <FormFeedback style={errorStyle}>{fieldMeta.error}</FormFeedback>
       )}
