@@ -273,6 +273,7 @@ const Projects = ({
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
               deletable
+              easyDelete
               editPermissionName={Constants.PERMISSIONS.PROJECT_W}
               onDeleteClicked={onDeleteClicked}
               onHeadingSortClicked={searchData.handleHeadingSortClicked}
