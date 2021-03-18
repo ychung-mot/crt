@@ -57,8 +57,8 @@ objects:
                   protocol: TCP
               resources:
                 requests:
-                  cpu: 500m
-                  memory: 512Mi
+                  cpu: ${CPU}
+                  memory: ${MEMORY}
                 limits:
                   cpu: 750m
                   memory: 768Mi
@@ -214,4 +214,14 @@ parameters:
     displayName: SOURCE_REPOSITORY_REF
     name: SOURCE_REPOSITORY_REF
     required: false
+    value: ""
+  - description: CPU
+    displayName: CPU Request
+    name: CPU
+    required: true
+    value: ""
+  - description: MEMORY
+    displayName: MEMORY Request
+    name: MEMORY
+    required: true
     value: ""
