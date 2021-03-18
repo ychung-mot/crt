@@ -7,9 +7,10 @@ import PageSpinner from '../ui/PageSpinner';
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
 
-function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
+function EditSegmentFormFields({ closeForm, projectId, refreshData, formType, segmentId }) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [url, setURL] = useState(`${Constants.PATHS.TWM}?c=crt&project=${projectId}`);
 
   const myIframe = useRef(null);
 
@@ -18,6 +19,13 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
 
     return removeEventListenerCloseForm;
   });
+
+  useEffect(() => {
+    if (formType === Constants.FORM_TYPE.EDIT) {
+      setURL(`${url}&segment=${segmentId}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //event functions
 
@@ -87,7 +95,7 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData }) {
       <iframe
         className="w-100"
         style={{ height: '800px' }}
-        src={`${Constants.PATHS.TWM}?c=crt&project=${projectId}`}
+        src={url}
         name="myIframe"
         id="myIframe"
         title="map"

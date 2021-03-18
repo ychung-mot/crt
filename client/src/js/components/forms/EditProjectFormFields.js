@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput, FormCheckboxInput } from './FormInputs';
+import { FormRow, FormMultiRow, FormInput, FormCheckboxInput } from './FormInputs';
 
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
@@ -64,38 +64,44 @@ const EditProjectFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="projectNumber" label="Project Number*" helper="projectNumber">
-        <FormInput type="text" name="projectNumber" placeholder="Project Number" id="projectNumber" />
-      </FormRow>
-      <FormRow name="projectName" label="Project Name*" helper="projectName">
-        <FormInput type="text" name="projectName" placeholder="Project Name" id="projectName" />
-      </FormRow>
-      <FormRow name="description" label="Project Description" helper="description">
-        <FormInput type="text" name="description" placeholder="Project Description" id="description" />
-      </FormRow>
-      <FormRow name="scope" label="Project Scope" helper="scope">
-        <FormInput type="text" name="scope" placeholder="Project Scope" id="scope" />
-      </FormRow>
+      <FormMultiRow>
+        <FormRow name="projectNumber" label="Project Number*" helper="projectNumber">
+          <FormInput type="text" name="projectNumber" placeholder="Project Number" id="projectNumber" />
+        </FormRow>
+        <FormRow name="projectName" label="Project Name*" helper="projectName">
+          <FormInput type="text" name="projectName" placeholder="Project Name" id="projectName" />
+        </FormRow>
+      </FormMultiRow>
+      <FormMultiRow>
+        <FormRow name="regionId" label="MoTI Region*">
+          <SingleDropdownField items={userRegionIds} name="regionId" />
+        </FormRow>
+        <FormRow name="nearstTwnLkupId" label="Nearest Town" helper="nearstTwnLkupId">
+          <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable />
+        </FormRow>
+      </FormMultiRow>
+      <FormMultiRow>
+        <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
+          <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
+        </FormRow>
+        <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
+          <SingleDropdownField
+            items={projectMgr}
+            name="projectMgrId"
+            defaultTitle={
+              formValues.projectMgr ? `${formValues.projectMgr.firstName} ${formValues.projectMgr?.lastName}` : ``
+            }
+          />
+        </FormRow>
+      </FormMultiRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
         <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" />
       </FormRow>
-      <FormRow name="regionId" label="MoTI Region*">
-        <SingleDropdownField items={userRegionIds} name="regionId" />
+      <FormRow name="description" label="Project Description" helper="description">
+        <FormInput type="textarea" rows={5} name="description" placeholder="Project Description" id="description" />
       </FormRow>
-      <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
-        <SingleDropdownField
-          items={projectMgr}
-          name="projectMgrId"
-          defaultTitle={
-            formValues.projectMgr ? `${formValues.projectMgr.firstName} ${formValues.projectMgr?.lastName}` : ``
-          }
-        />
-      </FormRow>
-      <FormRow name="nearstTwnLkupId" label="Nearest Town" helper="nearstTwnLkupId">
-        <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable />
-      </FormRow>
-      <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
-        <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
+      <FormRow name="scope" label="Project Scope" helper="scope">
+        <FormInput type="textarea" rows={5} name="scope" placeholder="Project Scope" id="scope" />
       </FormRow>
       <FormRow name="endDate" label="Project Complete" helper="endDate">
         <FormCheckboxInput name="endDate" type="checkbox" />

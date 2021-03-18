@@ -93,6 +93,14 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
     segmentsFormModal.openForm(Constants.FORM_TYPE.ADD, { projectId: data.id, refreshData: refreshData });
   };
 
+  const onEditSegmentClicked = (segmentId) => {
+    segmentsFormModal.openForm(Constants.FORM_TYPE.EDIT, {
+      projectId: data.id,
+      segmentId: segmentId,
+      refreshData: refreshData,
+    });
+  };
+
   const segmentsFormModal = useFormModal('Segments', <EditSegmentFormFields />, null, {
     size: 'xl',
     showModalHeader: false,
@@ -151,7 +159,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
             <Col>
               <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
                 <Button color="primary" className="float-right" onClick={addSegmentClicked}>
-                  + Add
+                  + Add Segment / View Map
                 </Button>
               </Authorize>
             </Col>
@@ -161,7 +169,9 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
           dataList={data.segments}
           tableColumns={segmentTableColumns}
           deletable
+          editable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+          onEditClicked={onEditSegmentClicked}
           onDeleteClicked={onDeleteSegmentClicked}
           overflowY={true}
         />
