@@ -40,7 +40,7 @@ const SingleDropdownField = (props) => {
       fieldMeta={meta}
       helpers={helpers}
       resetFieldValue={() => {
-        setFieldValue(name, '', true); // temporary fix '' needed instead of undefined due to formik setValue bug https://github.com/formium/formik/issues/2332 "formik version": "^2.2.5",
+        setFieldValue(name, undefined, true); // note this doesn't work well with required fields. Hitting submit will erase error messages due to bug https://github.com/formium/formik/issues/2332 "formik version": "^2.2.5",
         setFieldTouched(name, true);
       }}
       searchable={searchable}

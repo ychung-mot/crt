@@ -17,6 +17,7 @@ import EditElectoralDistrictFormFields from '../forms/EditElectoralDistrictFormF
 import EditServiceAreaFormFields from '../forms/EditServiceAreaFormFields';
 import EditDistrictFormFields from '../forms/EditDistrictFormFields';
 import EditEconomicRegionFormFields from '../forms/EditEconomicRegionFormFields';
+import ProjectFooterNav from './ProjectFooterNav';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -248,14 +249,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
           </Col>
         </Row>
       </MaterialCard>
-      <div className="text-right">
-        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_TENDER}`}>
-          <Button color="secondary">{'< Project Tender'}</Button>
-        </Link>
-        <Button color="primary" onClick={() => history.push(projectSearchHistory)}>
-          Close
-        </Button>
-      </div>
+      <ProjectFooterNav projectId={data.id} />
       {segmentsFormModal.formElement}
     </React.Fragment>
   );

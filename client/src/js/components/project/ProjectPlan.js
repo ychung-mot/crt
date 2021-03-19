@@ -16,6 +16,7 @@ import FontAwesomeButton from '../ui/FontAwesomeButton';
 import NumberFormat from 'react-number-format';
 import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
 import EditAnnouncementFormFields from '../forms/EditAnnouncementFormFields';
+import ProjectFooterNav from './ProjectFooterNav';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -301,17 +302,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
           />
         </DisplayRow>
       </MaterialCard>
-      <div className="text-right">
-        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}`}>
-          <Button color="secondary">{'< Project Details'}</Button>
-        </Link>
-        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_TENDER}`}>
-          <Button color="primary">Continue</Button>
-        </Link>
-        <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
-          Close
-        </Button>
-      </div>
+      <ProjectFooterNav projectId={data.id} />
       {finTargetsFormModal.formElement}
       {announcementFormModal.formElement}
     </React.Fragment>
