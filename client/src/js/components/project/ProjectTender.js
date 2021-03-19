@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
+import ProjectFooterNav from './ProjectFooterNav';
 
 //components
 import Authorize from '../fragments/Authorize';
@@ -335,17 +336,7 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
           onDeleteClicked={onQADeleteClicked}
         />
       </MaterialCard>
-      <div className="text-right">
-        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_PLAN}`}>
-          <Button color="secondary">{'< Project Planning'}</Button>
-        </Link>
-        <Link to={`${Constants.PATHS.PROJECTS}/${data.id}${Constants.PATHS.PROJECT_SEGMENT}`}>
-          <Button color="primary">Continue</Button>
-        </Link>
-        <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
-          Close
-        </Button>
-      </div>
+      <ProjectFooterNav projectId={data.id} />
       {tendersFormModal.formElement}
       {qtyAccmpFormModal.formElement}
     </React.Fragment>

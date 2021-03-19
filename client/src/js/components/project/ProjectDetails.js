@@ -14,6 +14,7 @@ import FontAwesomeButton from '../ui/FontAwesomeButton';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
 import Comments from './Comments';
 import { DisplayRow, ColumnGroup, ColumnTwoGroups } from './ProjectDisplayHelper';
+import ProjectFooterNav from './ProjectFooterNav';
 
 import useFormModal from '../hooks/useFormModal';
 
@@ -143,14 +144,7 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
       />
       <Comments title="EMR Comments" dataList={commentFilter('EMR')} noteType="EMR" projectId={data.id} show={1} />
 
-      <div className="text-right">
-        <Link to={`${Constants.API_PATHS.PROJECTS}/${data.id}${Constants.API_PATHS.PROJECT_PLAN}`}>
-          <Button color="primary">Continue</Button>
-        </Link>
-        <Button color="secondary" onClick={() => history.push(projectSearchHistory)}>
-          Close
-        </Button>
-      </div>
+      <ProjectFooterNav projectId={data.id} />
 
       {formModal.formElement}
     </React.Fragment>
