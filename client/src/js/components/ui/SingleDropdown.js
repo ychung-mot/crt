@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, DropdownItem, FormFeedback, Input } from 'reactstrap';
 import { InputGroup, InputGroupAddon } from 'reactstrap';
 import FontAwesomeButton from './FontAwesomeButton';
@@ -21,6 +21,12 @@ const SingleDropdown = (props) => {
   } = props;
   const [title, setTitle] = useState(defaultTitle);
   const [textFilter, setTextFilter] = useState('');
+
+  const callbackRef = useCallback((inputElement) => {
+    if (inputElement) {
+      inputElement.focus();
+    }
+  }, []);
 
   useEffect(() => {
     const item = items.find((o) => {
@@ -80,13 +86,14 @@ const SingleDropdown = (props) => {
           disabled={disabled}
           style={{ padding: '0' }}
         >
-          <DropdownToggle caret onBlur={handleOnBlur}>
+          <DropdownToggle caret onBlur={handleOnBlur} onClick={(e) => {}}>
             <div>{title}</div>
           </DropdownToggle>
           <DropdownMenu className="multi dropdown__single-scroll">
             {searchable && (
               <div className="multi-item select-all p-2">
                 <Input
+                  innerRef={callbackRef}
                   name={name}
                   type="textbox"
                   placeholder="Search"
