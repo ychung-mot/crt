@@ -106,7 +106,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
             Assert.NotEmpty(errors);
         }
 
-        //Value must be a number of less than 8 digits optionally with maximum 3 decimal digits
+        //Value must be a number of less than 10 digits optionally with maximum 2 decimal digits
         [Theory]
         [AutoMoqData]
         public void ReturnErrorWhenInvalidForecastAmount(FieldValidatorService sut)
@@ -114,7 +114,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
             //arrange
             var errors = new Dictionary<string, List<string>>();
             QtyAccmpSaveDto qtyAccmpSave = GetValidQuantitySaveDto();
-            qtyAccmpSave.Forecast = 123456789M;
+            qtyAccmpSave.Forecast = 12345678901M;
 
             sut.CodeLookup = GetMockedCodeLookup();
 
@@ -157,7 +157,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenCommentExceedsLengthOf2000(FieldValidatorService sut)
+        public void ReturnsErrorWhenCommentExceedsMaxLength(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
