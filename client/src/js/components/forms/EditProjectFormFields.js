@@ -19,7 +19,7 @@ const defaultValues = {
   projectMgrId: null,
   nearstTwnLkupId: null,
   rcLkupId: undefined,
-  endDate: null,
+  endDate: undefined,
 };
 
 const validationSchema = Yup.object({
