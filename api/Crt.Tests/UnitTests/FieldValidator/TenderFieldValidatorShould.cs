@@ -70,7 +70,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenTenderNumberLengthIs41(FieldValidatorService sut)
+        public void ReturnsErrorWhenTenderNumberExceedsMaxLength(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -107,7 +107,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenTenderValueExceedsLengthOf9(FieldValidatorService sut)
+        public void ReturnsErrorWhenTenderValueExceedsMaxLength(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -115,7 +115,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
             sut.CodeLookup = GetMockedCodeLookup();
 
-            tenderCreate.TenderValue = 1234567891.00M;
+            tenderCreate.TenderValue = 12345678901.00M;
 
             errors = sut.Validate(Entities.Tender, tenderCreate, errors);
 
@@ -124,7 +124,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenTenderValueDecimalExceedsLengthOf2(FieldValidatorService sut)
+        public void ReturnsErrorWhenTenderValueDecimalExceedsMaxLength(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -141,7 +141,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenBidValueExceedsLengthOf9(FieldValidatorService sut)
+        public void ReturnsErrorWhenBidValueExceedsMaxLength(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -149,7 +149,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
             sut.CodeLookup = GetMockedCodeLookup();
 
-            tenderCreate.BidValue = 1234567891.00M;
+            tenderCreate.BidValue = 12345678901.00M;
 
             errors = sut.Validate(Entities.Tender, tenderCreate, errors);
 
@@ -158,7 +158,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenBidValueDecimalExceedsLengthOf2(FieldValidatorService sut)
+        public void ReturnsErrorWhenBidValueDecimalExceedsMaxLength(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
@@ -192,7 +192,7 @@ namespace Crt.Tests.UnitTests.FieldValidator
 
         [Theory]
         [AutoMoqData]
-        public void ReturnsErrorWhenCommentExceedsLengthOf2000(FieldValidatorService sut)
+        public void ReturnsErrorWhenCommentExceedsMaxLength(FieldValidatorService sut)
         {
             //arrange
             var errors = new Dictionary<string, List<string>>();
