@@ -47,6 +47,7 @@ DataTableWithPaginaionControl.propTypes = {
         path: PropTypes.string,
         key: PropTypes.string, //will display what is in item[key]. Key takes precedence over heading.
         heading: PropTypes.string, //will display this string if item[key] doesn't exist.
+        title: PropTypes.string, //adds html title attribute. Mouse hover shows title.
       }),
       currency: PropTypes.bool, //if true then format values as currency
       thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
