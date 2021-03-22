@@ -19,7 +19,9 @@ export const ColumnGroup = ({ name, label, helper, hoverTitle, ...props }) => {
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
       <Col className="mt-2" sm="9" title={hoverTitle} style={{ cursor: hoverTitle ? 'help' : 'auto' }}>
-        {label ? label : 'None'}
+        <ConditionalWrapper condition={props.strong} wrapper={(children) => <strong>{children}</strong>}>
+          {label ? label : 'None'}
+        </ConditionalWrapper>
       </Col>
     </>
   );
@@ -55,8 +57,15 @@ export const ColumnTwoGroups = ({ name, label, helper, hoverTitle, ...props }) =
         {helper && <MouseoverTooltip id={`project-details__${helper}`}>{HELPER_TEXT[helper]}</MouseoverTooltip>}
       </Col>
       <Col className="mt-2" sm="3" title={hoverTitle} style={{ cursor: hoverTitle ? 'help' : 'auto' }}>
-        {label ? label : 'None'}
+        <ConditionalWrapper condition={props.strong} wrapper={(children) => <strong>{children}</strong>}>
+          {label ? label : 'None'}
+        </ConditionalWrapper>
       </Col>
     </>
   );
+};
+
+//helper components
+const ConditionalWrapper = ({ condition, children, wrapper }) => {
+  return condition ? wrapper(children) : children;
 };

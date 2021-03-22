@@ -244,7 +244,13 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
                   />
                 </Col>
                 <Col>
-                  <Field type="text" name="searchText" placeholder="Search" className="form-control" />
+                  <Field
+                    type="text"
+                    name="searchText"
+                    placeholder="Search"
+                    className="form-control"
+                    title="searches by code value and name"
+                  />
                 </Col>
                 <Col>
                   <MultiDropdownField {...formikProps} items={isActive} name="isActive" title="Status" />

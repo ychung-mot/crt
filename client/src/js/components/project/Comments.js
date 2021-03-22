@@ -15,6 +15,7 @@ import FontAwesomeButton from '../ui/FontAwesomeButton';
 import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
+import _ from 'lodash';
 
 const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
   const [modalExpand, setModalExpand] = useState(false);
@@ -107,7 +108,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
       <Modal isOpen={modalExpand} toggle={toggleShowAllModal} size="lg">
         <ModalHeader toggle={toggleShowAllModal}>{title} History</ModalHeader>
         <ModalBody>
-          <DataTableControl dataList={data} tableColumns={tableColumns} />
+          <DataTableControl dataList={[...data].reverse()} tableColumns={tableColumns} hover={false} />
         </ModalBody>
         <ModalFooter>
           <div className="text-right">

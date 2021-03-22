@@ -20,6 +20,7 @@ const DataTableControl = ({
   onHeadingSortClicked,
   overflowY,
   easyDelete,
+  hover,
 }) => {
   const handleEditClicked = (id) => {
     if (onEditClicked) onEditClicked(id);
@@ -46,7 +47,7 @@ const DataTableControl = ({
     //checks if item should be rendered as a special type. ie. currency, link or no formatting
     if (column.link) {
       return (
-        <Link to={() => linkFormatter(item, column.link)}>
+        <Link to={() => linkFormatter(item, column.link)} title={column.link?.title}>
           {(column.currency && (
             <NumberFormat value={item[column.key]} prefix="$" thousandSeparator={true} displayType="text" />
           )) ||
@@ -81,7 +82,7 @@ const DataTableControl = ({
           </div>
         )}
       >
-        <Table size="sm" responsive hover>
+        <Table size="sm" responsive hover={hover}>
           <thead className="thead-dark">
             <tr>
               {tableColumns.map((column) => {
@@ -183,6 +184,7 @@ DataTableControl.propTypes = {
         path: PropTypes.string,
         key: PropTypes.string, //will display what is in item[key]. Key takes precedence over heading.
         heading: PropTypes.string, //will display this string if item[key] doesn't exist.
+        title: PropTypes.string, //adds html title attribute. Mouse hover shows title.
       }),
       currency: PropTypes.bool, //if true then format values as currency
       thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
@@ -195,6 +197,7 @@ DataTableControl.propTypes = {
   onHeadingSortClicked: PropTypes.func,
   overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
   easyDelete: PropTypes.bool, //allows user to not set end date to disable record
+  hover: PropTypes.bool, //determines whether rows are highlighted when hovered
 };
 
 DataTableControl.defaultProps = {
@@ -202,6 +205,7 @@ DataTableControl.defaultProps = {
   deletable: false,
   overflowY: false,
   easyDelete: false,
+  hover: true,
 };
 
 export default DataTableControl;

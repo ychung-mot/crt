@@ -99,8 +99,8 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
           </Authorize>
         </UIHeader>
         <DisplayRow>
-          <ColumnTwoGroups name="Project Number" label={data.projectNumber} helper="projectNumber" />
-          <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" />
+          <ColumnTwoGroups name="Project Number" label={data.projectNumber} helper="projectNumber" strong />
+          <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" strong />
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
