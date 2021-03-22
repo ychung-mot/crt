@@ -850,25 +850,9 @@ function hideSidebar() {
  * @returns (boolean) true if is a valid TWM domain, false otherwise
  * Function that determines if the domain from which TWM was called is valid
  */
-function isValidTwmDomain() {
-	switch (window.location.hostname.toLowerCase()) {
-		case "localhost":
-		case "127.0.0.1":
-		case "dev-motigeo.th.gov.bc.ca":
-		case "dev-www.th.gov.bc.ca":
-		case "tst-motigeo.th.gov.bc.ca":
-		case "tst-www.th.gov.bc.ca":
-		case "stg-motigeo.th.gov.bc.ca":
-		case "stg-www.th.gov.bc.ca":
-		case "prd-motigeo.th.gov.bc.ca":
-		case "prd-www.th.gov.bc.ca":
-		case "motigeo.th.gov.bc.ca":
-		case "www.th.gov.bc.ca":
-			return true;
-		default:
-			return false;
-	}
-}
+ function isValidTwmDomain() {
+	return true;
+   }
 
 /**
  * Function: returnEnvironmentUrl
