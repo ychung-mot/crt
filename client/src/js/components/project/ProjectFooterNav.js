@@ -14,49 +14,53 @@ function ProjectFooterNav({ projectSearchHistory, projectId }) {
 
   return (
     <div className="d-flex flex-row-reverse">
-      <Nav tabs>
-        <NavItem>
+      <Nav pills>
+        <NavItem className="bg-secondary">
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}`}
             isActive={exactPathMatch}
-            activeClassName={'bg-secondary text-light'}
+            className={'text-light'}
+            activeClassName={'bg-primary'}
           >
             Details
           </NavLink>
         </NavItem>
-        <NavItem>
+        <NavItem className="bg-secondary">
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}${Constants.PATHS.PROJECT_PLAN}`}
             isActive={exactPathMatch}
-            activeClassName={'bg-secondary text-light'}
+            className={'text-light'}
+            activeClassName={'bg-primary'}
           >
-            Plan
+            Financial Plan
           </NavLink>
         </NavItem>
-        <NavItem>
+        <NavItem className="bg-secondary">
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}${Constants.PATHS.PROJECT_TENDER}`}
             isActive={exactPathMatch}
-            activeClassName={'bg-secondary text-light'}
+            className={'text-light'}
+            activeClassName={'bg-primary'}
           >
             Tender
           </NavLink>
         </NavItem>
-        <NavItem>
+        <NavItem className="bg-secondary">
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}${Constants.PATHS.PROJECT_SEGMENT}`}
             isActive={exactPathMatch}
-            activeClassName={'bg-secondary text-light'}
+            className={'text-light'}
+            activeClassName={'bg-primary'}
           >
             Segment
           </NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink tag={RRNavLink} className="bg-danger text-light" to={projectSearchHistory} isActive={exactPathMatch}>
+        <NavItem className="bg-danger ">
+          <NavLink tag={RRNavLink} className="text-light" to={projectSearchHistory} isActive={exactPathMatch}>
             Close
           </NavLink>
         </NavItem>
