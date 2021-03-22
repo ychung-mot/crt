@@ -91,7 +91,7 @@ const SingleDropdown = (props) => {
           </DropdownToggle>
           <DropdownMenu className="multi dropdown__single-scroll">
             {searchable && (
-              <div className="multi-item select-all           ">
+              <div className="multi-item select-all p-2">
                 <DropdownItem
                   innerRef={callbackRef}
                   tag={Input}
