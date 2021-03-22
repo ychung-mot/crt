@@ -68,11 +68,9 @@ app.config = {
       $(app.plugins.CRTsegmentCreator.tabContent)[0]
     );
 	
-    console.log("got this projectId: "+app.projectId) ;
     var url = " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ASEGMENT_RECORD&outputFormat=application%2Fjson&cql_filter=project_id="+app.projectId;
     if (app.segmentId) {
-      url = url+"%20AND%20segment_id="+app.segmentId;
-      // TO DO If given a segment id, set up router endpoints to allow editing
+         url = url+"%20AND%20segment_id="+app.segmentId;
     }
     // otherwise, just zoom to project extent
     console.log("got this projectId: "+app.projectId) ;
@@ -96,13 +94,34 @@ app.config = {
         if (isFinite(zoomExtent[0])) {
           app.map.getView().fit(zoomExtent, {padding: [20,20,20,20]});
         } 
+        if (app.segmentId) {
+          // Recreate route from Start and End of LineString
+          console.log("extract start and end points from data object");
+          if (data.features.length > 0) { // there is a feature
+            var featureLength = data.features[0].geometry.coordinates.length;
+            if (featureLength >= 1) { // it has at least one point
+              var startLon = data.features[0].geometry.coordinates[0][0];
+              var startLat = data.features[0].geometry.coordinates[0][1];
+              $(".dr-location-input-start").attr("longitude", startLon);
+              $(".dr-location-input-start").attr("latitude", startLat);
+              if (featureLength > 1) { // it is a line
+                    var endLon = data.features[0].geometry.coordinates[featureLength-1][0];
+                    var endLat = data.features[0].geometry.coordinates[featureLength-1][1];
+                    $(".dr-location-input-end").attr("longitude", endLon);
+                    $(".dr-location-input-end").attr("latitude", endLat);
+              }
+            }
+          }
+          app.plugins.CRTsegmentCreator.findRoute();
+
+        }
         spinner.stop();
       })
       // Handle a failure
       .fail(function (jqxhr, settings, exception) {
         spinner.stop();
         console.log('argh '+ exception);
-        logger("ERROR", app.plugins.CRTsegmentCreator.name + ": Router Error");
+        logger("ERROR", app.plugins.CRTsegmentCreator.name + ": Error finding segments");
       });
   
     
