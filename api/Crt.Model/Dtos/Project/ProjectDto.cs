@@ -20,7 +20,7 @@ namespace Crt.Model.Dtos.Project
         public decimal? CapIndxLkupId { get; set; }
         public decimal? NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
-        public decimal? ProjectMgrId { get; set; }
+        public decimal? ProjectMgrLkupId { get; set; }
         public decimal? AnncmentValue { get; set; }
         public decimal? C035Value { get; set; }
         public string AnncmentComment { get; set; }
@@ -28,7 +28,7 @@ namespace Crt.Model.Dtos.Project
 
         public CodeLookupDto CapIndxLkup { get; set; }
         public CodeLookupDto NearstTwnLkup { get; set; }
-        public UserSearchDto ProjectMgr { get; set; }
+        public CodeLookupDto ProjectMgrLkup { get; set; }
         public CodeLookupDto RcLkup { get; set; }
         public RegionDto Region { get; set; }
         public IList<NoteDto> Notes { get; set; }

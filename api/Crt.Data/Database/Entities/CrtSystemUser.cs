@@ -9,7 +9,6 @@ namespace Crt.Data.Database.Entities
     {
         public CrtSystemUser()
         {
-            CrtProjects = new HashSet<CrtProject>();
             CrtRegionUsers = new HashSet<CrtRegionUser>();
             CrtUserRoles = new HashSet<CrtUserRole>();
         }
@@ -22,7 +21,6 @@ namespace Crt.Data.Database.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool? IsProjectMgr { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }
         public DateTime AppCreateTimestamp { get; set; }
@@ -35,7 +33,6 @@ namespace Crt.Data.Database.Entities
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
-        public virtual ICollection<CrtProject> CrtProjects { get; set; }
         public virtual ICollection<CrtRegionUser> CrtRegionUsers { get; set; }
         public virtual ICollection<CrtUserRole> CrtUserRoles { get; set; }
     }

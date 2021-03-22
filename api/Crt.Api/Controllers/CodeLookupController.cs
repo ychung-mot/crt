@@ -100,9 +100,15 @@ namespace Crt.Api.Controllers
         }
 
         [HttpGet("codesets")]
-        public ActionResult<IEnumerable<CodeLookupDto>> GetCodeSetLookupss()
+        public ActionResult<IEnumerable<CodeLookupDto>> GetCodeSetLookups()
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.CodeSetLookup));
+        }
+
+        [HttpGet("managers")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetProjectManagers()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.ProjectManager));
         }
     }
 }

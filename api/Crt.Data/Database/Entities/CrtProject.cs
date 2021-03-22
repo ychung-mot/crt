@@ -26,7 +26,7 @@ namespace Crt.Data.Database.Entities
         public decimal? CapIndxLkupId { get; set; }
         public decimal? NearstTwnLkupId { get; set; }
         public decimal? RcLkupId { get; set; }
-        public decimal? ProjectMgrId { get; set; }
+        public decimal? ProjectMgrLkupId { get; set; }
         public decimal? AnncmentValue { get; set; }
         public decimal? C035Value { get; set; }
         public string AnncmentComment { get; set; }
@@ -45,7 +45,7 @@ namespace Crt.Data.Database.Entities
 
         public virtual CrtCodeLookup CapIndxLkup { get; set; }
         public virtual CrtCodeLookup NearstTwnLkup { get; set; }
-        public virtual CrtSystemUser ProjectMgr { get; set; }
+        public virtual CrtCodeLookup ProjectMgrLkup { get; set; }
         public virtual CrtCodeLookup RcLkup { get; set; }
         public virtual CrtRegion Region { get; set; }
         public virtual ICollection<CrtFinTarget> CrtFinTargets { get; set; }
