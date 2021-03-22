@@ -43,7 +43,7 @@ const tableColumns = [
   {
     heading: 'Project',
     key: 'projectNumber',
-    link: { path: `${Constants.PATHS.PROJECTS}/:id`, key: 'projectNumber' },
+    link: { path: `${Constants.PATHS.PROJECTS}/:id`, key: 'projectNumber', title: 'See project details' },
   },
   {
     heading: 'Planning Targets',
@@ -52,6 +52,7 @@ const tableColumns = [
       path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_PLAN}`,
       key: 'projectValue',
       heading: 'Planning Targets',
+      title: 'See financial planning and public project information',
     },
     currency: true,
     nosort: true,
@@ -63,13 +64,18 @@ const tableColumns = [
       path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_TENDER}`,
       key: 'winningContractorName',
       heading: 'Tender Details',
+      title: 'See tender details and Qty/Accomplishments',
     },
     nosort: true,
   },
   {
     heading: 'Location and Ratios',
     key: 'locationRatios',
-    link: { path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_SEGMENT}`, heading: 'Ratios' },
+    link: {
+      path: `${Constants.PATHS.PROJECTS}/:id${Constants.PATHS.PROJECT_SEGMENT}`,
+      heading: 'Ratios',
+      title: 'See ratios and segments',
+    },
     nosort: true,
   },
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
