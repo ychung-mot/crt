@@ -16,6 +16,11 @@ namespace Crt.Data.Database.Entities
         public string Code { get; set; }
         public string Description { get; set; }
         public string Comment { get; set; }
+        public decimal? ProgramLkupId { get; set; }
+        public decimal? ProgramCategoryLkupId { get; set; }
+        public decimal? ServiceLineLkupId { get; set; }
+        public bool? IsActive { get; set; }
+        public decimal? DisplayOrder { get; set; }
         public DateTime? EndDate { get; set; }
         public long ConcurrencyControlNumber { get; set; }
         public string AppCreateUserid { get; set; }

@@ -43,7 +43,7 @@ namespace Crt.Domain.Services
             string searchText, bool? isInProgress, string projectManagerIds,
             int pageSize, int pageNumber, string orderBy, string direction)
         {
-            //limitted to user regions
+            //limited to user regions
             var filteredRegions = regions.ToDecimalArray().Where(x => _currentUser.UserInfo.RegionIds.Contains(x)).ToArray();
 
             return await _projectRepo.GetProjectsAsync(filteredRegions, searchText, isInProgress, projectManagerIds.ToDecimalArray(),
@@ -139,12 +139,6 @@ namespace Crt.Domain.Services
             if (!_currentUser.UserInfo.RegionIds.Contains(project.RegionId))
             {
                 errors.AddItem(Fields.RegionId, $"Invalid region ID [{project.RegionId}]");
-            }
-
-            var managers = await _userRepo.GetManagersAsync();
-            if (project.ProjectMgrId != null && !managers.Any(x => x.SystemUserId == project.ProjectMgrId))
-            {
-                errors.AddItem(Fields.ProjectMgrId, $"Invalid project manager ID [{project.ProjectMgrId}]");
             }
 
             var projectId = project.GetType() == typeof(ProjectUpdateDto) ? ((ProjectUpdateDto)project).ProjectId : 0M;

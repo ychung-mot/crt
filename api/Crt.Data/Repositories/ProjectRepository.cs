@@ -63,7 +63,7 @@ namespace Crt.Data.Repositories
 
             if (projectManagerIds.Length > 0)
             {
-                query = query.Where(x => projectManagerIds.Contains(x.ProjectMgrId ?? 0));
+                query = query.Where(x => projectManagerIds.Contains(x.ProjectMgrLkupId ?? 0));
             }
 
             query = query.Include(x => x.Region);
@@ -95,7 +95,7 @@ namespace Crt.Data.Repositories
         public async Task<ProjectDto> GetProjectAsync(decimal projectId)
         {
             var project = await DbSet.AsNoTracking()
-                .Include(x => x.ProjectMgr)
+                .Include(x => x.ProjectMgrLkup)
                 .Include(x => x.NearstTwnLkup)
                 .Include(x => x.CapIndxLkup)
                 .Include(x => x.CrtNotes)

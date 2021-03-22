@@ -64,7 +64,8 @@ namespace Crt.Domain.Services
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.CapIndxLkupId, FieldTypes.String, true, null, null, null, null, null, null, null, CodeSet.CapIndx));
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.NerstTwnLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.NearstTwn));
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.RcLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.Rc));
-
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.ProjectMgrLkupId, FieldTypes.String, false, null, null, null, null, null, null, null, CodeSet.ProjectManager));
+            
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.AnncmentValue, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.C035Value, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
 

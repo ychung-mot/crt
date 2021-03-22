@@ -14,6 +14,7 @@ namespace Crt.Data.Database.Entities
             CrtFinTargetPhaseLkups = new HashSet<CrtFinTarget>();
             CrtProjectCapIndxLkups = new HashSet<CrtProject>();
             CrtProjectNearstTwnLkups = new HashSet<CrtProject>();
+            CrtProjectProjectMgrLkups = new HashSet<CrtProject>();
             CrtProjectRcLkups = new HashSet<CrtProject>();
             CrtQtyAccmpFiscalYearLkups = new HashSet<CrtQtyAccmp>();
             CrtQtyAccmpQtyAccmpLkups = new HashSet<CrtQtyAccmp>();
@@ -41,6 +42,7 @@ namespace Crt.Data.Database.Entities
         public virtual ICollection<CrtFinTarget> CrtFinTargetPhaseLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectCapIndxLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectNearstTwnLkups { get; set; }
+        public virtual ICollection<CrtProject> CrtProjectProjectMgrLkups { get; set; }
         public virtual ICollection<CrtProject> CrtProjectRcLkups { get; set; }
         public virtual ICollection<CrtQtyAccmp> CrtQtyAccmpFiscalYearLkups { get; set; }
         public virtual ICollection<CrtQtyAccmp> CrtQtyAccmpQtyAccmpLkups { get; set; }

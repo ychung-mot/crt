@@ -92,7 +92,7 @@ namespace Crt.Model
         public const string CapIndxLkupId = "CapIndxLkupId";
         public const string NerstTwnLkupId = "NerstTwnLkupId";
         public const string RcLkupId = "RcLkupId";
-        public const string ProjectMgrId = "ProjectMgrId";
+        public const string ProjectMgrLkupId = "ProjectMgrLkupId";
         public const string AnncmentValue = "AnncmentValue";
         public const string C035Value = "C035Value";
         public const string AnncmentComment = "AnncmentComment";
@@ -154,7 +154,7 @@ namespace Crt.Model
         public const string District = "DISTRICT";
         public const string ServiceArea = "SERVICE_AREA";
         public const string CodeSetLookup = "CODE_SET_LOOKUP";
-
+        public const string ProjectManager = "PROJECT_MANAGER";
     }
 
     public static class CrtEnvironments
