@@ -24,6 +24,7 @@ const SingleDropdown = (props) => {
 
   const callbackRef = useCallback((inputElement) => {
     if (inputElement) {
+      console.log(inputElement);
       inputElement.focus();
     }
   }, []);

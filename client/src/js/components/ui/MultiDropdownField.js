@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { DropdownToggle, DropdownMenu, UncontrolledDropdown, Label, Input } from 'reactstrap';
 import { FieldArray } from 'formik';
@@ -44,6 +44,12 @@ const MultiDropdownField = ({ values, setFieldValue, items, name, title, searcha
     else remove(selectedValues.indexOf(itemId));
   };
 
+  const callbackRef = useCallback((inputElement) => {
+    if (inputElement) {
+      inputElement.focus();
+    }
+  }, []);
+
   useEffect(() => {
     if (selectedValues.length === displayItems.length && !selectAll) setSelectAll(true);
     else if (selectedValues.length !== displayItems.length && selectAll) setSelectAll(false);
@@ -63,6 +69,7 @@ const MultiDropdownField = ({ values, setFieldValue, items, name, title, searcha
               onChange={(e) => {
                 setTextFilter(e.target.value);
               }}
+              innerRef={callbackRef}
             />
           </div>
         )}
