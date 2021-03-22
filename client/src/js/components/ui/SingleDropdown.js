@@ -89,11 +89,12 @@ const SingleDropdown = (props) => {
           <DropdownToggle caret onBlur={handleOnBlur} onClick={(e) => {}}>
             <div>{title}</div>
           </DropdownToggle>
-          <DropdownMenu className="multi dropdown__single-scroll">
+          <DropdownMenu className="multi">
             {searchable && (
               <div className="multi-item select-all p-2">
-                <Input
+                <DropdownItem
                   innerRef={callbackRef}
+                  tag={Input}
                   name={name}
                   type="textbox"
                   placeholder="Search"
@@ -101,10 +102,13 @@ const SingleDropdown = (props) => {
                   onChange={(e) => {
                     setTextFilter(e.target.value);
                   }}
+                  toggle={false}
+                  autoComplete="off"
+                  className="bg-white"
                 />
               </div>
             )}
-            {renderMenuItems()}
+            <div className="dropdown__single-scroll">{renderMenuItems()}</div>
           </DropdownMenu>
         </UncontrolledDropdown>
         {clearable && value && (
