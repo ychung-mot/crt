@@ -284,6 +284,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
             label={
               <NumberFormat value={data?.anncmentValue || ''} prefix="$" thousandSeparator={true} displayType="text" />
             }
+            helper="anncmentValue"
             sm={2}
           />
           <ColumnTwoGroups
@@ -291,6 +292,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
             label={
               <NumberFormat value={data?.c035Value || ''} prefix="$" thousandSeparator={true} displayType="text" />
             }
+            helper="c035Value"
             sm={'auto'}
           />
         </DisplayRow>
@@ -298,6 +300,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
           <ColumnGroupWithMarkdown
             name="Announcement Comment"
             label={data.anncmentComment?.replace(/\n/g, '  \n')}
+            helper="anncmentComment"
             sm={2}
           />
         </DisplayRow>
