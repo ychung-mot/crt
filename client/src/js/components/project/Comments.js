@@ -108,7 +108,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
       <Modal isOpen={modalExpand} toggle={toggleShowAllModal} size="lg">
         <ModalHeader toggle={toggleShowAllModal}>{title} History</ModalHeader>
         <ModalBody>
-          <DataTableControl dataList={[...data].reverse()} tableColumns={tableColumns} />
+          <DataTableControl dataList={[...data].reverse()} tableColumns={tableColumns} hover={false} />
         </ModalBody>
         <ModalFooter>
           <div className="text-right">

@@ -71,12 +71,14 @@ DataTableWithPaginaionControl.propTypes = {
   onHeadingSortClicked: PropTypes.func,
   overflowY: isOverflowY, //should not use overflowY in this component.
   easyDelete: PropTypes.bool, //allows user to not set end date to disable record
+  hover: PropTypes.bool, //determines whether rows are highlighted when hovered
 };
 
 DataTableWithPaginaionControl.defaultProps = {
   editable: false,
   deletable: false,
   easyDelete: false,
+  hover: false,
 };
 
 export default DataTableWithPaginaionControl;

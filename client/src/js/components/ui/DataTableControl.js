@@ -20,6 +20,7 @@ const DataTableControl = ({
   onHeadingSortClicked,
   overflowY,
   easyDelete,
+  hover,
 }) => {
   const handleEditClicked = (id) => {
     if (onEditClicked) onEditClicked(id);
@@ -81,7 +82,7 @@ const DataTableControl = ({
           </div>
         )}
       >
-        <Table size="sm" responsive hover>
+        <Table size="sm" responsive hover={hover}>
           <thead className="thead-dark">
             <tr>
               {tableColumns.map((column) => {
@@ -196,6 +197,7 @@ DataTableControl.propTypes = {
   onHeadingSortClicked: PropTypes.func,
   overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
   easyDelete: PropTypes.bool, //allows user to not set end date to disable record
+  hover: PropTypes.bool, //determines whether rows are highlighted when hovered
 };
 
 DataTableControl.defaultProps = {
@@ -203,6 +205,7 @@ DataTableControl.defaultProps = {
   deletable: false,
   overflowY: false,
   easyDelete: false,
+  hover: true,
 };
 
 export default DataTableControl;
