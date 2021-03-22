@@ -89,7 +89,7 @@ const SingleDropdown = (props) => {
           <DropdownToggle caret onBlur={handleOnBlur} onClick={(e) => {}}>
             <div>{title}</div>
           </DropdownToggle>
-          <DropdownMenu className="multi dropdown__single-scroll">
+          <DropdownMenu className="multi">
             {searchable && (
               <div className="multi-item select-all p-2">
                 <DropdownItem
@@ -108,8 +108,7 @@ const SingleDropdown = (props) => {
                 />
               </div>
             )}
-
-            {renderMenuItems()}
+            <div className="dropdown__single-scroll">{renderMenuItems()}</div>
           </DropdownMenu>
         </UncontrolledDropdown>
         {clearable && value && (
