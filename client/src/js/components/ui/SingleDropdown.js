@@ -91,9 +91,10 @@ const SingleDropdown = (props) => {
           </DropdownToggle>
           <DropdownMenu className="multi dropdown__single-scroll">
             {searchable && (
-              <div className="multi-item select-all p-2">
-                <Input
+              <div className="multi-item select-all           ">
+                <DropdownItem
                   innerRef={callbackRef}
+                  tag={Input}
                   name={name}
                   type="textbox"
                   placeholder="Search"
@@ -101,9 +102,13 @@ const SingleDropdown = (props) => {
                   onChange={(e) => {
                     setTextFilter(e.target.value);
                   }}
+                  toggle={false}
+                  autoComplete="off"
+                  className="bg-white"
                 />
               </div>
             )}
+
             {renderMenuItems()}
           </DropdownMenu>
         </UncontrolledDropdown>
