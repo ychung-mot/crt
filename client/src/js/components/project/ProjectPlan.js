@@ -21,7 +21,7 @@ import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorDialog, projectSearchHistory }) => {
+const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -315,7 +315,6 @@ const mapStateToProps = (state) => {
   return {
     fiscalYears: state.codeLookups.fiscalYears,
     phases: state.codeLookups.phases,
-    projectSearchHistory: state.projectSearchHistory.projectSearch,
   };
 };
 

@@ -19,7 +19,7 @@ import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSearchHistory }) => {
+const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
@@ -149,10 +149,6 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    projectSearchHistory: state.projectSearchHistory.projectSearch,
-  };
-};
+const mapStateToProps = (state) => {};
 
 export default connect(mapStateToProps, { showValidationErrorDialog })(ProjectDetails);
