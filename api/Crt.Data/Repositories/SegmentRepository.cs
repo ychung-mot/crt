@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
-using Crt.HttpClients.Models;
 using Crt.Model;
 using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
@@ -18,6 +17,7 @@ namespace Crt.Data.Repositories
     public interface ISegmentRepository
     {
         Task<CrtSegment> CreateSegmentAsync(SegmentCreateDto segment);
+        Task<CrtSegment> UpdateSegmentAsync(SegmentUpdateDto segment);
         Task DeleteSegmentAsync(decimal segmentId);
         Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentId);
         Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId);
@@ -35,20 +35,50 @@ namespace Crt.Data.Repositories
 
         public async Task<CrtSegment> CreateSegmentAsync(SegmentCreateDto segment)
         {
-            var crtSegment = new CrtSegment();
+            var crtSegment = LoadCrtSegment(new CrtSegment(), segment);
 
-            var routeLine = new Line(segment.Route);
-            var lineString = _geometryFactory.CreateLineString(routeLine.ToTopologyCoordinates());
+            await DbSet.AddAsync(crtSegment);
+
+            return crtSegment;
+        }
+
+        public async Task<CrtSegment> UpdateSegmentAsync(SegmentUpdateDto segment)
+        {
+            var crtSegment = await DbSet.FirstAsync(x => x.SegmentId == segment.SegmentId);
+
+            LoadCrtSegment(crtSegment, segment);
+
+            return crtSegment;
+        }
+
+        private CrtSegment LoadCrtSegment(CrtSegment crtSegment, SegmentSaveDto segment)
+        {
+            var isPoint = segment.Route.Length == 1 ||
+                (segment.Route.Length == 2 & segment.Route[0][0] == segment.Route[1][0] && segment.Route[0][1] == segment.Route[1][1]);
+
+            Geometry geometry = isPoint ?
+                _geometryFactory.CreatePoint(segment.Route.ToTopologyCoordinates()[0])
+                : _geometryFactory.CreateLineString(segment.Route.ToTopologyCoordinates());
 
             var entity = Mapper.Map(segment, crtSegment);
-            entity.Geometry = lineString;
+            entity.Geometry = geometry;
 
-            entity.StartLongitude = (decimal)lineString.StartPoint.X;
-            entity.StartLatitude = (decimal)lineString.StartPoint.Y;
-            entity.EndLongitude = (decimal)lineString.EndPoint.X;
-            entity.EndLatitude = (decimal)lineString.EndPoint.Y;
+            if (!isPoint)
+            {
+                var lineString = (LineString)geometry;
 
-            await DbSet.AddAsync(entity);
+                entity.StartLongitude = (decimal)lineString.StartPoint.X;
+                entity.StartLatitude = (decimal)lineString.StartPoint.Y;
+                entity.EndLongitude = (decimal)lineString.EndPoint.X;
+                entity.EndLatitude = (decimal)lineString.EndPoint.Y;
+            }
+            else
+            {
+                entity.StartLongitude = segment.Route[0][0];
+                entity.StartLatitude = segment.Route[0][1];
+                entity.EndLongitude = null;
+                entity.EndLatitude = null;
+            }
 
             return crtSegment;
         }

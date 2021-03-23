@@ -15,7 +15,8 @@ namespace Crt.Domain.Services
     {
         Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentID);
         Task<(decimal segmentId, Dictionary<string, List<string>> errors)> CreateSegmentAsync(SegmentCreateDto segment);
-        Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId);
+        Task<(bool notFound, Dictionary<string, List<string>> errors)> UpdateSegmentAsync(SegmentUpdateDto segment);
+        Task<(bool notFound, Dictionary<string, List<string>> errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId);
         Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId);
     }
 
@@ -38,11 +39,7 @@ namespace Crt.Domain.Services
         {
             var errors = new Dictionary<string, List<string>>();
 
-            if (segment.Route.Length < 2 || segment.Route.Length == 0)
-            {
-                //we need 2 points to create a line
-                errors.AddItem(Fields.SegmentRoute, "Segment Route must contain at least 2 points");
-            }
+            errors = ValidateSegment(errors, segment);
 
             if (errors.Count > 0)
             {
@@ -56,7 +53,42 @@ namespace Crt.Domain.Services
             return (crtSegment.SegmentId, errors);
         }
 
-        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId)
+        public async Task<(bool notFound, Dictionary<string, List<string>> errors)> UpdateSegmentAsync(SegmentUpdateDto segmentDto)
+        {
+            var segment = await _segmentRepo.GetSegmentByIdAsync(segmentDto.SegmentId);
+
+            if (segment == null || segment.ProjectId != segmentDto.ProjectId)
+            {
+                return (true, null);
+            }
+
+            var errors = new Dictionary<string, List<string>>();
+
+            errors = ValidateSegment(errors, segmentDto);
+
+            if (errors.Count > 0)
+            {
+                return (false, errors);
+            }
+
+            await _segmentRepo.UpdateSegmentAsync(segmentDto);
+
+            _unitOfWork.Commit();
+
+            return (false, errors);
+        }
+
+        private Dictionary<string, List<string>> ValidateSegment(Dictionary<string, List<string>> errors, SegmentSaveDto segment)
+        {
+            if (segment.Route.Length == 0)
+            {
+                errors.AddItem(Fields.SegmentRoute, "Segment Route must contain at least 1 point");
+            }
+
+            return errors;
+        }
+
+        public async Task<(bool notFound, Dictionary<string, List<string>> errors)> DeleteSegmentAsync(decimal projectId, decimal segmentId)
         {
             var segment = await _segmentRepo.GetSegmentByIdAsync(segmentId);
 
