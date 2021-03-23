@@ -86,7 +86,7 @@ const EditQtyAccmpFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="fiscalYearLkupId" label="Fiscal Year*">
-        <SingleDropdownField items={fiscalYears} name="fiscalYearLkupId" />
+        <SingleDropdownField items={fiscalYears} name="fiscalYearLkupId" searchable />
       </FormRow>
       <FormRow name="qtyOrAccmp" label="Quantity or Accomplishment">
         <SingleDropdown
@@ -103,6 +103,7 @@ const EditQtyAccmpFormFields = ({
             <SingleDropdownField
               items={qtyOrAccmp === 'QUANTITY' ? quantities : accomplishments}
               name="qtyAccmpLkupId"
+              searchable
             />
           </FormRow>
           <FormRow name="forecast" label="Forecast">

@@ -85,11 +85,11 @@ const EditProjectFormFields = ({
           <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
         </FormRow>
         <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
-          <SingleDropdownField items={projectMgrs} name="projectMgrId" clearable />
+          <SingleDropdownField items={projectMgrs} name="projectMgrId" clearable searchable />
         </FormRow>
       </FormMultiRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
-        <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" />
+        <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" searchable />
       </FormRow>
       <FormRow name="description" label="Project Description" helper="description">
         <FormInput type="textarea" rows={5} name="description" placeholder="Project Description" id="description" />

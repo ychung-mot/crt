@@ -71,16 +71,16 @@ const EditFinTargetFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="fiscalYearLkupId" label="Fiscal Year*">
-        <SingleDropdownField items={fiscalYears} name="fiscalYearLkupId" />
+        <SingleDropdownField items={fiscalYears} name="fiscalYearLkupId" searchable />
       </FormRow>
       <FormRow name="phaseLkupId" label="Phase*">
-        <SingleDropdownField items={phases} name="phaseLkupId" />
+        <SingleDropdownField items={phases} name="phaseLkupId" searchable />
       </FormRow>
       <FormRow name="elementId" label="Element*">
-        <SingleDropdownField items={elements} name="elementId" />
+        <SingleDropdownField items={elements} name="elementId" searchable />
       </FormRow>
       <FormRow name="fundingTypeLkupId" label="Funding Type*">
-        <SingleDropdownField items={fundingTypes} name="fundingTypeLkupId" />
+        <SingleDropdownField items={fundingTypes} name="fundingTypeLkupId" searchable />
       </FormRow>
       <FormRow name="amount" label="Amount">
         <FormNumberInput name="amount" id="amount" prefix="$" value={formValues.amount} />
