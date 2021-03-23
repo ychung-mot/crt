@@ -92,6 +92,7 @@ namespace Crt.Data.Mappings
 
             CreateMap<CrtSegment, SegmentDto>();
             CreateMap<CrtSegment, SegmentCreateDto>();
+            CreateMap<CrtSegment, SegmentUpdateDto>();
             CreateMap<CrtSegment, SegmentListDto>();
 
             CreateMap<CrtRatio, RatioDto>();

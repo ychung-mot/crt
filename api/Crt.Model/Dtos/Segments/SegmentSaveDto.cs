@@ -1,16 +1,9 @@
-﻿using System;
-using System.Text.Json.Serialization;
-
-namespace Crt.Model.Dtos.Segments
+﻿namespace Crt.Model.Dtos.Segments
 {
     public class SegmentSaveDto
     {
         public decimal ProjectId { get; set; }
+        public decimal[][] Route { get; set; }
         public string Description { get; set; }
-        public decimal? StartLatitude { get; set; }
-        public decimal? StartLongitude { get; set; }
-        public decimal? EndLatitude { get; set; }
-        public decimal? EndLongitude { get; set; }
-        public DateTime? EndDate { get; set; }
     }
 }

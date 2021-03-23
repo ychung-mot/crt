@@ -45,6 +45,31 @@ namespace Crt.Api.Controllers
             return CreatedAtRoute("GetSegment", new { projectId = projectId, id = response.segmentId }, await _segmentService.GetSegmentByIdAsync(response.segmentId));
         }
 
+        [HttpPut("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<SegmentCreateDto>> UpdateSegment(decimal projectId, decimal id, SegmentUpdateDto segment)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            segment.ProjectId = projectId;
+            segment.SegmentId = id;
+
+            var response = await _segmentService.UpdateSegmentAsync(segment);
+
+            if (response.notFound)
+            {
+                return NotFound();
+            }
+
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
         [HttpGet("{id}", Name = "GetSegment")]
         [RequiresPermission(Permissions.ProjectRead)]
         public async Task<ActionResult<SegmentListDto>> GetSegmentByIdAsync(decimal projectId, decimal id)
@@ -82,7 +107,7 @@ namespace Crt.Api.Controllers
 
             var response = await _segmentService.DeleteSegmentAsync(projectId, id);
 
-            if (response.NotFound)
+            if (response.notFound)
             {
                 return NotFound();
             }
