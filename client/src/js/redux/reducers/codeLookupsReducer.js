@@ -39,7 +39,7 @@ const defaultState = {
   highways: [],
   economicRegions: [],
   codeSets: [],
-  projectMgr: [],
+  projectMgrs: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -73,7 +73,7 @@ const codeLookupsReducer = (state = defaultState, action) => {
     case FETCH_CODESETS:
       return { ...state, codeSets: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_PROJECT_MANAGERS:
-      return { ...state, projectMgr: _.orderBy(action.payload, ['displayOrder']) };
+      return { ...state, projectMgrs: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }

@@ -40,7 +40,7 @@ const EditProjectFormFields = ({
   formType,
   capitalIndexes,
   userRegionIds,
-  projectMgr,
+  projectMgrs,
   nearestTowns,
   rcNumbers,
 }) => {
@@ -108,7 +108,7 @@ const mapStateToProps = (state) => {
   return {
     capitalIndexes: Object.values(state.codeLookups.capitalIndexes),
     userRegionIds: Object.values(state.user.current.regions),
-    projectMgr: Object.values(state.codeLookups.projectMgr),
+    projectMgrs: Object.values(state.codeLookups.projectMgrs),
     nearestTowns: Object.values(state.codeLookups.nearestTowns),
     rcNumbers: Object.values(state.codeLookups.rcNumbers),
   };
