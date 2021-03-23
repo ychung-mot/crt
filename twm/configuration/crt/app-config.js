@@ -80,21 +80,21 @@ app.config = {
       // Handle a successful result
       .done(function (data) {
         console.log("extract start and end points from data object");
-        var startLat = data.startCoordinates.split(',')[0];
-        var startLon = data.startCoordinates.split(',')[1];
-        var endLat = data.endCoordinates.split(',')[0];
-        var endLon = data.endCoordinates.split(',')[1];
-        if (data.description.length > 0) {
+        var startLat = data.startLatitude;
+        var startLon = data.startLongitude;
+        var endLat = data.endLatitude;
+        var endLon = data.endLongitude;
+        if (data.description) {
           $("#segment-description").val(data.description);
           $("#segment-description").attr("fromDB",true); // inhibit overwriting of existing descriptions
         }
-        if (startLat.length > 0) { // it has at least one point
+        if (startLat > 0) { // it has at least one point
               var startLat = data.startCoordinates.split(',')[0];
               var startLon = data.startCoordinates.split(',')[1];
               $(".dr-location-input-start").attr("longitude", startLon);
               $(".dr-location-input-start").attr("latitude", startLat);    
               $(".dr-location-input-start").val(startLat + ", " + startLon);
-              if (endLon.length > 0) { // it is a line
+              if (endLat > 0) { // it is a line
                     $(".dr-location-input-end").attr("longitude", endLon);
                     $(".dr-location-input-end").attr("latitude", endLat);
                     $(".dr-location-input-end").val(endLat + ", " + endLon);
@@ -102,11 +102,8 @@ app.config = {
               } else {
                 // zoom map to start coordinates
                 console.log("zoom map to single point");
-                /*
-                map.default.centre.latitude = startLat;
-                map.default.centre.longitude = startLon;
-                map.zoom = 9;
-                */
+                app.map.getView().setCenter(ol.proj.fromLonLat([startLon, startLat]));
+                app.map.getView().setZoom(14);  
               }
         }
         spinner.stop();

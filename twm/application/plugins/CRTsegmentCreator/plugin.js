@@ -637,7 +637,7 @@ class CRTsegmentCreator {
     if (points.length == 1) {
       // change text 
       $("#dr-post-segment-btn").attr("disabled", false);
-      $("#dr-post-segment-btn").text(this.buttonSavePoint);
+      $("#dr-post-segment-btn").text(app.plugins.CRTsegmentCreator.buttonSavePoint);
     }
     // Bail if there are not enough points
     if (points.length < 2) return;
@@ -736,7 +736,8 @@ class CRTsegmentCreator {
 
         // enable Save Segment button
         $("#dr-post-segment-btn").attr("disabled", false);
-        $("#dr-post-segment-btn").text(this.buttonSaveSegment);
+        $("#dr-post-segment-btn").text(app.plugins.CRTsegmentCreator.buttonSaveSegment);
+  
       })
 
       // Handle a failure
@@ -809,50 +810,64 @@ class CRTsegmentCreator {
         var format = new ol.format.WKT();
         var wkt = "";
         var feature4326 = {};
-        // multilinestring
-        if (
-          app.plugins.CRTsegmentCreator.routeLayer.getSource().getFeatures()
-            .length > 1
-        ) {
-          var multiLine = new ol.geom.MultiLineString(
-            app.plugins.CRTsegmentCreator.routeLayer
-              .getSource()
-              .getFeatures()[0]
-              .getGeometry()
-              .getCoordinates()
-          );
-          app.plugins.CRTsegmentCreator.routeLayer
-            .getSource()
-            .getFeatures()
-            .forEach(function (feat) {
-              multiLine.appendLineString(feat.getGeometry().getCoordinates());
-            });
-          var multiFeature = new ol.Feature({ geometry: multiLine });
-          feature4326 = transformFeature(
-            multiFeature,
-            "EPSG:3857",
-            "EPSG:4326"
-          );
-          wkt = format.writeFeature(feature4326, {});
-        } else {
-          feature4326 = transformFeature(
-            app.plugins.CRTsegmentCreator.routeLayer
-              .getSource()
-              .getFeatures()[0],
-            "EPSG:3857",
-            "EPSG:4326"
-          );
-          wkt = format.writeFeature(feature4326, {});
-        }
+
 
         //IDEALLY WE CAN POST WKT TO THE DATABASE
-        //alert("POST this to the database:\n" + wkt);
-
+        var pointsArray = [];
+        if ($("#dr-post-segment-btn")[0].outerText == app.plugins.CRTsegmentCreator.buttonSavePoint) {
+        // we have just one pair of coordinates
+          var startLon = $(".dr-location-input-start").attr("longitude");
+          var startLat = $(".dr-location-input-start").attr("latitude");
+          var endLon = $(".dr-location-input-end").attr("longitude");
+          var endLat = $(".dr-location-input-end").attr("latitude");
+          if ((startLon) && (startLat)) {
+            pointsArray = [Number(startLon), Number(startLat)];
+          } else if ((endLon) && (endLat)) {
+            pointsArray = [Number(endLon), Number(endLat)];
+          }
+        } else { // we have a lineor multilinestring
+          if (
+            app.plugins.CRTsegmentCreator.routeLayer.getSource().getFeatures()
+              .length > 1
+          ) {
+            var multiLine = new ol.geom.MultiLineString(
+              app.plugins.CRTsegmentCreator.routeLayer
+                .getSource()
+                .getFeatures()[0]
+                .getGeometry()
+                .getCoordinates()
+            );
+            app.plugins.CRTsegmentCreator.routeLayer
+              .getSource()
+              .getFeatures()
+              .forEach(function (feat) {
+                multiLine.appendLineString(feat.getGeometry().getCoordinates());
+              });
+            var multiFeature = new ol.Feature({ geometry: multiLine });
+            feature4326 = transformFeature(
+              multiFeature,
+              "EPSG:3857",
+              "EPSG:4326"
+            );
+            wkt = format.writeFeature(feature4326, {});
+          } else {
+            feature4326 = transformFeature(
+              app.plugins.CRTsegmentCreator.routeLayer
+                .getSource()
+                .getFeatures()[0],
+              "EPSG:3857",
+              "EPSG:4326"
+            );
+            wkt = format.writeFeature(feature4326, {});
+          }
         //grab all the points on the line from feature4236. Format Long Lat
-        let pointsArray = feature4326.values_.geometry.flatCoordinates;
+          pointsArray = feature4326.values_.geometry.flatCoordinates;	
+        }
         let description = $("#segment-description").val();
-console.log("ABOUT TO POST");
+
         //send the pointsArray and description to parent react application and close dialog
+        console.log("ABOUT TO POST " + pointsArray);
+
         window.parent.postMessage(
           {
             message: "closeForm",
@@ -860,7 +875,8 @@ console.log("ABOUT TO POST");
             description,
           },
           "*"
-        );
+        ); 
+        
       });
 
     // Register the clear input buttons
