@@ -66,7 +66,7 @@ app.config = {
       $(app.plugins.CRTsegmentCreator.tabContent)[0]
     );
     // go to a specific segment
-     if (app.segmentId) {
+    if (app.segmentId) {
        var url = "api/projects/"+app.projectId+"/segments/"+app.segmentId;
          $.ajax({
           url: url,  
@@ -84,17 +84,20 @@ app.config = {
         var startLon = data.startCoordinates.split(',')[1];
         var endLat = data.endCoordinates.split(',')[0];
         var endLon = data.endCoordinates.split(',')[1];
-        $("#segement-description").val(data.description);
-        $("#segement-description").fromDB = true;
-          if (startLon) { // there is a feature
-            if (startLat) { // it has at least one point
+        if (data.description.length > 0) {
+          $("#segment-description").val(data.description);
+          $("#segment-description").attr("fromDB",true); // inhibit overwriting of existing descriptions
+        }
+        if (startLat.length > 0) { // it has at least one point
               var startLat = data.startCoordinates.split(',')[0];
               var startLon = data.startCoordinates.split(',')[1];
               $(".dr-location-input-start").attr("longitude", startLon);
               $(".dr-location-input-start").attr("latitude", startLat);    
-              if ((endLon != startLon)&&(endLat != startLat)) { // it is a line
+              $(".dr-location-input-start").val(startLat + ", " + startLon);
+              if (endLon.length > 0) { // it is a line
                     $(".dr-location-input-end").attr("longitude", endLon);
                     $(".dr-location-input-end").attr("latitude", endLat);
+                    $(".dr-location-input-end").val(endLat + ", " + endLon);
                     app.plugins.CRTsegmentCreator.findRoute(); // router call will zoom map
               } else {
                 // zoom map to start coordinates
@@ -105,20 +108,7 @@ app.config = {
                 map.zoom = 9;
                 */
               }
-            }
-          }
-
-/*
-        var lowerBound = [data.bbox[0],data.bbox[1]]; // [-125.20585,48.9071,-118.45954,55.88242]
-        var upperBound = [data.bbox[2],data.bbox[3]]; // [-125.20585,48.9071,-118.45954,55.88242]
-        var zoomLower = ol.proj.transform(lowerBound, 'EPSG:4326', 'EPSG:3857');
-        var zoomUpper = ol.proj.transform(upperBound, 'EPSG:4326', 'EPSG:3857');
-        var zoomExtent = [zoomLower[0],zoomLower[1],zoomUpper[0],zoomUpper[1]];
-        if (isFinite(zoomExtent[0])) {
-          app.map.getView().fit(zoomExtent, {padding: [20,20,20,20]});
-        } 
-        */
-
+        }
         spinner.stop();
       })
 
