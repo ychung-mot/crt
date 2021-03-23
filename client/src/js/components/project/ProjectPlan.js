@@ -9,7 +9,6 @@ import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import SingleDropdown from '../ui/SingleDropdown';
 import { DisplayRow, ColumnTwoGroups, ColumnGroupWithMarkdown } from './ProjectDisplayHelper';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
@@ -251,7 +250,7 @@ const ProjectPlan = ({ match, history, fiscalYears, phases, showValidationErrorD
               <strong>Total Project Estimate</strong>
               <NumberFormat
                 value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
-                prefix=" $"
+                prefix="$"
                 thousandSeparator={true}
                 displayType="text"
               />

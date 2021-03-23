@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 //components
@@ -9,7 +8,6 @@ import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
-import { Button } from 'reactstrap';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
 import Comments from './Comments';
