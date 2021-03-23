@@ -17,7 +17,8 @@ class CRTsegmentCreator {
     this.tabContent; // jQuery element
     this.points = [];
     this.currentTarget;
-
+    this.buttonSavePoint = "Save Point";
+    this.buttonSaveSegment = "Save Segment";
     // Define some point styleSheets
     this.pointStyles = {
       start: new ol.style.Style({
@@ -632,7 +633,12 @@ class CRTsegmentCreator {
             .addFeature(pointFeature);
         }
       });
-
+    // Allow saving of a single point
+    if (points.length == 1) {
+      // change text 
+      $("#dr-post-segment-btn").attr("disabled", false);
+      $("#dr-post-segment-btn").text(app.plugins.CRTsegmentCreator.buttonSavePoint);
+    }
     // Bail if there are not enough points
     if (points.length < 2) return;
 
@@ -705,20 +711,24 @@ class CRTsegmentCreator {
         $.each(data.directions, function (index, direction) {
           $("#dr-travel-directions").append("<li>" + direction.text + "</li>");
         });
-
-        // Create segment description based on starting point
-        if (data.directions[0].name) {
-          $("#segment-description").html(data.directions[0].name);
-          console.log(data.directions[0].name);
-        }
-        if (data.directions.length > 2) {
-          if (data.directions[data.directions.length - 2].name) {
-            $("#segment-description").append(
-              " to " + data.directions[data.directions.length - 2].name
-            );
-            console.log(data.directions[0].name);
+ 
+        var inhibitOverwrite = $("#segment-description").attr("fromDB");
+        if (typeof inhibitOverwrite !== 'undefined' && inhibitOverwrite !== false) {
+          // if from the DB, maybe let user decide if it should be overwritten
+          console.log("may want to give user the choice of overwriting original description");
+        } else {
+          // Create segment description based on starting point
+          if (data.directions[0].name) {
+            $("#segment-description").html(data.directions[0].name);
           }
-        }
+          if (data.directions.length > 2) {
+            if (data.directions[data.directions.length - 2].name) {
+              $("#segment-description").append(
+                " to " + data.directions[data.directions.length - 2].name
+              );
+            }
+          }
+      }
 
         // Zoom to the route
         if (isMobile()) hideSidebar();
@@ -726,6 +736,8 @@ class CRTsegmentCreator {
 
         // enable Save Segment button
         $("#dr-post-segment-btn").attr("disabled", false);
+        $("#dr-post-segment-btn").text(app.plugins.CRTsegmentCreator.buttonSaveSegment);
+  
       })
 
       // Handle a failure
@@ -798,64 +810,64 @@ class CRTsegmentCreator {
         var format = new ol.format.WKT();
         var wkt = "";
         var feature4326 = {};
-        // multilinestring
-        if (
-          app.plugins.CRTsegmentCreator.routeLayer.getSource().getFeatures()
-            .length > 1
-        ) {
-          var multiLine = new ol.geom.MultiLineString(
+
+
+        //IDEALLY WE CAN POST WKT TO THE DATABASE
+        var pointsArray = [];
+        if ($("#dr-post-segment-btn")[0].outerText == app.plugins.CRTsegmentCreator.buttonSavePoint) {
+        // we have just one pair of coordinates
+          var startLon = $(".dr-location-input-start").attr("longitude");
+          var startLat = $(".dr-location-input-start").attr("latitude");
+          var endLon = $(".dr-location-input-end").attr("longitude");
+          var endLat = $(".dr-location-input-end").attr("latitude");
+          if ((startLon) && (startLat)) {
+            pointsArray = [Number(startLon), Number(startLat)];
+          } else if ((endLon) && (endLat)) {
+            pointsArray = [Number(endLon), Number(endLat)];
+          }
+        } else { // we have a lineor multilinestring
+          if (
+            app.plugins.CRTsegmentCreator.routeLayer.getSource().getFeatures()
+              .length > 1
+          ) {
+            var multiLine = new ol.geom.MultiLineString(
+              app.plugins.CRTsegmentCreator.routeLayer
+                .getSource()
+                .getFeatures()[0]
+                .getGeometry()
+                .getCoordinates()
+            );
             app.plugins.CRTsegmentCreator.routeLayer
               .getSource()
-              .getFeatures()[0]
-              .getGeometry()
-              .getCoordinates()
-          );
-          app.plugins.CRTsegmentCreator.routeLayer
-            .getSource()
-            .getFeatures()
-            .forEach(function (feat) {
-              multiLine.appendLineString(feat.getGeometry().getCoordinates());
-            });
-          var multiFeature = new ol.Feature({ geometry: multiLine });
-          feature4326 = transformFeature(
-            multiFeature,
-            "EPSG:3857",
-            "EPSG:4326"
-          );
-          wkt = format.writeFeature(feature4326, {});
-        } else {
-          feature4326 = transformFeature(
-            app.plugins.CRTsegmentCreator.routeLayer
-              .getSource()
-              .getFeatures()[0],
-            "EPSG:3857",
-            "EPSG:4326"
-          );
-          wkt = format.writeFeature(feature4326, {});
-        }
-        /* Original Start and End Coordinates will be replaced with Route Start and End
-			var startPoint = feature4326.getGeometry().getFirstCoordinate();
-			var endPoint = feature4326.getGeometry().getLastCoordinate();
-
-			var associatedInput = $(".dr-location-input-start");
-			$("#dr-start-lon-input").val(startPoint[1].toString().slice(0,11));
-			$("#dr-start-lat-input").val(startPoint[0].toString().slice(0,9));
-			associatedInput = $(".dr-location-input-end");
-			$("#dr-end-lon-input").val(endPoint[1].toString().slice(0,11));
-			$("#dr-end-lat-input").val(endPoint[0].toString().slice(0,9));
-			
-			// TO DO Update green and red markers to reflect Route Start and End			
-			
-*/
-
-        //temporary fix removed this alert function for now
-        //alert("POST this to the database:\n" + wkt);
-
+              .getFeatures()
+              .forEach(function (feat) {
+                multiLine.appendLineString(feat.getGeometry().getCoordinates());
+              });
+            var multiFeature = new ol.Feature({ geometry: multiLine });
+            feature4326 = transformFeature(
+              multiFeature,
+              "EPSG:3857",
+              "EPSG:4326"
+            );
+            wkt = format.writeFeature(feature4326, {});
+          } else {
+            feature4326 = transformFeature(
+              app.plugins.CRTsegmentCreator.routeLayer
+                .getSource()
+                .getFeatures()[0],
+              "EPSG:3857",
+              "EPSG:4326"
+            );
+            wkt = format.writeFeature(feature4326, {});
+          }
         //grab all the points on the line from feature4236. Format Long Lat
-        let pointsArray = feature4326.values_.geometry.flatCoordinates;
+          pointsArray = feature4326.values_.geometry.flatCoordinates;	
+        }
         let description = $("#segment-description").val();
 
         //send the pointsArray and description to parent react application and close dialog
+        console.log("ABOUT TO POST " + pointsArray);
+
         window.parent.postMessage(
           {
             message: "closeForm",
@@ -863,7 +875,8 @@ class CRTsegmentCreator {
             description,
           },
           "*"
-        );
+        ); 
+        
       });
 
     // Register the clear input buttons

@@ -60,20 +60,58 @@ app.config = {
       maxResults: 5,
     },
   ],
-	init: function() {
-
+  init: function() {
     // zoom map to area of interest
-
     var spinner = new Spinner(app.spinnerOptionsMedium).spin(
       $(app.plugins.CRTsegmentCreator.tabContent)[0]
     );
-	
-    var url = " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ASEGMENT_RECORD&outputFormat=application%2Fjson&cql_filter=project_id="+app.projectId;
+    // go to a specific segment
     if (app.segmentId) {
-         url = url+"%20AND%20segment_id="+app.segmentId;
-    }
+       var url = "api/projects/"+app.projectId+"/segments/"+app.segmentId;
+         $.ajax({
+          url: url,  
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Pragma: "no-cache",
+            Authorization: "Bearer " + keycloak.token,
+          },
+          timeout: 7500,
+        })
+      // Handle a successful result
+      .done(function (data) {
+        console.log("extract start and end points from data object");
+        var startLat = data.startLatitude;
+        var startLon = data.startLongitude;
+        var endLat = data.endLatitude;
+        var endLon = data.endLongitude;
+        if (data.description) {
+          $("#segment-description").val(data.description);
+          $("#segment-description").attr("fromDB",true); // inhibit overwriting of existing descriptions
+        }
+        if (startLat > 0) { // it has at least one point
+              var startLat = data.startCoordinates.split(',')[0];
+              var startLon = data.startCoordinates.split(',')[1];
+              $(".dr-location-input-start").attr("longitude", startLon);
+              $(".dr-location-input-start").attr("latitude", startLat);    
+              $(".dr-location-input-start").val(startLat + ", " + startLon);
+              if (endLat > 0) { // it is a line
+                    $(".dr-location-input-end").attr("longitude", endLon);
+                    $(".dr-location-input-end").attr("latitude", endLat);
+                    $(".dr-location-input-end").val(endLat + ", " + endLon);
+                    app.plugins.CRTsegmentCreator.findRoute(); // router call will zoom map
+              } else {
+                // zoom map to start coordinates
+                console.log("zoom map to single point");
+                app.map.getView().setCenter(ol.proj.fromLonLat([startLon, startLat]));
+                app.map.getView().setZoom(14);  
+              }
+        }
+        spinner.stop();
+      })
+
+    } else {
     // otherwise, just zoom to project extent
-    console.log("got this projectId: "+app.projectId) ;
+    var url = " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ASEGMENT_RECORD&outputFormat=application%2Fjson&cql_filter=project_id="+app.projectId;
       $.ajax({
         url: url,  
         headers: {
@@ -94,27 +132,7 @@ app.config = {
         if (isFinite(zoomExtent[0])) {
           app.map.getView().fit(zoomExtent, {padding: [20,20,20,20]});
         } 
-        if (app.segmentId) {
-          // Recreate route from Start and End of LineString
-          console.log("extract start and end points from data object");
-          if (data.features.length > 0) { // there is a feature
-            var featureLength = data.features[0].geometry.coordinates.length;
-            if (featureLength >= 1) { // it has at least one point
-              var startLon = data.features[0].geometry.coordinates[0][0];
-              var startLat = data.features[0].geometry.coordinates[0][1];
-              $(".dr-location-input-start").attr("longitude", startLon);
-              $(".dr-location-input-start").attr("latitude", startLat);
-              if (featureLength > 1) { // it is a line
-                    var endLon = data.features[0].geometry.coordinates[featureLength-1][0];
-                    var endLat = data.features[0].geometry.coordinates[featureLength-1][1];
-                    $(".dr-location-input-end").attr("longitude", endLon);
-                    $(".dr-location-input-end").attr("latitude", endLat);
-              }
-            }
-          }
-          app.plugins.CRTsegmentCreator.findRoute();
 
-        }
         spinner.stop();
       })
       // Handle a failure
@@ -123,10 +141,9 @@ app.config = {
         console.log('argh '+ exception);
         logger("ERROR", app.plugins.CRTsegmentCreator.name + ": Error finding segments");
       });
-  
-    
+    }
+	}, 	
 
-	},  
   map: {
     default: {
       centre: {
