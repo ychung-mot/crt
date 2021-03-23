@@ -17,7 +17,8 @@ class CRTsegmentCreator {
     this.tabContent; // jQuery element
     this.points = [];
     this.currentTarget;
-
+    this.buttonSavePoint = "Save Point";
+    this.buttonSaveSegment = "Save Segment";
     // Define some point styleSheets
     this.pointStyles = {
       start: new ol.style.Style({
@@ -632,7 +633,12 @@ class CRTsegmentCreator {
             .addFeature(pointFeature);
         }
       });
-
+    // Allow saving of a single point
+    if (points.length == 1) {
+      // change text 
+      $("#dr-post-segment-btn").attr("disabled", false);
+      $("#dr-post-segment-btn").text(this.buttonSavePoint);
+    }
     // Bail if there are not enough points
     if (points.length < 2) return;
 
@@ -705,7 +711,10 @@ class CRTsegmentCreator {
         $.each(data.directions, function (index, direction) {
           $("#dr-travel-directions").append("<li>" + direction.text + "</li>");
         });
-
+        console.log("check description status");
+        if ($("#segement-description").fromDB ) {
+          console.log("may want to give user the choice of overwriting original description")
+        } else {
         // Create segment description based on starting point
         if (data.directions[0].name) {
           $("#segment-description").html(data.directions[0].name);
@@ -719,6 +728,7 @@ class CRTsegmentCreator {
             console.log(data.directions[0].name);
           }
         }
+      }
 
         // Zoom to the route
         if (isMobile()) hideSidebar();
@@ -726,6 +736,7 @@ class CRTsegmentCreator {
 
         // enable Save Segment button
         $("#dr-post-segment-btn").attr("disabled", false);
+        $("#dr-post-segment-btn").text(this.buttonSaveSegment);
       })
 
       // Handle a failure
@@ -833,22 +844,8 @@ class CRTsegmentCreator {
           );
           wkt = format.writeFeature(feature4326, {});
         }
-        /* Original Start and End Coordinates will be replaced with Route Start and End
-			var startPoint = feature4326.getGeometry().getFirstCoordinate();
-			var endPoint = feature4326.getGeometry().getLastCoordinate();
 
-			var associatedInput = $(".dr-location-input-start");
-			$("#dr-start-lon-input").val(startPoint[1].toString().slice(0,11));
-			$("#dr-start-lat-input").val(startPoint[0].toString().slice(0,9));
-			associatedInput = $(".dr-location-input-end");
-			$("#dr-end-lon-input").val(endPoint[1].toString().slice(0,11));
-			$("#dr-end-lat-input").val(endPoint[0].toString().slice(0,9));
-			
-			// TO DO Update green and red markers to reflect Route Start and End			
-			
-*/
-
-        //temporary fix removed this alert function for now
+        //IDEALLY WE CAN POST WKT TO THE DATABASE
         //alert("POST this to the database:\n" + wkt);
 
         //grab all the points on the line from feature4236. Format Long Lat
