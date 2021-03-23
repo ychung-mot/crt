@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
 import moment from 'moment';
+import { myFiscalYear } from '../../utils';
 
 import SingleDropdownField from '../ui/SingleDropdownField';
 import PageSpinner from '../ui/PageSpinner';
@@ -43,8 +44,8 @@ const EditFinTargetFormFields = ({
   elements,
 }) => {
   const [loading, setLoading] = useState(false);
-  let currentYear = moment().year().toString();
-  let defaultFiscalYearLkupId = fiscalYears.find((year) => year.name.startsWith(currentYear))?.id;
+
+  let defaultFiscalYearLkupId = fiscalYears.find((year) => year.name.startsWith(myFiscalYear()))?.id;
 
   useEffect(() => {
     setInitialValues({ ...defaultValues, fiscalYearLkupId: defaultFiscalYearLkupId });
