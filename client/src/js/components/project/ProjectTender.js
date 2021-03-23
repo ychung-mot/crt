@@ -20,7 +20,7 @@ import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog, projectSearchHistory }) => {
+const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
@@ -345,7 +345,6 @@ const ProjectTender = ({ match, history, fiscalYears, showValidationErrorDialog,
 
 const mapStateToProps = (state) => {
   return {
-    projectSearchHistory: state.projectSearchHistory.projectSearch,
     fiscalYears: state.codeLookups.fiscalYears,
   };
 };

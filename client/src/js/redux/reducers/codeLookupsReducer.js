@@ -15,6 +15,7 @@ import {
   FETCH_HIGHWAYS,
   FETCH_ECONOMIC_REGIONS,
   FETCH_CODESETS,
+  FETCH_PROJECT_MANAGERS,
 } from '../actions/types';
 
 const defaultState = {
@@ -38,6 +39,7 @@ const defaultState = {
   highways: [],
   economicRegions: [],
   codeSets: [],
+  projectMgrs: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -70,6 +72,8 @@ const codeLookupsReducer = (state = defaultState, action) => {
       return { ...state, economicRegions: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_CODESETS:
       return { ...state, codeSets: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_PROJECT_MANAGERS:
+      return { ...state, projectMgrs: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }

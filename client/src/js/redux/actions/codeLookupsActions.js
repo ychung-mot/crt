@@ -13,6 +13,7 @@ import {
   FETCH_HIGHWAYS,
   FETCH_ECONOMIC_REGIONS,
   FETCH_CODESETS,
+  FETCH_PROJECT_MANAGERS,
 } from './types';
 
 import * as api from '../../Api';
@@ -112,5 +113,12 @@ export const fetchCodesets = () => (dispatch) => {
   return api.getCodesets().then((response) => {
     const data = response.data;
     dispatch({ type: FETCH_CODESETS, payload: data });
+  });
+};
+
+export const fetchProjectManagers = () => (dispatch) => {
+  return api.getProjectManagers().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_PROJECT_MANAGERS, payload: data });
   });
 };

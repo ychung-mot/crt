@@ -53,10 +53,10 @@ const EditCodeSetFormFields = ({
       <FormRow name="codeValueText" label="Code Value" helper="codeValueText">
         <FormInput type="text" name="codeValueText" id={`codeValue`} />
       </FormRow>
-      <FormRow name="codeName" label="Code Name" helper="codeName">
+      <FormRow name="codeName*" label="Code Name" helper="codeName">
         <FormInput type="text" name="codeName" id={`codeName`} />
       </FormRow>
-      <FormRow name="displayOrder" label="Order Number">
+      <FormRow name="displayOrder*" label="Order Number">
         <FormInput type="number" name="displayOrder" id={`displayOrder`} />
       </FormRow>
     </React.Fragment>

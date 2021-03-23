@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 //components
@@ -9,7 +8,6 @@ import Authorize from '../fragments/Authorize';
 import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
-import { Button } from 'reactstrap';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
 import Comments from './Comments';
@@ -21,7 +19,7 @@ import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSearchHistory }) => {
+const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
 
@@ -151,10 +149,6 @@ const ProjectDetails = ({ match, history, showValidationErrorDialog, projectSear
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    projectSearchHistory: state.projectSearchHistory.projectSearch,
-  };
-};
+const mapStateToProps = (state) => {};
 
 export default connect(mapStateToProps, { showValidationErrorDialog })(ProjectDetails);

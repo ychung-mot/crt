@@ -40,7 +40,7 @@ const EditProjectFormFields = ({
   formType,
   capitalIndexes,
   userRegionIds,
-  projectMgr,
+  projectMgrs,
   nearestTowns,
   rcNumbers,
 }) => {
@@ -85,7 +85,7 @@ const EditProjectFormFields = ({
           <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
         </FormRow>
         <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
-          <SingleDropdownField items={projectMgr} name="projectMgrId" clearable />
+          <SingleDropdownField items={projectMgrs} name="projectMgrId" clearable />
         </FormRow>
       </FormMultiRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
@@ -108,7 +108,7 @@ const mapStateToProps = (state) => {
   return {
     capitalIndexes: Object.values(state.codeLookups.capitalIndexes),
     userRegionIds: Object.values(state.user.current.regions),
-    projectMgr: Object.values(state.user.projectMgr),
+    projectMgrs: Object.values(state.codeLookups.projectMgrs),
     nearestTowns: Object.values(state.codeLookups.nearestTowns),
     rcNumbers: Object.values(state.codeLookups.rcNumbers),
   };

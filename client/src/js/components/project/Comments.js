@@ -15,7 +15,6 @@ import FontAwesomeButton from '../ui/FontAwesomeButton';
 import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
-import _ from 'lodash';
 
 const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
   const [modalExpand, setModalExpand] = useState(false);

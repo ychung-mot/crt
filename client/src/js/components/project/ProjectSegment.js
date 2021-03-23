@@ -54,7 +54,7 @@ const districtTableColumns = [
   { heading: 'Ratios', key: 'ratio', nosort: true },
 ];
 
-function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, match, projectSearchHistory }) {
+function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [ratiosData, setRatiosData] = useState({});
@@ -257,7 +257,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, history, 
 
 const mapStateToProps = (state) => {
   return {
-    projectSearchHistory: state.projectSearchHistory.projectSearch,
     ratioRecordTypes: state.codeLookups.ratioRecordTypes,
   };
 };

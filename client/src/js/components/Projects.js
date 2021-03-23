@@ -96,7 +96,7 @@ const isInProgress = [
 
 const Projects = ({
   currentUser,
-  projectMgr,
+  projectMgrs,
   setProjectSearchHistory,
   setProjectSearchFormikValues,
   resetProjectSearchFormikValues,
@@ -224,7 +224,7 @@ const Projects = ({
                 <Col>
                   <MultiDropdownField
                     {...formikProps}
-                    items={projectMgr}
+                    items={projectMgrs}
                     name="projectManagerIds"
                     title="Project Manager"
                     searchable
@@ -296,7 +296,7 @@ const Projects = ({
 const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
-    projectMgr: Object.values(state.user.projectMgr),
+    projectMgrs: Object.values(state.codeLookups.projectMgrs),
     reduxFormikValues: state.projectSearchHistory.reduxFormikValues,
   };
 };
