@@ -17,7 +17,6 @@ namespace Crt.Data.Database.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime? EndDate { get; set; }
-        public bool? IsProjectMgr { get; set; }
         public Guid? UserGuid { get; set; }
         public DateTime AppCreateTimestamp { get; set; }
         public Guid AppCreateUserGuid { get; set; }

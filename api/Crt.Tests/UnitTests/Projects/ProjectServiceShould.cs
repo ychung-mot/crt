@@ -54,6 +54,16 @@ namespace Crt.Tests.UnitTests.Project
                 CodeValueFormat = "STRING",
                 DisplayOrder = 1,
             });
+
+            codeLookup.Add(new CodeLookupDto
+            {
+                CodeLookupId = Lookup.ManagerId,
+                CodeSet = CodeSet.ProjectManager,
+                CodeName = "Project Manager",
+                CodeValueFormat = "STRING",
+                DisplayOrder = 1,
+            });
+
             return codeLookup;
         }
 
@@ -87,7 +97,7 @@ namespace Crt.Tests.UnitTests.Project
             {
                 CapIndxLkupId = Lookup.CapIndxLkupId,
                 RcLkupId = Lookup.Rc,
-                ProjectMgrId = Lookup.ManagerId,
+                ProjectMgrLkupId = Lookup.ManagerId,
                 ProjectNumber = "P001-Test Project 001",
                 ProjectName = "Test Project Name",
                 RegionId = Lookup.RegionId,
@@ -105,7 +115,7 @@ namespace Crt.Tests.UnitTests.Project
             {
                 CapIndxLkupId = Lookup.CapIndxLkupId,
                 RcLkupId = Lookup.Rc,
-                ProjectMgrId = Lookup.ManagerId,
+                ProjectMgrLkupId = Lookup.ManagerId,
                 ProjectNumber = "P001-Test Project 001",
                 ProjectName = "Test Project Name",
                 RegionId = Lookup.RegionId,
@@ -128,24 +138,25 @@ namespace Crt.Tests.UnitTests.Project
          
         [Theory]
         [AutoMoqData]
-        public void CreateProjectWhenValid(FieldValidatorService fieldValidator,
+        public void CreateProjectWhenValid(
+            [Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
 
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectCreateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(new Dictionary<string, List<string>>());
 
             mockProjectRepo.Setup(x => x.ProjectNumberAlreadyExists(It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<decimal>()))
                 .Returns(Task.FromResult(false));
 
-            //instantiate the project service with the mocked objects
+            //instantiate the project service with the mocked objects, do it this way to override currentUser
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
@@ -157,26 +168,59 @@ namespace Crt.Tests.UnitTests.Project
 
         [Theory]
         [AutoMoqData]
-        public void FailToCreateProjectWhenUserIsntInRegion(FieldValidatorService fieldValidator,
+        public void FailToCreateProjectWhenValidationFails(
+            [Frozen] Mock<IFieldValidatorService> mockFieldValidator,
+            [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
+            [Frozen] Mock<IUserRepository> mockUserRepo,
+            [Frozen] Mock<IProjectRepository> mockProjectRepo)
+        {
+            //arrange
+            var errors = new Dictionary<string, List<string>>();
+            errors.Add("Error", new List<string>(new string[] { "Error occurred" }));
+
+            InitManuallyMockedObjects();
+
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectCreateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(errors);
+
+            mockProjectRepo.Setup(x => x.ProjectNumberAlreadyExists(It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<decimal>()))
+                .Returns(Task.FromResult(false));
+
+            //instantiate the project service with the mocked objects, do it this way to override currentUser
+            var mockProjectService = new ProjectService(mockCurrentUser.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockUserRepo.Object);
+
+            //act
+            var result = mockProjectService.CreateProjectAsync(projectCreateDto).Result;
+
+            //assert
+            Assert.NotEmpty(result.errors);
+            mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
+        }
+
+        [Theory]
+        [AutoMoqData]
+        public void FailToCreateProjectWhenUserIsntInRegion([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
+            projectCreateDto.RegionId = 99; //bad region
 
-            projectCreateDto.RegionId = 99; //bad region submitted
-
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectCreateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(new Dictionary<string, List<string>>());
 
             mockProjectRepo.Setup(x => x.ProjectNumberAlreadyExists(It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<decimal>()))
                 .Returns(Task.FromResult(false));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
@@ -188,55 +232,24 @@ namespace Crt.Tests.UnitTests.Project
 
         [Theory]
         [AutoMoqData]
-        public void FailToCreateProjectWhenInvalidManager(FieldValidatorService fieldValidator,
+        public void FailToCreateProjectWhenProjectAlreadyExists([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
 
-            projectCreateDto.ProjectMgrId = 99; //invalid manager id
-
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
-
-            mockProjectRepo.Setup(x => x.ProjectNumberAlreadyExists(It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<decimal>()))
-                .Returns(Task.FromResult(false));
-
-            //instantiate the project service with the mocked objects
-            var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
-                , mockUserRepo.Object);
-
-            //act
-            var result = mockProjectService.CreateProjectAsync(projectCreateDto);
-
-            //assert
-            mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
-        }
-
-        [Theory]
-        [AutoMoqData]
-        public void FailToCreateProjectWhenProjectAlreadyExists(FieldValidatorService fieldValidator,
-            [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
-            [Frozen] Mock<IUserRepository> mockUserRepo,
-            [Frozen] Mock<IProjectRepository> mockProjectRepo)
-        {
-            //arrange
-            InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
-            
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectCreateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(new Dictionary<string, List<string>>());
 
             mockProjectRepo.Setup(x => x.ProjectNumberAlreadyExists(It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<decimal>()))
                 .Returns(Task.FromResult(true));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
@@ -248,24 +261,24 @@ namespace Crt.Tests.UnitTests.Project
 
         [Theory]
         [AutoMoqData]
-        public void UpdateProjectWhenValid(FieldValidatorService fieldValidator,
+        public void UpdateProjectWhenValid([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
 
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectUpdateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(new Dictionary<string, List<string>>());
 
             mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
                 .Returns(Task.FromResult(new ProjectDto { ProjectId = Lookup.ProjectId }));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
@@ -277,57 +290,58 @@ namespace Crt.Tests.UnitTests.Project
 
         [Theory]
         [AutoMoqData]
-        public void FailToUpdateProjectWhenInvalidManager(FieldValidatorService fieldValidator,
+        public void FailToUpdateProjectWhenValidationFails([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
+            var errors = new Dictionary<string, List<string>>();
+            errors.Add("Error", new List<string>(new string[] { "Error occurred" }));
+            
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
 
-            projectUpdateDto.ProjectMgrId = 99; //invalid manager id
-
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectUpdateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(errors);
 
             mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
                 .Returns(Task.FromResult(new ProjectDto { ProjectId = Lookup.ProjectId }));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
-            var result = mockProjectService.UpdateProjectAsync(projectUpdateDto);
+            var result = mockProjectService.UpdateProjectAsync(projectUpdateDto).Result;
 
             //assert
+            Assert.NotEmpty(result.errors);
             mockUnitOfWork.Verify(x => x.Commit(), Times.Never);
         }
 
         [Theory]
         [AutoMoqData]
-        public void FailToUpdateProjectWhenUserIsntInRegion(FieldValidatorService fieldValidator,
+        public void FailToUpdateProjectWhenUserIsntInRegion([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
-
             projectUpdateDto.RegionId = 99; //invalid region
 
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
-
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectUpdateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(new Dictionary<string, List<string>>());
+            
             mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
                 .Returns(Task.FromResult(new ProjectDto { ProjectId = Lookup.ProjectId }));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
@@ -339,24 +353,24 @@ namespace Crt.Tests.UnitTests.Project
 
         [Theory]
         [AutoMoqData]
-        public void FailToUpdateProjectWhenProjectDoesntExist(FieldValidatorService fieldValidator,
+        public void FailToUpdateProjectWhenProjectDoesntExist([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
-
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
+            
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectUpdateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(new Dictionary<string, List<string>>());
 
             mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
                 .Returns(Task.FromResult<ProjectDto>(null));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
@@ -368,24 +382,24 @@ namespace Crt.Tests.UnitTests.Project
 
         [Theory]
         [AutoMoqData]
-        public void FailToDeleteProjectWhenProjectDoesntExist(FieldValidatorService fieldValidator,
+        public void FailToDeleteProjectWhenProjectDoesntExist([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
 
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
+            mockFieldValidator.Setup(x => x.Validate(It.IsAny<string>(), It.IsAny<ProjectCreateDto>()
+                , It.IsAny<Dictionary<string, List<string>>>(), It.IsAny<int>()))
+                .Returns(new Dictionary<string, List<string>>());
 
             mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
                 .Returns(Task.FromResult<ProjectDto>(null));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act
@@ -397,24 +411,20 @@ namespace Crt.Tests.UnitTests.Project
 
         [Theory]
         [AutoMoqData]
-        public void FailToDeleteProjectWhenUserIsntInRegion(FieldValidatorService fieldValidator,
+        public void FailToDeleteProjectWhenUserIsntInRegion([Frozen] Mock<IFieldValidatorService> mockFieldValidator,
             [Frozen] Mock<IUnitOfWork> mockUnitOfWork,
             [Frozen] Mock<IUserRepository> mockUserRepo,
             [Frozen] Mock<IProjectRepository> mockProjectRepo)
         {
             //arrange
             InitManuallyMockedObjects();
-            fieldValidator.CodeLookup = GetMockedCodeLookup();
-
-            mockUserRepo.Setup(x => x.GetManagersAsync())
-                .Returns(Task.FromResult(GetMockedUserManagers()));
 
             mockProjectRepo.Setup(x => x.GetProjectAsync(It.IsAny<decimal>()))
                 .Returns(Task.FromResult(new ProjectDto { ProjectId = Lookup.ProjectId, RegionId = 99 }));
 
             //instantiate the project service with the mocked objects
             var mockProjectService = new ProjectService(mockCurrentUser.Object
-                , fieldValidator, mockUnitOfWork.Object, mockProjectRepo.Object
+                , mockFieldValidator.Object, mockUnitOfWork.Object, mockProjectRepo.Object
                 , mockUserRepo.Object);
 
             //act

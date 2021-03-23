@@ -28,7 +28,6 @@ namespace Crt.Data.Repositories
         Task<CrtSystemUser> GetActiveUserEntityAsync(Guid userGuid);
         Task<int> UpdateUserFromAdAsync(AdAccount user, long concurrencyControlNumber);
         Task UpdateUserApiClientId(string clientId);
-        Task<IEnumerable<UserManagerDto>> GetManagersAsync();
     }
 
     public class UserRepository : CrtRepositoryBase<CrtSystemUser>, IUserRepository
@@ -197,7 +196,6 @@ namespace Crt.Data.Repositories
                 FirstName = account.FirstName,
                 LastName = account.LastName,
                 Email = account.Email,
-                IsProjectMgr = user.IsProjectMgr,
                 EndDate = user.EndDate,
             };
 
@@ -310,9 +308,10 @@ namespace Crt.Data.Repositories
             userEntity.ApiClientId = apiClientId;
         }
 
-        public async Task<IEnumerable<UserManagerDto>> GetManagersAsync()
+        /* No longer required in users, moved to code lookup
+         * public async Task<IEnumerable<UserManagerDto>> GetManagersAsync()
         {
             return await GetAllNoTrackAsync<UserManagerDto>(u => u.IsProjectMgr == true && (u.EndDate == null || u.EndDate > DateTime.Today));
-        }
+        }*/
     }
 }
