@@ -184,7 +184,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
     codeSetFormModal.openForm(Constants.FORM_TYPE.ADD, {
       codeValueText,
       codeSetName,
-      defaultDisplayOrder: searchData.pagination.totalCount + 10,
+      defaultDisplayOrder: searchData.pagination.totalCount * 10 + 10,
     });
   };
 
@@ -271,15 +271,6 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
       <Authorize requires={Constants.PERMISSIONS.CODE_W}>
         <Row>
           <Col>
-            {/* temporary fix hide set order button until functionality is implemented
-            <Button
-              size="sm"
-              color="secondary"
-              className="float-right mb-3 ml-2"
-              onClick={() => console.log('SET ORDER')}
-            >
-              Set Order
-            </Button> */}
             <Authorize requires={Constants.PERMISSIONS.CODE_W}>
               <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
                 {`Add New ${codeSetName}`}
