@@ -108,7 +108,7 @@ const mapStateToProps = (state) => {
   return {
     capitalIndexes: Object.values(state.codeLookups.capitalIndexes),
     userRegionIds: Object.values(state.user.current.regions),
-    projectMgr: Object.values(state.user.projectMgr),
+    projectMgr: Object.values(state.codeLookups.projectMgr),
     nearestTowns: Object.values(state.codeLookups.nearestTowns),
     rcNumbers: Object.values(state.codeLookups.rcNumbers),
   };

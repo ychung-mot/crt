@@ -296,7 +296,7 @@ const Projects = ({
 const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
-    projectMgr: Object.values(state.user.projectMgr),
+    projectMgr: Object.values(state.codeLookups.projectMgr),
     reduxFormikValues: state.projectSearchHistory.reduxFormikValues,
   };
 };

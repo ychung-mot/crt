@@ -46,7 +46,6 @@ export const getPermissions = () => instance.get(Constants.API_PATHS.PERMISSIONS
 //Projects
 export const deleteProject = (id, endDate) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${id}`, { data: { id, endDate } });
-export const getProjectManagers = () => instance.get(`${Constants.API_PATHS.PROJECT_MANAGERS}`);
 export const postProject = (projectData) => instance.post(Constants.API_PATHS.PROJECTS, projectData);
 export const getProject = (id) => instance.get(`${Constants.API_PATHS.PROJECTS}/${id}`);
 export const putProject = (id, projectData) => instance.put(`${Constants.API_PATHS.PROJECTS}/${id}`, projectData);
@@ -140,6 +139,7 @@ export const getElectoralDistricts = () => instance.get(Constants.API_PATHS.ELEC
 export const getHighways = () => instance.get(Constants.API_PATHS.HIGHWAYS);
 export const getEconomicRegions = () => instance.get(Constants.API_PATHS.ECONOMIC_REGIONS);
 export const getCodesets = () => instance.get(Constants.API_PATHS.CODESETS);
+export const getProjectManagers = () => instance.get(`${Constants.API_PATHS.PROJECT_MANAGERS}`);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

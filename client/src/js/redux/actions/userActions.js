@@ -18,9 +18,9 @@ export const fetchUserStatuses = () => (dispatch) => {
   });
 };
 
-export const fetchProjectManagers = () => (dispatch) => {
-  return api.getProjectManagers().then((response) => {
-    const data = response.data;
-    dispatch({ type: FETCH_PROJECT_MANAGERS, payload: data });
-  });
-};
+// export const fetchProjectManagers = () => (dispatch) => {
+//   return api.getProjectManagers().then((response) => {
+//     const data = response.data;
+//     dispatch({ type: FETCH_PROJECT_MANAGERS, payload: data });
+//   });
+// };
