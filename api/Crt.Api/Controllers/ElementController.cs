@@ -39,5 +39,12 @@ namespace Crt.Api.Controllers
         {
             return await _elementService.SearchElementsAsync(searchText, isActive, pageSize, pageNumber, orderBy, direction);
         }
+
+        [HttpGet("{id}", Name = "GetElement")]
+        [RequiresPermission(Permissions.CodeRead)]
+        public async Task<ActionResult<IEnumerable<ElementDto>>> GetElementAsync(decimal id)
+        {
+            return Ok(await _elementService.GetElementAsync(id));
+        }
     }
 }

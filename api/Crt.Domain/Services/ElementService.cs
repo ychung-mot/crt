@@ -14,6 +14,7 @@ namespace Crt.Domain.Services
     {
         Task<IEnumerable<ElementDto>> GetElementsAsync();
         Task<PagedDto<ElementListDto>> SearchElementsAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
+        Task<ElementDto> GetElementAsync(decimal elementId);
     }
 
     public class ElementService : CrtServiceBase, IElementService
@@ -34,6 +35,11 @@ namespace Crt.Domain.Services
         public async Task<PagedDto<ElementListDto>> SearchElementsAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction)
         {
             return await _elementRepo.SearchElementsAsync(searchText, isActive, pageSize, pageNumber, orderBy, direction);
+        }
+
+        public async Task<ElementDto> GetElementAsync(decimal elementId)
+        {
+            return await _elementRepo.GetElementAsync(elementId);
         }
     }
 }
