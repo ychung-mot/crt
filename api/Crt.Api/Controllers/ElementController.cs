@@ -30,8 +30,7 @@ namespace Crt.Api.Controllers
             return Ok(await _elementService.GetElementsAsync());
         }
 
-        [HttpGet(Name = "SearchElements")]
-        [Route("search")]
+        [HttpGet("search", Name = "SearchElements")]
         [RequiresPermission(Permissions.CodeRead)]
         public async Task<ActionResult<PagedDto<ElementListDto>>> SearchElementAsync(
             [FromQuery] string searchText, [FromQuery] bool? isActive,
