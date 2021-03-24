@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import { connect } from 'react-redux';
 
 import PageSpinner from '../ui/PageSpinner';
 import { FormRow, FormInput } from './FormInputs';
@@ -14,8 +15,18 @@ const EditElementFormFields = ({
   setValidationSchema,
   formType,
   defaultDisplayOrder,
+  programs,
+  programCategories,
+  serviceLines,
 }) => {
-  const defaultValues = { code: '', description: '', displayOrder: defaultDisplayOrder };
+  const defaultValues = {
+    code: '',
+    description: '',
+    programLkupId: undefined,
+    programCategoryLkupId: undefined,
+    serviceLineLkupId: undefined,
+    displayOrder: defaultDisplayOrder,
+  };
 
   const [loading, setLoading] = useState(false);
 
@@ -46,16 +57,21 @@ const EditElementFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="code" label="Element*">
+      <FormRow name="code" label="Element*" helper="elementCode">
         <FormInput type="text" name="code" id={`code`} />
       </FormRow>
-      <FormRow name="description" label="Element Description*">
+      <FormRow name="description" label="Element Description*" helper="elementDescription">
         <FormInput type="text" name="description" id={`description`} />
       </FormRow>
-      {/* <FormRow name="codeName*" label="Code Name" helper="codeName">
-          
-        <FormInput type="text" name="codeName" id={`codeName`} />
-      </FormRow> */}
+      <FormRow name="programCategoryLkupId" label="Program Category*" helper="programCategoryLkupId">
+        <SingleDropDownField items={programCategories} name="programCategoryLkupId" searchable />
+      </FormRow>
+      <FormRow name="programLkupId" label="Program*" helper="programLkupId">
+        <SingleDropDownField items={programs} name="programLkupId" searchable />
+      </FormRow>
+      <FormRow name="serviceLineLkupId" label="Service Line*" helper="serviceLineLkupId">
+        <SingleDropDownField items={serviceLines} name="serviceLineLkupId" searchable />
+      </FormRow>
       <FormRow name="displayOrder*" label="Order Number">
         <FormInput type="number" name="displayOrder" id={`displayOrder`} />
       </FormRow>
@@ -63,4 +79,12 @@ const EditElementFormFields = ({
   );
 };
 
-export default EditElementFormFields;
+const mapStateToProps = (state) => {
+  return {
+    programs: state.codeLookups.programs,
+    programCategories: state.codeLookups.programCategories,
+    serviceLines: state.codeLookups.serviceLines,
+  };
+};
+
+export default connect(mapStateToProps, null)(EditElementFormFields);
