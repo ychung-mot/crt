@@ -18,6 +18,7 @@ namespace Crt.Data.Repositories
     {
         Task<IEnumerable<ElementDto>> GetElementsAsync();
         Task<PagedDto<ElementListDto>> SearchElementsAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
+        Task<ElementDto> GetElementAsync(decimal elementId);
     }
 
     public class ElementRepository : CrtRepositoryBase<CrtElement>, IElementRepository
@@ -58,6 +59,44 @@ namespace Crt.Data.Repositories
             var results = await Page<CrtElement, ElementListDto>(query, pageSize, pageNumber, orderBy, direction);
 
             return results;
+        }
+
+        public async Task<ElementDto> GetElementAsync(decimal elementId)
+        {
+            var element = await DbSet.AsNoTracking()
+                        .Include(x => x.ProgramCategoryLkup)
+                        .Include(x => x.ProgramLkup)
+                        .Include(x => x.ServiceLineLkup)
+                        .FirstOrDefaultAsync(x => x.ElementId == elementId);
+
+            return Mapper.Map<ElementDto>(element);
+        }
+
+        public async Task<CrtElement> CreateElementAsync(ElementCreateDto element)
+        {
+            var crtElement = new CrtElement();
+
+            Mapper.Map(element, crtElement);
+
+            await DbSet.AddAsync(crtElement);
+
+            return crtElement;
+        }
+
+        public async Task UpdateElementAsync(ElementUpdateDto element)
+        {
+            var crtElement = await DbSet
+                                .FirstAsync(x => x.ElementId == element.ElementId);
+
+            crtElement.EndDate = element.EndDate?.Date;
+
+            Mapper.Map(element, crtElement);
+        }
+
+        public async Task DeleteElementAsync(decimal elementId, bool isActive)
+        {
+            var crtElement = await DbSet.FirstAsync(x => x.ElementId == elementId);
+            crtElement.IsActive = isActive;
         }
     }
 }
