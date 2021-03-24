@@ -144,27 +144,27 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
 
   const handleCodeSetFormSubmit = (values, formType) => {
     if (formType === Constants.FORM_TYPE.ADD) {
-      //   api
-      //     .postCodeTable(values)
-      //     .then(() => {
-      //       codeSetFormModal.closeForm();
-      //       searchData.refresh();
-      //     })
-      //     .catch((error) => {
-      //       showValidationErrorDialog(error.response.data);
-      //       console.log(error);
-      //     });
+      api
+        .postElement(values)
+        .then(() => {
+          formModal.closeForm();
+          searchData.refresh();
+        })
+        .catch((error) => {
+          showValidationErrorDialog(error.response.data);
+          console.log(error);
+        });
     } else if (formType === Constants.FORM_TYPE.EDIT) {
-      //   api
-      //     .putCodeTable(values.id, values)
-      //     .then(() => {
-      //       codeSetFormModal.closeForm();
-      //       searchData.refresh();
-      //     })
-      //     .catch((error) => {
-      //       showValidationErrorDialog(error.response.data);
-      //       console.log(error);
-      //     });
+      api
+        .putElement(values.id, values)
+        .then(() => {
+          formModal.closeForm();
+          searchData.refresh();
+        })
+        .catch((error) => {
+          showValidationErrorDialog(error.response.data);
+          console.log(error);
+        });
     }
   };
 

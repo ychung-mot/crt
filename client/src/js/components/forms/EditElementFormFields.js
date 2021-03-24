@@ -15,6 +15,7 @@ const EditElementFormFields = ({
   setValidationSchema,
   formType,
   defaultDisplayOrder,
+  elementId,
   programs,
   programCategories,
   serviceLines,
@@ -26,6 +27,7 @@ const EditElementFormFields = ({
     programCategoryLkupId: undefined,
     serviceLineLkupId: undefined,
     displayOrder: defaultDisplayOrder,
+    isActive: true,
   };
 
   const [loading, setLoading] = useState(false);
@@ -33,6 +35,9 @@ const EditElementFormFields = ({
   const validationSchema = Yup.object({
     code: Yup.string().required(`Code is required`),
     description: Yup.string().required(`Description is required`),
+    programLkupId: Yup.number().required('Program is required'),
+    programCategoryLkupId: Yup.number().required('Program Category is required'),
+    serviceLineLkupId: Yup.number().required('Service Line is required'),
     displayOrder: Yup.number().integer('Order number must be an integer e.g. 1,2,3').required(),
   });
 
@@ -42,13 +47,13 @@ const EditElementFormFields = ({
 
     if (formType === Constants.FORM_TYPE.EDIT) {
       setLoading(true);
-      //   api
-      //     .getCodeTable(codeSetId)
-      //     .then((response) => {
-      //       setInitialValues({ ...response.data });
-      //       setLoading(false);
-      //     })
-      //     .catch((error) => console.log(error.response));
+      api
+        .getElement(elementId)
+        .then((response) => {
+          setInitialValues({ ...response.data });
+          setLoading(false);
+        })
+        .catch((error) => console.log(error.response));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
