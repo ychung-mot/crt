@@ -69,6 +69,8 @@ export const DATE_DISPLAY_FORMAT = 'YYYY-MM-DD';
 
 export const DATE_UTC_FORMAT = 'YYYY-MM-DDTHH:mm';
 
+export const FISCAL_YEAR_END = '03-31';
+
 export const FORM_TYPE = { ADD: 'ADD_FORM', EDIT: 'EDIT_FORM' };
 
 export const PERMISSIONS = {

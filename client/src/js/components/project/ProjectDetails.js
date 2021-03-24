@@ -149,6 +149,4 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
   );
 };
 
-const mapStateToProps = (state) => {};
-
-export default connect(mapStateToProps, { showValidationErrorDialog })(ProjectDetails);
+export default connect(null, { showValidationErrorDialog })(ProjectDetails);
