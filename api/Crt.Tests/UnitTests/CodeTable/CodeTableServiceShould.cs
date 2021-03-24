@@ -24,7 +24,7 @@ namespace Crt.Tests.UnitTests.CodeTable
             CodeTableService sut)
         {
             //arrange
-            mockCodeLookupRepo.Setup(x => x.DoesCodeLookupExistAsync(It.IsAny<string>(), It.IsAny<string>()))
+            mockCodeLookupRepo.Setup(x => x.DoesCodeLookupExistAsync(It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(false));
 
             //act
@@ -43,7 +43,7 @@ namespace Crt.Tests.UnitTests.CodeTable
             CodeTableService sut)
         {
             //arrange
-            mockCodeLookupRepo.Setup(x => x.DoesCodeLookupExistAsync(It.IsAny<string>(), It.IsAny<string>()))
+            mockCodeLookupRepo.Setup(x => x.DoesCodeLookupExistAsync(It.IsAny<decimal>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
 
             //act

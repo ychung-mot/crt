@@ -49,12 +49,10 @@ namespace Crt.Domain.Services
             codeLookup.TrimStringFields();
             
             var errors = new Dictionary<string, List<string>>();
+
             errors = _validator.Validate(Entities.CodeTable, codeLookup, errors);
 
-            if (await _codeLookupRepo.DoesCodeLookupExistAsync(codeLookup.CodeName, codeLookup.CodeSet))
-            {
-                errors.AddItem(Fields.CodeLookup, $"Code Lookup [{codeLookup.CodeName}] in Code Set [{codeLookup.CodeSet}] already exists");
-            }
+            await ValidateCodeLookup(codeLookup, errors);
 
             if (errors.Count > 0)
             {
@@ -85,7 +83,10 @@ namespace Crt.Domain.Services
             }
 
             var errors = new Dictionary<string, List<string>>();
+
             errors = _validator.Validate(Entities.CodeTable, codeLookup, errors);
+
+            await ValidateCodeLookup(codeLookup, errors);
 
             if (errors.Count > 0)
             {
@@ -139,6 +140,16 @@ namespace Crt.Domain.Services
         {
             await _codeLookupRepo.UpdateCodeLookupDisplayOrder(codeSet);
             _unitOfWork.Commit();
+        }
+
+        private async Task ValidateCodeLookup(CodeLookupBaseDto codeLookup, Dictionary<string, List<string>> errors)
+        {
+            var codeLookupId = codeLookup.GetType() == typeof(CodeLookupUpdateDto) ? ((CodeLookupUpdateDto)codeLookup).CodeLookupId : 0M;
+
+            if (await _codeLookupRepo.DoesCodeLookupExistAsync(codeLookupId, codeLookup.CodeName, codeLookup.CodeSet))
+            {
+                errors.AddItem(Fields.CodeLookup, $"Code Name: [{codeLookup.CodeName}] is in use and cannot be deleted.");
+            }
         }
     }
 }

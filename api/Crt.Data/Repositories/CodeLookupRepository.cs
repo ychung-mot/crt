@@ -21,7 +21,7 @@ namespace Crt.Data.Repositories
         Task<CrtCodeLookup> CreateCodeLookupAsync(CodeLookupCreateDto codeLookup);
         Task<CodeLookupDto> GetCodeLookupByIdAsync(decimal codeLookupId);
         Task UpdateCodeLookupAsync(CodeLookupUpdateDto codeLookup);
-        Task<bool> DoesCodeLookupExistAsync(string codeName, string codeSet);
+        Task<bool> DoesCodeLookupExistAsync(decimal id, string codeName, string codeSet);
         Task<bool> IsCodeLookupInUseAsync(decimal id);
         Task DeleteCodeLookupAsync(decimal id);
         Task UpdateCodeLookupDisplayOrder(string codeSet);
@@ -107,9 +107,14 @@ namespace Crt.Data.Repositories
             DbSet.Remove(codeLookup);
         }
 
-        public async Task<bool> DoesCodeLookupExistAsync(string codeName, string codeSet)
+        public async Task<bool> DoesCodeLookupExistAsync(decimal id, string codeName, string codeSet)
         {
-            return await DbSet.AnyAsync(x => x.CodeName == codeName && x.CodeSet == codeSet);
+            var codes = await DbSet.AsNoTracking()
+                .Where(x => x.CodeSet == codeSet && x.CodeName == codeName)
+                .Select(x => new { x.CodeLookupId })
+                .ToListAsync();
+
+            return codes.Any(x => x.CodeLookupId != id);
         }
 
         public async Task<bool> IsCodeLookupInUseAsync(decimal id)
