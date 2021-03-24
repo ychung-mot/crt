@@ -5,22 +5,22 @@ import { Row, Col, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import queryString from 'query-string';
 
-import Authorize from './fragments/Authorize';
-import MaterialCard from './ui/MaterialCard';
-import UIHeader from './ui/UIHeader';
-import MultiDropdownField from './ui/MultiDropdownField';
-import DataTableWithPaginaionControl from './ui/DataTableWithPaginaionControl';
-import SubmitButton from './ui/SubmitButton';
-import PageSpinner from './ui/PageSpinner';
-import useSearchData from './hooks/useSearchData';
-import useFormModal from './hooks/useFormModal';
-import EditRoleFormFields from './forms/EditRoleFormFields';
+import Authorize from '../fragments/Authorize';
+import MaterialCard from '../ui/MaterialCard';
+import UIHeader from '../ui/UIHeader';
+import MultiDropdownField from '../ui/MultiDropdownField';
+import DataTableWithPaginaionControl from '../ui/DataTableWithPaginaionControl';
+import SubmitButton from '../ui/SubmitButton';
+import PageSpinner from '../ui/PageSpinner';
+import useSearchData from '../hooks/useSearchData';
+import useFormModal from '../hooks/useFormModal';
+import EditRoleFormFields from '../forms/EditRoleFormFields';
 
-import { showValidationErrorDialog } from '../redux/actions';
+import { showValidationErrorDialog } from '../../redux/actions';
 
-import * as Constants from '../Constants';
-import * as api from '../Api';
-import { buildStatusIdArray } from '../utils';
+import * as Constants from '../../Constants';
+import * as api from '../../Api';
+import { buildStatusIdArray } from '../../utils';
 
 const defaultSearchFormValues = { searchText: '', statusId: [Constants.ACTIVE_STATUS.ACTIVE] };
 

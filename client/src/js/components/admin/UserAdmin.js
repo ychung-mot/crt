@@ -7,23 +7,23 @@ import { Formik, Form, Field } from 'formik';
 import queryString from 'query-string';
 import * as Yup from 'yup';
 
-import Authorize from './fragments/Authorize';
-import MaterialCard from './ui/MaterialCard';
-import UIHeader from './ui/UIHeader';
-import MultiDropdownField from './ui/MultiDropdownField';
-import AddUserWizard from './forms/AddUserWizard';
-import DataTableWithPaginaionControl from './ui/DataTableWithPaginaionControl';
-import SubmitButton from './ui/SubmitButton';
-import PageSpinner from './ui/PageSpinner';
-import useSearchData from './hooks/useSearchData';
-import useFormModal from './hooks/useFormModal';
-import EditUserFormFields from './forms/EditUserFormFields';
+import Authorize from '../fragments/Authorize';
+import MaterialCard from '../ui/MaterialCard';
+import UIHeader from '../ui/UIHeader';
+import MultiDropdownField from '../ui/MultiDropdownField';
+import AddUserWizard from '../forms/AddUserWizard';
+import DataTableWithPaginaionControl from '../ui/DataTableWithPaginaionControl';
+import SubmitButton from '../ui/SubmitButton';
+import PageSpinner from '../ui/PageSpinner';
+import useSearchData from '../hooks/useSearchData';
+import useFormModal from '../hooks/useFormModal';
+import EditUserFormFields from '../forms/EditUserFormFields';
 
-import { showValidationErrorDialog } from '../redux/actions';
+import { showValidationErrorDialog } from '../../redux/actions';
 
-import * as Constants from '../Constants';
-import * as api from '../Api';
-import { buildStatusIdArray } from '../utils';
+import * as Constants from '../../Constants';
+import * as api from '../../Api';
+import { buildStatusIdArray } from '../../utils';
 
 const defaultSearchFormValues = {
   searchText: '',

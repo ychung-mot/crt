@@ -7,22 +7,22 @@ import { connect } from 'react-redux';
 //components
 import { Row, Col, Button } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
-import Authorize from './fragments/Authorize';
-import MaterialCard from './ui/MaterialCard';
-import UIHeader from './ui/UIHeader';
-import MultiDropdownField from './ui/MultiDropdownField';
-import SingleDropdownField from './ui/SingleDropdownField';
-import DataTableWithPaginaionControl from './ui/DataTableWithPaginaionControl';
-import SubmitButton from './ui/SubmitButton';
-import useSearchData from './hooks/useSearchData';
-import useFormModal from './hooks/useFormModal';
-import PageSpinner from './ui/PageSpinner';
-import EditCodeSetFormFields from './forms/EditCodeSetFormFields';
+import Authorize from '../fragments/Authorize';
+import MaterialCard from '../ui/MaterialCard';
+import UIHeader from '../ui/UIHeader';
+import MultiDropdownField from '../ui/MultiDropdownField';
+import SingleDropdownField from '../ui/SingleDropdownField';
+import DataTableWithPaginaionControl from '../ui/DataTableWithPaginaionControl';
+import SubmitButton from '../ui/SubmitButton';
+import useSearchData from '../hooks/useSearchData';
+import useFormModal from '../hooks/useFormModal';
+import PageSpinner from '../ui/PageSpinner';
+import EditCodeSetFormFields from '../forms/EditCodeSetFormFields';
 
-import { showValidationErrorDialog } from '../redux/actions';
+import { showValidationErrorDialog } from '../../redux/actions';
 
-import * as Constants from '../Constants';
-import * as api from '../Api';
+import * as Constants from '../../Constants';
+import * as api from '../../Api';
 
 const isActive = [
   { id: 'active', name: 'Active' },
