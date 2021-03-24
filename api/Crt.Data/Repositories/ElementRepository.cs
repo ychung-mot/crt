@@ -18,7 +18,12 @@ namespace Crt.Data.Repositories
     {
         Task<IEnumerable<ElementDto>> GetElementsAsync();
         Task<PagedDto<ElementListDto>> SearchElementsAsync(string searchText, bool? isActive, int pageSize, int pageNumber, string orderBy, string direction);
-        Task<ElementDto> GetElementAsync(decimal elementId);
+        Task<ElementDto> GetElementByIdAsync(decimal elementId);
+        Task<CrtElement> CreateElementAsync(ElementCreateDto element);
+        Task UpdateElementAsync(ElementUpdateDto element);
+        Task DeleteElementAsync(decimal elementId);
+        Task<bool> IsElementInUseAsync(decimal elementId);
+        Task<bool> DoesCodeExistAsync(decimal elementId, string code);
     }
 
     public class ElementRepository : CrtRepositoryBase<CrtElement>, IElementRepository
@@ -58,10 +63,16 @@ namespace Crt.Data.Repositories
 
             var results = await Page<CrtElement, ElementListDto>(query, pageSize, pageNumber, orderBy, direction);
 
+            foreach (var result in results.SourceList)
+            {
+                result.IsReferenced = await IsElementInUseAsync(result.ElementId);
+                result.canDelete = !result.IsReferenced;
+            }
+
             return results;
         }
 
-        public async Task<ElementDto> GetElementAsync(decimal elementId)
+        public async Task<ElementDto> GetElementByIdAsync(decimal elementId)
         {
             var element = await DbSet.AsNoTracking()
                         .Include(x => x.ProgramCategoryLkup)
@@ -80,6 +91,8 @@ namespace Crt.Data.Repositories
 
             await DbSet.AddAsync(crtElement);
 
+            await UpdateDisplayOrder();
+
             return crtElement;
         }
 
@@ -91,12 +104,48 @@ namespace Crt.Data.Repositories
             crtElement.EndDate = element.EndDate?.Date;
 
             Mapper.Map(element, crtElement);
+
+            await UpdateDisplayOrder();
         }
 
-        public async Task DeleteElementAsync(decimal elementId, bool isActive)
+        public async Task DeleteElementAsync(decimal elementId)
         {
             var crtElement = await DbSet.FirstAsync(x => x.ElementId == elementId);
-            crtElement.IsActive = isActive;
+
+            DbSet.Remove(crtElement);
+
+            await UpdateDisplayOrder();
+        }
+
+        public async Task<bool> DoesCodeExistAsync(decimal elementId, string code)
+        {
+            var elements = await DbSet.AsNoTracking()
+                .Where(x => x.Code == code)
+                .Select(x => new { x.ElementId })
+                .ToListAsync();
+
+            return elements.Any(x => x.ElementId != elementId);
+        }
+
+        public async Task<bool> IsElementInUseAsync(decimal elementId)
+        {
+            var inFinTarget = await DbContext.CrtFinTargets.AsNoTracking()
+                .AnyAsync(x => x.ElementId == elementId);
+
+            return (inFinTarget);
+        }
+
+        private async Task UpdateDisplayOrder()
+        {
+            var crtElements = await DbSet.OrderBy(x => x.DisplayOrder).ToListAsync();
+
+            var newDisplayOrder = 10;
+
+            foreach (var crtElement in crtElements)
+            {
+                crtElement.DisplayOrder = newDisplayOrder;
+                newDisplayOrder += 10;
+            }
         }
     }
 }

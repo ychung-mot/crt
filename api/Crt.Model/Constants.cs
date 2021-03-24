@@ -59,6 +59,7 @@ namespace Crt.Model
         public const string Segment = "segment";
         public const string Ratio = "ratio";
         public const string CodeTable = "codetable";
+        public const string Element = "element";
     }
 
     public static class FieldTypes
@@ -129,6 +130,11 @@ namespace Crt.Model
         public const string CodeName = "CodeName";
         public const string CodeValueText = "CodeValueText";
         public const string CodeLookup = "CodeLookup";
+
+        public const string Code = "Code";
+        public const string ProgramLkupId = "ProgramLkupId";
+        public const string ProgramCategoryLkupId = "ProgramCategoryLkupId";
+        public const string ServiceLineLkupId = "ServiceLineLkupId";
     }
 
     public class DateColNames
@@ -155,6 +161,9 @@ namespace Crt.Model
         public const string ServiceArea = "SERVICE_AREA";
         public const string CodeSetLookup = "CODE_SET_LOOKUP";
         public const string ProjectManager = "PROJECT_MANAGER";
+        public const string Program = "PROGRAM";
+        public const string ProgramCategory = "PROGRAM_CATEGORY";
+        public const string ServiceLine = "SERVICE_LINE";
     }
 
     public static class CrtEnvironments
