@@ -125,8 +125,10 @@ namespace Crt.Data.Repositories
                 .AnyAsync(x => x.RatioRecordLkupId == id);
             var inTender = await DbContext.CrtTenders.AsNoTracking()
                 .AnyAsync(x => x.WinningCntrctrLkupId == id);
+            var inElement = await DbContext.CrtElements.AsNoTracking()
+                .AnyAsync(x => x.ProgramCategoryLkupId == id || x.ProgramLkupId == id || x.ServiceLineLkupId == id);
 
-            return (inFinTarget || inProject || inQtyAccmp || inRatio || inTender);
+            return (inFinTarget || inProject || inQtyAccmp || inRatio || inTender || inElement);
         }
 
         public async Task UpdateCodeLookupDisplayOrder(string codeSet)

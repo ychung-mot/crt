@@ -411,6 +411,21 @@ namespace Crt.Data.Database.Entities
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("SERVICE_LINE_LKUP_ID")
                     .HasComment("Lookup ID for the code to which Element is charged");
+
+                entity.HasOne(d => d.ProgramCategoryLkup)
+                    .WithMany(p => p.CrtElementProgramCategoryLkups)
+                    .HasForeignKey(d => d.ProgramCategoryLkupId)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_PROGRAM_CATEGORY");
+
+                entity.HasOne(d => d.ProgramLkup)
+                    .WithMany(p => p.CrtElementProgramLkups)
+                    .HasForeignKey(d => d.ProgramLkupId)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_PROGRAM");
+
+                entity.HasOne(d => d.ServiceLineLkup)
+                    .WithMany(p => p.CrtElementServiceLineLkups)
+                    .HasForeignKey(d => d.ServiceLineLkupId)
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_SERVICE_LINE");
             });
 
             modelBuilder.Entity<CrtElementHist>(entity =>
