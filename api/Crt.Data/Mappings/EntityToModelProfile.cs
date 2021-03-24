@@ -86,6 +86,7 @@ namespace Crt.Data.Mappings
 
             CreateMap<CrtFinTarget, FinTargetDto>();
             CreateMap<CrtFinTarget, FinTargetListDto>();
+            CreateMap<CrtFinTarget, FinTargetCreateDto>();
 
             CreateMap<CrtQtyAccmp, QtyAccmpDto>();
             CreateMap<CrtQtyAccmp, QtyAccmpListDto>();
