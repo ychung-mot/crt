@@ -26,6 +26,9 @@ import {
   fetchDistricts,
   fetchServiceAreas,
   fetchCodesets,
+  fetchPrograms,
+  fetchProgramCategories,
+  fetchServiceLines,
 } from '../redux/actions';
 
 const Main = ({
@@ -52,6 +55,9 @@ const Main = ({
   fetchDistricts,
   fetchServiceAreas,
   fetchCodesets,
+  fetchPrograms,
+  fetchProgramCategories,
+  fetchServiceLines,
 }) => {
   const [loading, setLoading] = useState(true);
 
@@ -78,6 +84,9 @@ const Main = ({
       fetchDistricts(),
       fetchServiceAreas(),
       fetchCodesets(),
+      fetchPrograms(),
+      fetchProgramCategories(),
+      fetchServiceLines(),
     ]).then(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -118,4 +127,7 @@ export default connect(mapStateToProps, {
   fetchDistricts,
   fetchServiceAreas,
   fetchCodesets,
+  fetchPrograms,
+  fetchProgramCategories,
+  fetchServiceLines,
 })(Main);

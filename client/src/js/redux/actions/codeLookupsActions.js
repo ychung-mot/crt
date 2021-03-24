@@ -14,6 +14,9 @@ import {
   FETCH_ECONOMIC_REGIONS,
   FETCH_CODESETS,
   FETCH_PROJECT_MANAGERS,
+  FETCH_PROGRAMS,
+  FETCH_PROGRAM_CATEGORIES,
+  FETCH_SERVICE_LINES,
 } from './types';
 
 import * as api from '../../Api';
@@ -120,5 +123,26 @@ export const fetchProjectManagers = () => (dispatch) => {
   return api.getProjectManagers().then((response) => {
     const data = response.data;
     dispatch({ type: FETCH_PROJECT_MANAGERS, payload: data });
+  });
+};
+
+export const fetchPrograms = () => (dispatch) => {
+  return api.getPrograms().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_PROGRAMS, payload: data });
+  });
+};
+
+export const fetchProgramCategories = () => (dispatch) => {
+  return api.getProgramCategories().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_PROGRAM_CATEGORIES, payload: data });
+  });
+};
+
+export const fetchServiceLines = () => (dispatch) => {
+  return api.getServiceLines().then((response) => {
+    const data = response.data;
+    dispatch({ type: FETCH_SERVICE_LINES, payload: data });
   });
 };

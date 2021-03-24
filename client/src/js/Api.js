@@ -145,6 +145,9 @@ export const getHighways = () => instance.get(Constants.API_PATHS.HIGHWAYS);
 export const getEconomicRegions = () => instance.get(Constants.API_PATHS.ECONOMIC_REGIONS);
 export const getCodesets = () => instance.get(Constants.API_PATHS.CODESETS);
 export const getProjectManagers = () => instance.get(`${Constants.API_PATHS.PROJECT_MANAGERS}`);
+export const getPrograms = () => instance.get(`${Constants.API_PATHS.PROGRAMS}`);
+export const getProgramCategories = () => instance.get(`${Constants.API_PATHS.PROGRAM_CATEGORIES}`);
+export const getServiceLines = () => instance.get(`${Constants.API_PATHS.SERVICE_LINES}`);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);
