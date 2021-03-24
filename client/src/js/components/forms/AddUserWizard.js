@@ -25,7 +25,6 @@ const defaultValues = {
   username: '',
   userRoleIds: [],
   userRegionIds: [],
-  isProjectMgr: false,
   active: true,
   endDate: null,
 };
@@ -157,9 +156,6 @@ const AddUserSetupUser = ({ values, data, submitting, setWizardState, regions })
             </FormRow>
             <FormRow name="email" label="Email*">
               <FormInput type="text" name="email" placeholder={data.email} disabled />
-            </FormRow>
-            <FormRow>
-              <FormCheckboxInput name="isProjectMgr" label="Project Manager" />
             </FormRow>
             <p>
               <strong>Select roles for the new user</strong>
