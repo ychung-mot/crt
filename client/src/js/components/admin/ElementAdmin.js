@@ -16,6 +16,7 @@ import SubmitButton from '../ui/SubmitButton';
 import useSearchData from '../hooks/useSearchData';
 import useFormModal from '../hooks/useFormModal';
 import PageSpinner from '../ui/PageSpinner';
+import EditElementFormFields from '../forms/EditElementFormFields';
 
 import { showValidationErrorDialog } from '../../redux/actions';
 
@@ -30,9 +31,9 @@ const isActive = [
 const tableColumns = [
   { heading: 'Element', key: 'code', nosort: true },
   { heading: 'Element Description', key: 'description', nosort: true },
-  { heading: 'Program Category', key: 'programCategoryLkupId', nosort: true },
-  { heading: 'Program', key: 'programLkupId', nosort: true },
-  { heading: 'Service Line', key: 'serviceLineLkupId', nosort: true },
+  { heading: 'Program Category', key: 'program', nosort: true },
+  { heading: 'Program', key: 'programCategory', nosort: true },
+  { heading: 'Service Line', key: 'serviceLine', nosort: true },
   { heading: 'Order Number', key: 'displayOrder', nosort: true },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
@@ -171,7 +172,7 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
     ...values,
   }));
 
-  const formModal = useFormModal(`Element`, <div>I AM EMPTY</div>, handleCodeSetFormSubmit);
+  const formModal = useFormModal(`Element`, <EditElementFormFields />, handleCodeSetFormSubmit);
 
   return (
     <React.Fragment>
