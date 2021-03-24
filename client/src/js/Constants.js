@@ -34,6 +34,7 @@ export const API_PATHS = {
   NOTES: '/notes',
   PROJECT_PLAN: '/projectplan',
   ELEMENTS: `/elements`,
+  ELEMENTS_SEARCH: '/elements/search',
   FIN_TARGETS: '/targets',
   QTY_ACCMPS: '/qtyaccmps',
   PROJECT_TENDER: '/projecttender',

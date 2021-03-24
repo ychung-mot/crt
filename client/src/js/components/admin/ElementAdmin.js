@@ -30,9 +30,9 @@ const isActive = [
 const tableColumns = [
   { heading: 'Element', key: 'code', nosort: true },
   { heading: 'Element Description', key: 'description', nosort: true },
-  { heading: 'Program Category', key: 'tba', nosort: true },
-  { heading: 'Program', key: 'tba1', nosort: true },
-  { heading: 'Service Line', key: 'tba2', nosort: true },
+  { heading: 'Program Category', key: 'programCategoryLkupId', nosort: true },
+  { heading: 'Program', key: 'programLkupId', nosort: true },
+  { heading: 'Service Line', key: 'serviceLineLkupId', nosort: true },
   { heading: 'Order Number', key: 'displayOrder', nosort: true },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
@@ -47,7 +47,7 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
   const defaultSearchOptions = {
     searchText: '',
     isActive: true,
-    dataPath: Constants.API_PATHS.CODE_TABLE,
+    dataPath: Constants.API_PATHS.ELEMENTS_SEARCH,
   };
 
   const formikInitialValues = {
