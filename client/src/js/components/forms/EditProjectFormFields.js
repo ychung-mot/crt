@@ -84,7 +84,7 @@ const EditProjectFormFields = ({
         <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
           <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
         </FormRow>
-        <FormRow name="projectMgrLkupId" label="Project Manager" helper="projectMgrId">
+        <FormRow name="projectMgrLkupId" label="Project Manager" helper="projectMgrLkupId">
           <SingleDropdownField items={projectMgrs} name="projectMgrLkupId" clearable searchable />
         </FormRow>
       </FormMultiRow>

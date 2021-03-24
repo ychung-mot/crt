@@ -111,11 +111,7 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
             hoverTitle={data.rcLkup?.codeName}
             helper="rcLkupId"
           />
-          <ColumnTwoGroups
-            name="Project Manager"
-            label={data.projectMgr && `${data.projectMgr.firstName} ${data.projectMgr.lastName}`}
-            helper={'projectMgrId'}
-          />
+          <ColumnTwoGroups name="Project Manager" label={data.projectMgrLkup?.codeName} helper={'projectMgrLkupId'} />
         </DisplayRow>
         <DisplayRow>
           <ColumnTwoGroups
