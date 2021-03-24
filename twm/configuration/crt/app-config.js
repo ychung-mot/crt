@@ -98,13 +98,13 @@ app.config = {
                     $(".dr-location-input-end").attr("longitude", endLon);
                     $(".dr-location-input-end").attr("latitude", endLat);
                     $(".dr-location-input-end").val(endLat + ", " + endLon);
-                    app.plugins.CRTsegmentCreator.findRoute(); // router call will zoom map
               } else {
                 // zoom map to start coordinates
                 console.log("zoom map to single point");
                 app.map.getView().setCenter(ol.proj.fromLonLat([startLon, startLat]));
-                app.map.getView().setZoom(14);  
+                app.map.getView().setZoom(16);  
               }
+              app.plugins.CRTsegmentCreator.findRoute();
         }
         spinner.stop();
       })
