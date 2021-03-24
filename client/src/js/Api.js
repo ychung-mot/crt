@@ -101,6 +101,11 @@ export const getSegments = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}`);
 export const deleteSegment = (projectId, segmentId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}/${segmentId}`);
+export const putSegment = (projectId, segmentId, segmentData) =>
+  instance.put(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_SEGMENT}/${segmentId}`,
+    segmentData
+  );
 export const getRatio = (projectId, ratioId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.RATIO}/${ratioId}`);
 export const postRatio = (projectId, ratioData) =>

@@ -36,17 +36,30 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData, formType, se
       //convert route lineString data into groups of 2. Represents lon and lat coordinates.
       let data = _.chunk(event.data.route, 2);
       let description = event.data.description;
-      //temporary fix check if it's add or edit.
-      api
-        .postSegment(projectId, { route: data, description })
-        .then(() => {
-          setLoading(false);
-          refreshData();
-          closeForm();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+
+      if (formType === Constants.FORM_TYPE.ADD) {
+        api
+          .postSegment(projectId, { route: data, description })
+          .then(() => {
+            setLoading(false);
+            refreshData();
+            closeForm();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else if (formType === Constants.FORM_TYPE.EDIT) {
+        api
+          .putSegment(projectId, segmentId, { route: data, description })
+          .then(() => {
+            setLoading(false);
+            refreshData();
+            closeForm();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
   };
 
