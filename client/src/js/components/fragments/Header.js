@@ -101,6 +101,11 @@ const Header = ({ currentUser }) => {
                       Code Tables
                     </DropdownItem>
                   </Authorize>
+                  <Authorize requires={Constants.PERMISSIONS.CODE_R}>
+                    <DropdownItem tag={Link} to={Constants.PATHS.ADMIN_ELEMENTS}>
+                      Elements
+                    </DropdownItem>
+                  </Authorize>
                   <DropdownItem tag={Link} to={Constants.PATHS.API_ACCESS}>
                     API Access
                   </DropdownItem>
