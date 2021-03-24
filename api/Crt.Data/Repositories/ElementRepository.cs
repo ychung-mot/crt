@@ -101,7 +101,7 @@ namespace Crt.Data.Repositories
             var crtElement = await DbSet
                                 .FirstAsync(x => x.ElementId == element.ElementId);
 
-            crtElement.EndDate = element.EndDate?.Date;
+            element.EndDate = element.EndDate?.Date;
 
             Mapper.Map(element, crtElement);
 

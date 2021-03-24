@@ -2,13 +2,9 @@
 using Crt.Data.Repositories;
 using Crt.Domain.Services.Base;
 using Crt.Model;
-using Crt.Model.Dtos;
 using Crt.Model.Dtos.FinTarget;
-using Crt.Model.Dtos.Project;
 using Crt.Model.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Domain.Services
@@ -19,6 +15,7 @@ namespace Crt.Domain.Services
         Task<(decimal finTargetId, Dictionary<string, List<string>> errors)> CreateFinTargetAsync(FinTargetCreateDto finTarget);
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateFinTargetAsync(FinTargetUpdateDto finTarget);
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteFinTargetAsync(decimal projectId, decimal finTargetId);
+        Task<(bool NotFound, decimal id)> CloneFinTargetAsync(decimal projectId, decimal finTargetId);
     }
 
     public class FinTargetService : CrtServiceBase, IFinTargetService
@@ -114,5 +111,20 @@ namespace Crt.Domain.Services
             }
         }
 
+        public async Task<(bool NotFound, decimal id)> CloneFinTargetAsync(decimal projectId, decimal finTargetId)
+        {
+            var crtFinTarget = await _finTargetRepo.GetFinTargetByIdAsync(finTargetId);
+
+            if (crtFinTarget == null || crtFinTarget.ProjectId != projectId)
+            {
+                return (true, 0);
+            }
+
+            var finTarget = await _finTargetRepo.CloneFinTargetAsync(finTargetId);
+
+            _unitOfWork.Commit();
+
+            return (false, finTarget.FinTargetId);
+        }
     }
 }

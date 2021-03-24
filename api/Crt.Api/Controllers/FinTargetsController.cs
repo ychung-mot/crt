@@ -2,7 +2,6 @@
 using Crt.Api.Controllers.Base;
 using Crt.Domain.Services;
 using Crt.Model;
-using Crt.Model.Dtos.CodeLookup;
 using Crt.Model.Dtos.FinTarget;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -43,7 +42,7 @@ namespace Crt.Api.Controllers
 
         [HttpPost]
         [RequiresPermission(Permissions.ProjectWrite)]
-        public async Task<ActionResult<FinTargetCreateDto>> CreateFinTarget(decimal projectId, FinTargetCreateDto finTarget)
+        public async Task<ActionResult<FinTargetDto>> CreateFinTarget(decimal projectId, FinTargetCreateDto finTarget)
         {
             var result = await IsProjectAuthorized(projectId);
             if (result != null) return result;
@@ -126,6 +125,23 @@ namespace Crt.Api.Controllers
             }
 
             return null;
+        }
+
+        [HttpPost("{id}/clone")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<FinTargetDto>> CloneFinTarget(decimal projectId, decimal id)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var response = await _finTargetService.CloneFinTargetAsync(projectId, id);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtRoute("GetFinTarget", new { projectId, response.id }, await _finTargetService.GetFinTargetByIdAsync(response.id));
         }
     }
 }

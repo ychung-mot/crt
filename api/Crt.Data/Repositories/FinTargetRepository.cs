@@ -2,13 +2,9 @@
 using Crt.Data.Database.Entities;
 using Crt.Data.Repositories.Base;
 using Crt.Model;
-using Crt.Model.Dtos;
 using Crt.Model.Dtos.FinTarget;
-using Crt.Model.Dtos.Project;
-using Crt.Model.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Data.Repositories
@@ -20,6 +16,7 @@ namespace Crt.Data.Repositories
         Task UpdateFinTargetAsync(FinTargetUpdateDto finTarget);
         Task DeleteFinTargetAsync(decimal finTargetId);
         Task<bool> ElementExists(decimal elementId);
+        Task<CrtFinTarget> CloneFinTargetAsync(decimal finTargetId);
     }
 
     public class FinTargetRepository : CrtRepositoryBase<CrtFinTarget>, IFinTargetRepository
@@ -74,6 +71,18 @@ namespace Crt.Data.Repositories
         public async Task<bool> ElementExists(decimal elementId)
         {
             return await DbContext.CrtElements.AnyAsync(x => x.ElementId == elementId && (x.EndDate == null || x.EndDate > DateTime.Today));
+        }
+
+        public async Task<CrtFinTarget> CloneFinTargetAsync(decimal finTargetId)
+        {
+            var source = await DbSet
+                .FirstAsync(x => x.FinTargetId == finTargetId);
+
+            var target = new FinTargetCreateDto();
+
+            Mapper.Map(source, target);
+
+            return await CreateFinTargetAsync(target);
         }
     }
 }
