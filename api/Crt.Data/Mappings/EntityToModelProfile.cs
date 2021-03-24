@@ -80,6 +80,7 @@ namespace Crt.Data.Mappings
             CreateMap<CrtNote, NoteCreateDto>();
 
             CreateMap<CrtElement, ElementDto>();
+            CreateMap<CrtElement, ElementListDto>();
 
             CreateMap<CrtFinTarget, FinTargetDto>();
             CreateMap<CrtFinTarget, FinTargetListDto>();

@@ -34,6 +34,9 @@ namespace Crt.Data.Database.Entities
         public string DbAuditLastUpdateUserid { get; set; }
         public DateTime DbAuditLastUpdateTimestamp { get; set; }
 
+        public virtual CrtCodeLookup ProgramCategoryLkup { get; set; }
+        public virtual CrtCodeLookup ProgramLkup { get; set; }
+        public virtual CrtCodeLookup ServiceLineLkup { get; set; }
         public virtual ICollection<CrtFinTarget> CrtFinTargets { get; set; }
     }
 }

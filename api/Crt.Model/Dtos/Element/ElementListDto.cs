@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Crt.Model.Dtos.Element
 {
-    public class ElementDto
+    public class ElementListDto
     {
         [JsonPropertyName("id")]
         public decimal ElementId { get; set; }
@@ -21,14 +21,5 @@ namespace Crt.Model.Dtos.Element
         public virtual CodeLookupDto ProgramCategoryLkup { get; set; }
         public virtual CodeLookupDto ProgramLkup { get; set; }
         public virtual CodeLookupDto ServiceLineLkup { get; set; }
-
-        [JsonPropertyName("name")]
-        public string Name
-        {
-            get
-            {
-                return $"{Code} - {Description}";
-            }
-        }
     }
 }
