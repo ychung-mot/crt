@@ -135,6 +135,8 @@ namespace Crt.Model
         public const string ProgramLkupId = "ProgramLkupId";
         public const string ProgramCategoryLkupId = "ProgramCategoryLkupId";
         public const string ServiceLineLkupId = "ServiceLineLkupId";
+
+        public const string DisplayOrder = "DisplayOrder";
     }
 
     public class DateColNames

@@ -110,5 +110,23 @@ namespace Crt.Api.Controllers
         {
             return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.ProjectManager));
         }
+
+        [HttpGet("programs")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetProjectPrograms()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.Program));
+        }
+
+        [HttpGet("programcategories")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetProjectProgramCategories()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.ProgramCategory));
+        }
+
+        [HttpGet("servicelines")]
+        public ActionResult<IEnumerable<CodeLookupDto>> GetServiceLines()
+        {
+            return Ok(_validator.CodeLookup.Where(x => x.CodeSet == CodeSet.ServiceLine));
+        }
     }
 }

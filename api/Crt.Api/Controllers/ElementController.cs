@@ -35,7 +35,7 @@ namespace Crt.Api.Controllers
         [RequiresPermission(Permissions.CodeRead)]
         public async Task<ActionResult<PagedDto<ElementListDto>>> SearchElementAsync(
             [FromQuery] string searchText, [FromQuery] bool? isActive,
-            [FromQuery] int pageSize, [FromQuery] int pageNumber, [FromQuery] string orderBy = "Code", [FromQuery] string direction = "")
+            [FromQuery] int pageSize, [FromQuery] int pageNumber, [FromQuery] string orderBy = Fields.DisplayOrder, [FromQuery] string direction = "")
         {
             return await _elementService.SearchElementsAsync(searchText, isActive, pageSize, pageNumber, orderBy, direction);
         }
