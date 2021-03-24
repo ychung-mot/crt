@@ -16,7 +16,7 @@ const defaultValues = {
   scope: '',
   capIndxLkupId: undefined,
   regionId: undefined,
-  projectMgrId: null,
+  projectMgrLkupId: null,
   nearstTwnLkupId: null,
   rcLkupId: undefined,
   endDate: undefined,
@@ -84,8 +84,8 @@ const EditProjectFormFields = ({
         <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
           <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
         </FormRow>
-        <FormRow name="projectMgrId" label="Project Manager" helper="projectMgrId">
-          <SingleDropdownField items={projectMgrs} name="projectMgrId" clearable searchable />
+        <FormRow name="projectMgrLkupId" label="Project Manager" helper="projectMgrId">
+          <SingleDropdownField items={projectMgrs} name="projectMgrLkupId" clearable searchable />
         </FormRow>
       </FormMultiRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
