@@ -61,6 +61,7 @@ namespace Crt.Data.Mappings
 
             CreateMap<NoteDto, CrtNote>();
             CreateMap<NoteCreateDto, CrtNote>();
+            CreateMap<NoteUpdateDto, CrtNote>();
 
             CreateMap<ElementDto, CrtElement>();
             CreateMap<ElementCreateDto, CrtElement>();

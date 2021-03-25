@@ -14,6 +14,8 @@ namespace Crt.Domain.Services
     public interface INoteService
     {
         Task<(decimal noteId, Dictionary<string, List<string>> errors)> CreateNoteAsync(NoteCreateDto note);
+        Task<(bool notFound, Dictionary<string, List<string>> errors)> UpdateNoteAsync(NoteUpdateDto note);
+        Task<(bool notFound, Dictionary<string, List<string>> errors)> DeleteNoteAsync(decimal noteId);
     }
 
     public class NoteService : CrtServiceBase, INoteService
@@ -49,6 +51,53 @@ namespace Crt.Domain.Services
             _unitOfWork.Commit();
 
             return (crtnote.NoteId, errors);
+        }
+
+        public async Task<(bool notFound, Dictionary<string, List<string>> errors)> UpdateNoteAsync(NoteUpdateDto note)
+        {
+            note.TrimStringFields();
+
+            var crtNote = await _noteRepo.GetNoteByIdAsync(note.NoteId);
+
+            if (crtNote == null)
+            {
+                return (true, null);
+            }
+
+            var errors = new Dictionary<string, List<string>>();
+
+            errors = _validator.Validate(Entities.Note, note, errors);
+
+            await ValidateNote(note, errors);
+
+            if (errors.Count > 0)
+            {
+                return (false, errors);
+            }
+
+            await _noteRepo.UpdateNoteAsync(note);
+
+            _unitOfWork.Commit();
+
+            return (false, errors);
+        }
+
+        public async Task<(bool notFound, Dictionary<string, List<string>> errors)> DeleteNoteAsync(decimal noteId)
+        {
+            var crtNote = await _noteRepo.GetNoteByIdAsync(noteId);
+
+            if (crtNote == null)
+            {
+                return (true, null);
+            }
+
+            var errors = new Dictionary<string, List<string>>();
+
+            await _noteRepo.DeleteNoteAsync(noteId);
+
+            _unitOfWork.Commit();
+
+            return (false, errors);
         }
 
         private async Task ValidateNote(NoteSaveDto note, Dictionary<string, List<string>> errors)

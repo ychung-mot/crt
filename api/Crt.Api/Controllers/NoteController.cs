@@ -42,5 +42,48 @@ namespace Crt.Api.Controllers
 
             return CreatedAtRoute("GetProject", new { id = note.ProjectId }, await _projectService.GetProjectAsync(note.ProjectId));
         }
+
+        [HttpPut("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> UpdateNote(decimal id, NoteUpdateDto note)
+        {
+            if (id != note.NoteId)
+            {
+                throw new Exception($"The Note ID from the query string does not match that of the body.");
+            }
+
+            var response = await _noteService.UpdateNoteAsync(note);
+
+            if (response.notFound)
+            {
+                return NotFound();
+            }
+
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> DeleteActivityCode(decimal id)
+        {
+            var response = await _noteService.DeleteNoteAsync(id);
+
+            if (response.notFound)
+            {
+                return NotFound();
+            }
+
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
     }
 }
