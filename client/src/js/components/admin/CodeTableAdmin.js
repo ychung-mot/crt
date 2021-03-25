@@ -29,34 +29,12 @@ const isActive = [
   { id: 'inactive', name: 'Inactive' },
 ];
 
-const codeLookupColumns = [
+const tableColumns = [
   { heading: 'Code Value', key: 'codeValueText' },
   { heading: 'Code Name', key: 'codeName' },
   { heading: 'Order Number', key: 'displayOrder' },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
-
-const elementsTableColumns = [
-  { heading: 'Element', key: 'code', nosort: true },
-  { heading: 'Element Description', key: 'description', nosort: true },
-  { heading: 'Program Category', key: 'tba', nosort: true },
-  { heading: 'Program', key: 'tba1', nosort: true },
-  { heading: 'Service Line', key: 'tba2', nosort: true },
-  { heading: 'Order Number', key: 'displayOrder', nosort: true },
-  { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
-];
-
-//to future proof in case there will be more than 2 table views
-const codeSetsEnum = {
-  ELEMENT: 'element',
-  CODE_LOOKUP: 'codeLookup',
-  properties: {
-    element: { tableColumns: elementsTableColumns },
-    codeLookup: { tableColumns: codeLookupColumns },
-  },
-};
-
-Object.freeze(codeSetsEnum);
 
 const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
   //fields for default search, formik fields and helper functions
@@ -89,9 +67,8 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
 
   //Hooks
   const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
-  const [columnView, setColumnView] = useState(codeSetsEnum.CODE_LOOKUP);
   const [codeSetName, setCodeSetName] = useState(codeSets[0].codeName); //used to change title of add button and dialog
-  const [codeValueText, setcodeValueText] = useState(codeSets[0].codeValueText); //used to tell what code set we are adding to for formik
+  const [codeValueText, setCodeValueText] = useState(codeSets[0].codeValueText); //used to tell what code set we are adding to for formik
 
   // Run on load, parse URL query params
   useEffect(() => {
@@ -125,14 +102,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
     let codeSetValue = codeSets.find((set) => set.id === values.codeSet);
     let codeSet = codeSetValue.codeValueText;
     setCodeSetName(codeSetValue.codeName);
-    setcodeValueText(codeSet);
-
-    //temporary fix check to see if this will still work when the elements table is added. Probably use CODE_SET TO determine this
-    if (codeSet === 'elements') {
-      setColumnView(codeSetsEnum.ELEMENT);
-    } else {
-      setColumnView(codeSetsEnum.CODE_LOOKUP);
-    }
+    setCodeValueText(codeSet);
 
     const options = {
       ...searchData.searchOptions,
@@ -147,8 +117,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
   const handleSearchFormReset = () => {
     //temporary fix confirm when code sets are returned
     setCodeSetName(codeSets[0].codeName);
-    setcodeValueText(codeSets[0].codeValueText);
-    setColumnView(codeSetsEnum.CODE_LOOKUP);
+    setCodeValueText(codeSets[0].codeValueText);
     setSearchInitialValues(defaultSearchFormValues);
     searchData.refresh(true);
   };
@@ -285,7 +254,7 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
           {data.length > 0 && (
             <DataTableWithPaginaionControl
               dataList={data}
-              tableColumns={codeSetsEnum.properties[columnView].tableColumns}
+              tableColumns={tableColumns}
               searchPagination={searchData.pagination}
               onPageNumberChange={searchData.handleChangePage}
               onPageSizeChange={searchData.handleChangePageSize}
