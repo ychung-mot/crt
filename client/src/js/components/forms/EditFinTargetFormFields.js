@@ -14,7 +14,7 @@ import * as api from '../../Api';
 const defaultValues = {
   fiscalYearLkupId: undefined,
   phaseLkupId: undefined,
-  element: undefined,
+  elementId: undefined,
   fundingTypeLkupId: undefined,
   amount: 0,
   description: '',
