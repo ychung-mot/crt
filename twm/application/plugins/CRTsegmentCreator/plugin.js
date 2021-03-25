@@ -452,7 +452,12 @@ class CRTsegmentCreator {
     var centreLL = getFeatureCentre(feature4326);
 
     // Set the input's lon/lat attributes based on user selection
-    target.val(formatCoordinateAsString(centreLL, 4326));
+   // target.val(formatCoordinateAsString(centreLL, 4326));
+    target.val(
+      centreLL[1].toString().slice(0, 9) +
+        ", " +
+        centreLL[0].toString().slice(0, 11)
+    );
     target.attr("longitude", centreLL[0]);
     target.attr("latitude", centreLL[1]);
 
@@ -480,7 +485,12 @@ class CRTsegmentCreator {
       resetDefaultMapSingleClickFunction();
 
       // Set the input's lon/lat attributes (and display value)
-      target.val(formatCoordinateAsString(centreLL, 4326));
+      //target.val(formatCoordinateAsString(centreLL, 4326));
+      target.val(
+        centreLL[1].toString().slice(0, 9) +
+          ", " +
+          centreLL[0].toString().slice(0, 11)
+      );
       target.attr("longitude", centreLL[0]);
       target.attr("latitude", centreLL[1]);
 
@@ -514,11 +524,18 @@ class CRTsegmentCreator {
       };
       var geoLocationSuccess = function (position) {
         // Set the input's lon/lat attributes (and display value) based on geolocation
+        /*
         target.val(
           formatCoordinateAsString(
             [position.coords.longitude, position.coords.latitude],
             4326
           )
+        );
+        */
+        target.val(
+          position.coords.latitude.toString().slice(0, 9) +
+            ", " +
+            position.coords.latitude.toString().slice(0, 11)
         );
         target.attr("longitude", position.coords.longitude);
         target.attr("latitude", position.coords.latitude);
