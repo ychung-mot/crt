@@ -5,6 +5,7 @@ using Crt.Model;
 using Crt.Model.Dtos.Note;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Controllers
@@ -22,6 +23,33 @@ namespace Crt.Api.Controllers
         {
             _noteService = noteService;
             _projectService = projectService;
+        }
+
+        [HttpGet(Name = "GetNotes")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<List<NoteDto>>> GetNotes(decimal projectId)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var notes = await _noteService.GetNotesAsync(projectId);
+            return Ok(notes);
+        }
+
+        [HttpGet("{id}", Name = "GetNote")]
+        [RequiresPermission(Permissions.ProjectRead)]
+        public async Task<ActionResult<NoteDto>> GetNote(decimal id, decimal projectId)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var note = await _noteService.GetNoteByIdAsync(id);
+            if (note == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(note);
         }
 
         [HttpPost]
@@ -84,6 +112,24 @@ namespace Crt.Api.Controllers
             }
 
             return NoContent();
+        }
+
+        private async Task<ActionResult> IsProjectAuthorized(decimal projectId)
+        {
+            var project = await _projectService.GetProjectAsync(projectId);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            var problem = IsRegionIdAuthorized(project.RegionId);
+            if (problem != null)
+            {
+                return Unauthorized(problem);
+            }
+
+            return null;
         }
     }
 }

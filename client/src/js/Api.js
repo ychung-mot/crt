@@ -49,10 +49,20 @@ export const deleteProject = (id, endDate) =>
 export const postProject = (projectData) => instance.post(Constants.API_PATHS.PROJECTS, projectData);
 export const getProject = (id) => instance.get(`${Constants.API_PATHS.PROJECTS}/${id}`);
 export const putProject = (id, projectData) => instance.put(`${Constants.API_PATHS.PROJECTS}/${id}`, projectData);
-export const postNote = (projectId, noteData) =>
-  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`, noteData);
 export const getProjectPlan = (projectId) =>
   instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.PROJECT_PLAN}`);
+
+//Notes
+export const deleteNote = (projectId, id) =>
+  instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}/${id}`);
+export const postNote = (projectId, noteData) =>
+  instance.post(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`, noteData);
+export const getNote = (projectId, id) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}/${id}`);
+export const getNotes = (projectId) =>
+  instance.get(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}`);
+export const putNote = (projectId, id, noteData) =>
+  instance.put(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.NOTES}/${id}`, noteData);
 
 //Projects FinTargets
 export const getFinTarget = (projectId, finTargetId) =>
