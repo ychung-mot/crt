@@ -29,12 +29,12 @@ const isActive = [
 ];
 
 const tableColumns = [
-  { heading: 'Element', key: 'code', nosort: true },
-  { heading: 'Element Description', key: 'description', nosort: true },
-  { heading: 'Program Category', key: 'program', nosort: true },
-  { heading: 'Program', key: 'programCategory', nosort: true },
+  { heading: 'Element', key: 'code' },
+  { heading: 'Description', key: 'description' },
+  { heading: 'Program Category', key: 'programCategory', nosort: true },
+  { heading: 'Program', key: 'program', nosort: true },
   { heading: 'Service Line', key: 'serviceLine', nosort: true },
-  { heading: 'Order Number', key: 'displayOrder', nosort: true },
+  { heading: 'Order Number', key: 'displayOrder' },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];
 
@@ -195,7 +195,7 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
                     name="searchText"
                     placeholder="Search"
                     className="form-control"
-                    title="searches by code value and name"
+                    title="Searches through element, description, program category, program and service line."
                   />
                 </Col>
                 <Col>
