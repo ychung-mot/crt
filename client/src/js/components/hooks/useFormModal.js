@@ -17,7 +17,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
   //saveCheck modal states:
   const [modalSaveCheckOpen, setModalSaveCheckOpen] = useState(false);
 
-  const { saveCheck = false, showModalHeader = true, showModalFooter = true } = options;
+  const { size = '', saveCheck = false, showModalHeader = true, showModalFooter = true } = options;
 
   const toggle = (dirty = false) => {
     if (dirty && saveCheck) {
@@ -38,7 +38,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
 
   const openForm = (formType, options) => {
     setFormType(formType);
-    setFormOptions({ size: '', ...options });
+    setFormOptions(options);
     setIsOpen(true);
   };
 
@@ -53,7 +53,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
 
   const formModal = () => {
     return (
-      <Modal isOpen={isOpen} toggle={toggle} backdrop="static" size={formOptions.size}>
+      <Modal isOpen={isOpen} toggle={toggle} backdrop="static" size={size}>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
