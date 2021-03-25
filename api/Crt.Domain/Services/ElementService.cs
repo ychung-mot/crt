@@ -63,6 +63,10 @@ namespace Crt.Domain.Services
 
             _unitOfWork.Commit();
 
+            await _elementRepo.UpdateDisplayOrderAsync();
+
+            _unitOfWork.Commit();
+
             return (crtElement.ElementId, errors);
         }
 
@@ -92,6 +96,10 @@ namespace Crt.Domain.Services
 
             _unitOfWork.Commit();
 
+            await _elementRepo.UpdateDisplayOrderAsync();
+
+            _unitOfWork.Commit();
+
             return (false, errors);
         }
 
@@ -112,6 +120,10 @@ namespace Crt.Domain.Services
             }
 
             await _elementRepo.DeleteElementAsync(elementId);
+
+            _unitOfWork.Commit();
+
+            await _elementRepo.UpdateDisplayOrderAsync();
 
             _unitOfWork.Commit();
 

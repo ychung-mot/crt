@@ -24,6 +24,7 @@ namespace Crt.Data.Repositories
         Task DeleteElementAsync(decimal elementId);
         Task<bool> IsElementInUseAsync(decimal elementId);
         Task<bool> DoesCodeExistAsync(decimal elementId, string code);
+        Task UpdateDisplayOrderAsync();
     }
 
     public class ElementRepository : CrtRepositoryBase<CrtElement>, IElementRepository
@@ -87,11 +88,12 @@ namespace Crt.Data.Repositories
         {
             var crtElement = new CrtElement();
 
+            element.EndDate = element.EndDate?.Date;
+            element.IsActive ??= true;
+
             Mapper.Map(element, crtElement);
 
             await DbSet.AddAsync(crtElement);
-
-            await UpdateDisplayOrder();
 
             return crtElement;
         }
@@ -102,10 +104,9 @@ namespace Crt.Data.Repositories
                                 .FirstAsync(x => x.ElementId == element.ElementId);
 
             element.EndDate = element.EndDate?.Date;
+            element.IsActive ??= true;
 
             Mapper.Map(element, crtElement);
-
-            await UpdateDisplayOrder();
         }
 
         public async Task DeleteElementAsync(decimal elementId)
@@ -113,8 +114,6 @@ namespace Crt.Data.Repositories
             var crtElement = await DbSet.FirstAsync(x => x.ElementId == elementId);
 
             DbSet.Remove(crtElement);
-
-            await UpdateDisplayOrder();
         }
 
         public async Task<bool> DoesCodeExistAsync(decimal elementId, string code)
@@ -135,7 +134,7 @@ namespace Crt.Data.Repositories
             return (inFinTarget);
         }
 
-        private async Task UpdateDisplayOrder()
+        public async Task UpdateDisplayOrderAsync()
         {
             var crtElements = await DbSet.OrderBy(x => x.DisplayOrder).ToListAsync();
 
