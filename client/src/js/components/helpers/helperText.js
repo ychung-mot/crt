@@ -22,4 +22,11 @@ export const HELPER_TEXT = {
   //codetables
   codeValueText: `Representative values for descriptive fields (e.g. C for Construct). For records with no such values this field can be left empty, and just Code Name can be provide, (e.g. names of towns)`,
   codeName: `Description for Code Value (e.g. Construct), or independent look up value where no code value is applicable (e.g. Town names - Abbotsford)`,
+
+  //elements
+  elementCode: `Code representing the program and funding association`,
+  elementDescription: `Detailed text explaining project element`,
+  programCategoryLkupId: `The funding vertical within which the element belongs (e.g. Transit, Preservation, Capital)`,
+  programLkupId: `The program within the program category to which the element belongs (e.g. RSIP, SRIP)`,
+  serviceLineLkupId: `Code to which Element is charged`,
 };

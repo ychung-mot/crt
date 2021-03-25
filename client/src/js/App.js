@@ -13,9 +13,10 @@ import AuthorizedRoute from './components/fragments/AuthorizedRoute';
 import Main from './components/Main';
 import Footer from './components/fragments/Footer';
 import Header from './components/fragments/Header';
-import UserAdmin from './components/UserAdmin';
-import RoleAdmin from './components/RoleAdmin';
-import CodeTableAdmin from './components/CodeTableAdmin';
+import UserAdmin from './components/admin/UserAdmin';
+import RoleAdmin from './components/admin/RoleAdmin';
+import CodeTableAdmin from './components/admin/CodeTableAdmin';
+import ElementAdmin from './components/admin/ElementAdmin';
 import Projects from './components/Projects';
 import ProjectDetails from './components/project/ProjectDetails';
 import ProjectPlan from './components/project/ProjectPlan';
@@ -114,6 +115,11 @@ const AdminRoutes = (currentUser) => {
         path={Constants.PATHS.ADMIN_CODE_TABLES}
         requires={Constants.PERMISSIONS.ROLE_R}
         component={CodeTableAdmin}
+      ></AuthorizedRoute>
+      <AuthorizedRoute
+        path={Constants.PATHS.ADMIN_ELEMENTS}
+        requires={Constants.PERMISSIONS.ROLE_R}
+        component={ElementAdmin}
       ></AuthorizedRoute>
       {ProjectRoutes()}
       {CommonRoutes()}

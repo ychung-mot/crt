@@ -16,6 +16,9 @@ import {
   FETCH_ECONOMIC_REGIONS,
   FETCH_CODESETS,
   FETCH_PROJECT_MANAGERS,
+  FETCH_PROGRAMS,
+  FETCH_PROGRAM_CATEGORIES,
+  FETCH_SERVICE_LINES,
 } from '../actions/types';
 
 const defaultState = {
@@ -40,6 +43,9 @@ const defaultState = {
   economicRegions: [],
   codeSets: [],
   projectMgrs: [],
+  programs: [],
+  programCategories: [],
+  serviceLines: [],
 };
 
 const codeLookupsReducer = (state = defaultState, action) => {
@@ -74,6 +80,12 @@ const codeLookupsReducer = (state = defaultState, action) => {
       return { ...state, codeSets: _.orderBy(action.payload, ['displayOrder']) };
     case FETCH_PROJECT_MANAGERS:
       return { ...state, projectMgrs: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_PROGRAMS:
+      return { ...state, programs: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_PROGRAM_CATEGORIES:
+      return { ...state, programCategories: _.orderBy(action.payload, ['displayOrder']) };
+    case FETCH_SERVICE_LINES:
+      return { ...state, serviceLines: _.orderBy(action.payload, ['displayOrder']) };
     default:
       return state;
   }

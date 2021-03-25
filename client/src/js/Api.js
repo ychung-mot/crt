@@ -123,10 +123,18 @@ export const putCodeTable = (codeTableId, codeTableData) =>
 export const deleteCodeTable = (codeTableId, endDate) =>
   instance.delete(`${Constants.API_PATHS.CODE_TABLE}/${codeTableId}`, { data: { id: codeTableId, endDate } });
 
+//Elements
+export const getElement = (elementId) => instance.get(`${Constants.API_PATHS.ELEMENTS}/${elementId}`);
+export const postElement = (elementData) => instance.post(Constants.API_PATHS.ELEMENTS, elementData);
+export const putElement = (elementId, elementData) =>
+  instance.put(`${Constants.API_PATHS.ELEMENTS}/${elementId}`, elementData);
+export const deleteElement = (elementId) => instance.delete(`${Constants.API_PATHS.ELEMENTS}/${elementId}`);
+
 //Lookups
 export const getRegions = () => instance.get(Constants.API_PATHS.REGIONS);
 export const getDistricts = () => instance.get(Constants.API_PATHS.DISTRICTS);
 export const getServiceAreas = () => instance.get(Constants.API_PATHS.SERVICE_AREAS);
+export const getElements = () => instance.get(Constants.API_PATHS.ELEMENTS);
 
 //Code Lookups
 export const getCapitalIndexes = () => instance.get(Constants.API_PATHS.CAPITAL_INDEXES);
@@ -138,13 +146,15 @@ export const getAccomplishments = () => instance.get(Constants.API_PATHS.ACCOMPL
 export const getPhases = () => instance.get(Constants.API_PATHS.PHASES);
 export const getContractors = () => instance.get(Constants.API_PATHS.CONTRACTORS);
 export const getFundingTypes = () => instance.get(Constants.API_PATHS.FUNDING_TYPES);
-export const getElements = () => instance.get(Constants.API_PATHS.ELEMENTS);
 export const getRatioRecordTypes = () => instance.get(Constants.API_PATHS.RATIO_RECORDS_TYPES);
 export const getElectoralDistricts = () => instance.get(Constants.API_PATHS.ELECTORAL_DISTRICTS);
 export const getHighways = () => instance.get(Constants.API_PATHS.HIGHWAYS);
 export const getEconomicRegions = () => instance.get(Constants.API_PATHS.ECONOMIC_REGIONS);
 export const getCodesets = () => instance.get(Constants.API_PATHS.CODESETS);
 export const getProjectManagers = () => instance.get(`${Constants.API_PATHS.PROJECT_MANAGERS}`);
+export const getPrograms = () => instance.get(`${Constants.API_PATHS.PROGRAMS}`);
+export const getProgramCategories = () => instance.get(`${Constants.API_PATHS.PROGRAM_CATEGORIES}`);
+export const getServiceLines = () => instance.get(`${Constants.API_PATHS.SERVICE_LINES}`);
 
 export const getApiClient = () => instance.get(`${Constants.API_PATHS.USER}/api-client`);
 export const createApiClient = () => instance.post(`${Constants.API_PATHS.USER}/api-client`);

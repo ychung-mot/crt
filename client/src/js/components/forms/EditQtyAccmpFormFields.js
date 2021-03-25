@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
-import moment from 'moment';
 import { useFormikContext } from 'formik';
 import { myFiscalYear } from '../../utils';
 

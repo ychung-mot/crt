@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import PageSpinner from '../ui/PageSpinner';
 import MultiSelect from '../ui/MultiSelect';
-import { FormInput, FormRow, FormCheckboxInput } from './FormInputs';
+import { FormInput, FormRow } from './FormInputs';
 import SubmitButton from '../ui/SubmitButton';
 
 import { showValidationErrorDialog, hideErrorDialog } from '../../redux/actions';
