@@ -26,13 +26,19 @@ const DeleteButton = ({
   const [buttonText, setButtonText] = useState('Disable');
 
   useEffect(() => {
-    if (defaultEndDate || !isActive) {
+    if (defaultEndDate) {
       setDate(moment(defaultEndDate));
       setButtonText(easyDelete ? 'Activate' : 'Update');
     } else {
       setDate(null);
     }
-  }, [defaultEndDate, popoverOpen, easyDelete, isActive]);
+  }, [defaultEndDate, popoverOpen, easyDelete]);
+
+  useEffect(() => {
+    if (isActive === false) {
+      setButtonText(easyDelete ? 'Activate' : 'Update');
+    }
+  }, [isActive, easyDelete]);
 
   const togglePopover = () => {
     setPopoverOpen(!popoverOpen);
@@ -64,7 +70,12 @@ const DeleteButton = ({
 
   return (
     <React.Fragment>
-      <FontAwesomeButton color={date ? 'secondary' : 'danger'} icon={iconName} id={buttonId} {...props} />
+      <FontAwesomeButton
+        color={date || isActive === false ? 'secondary' : 'danger'}
+        icon={iconName}
+        id={buttonId}
+        {...props}
+      />
       <Popover placement="auto-start" isOpen={popoverOpen} target={buttonId} toggle={togglePopover} trigger="legacy">
         <PopoverHeader>Are you sure?</PopoverHeader>
         <PopoverBody>
