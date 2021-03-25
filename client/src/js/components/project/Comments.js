@@ -42,7 +42,6 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
     noteFormModal.openForm(Constants.FORM_TYPE.ADD, {
       projectId,
       refreshData: refreshData,
-      size: 'lg',
     });
   };
 
@@ -51,7 +50,6 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
       projectId,
       id,
       refreshData: refreshData,
-      size: 'lg',
     });
   };
 
@@ -98,7 +96,10 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
     }
   };
 
-  const noteFormModal = useFormModal(title, <EditNoteFormFields />, handleEditNoteFormSubmit, { saveCheck: true });
+  const noteFormModal = useFormModal(title, <EditNoteFormFields />, handleEditNoteFormSubmit, {
+    saveCheck: true,
+    size: 'lg',
+  });
 
   const refreshData = () => {
     api
