@@ -237,7 +237,7 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
               onPageSizeChange={searchData.handleChangePageSize}
               editable
               deletable
-              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+              editPermissionName={Constants.PERMISSIONS.CODE_W}
               onEditClicked={onEditClicked}
               onDeleteClicked={onDeleteClicked}
               onHeadingSortClicked={searchData.handleHeadingSortClicked}
