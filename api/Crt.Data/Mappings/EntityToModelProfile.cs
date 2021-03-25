@@ -78,6 +78,7 @@ namespace Crt.Data.Mappings
                 .ForMember(x => x.Segments, opt => opt.MapFrom(x => x.CrtSegments));
 
             CreateMap<CrtNote, NoteCreateDto>();
+            CreateMap<CrtNote, NoteUpdateDto>();
 
             CreateMap<CrtElement, ElementDto>();
             CreateMap<CrtElement, ElementListDto>();
