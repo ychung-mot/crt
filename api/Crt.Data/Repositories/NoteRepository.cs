@@ -4,12 +4,15 @@ using Crt.Data.Repositories.Base;
 using Crt.Model;
 using Crt.Model.Dtos.Note;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Crt.Data.Repositories
 {
     public interface INoteRepository
     {
+        Task<List<NoteDto>> GetNotesAsync(decimal projectId);
         Task<NoteDto> GetNoteByIdAsync(decimal noteId);
         Task<CrtNote> CreateNoteAsync(NoteCreateDto note);
         Task UpdateNoteAsync(NoteUpdateDto note);
@@ -21,6 +24,15 @@ namespace Crt.Data.Repositories
         public NoteRepository(AppDbContext dbContext, IMapper mapper, CrtCurrentUser currentUser)
             : base(dbContext, mapper, currentUser)
         {
+        }
+
+        public async Task<List<NoteDto>> GetNotesAsync(decimal projectId)
+        {
+            var notes = await DbSet.AsNoTracking()
+                .Where(x => x.ProjectId == projectId)
+                .ToListAsync();
+
+            return Mapper.Map<List<NoteDto>>(notes);
         }
 
         public async Task<NoteDto> GetNoteByIdAsync(decimal noteId)

@@ -13,6 +13,8 @@ namespace Crt.Domain.Services
 {
     public interface INoteService
     {
+        Task<List<NoteDto>> GetNotesAsync(decimal projectId);
+        Task<NoteDto> GetNoteByIdAsync(decimal noteId);
         Task<(decimal noteId, Dictionary<string, List<string>> errors)> CreateNoteAsync(NoteCreateDto note);
         Task<(bool notFound, Dictionary<string, List<string>> errors)> UpdateNoteAsync(NoteUpdateDto note);
         Task<(bool notFound, Dictionary<string, List<string>> errors)> DeleteNoteAsync(decimal noteId);
@@ -30,6 +32,17 @@ namespace Crt.Domain.Services
             _projectRepo = projectRepo;
             _noteRepo = noteRepo;
         }
+
+        public async Task<List<NoteDto>> GetNotesAsync(decimal projectId)
+        {
+            return await _noteRepo.GetNotesAsync(projectId);
+        }
+
+        public async Task<NoteDto> GetNoteByIdAsync(decimal noteId)
+        {
+            return await _noteRepo.GetNoteByIdAsync(noteId);
+        }
+
 
         public async Task<(decimal noteId, Dictionary<string, List<string>> errors)> CreateNoteAsync(NoteCreateDto note)
         {
