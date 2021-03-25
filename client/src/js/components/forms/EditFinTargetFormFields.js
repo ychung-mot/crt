@@ -27,7 +27,7 @@ const validationSchema = Yup.object({
   phaseLkupId: Yup.number().required('Phase Required'),
   elementId: Yup.number().required('Element Required'),
   fundingTypeLkupId: Yup.number().required('Funding Type Required'),
-  //temporary fix until amounts are confirmed
+  //temporary fix until DB accepts at least 10 digits amounts are confirmed
   // amount: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
 });
 
