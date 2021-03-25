@@ -102,9 +102,9 @@ class CRTsegmentCreator {
                 $(this).attr("latitude") != centreLL[1]
               ) {
                 $(this).val(
-                  centreLL[0].toString().slice(0, 11) +
+                  centreLL[1].toString().slice(0, 9) +
                     ", " +
-                    centreLL[1].toString().slice(0, 9)
+                    centreLL[0].toString().slice(0, 11)
                 );
               }
               $(this).attr("longitude", centreLL[0]);
@@ -785,7 +785,7 @@ class CRTsegmentCreator {
       associatedInput.attr("longitude", $("#dr-start-lon-input").val());
       associatedInput.attr("latitude", $("#dr-start-lat-input").val());
       associatedInput.val(
-        $("#dr-start-lon-input").val() + ", " + $("#dr-start-lat-input").val()
+        $("#dr-start-lat-input").val() + ", " + $("#dr-start-lon-input").val()
       );
       // Find Route
       app.plugins.CRTsegmentCreator.findRoute();
@@ -796,7 +796,7 @@ class CRTsegmentCreator {
       associatedInput.attr("longitude", $("#dr-end-lon-input").val());
       associatedInput.attr("latitude", $("#dr-end-lat-input").val());
       associatedInput.val(
-        $("#dr-end-lon-input").val() + ", " + $("#dr-end-lat-input").val()
+        $("#dr-end-lat-input").val() + ", " + $("#dr-end-lon-input").val()
       );
       // Find Route
       app.plugins.CRTsegmentCreator.findRoute();
