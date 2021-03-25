@@ -113,12 +113,12 @@ const AdminRoutes = (currentUser) => {
       </AuthorizedRoute>
       <AuthorizedRoute
         path={Constants.PATHS.ADMIN_CODE_TABLES}
-        requires={Constants.PERMISSIONS.ROLE_R}
+        requires={Constants.PERMISSIONS.CODE_R}
         component={CodeTableAdmin}
       ></AuthorizedRoute>
       <AuthorizedRoute
         path={Constants.PATHS.ADMIN_ELEMENTS}
-        requires={Constants.PERMISSIONS.ROLE_R}
+        requires={Constants.PERMISSIONS.CODE_R}
         component={ElementAdmin}
       ></AuthorizedRoute>
       {ProjectRoutes()}

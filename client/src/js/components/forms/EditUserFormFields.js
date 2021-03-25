@@ -5,7 +5,7 @@ import moment from 'moment';
 import MultiSelect from '../ui/MultiSelect';
 import SingleDateField from '../ui/SingleDateField';
 import PageSpinner from '../ui/PageSpinner';
-import { FormRow, FormInput, FormCheckboxInput } from './FormInputs';
+import { FormRow, FormInput } from './FormInputs';
 
 import * as api from '../../Api';
 
@@ -49,9 +49,6 @@ const EditUserFormFields = ({
     <React.Fragment>
       <FormRow name="username" label="User Id*">
         <FormInput type="text" name="username" placeholder="User Id" disabled />
-      </FormRow>
-      <FormRow>
-        <FormCheckboxInput name="isProjectMgr" label="Project Manager" />
       </FormRow>
       <FormRow name="userRoleIds" label="User Roles*">
         <MultiSelect items={roles} name="userRoleIds" />
