@@ -110,26 +110,27 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
   };
 
   const onDeleteClicked = (elementId, endDate, permanentDelete) => {
-    // if (permanentDelete) {
-    //   api
-    //     .deleteCodeTable(codeSetId)
-    //     .then(() => searchData.refresh())
-    //     .catch((error) => {
-    //       showValidationErrorDialog(error.response.data);
-    //       console.log(error);
-    //     });
-    // } else if (permanentDelete === false) {
-    //   api
-    //     .getCodeTable(codeSetId)
-    //     .then((response) => {
-    //       let data = { ...response.data, endDate };
-    //       api.putCodeTable(codeSetId, data).then(() => searchData.refresh());
-    //     })
-    //     .catch((error) => {
-    //       showValidationErrorDialog(error.response.data);
-    //       console.log(error);
-    //     });
-    // }
+    if (permanentDelete) {
+      api
+        .deleteElement(elementId)
+        .then(() => searchData.refresh())
+        .catch((error) => {
+          showValidationErrorDialog(error.response.data);
+          console.log(error);
+        });
+    } else if (permanentDelete === false) {
+      debugger;
+      api
+        .getElement(elementId)
+        .then((response) => {
+          let data = { ...response.data, isActive: !response.data.isActive };
+          api.putElement(elementId, data).then(() => searchData.refresh());
+        })
+        .catch((error) => {
+          showValidationErrorDialog(error.response.data);
+          console.log(error);
+        });
+    }
   };
 
   const onEditClicked = (elementId) => {

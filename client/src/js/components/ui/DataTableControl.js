@@ -152,6 +152,7 @@ const DataTableControl = ({
                             permanentDelete={item.canDelete}
                             title={item.canDelete ? 'Delete Record' : 'Disable Record'}
                             easyDelete={easyDelete}
+                            isActive={item?.isActive} //to assist with items that do not save end date
                           ></DeleteButton>
                         )}
                       </td>

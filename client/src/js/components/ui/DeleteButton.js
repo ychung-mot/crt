@@ -16,6 +16,7 @@ const DeleteButton = ({
   onComplete,
   permanentDelete,
   easyDelete,
+  isActive, //needed for elements who do not use endDate for disable
   ...props
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -25,13 +26,13 @@ const DeleteButton = ({
   const [buttonText, setButtonText] = useState('Disable');
 
   useEffect(() => {
-    if (defaultEndDate) {
+    if (defaultEndDate || !isActive) {
       setDate(moment(defaultEndDate));
       setButtonText(easyDelete ? 'Activate' : 'Update');
     } else {
       setDate(null);
     }
-  }, [defaultEndDate, popoverOpen, easyDelete]);
+  }, [defaultEndDate, popoverOpen, easyDelete, isActive]);
 
   const togglePopover = () => {
     setPopoverOpen(!popoverOpen);
