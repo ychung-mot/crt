@@ -18,6 +18,7 @@ namespace Crt.Data.Repositories
         Task<CrtTender> CreateTenderAsync(TenderCreateDto tender);
         Task UpdateTenderAsync(TenderUpdateDto tender);
         Task DeleteTenderAsync(decimal tenderId);
+        Task<CrtTender> CloneTenderAsync(decimal tenderId);
         Task<bool> TenderNumberAlreadyExists(decimal projectId, decimal tenderId, string tenderNumber);
     }
 
@@ -65,6 +66,18 @@ namespace Crt.Data.Repositories
                                 .FirstAsync(x => x.TenderId == tenderId);
 
             DbSet.Remove(tenderEntity);
+        }
+
+        public async Task<CrtTender> CloneTenderAsync(decimal tenderId)
+        {
+            var source = await DbSet
+                .FirstAsync(x => x.TenderId == tenderId);
+
+            var target = new TenderCreateDto();
+
+            Mapper.Map(source, target);
+
+            return await CreateTenderAsync(target);
         }
 
         public async Task<bool> TenderNumberAlreadyExists(decimal projectId, decimal tenderId, string tenderNumber)
