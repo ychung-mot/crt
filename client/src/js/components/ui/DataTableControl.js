@@ -14,9 +14,11 @@ const DataTableControl = ({
   tableColumns,
   editable,
   deletable,
+  cloneable,
   editPermissionName,
   onEditClicked,
   onDeleteClicked,
+  onCloneClicked,
   onHeadingSortClicked,
   overflowY,
   easyDelete,
@@ -24,6 +26,10 @@ const DataTableControl = ({
 }) => {
   const handleEditClicked = (id) => {
     if (onEditClicked) onEditClicked(id);
+  };
+
+  const handleCloneClicked = (id) => {
+    if (onCloneClicked) onCloneClicked(id);
   };
 
   const linkFormatter = (item = {}, link = {}) => {
@@ -99,7 +105,7 @@ const DataTableControl = ({
                   </th>
                 );
               })}
-              {(editable || deletable) && (
+              {(editable || deletable || cloneable) && (
                 <Authorize requires={editPermissionName}>
                   <th></th>
                 </Authorize>
@@ -135,6 +141,15 @@ const DataTableControl = ({
                   {(editable || deletable) && (
                     <Authorize requires={editPermissionName}>
                       <td style={{ width: '1%', whiteSpace: 'nowrap' }}>
+                        {cloneable && (
+                          <FontAwesomeButton
+                            icon="copy"
+                            className="mr-1"
+                            onClick={() => handleCloneClicked(item.id)}
+                            title="Clone Record"
+                            color="success"
+                          />
+                        )}
                         {editable && (
                           <FontAwesomeButton
                             icon="edit"
@@ -192,8 +207,11 @@ DataTableControl.propTypes = {
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,
+  deletable: PropTypes.bool.isRequired,
+  cloneable: PropTypes.bool.isRequired,
   editPermissionName: PropTypes.string,
   onEditClicked: PropTypes.func,
+  onCloneClicked: PropTypes.func,
   onDeleteClicked: PropTypes.func,
   onHeadingSortClicked: PropTypes.func,
   overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
@@ -204,6 +222,7 @@ DataTableControl.propTypes = {
 DataTableControl.defaultProps = {
   editable: false,
   deletable: false,
+  cloneable: false,
   overflowY: false,
   easyDelete: false,
   hover: true,
