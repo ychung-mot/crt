@@ -127,7 +127,7 @@ namespace Crt.Api.Controllers
             return null;
         }
 
-        [HttpPost("{id}/clone")]
+        [HttpPost("{id}/clone", Name="CloneFinTarget")]
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult<FinTargetDto>> CloneFinTarget(decimal projectId, decimal id)
         {
@@ -141,7 +141,7 @@ namespace Crt.Api.Controllers
                 return NotFound();
             }
 
-            return CreatedAtRoute("GetFinTarget", new { projectId, response.id }, await _finTargetService.GetFinTargetByIdAsync(response.id));
+            return CreatedAtRoute("CloneFinTarget", new { projectId, response.id }, await _finTargetService.GetFinTargetByIdAsync(response.id));
         }
     }
 }
