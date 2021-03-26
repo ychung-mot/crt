@@ -55,6 +55,7 @@ DataTableWithPaginaionControl.propTypes = {
   ).isRequired,
   editable: PropTypes.bool.isRequired,
   deletable: PropTypes.bool.isRequired,
+  cloneable: PropTypes.bool.isRequired,
   editPermissionName: PropTypes.string,
   searchPagination: PropTypes.shape({
     pageNumber: PropTypes.number.isRequired,
@@ -68,6 +69,7 @@ DataTableWithPaginaionControl.propTypes = {
   onPageSizeChange: PropTypes.func.isRequired,
   onEditClicked: PropTypes.func,
   onDeleteClicked: PropTypes.func,
+  onCloneClicked: PropTypes.func,
   onHeadingSortClicked: PropTypes.func,
   overflowY: isOverflowY, //should not use overflowY in this component.
   easyDelete: PropTypes.bool, //allows user to not set end date to disable record
@@ -77,6 +79,7 @@ DataTableWithPaginaionControl.propTypes = {
 DataTableWithPaginaionControl.defaultProps = {
   editable: false,
   deletable: false,
+  cloneable: false,
   easyDelete: false,
   hover: false,
 };

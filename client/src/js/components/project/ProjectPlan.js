@@ -62,10 +62,28 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
     finTargetsFormModal.openForm(Constants.FORM_TYPE.EDIT, { finTargetId, projectId: data.id });
   };
 
-  const onFinTargetDeleteClicked = (finTargetid) => {
-    api.deleteFinTarget(data.id, finTargetid).then(() => {
-      refreshData();
-    });
+  const onFinTargetDeleteClicked = (finTargetId) => {
+    api
+      .deleteFinTarget(data.id, finTargetId)
+      .then(() => {
+        refreshData();
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
+  };
+
+  const onFinTargetCloneClicked = (finTargetId) => {
+    api
+      .cloneFinTarget(data.id, finTargetId)
+      .then(() => {
+        refreshData();
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
   };
 
   const addFinTargetClicked = () => {
@@ -240,9 +258,11 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
           tableColumns={finTargetTableColumns}
           editable
           deletable
+          cloneable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
           onEditClicked={onFinTargetEditClicked}
           onDeleteClicked={onFinTargetDeleteClicked}
+          onCloneClicked={onFinTargetCloneClicked}
         />
         <Container>
           <Row>

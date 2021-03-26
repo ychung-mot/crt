@@ -76,6 +76,10 @@ export const putFinTarget = (projectId, finTargetId, finTargetData) =>
   );
 export const deleteFinTarget = (projectId, finTargetId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}`);
+export const cloneFinTarget = (projectId, finTargetId) =>
+  instance.post(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.FIN_TARGETS}/${finTargetId}${Constants.API_PATHS.CLONE}`
+  );
 
 //Projects QtyAccmps
 export const getQtyAccmp = (projectId, qtyAccmpId) =>
@@ -89,6 +93,10 @@ export const putQtyAccmp = (projectId, qtyAccmpId, qtyAccmpData) =>
   );
 export const deleteQtyAccmp = (projectId, qtyAccmpId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}`);
+export const cloneQtyAccmp = (projectId, qtyAccmpId) =>
+  instance.post(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.QTY_ACCMPS}/${qtyAccmpId}${Constants.API_PATHS.CLONE}`
+  );
 
 //Projects Tender
 export const getProjectTender = (projectId) =>
@@ -101,6 +109,10 @@ export const putTender = (projectId, tenderId, tenderData) =>
   instance.put(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`, tenderData);
 export const deleteTender = (projectId, tenderId) =>
   instance.delete(`${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}`);
+export const cloneTender = (projectId, tenderId) =>
+  instance.post(
+    `${Constants.API_PATHS.PROJECTS}/${projectId}${Constants.API_PATHS.TENDER}/${tenderId}${Constants.API_PATHS.CLONE}`
+  );
 
 //Projects Locations/Segments/Ratios
 export const getProjectLocations = (projectId) =>

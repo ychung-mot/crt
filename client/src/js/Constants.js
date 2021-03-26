@@ -48,6 +48,7 @@ export const API_PATHS = {
   SERVICE_AREAS: '/serviceareas',
   RATIO: '/ratio',
   CODE_TABLE: '/codetable',
+  CLONE: '/clone',
 };
 
 export const PATHS = {
