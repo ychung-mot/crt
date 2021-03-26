@@ -90,6 +90,19 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
       });
   };
 
+  //temporary fix if tender doesn't clone remove.
+  // const onTenderCloneClicked = (tenderId) => {
+  //   api
+  //     .cloneTender(data.id, tenderId)
+  //     .then(() => {
+  //       refreshData();
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response);
+  //       showValidationErrorDialog(error.response.data);
+  //     });
+  // };
+
   const addTenderClicked = () => {
     tendersFormModal.openForm(Constants.FORM_TYPE.ADD);
   };
@@ -131,7 +144,23 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
   };
 
   const onQADeleteClicked = (qtyAccmpId) => {
-    api.deleteQtyAccmp(data.id, qtyAccmpId).then(() => refreshData());
+    api
+      .deleteQtyAccmp(data.id, qtyAccmpId)
+      .then(() => refreshData())
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
+  };
+
+  const onQACloneClicked = (qtyAccmpId) => {
+    api
+      .cloneQtyAccmp(data.id, qtyAccmpId)
+      .then(() => refreshData())
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
   };
 
   const addQAClicked = () => {
@@ -289,6 +318,9 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
           tableColumns={projectTenderTableColumns}
           editable
           deletable
+          //temporary fix removed because it doesn't work correctly
+          // cloneable
+          //onCloneClicked={onTenderCloneClicked}
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
           onEditClicked={onTenderEditClicked}
           onDeleteClicked={onTenderDeleteClicked}
@@ -330,9 +362,11 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
           tableColumns={qaTableColumns}
           editable
           deletable
+          cloneable
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
           onEditClicked={onQAEditClicked}
           onDeleteClicked={onQADeleteClicked}
+          onCloneClicked={onQACloneClicked}
         />
       </MaterialCard>
       <ProjectFooterNav projectId={data.id} />

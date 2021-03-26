@@ -63,9 +63,15 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
   };
 
   const onFinTargetDeleteClicked = (finTargetId) => {
-    api.deleteFinTarget(data.id, finTargetId).then(() => {
-      refreshData();
-    });
+    api
+      .deleteFinTarget(data.id, finTargetId)
+      .then(() => {
+        refreshData();
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+      });
   };
 
   const onFinTargetCloneClicked = (finTargetId) => {
