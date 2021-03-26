@@ -16,6 +16,7 @@ namespace Crt.Domain.Services
         Task<(decimal qtyAccmpId, Dictionary<string, List<string>> errors)> CreateQtyAccmpAsync(QtyAccmpCreateDto qtyAccmp);
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateQtyAccmpAsync(QtyAccmpUpdateDto qtyAccmp);
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteQtyAccmpAsync(decimal projectId, decimal qtyAccmpId);
+        Task<(bool NotFound, decimal id)> CloneQtyAccmpAsync(decimal projectId, decimal qtyAccmpId);
     }
 
     public class QtyAccmpService : CrtServiceBase, IQtyAccmpService
@@ -119,6 +120,22 @@ namespace Crt.Domain.Services
             _unitOfWork.Commit();
 
             return (false, errors);
+        }
+
+        public async Task<(bool NotFound, decimal id)> CloneQtyAccmpAsync(decimal projectId, decimal qtyAccmpId)
+        {
+            var crtQtyAccmp = await _qtyAccmpRepo.GetQtyAccmpByIdAsync(qtyAccmpId);
+
+            if (crtQtyAccmp == null || crtQtyAccmp.ProjectId != projectId)
+            {
+                return (true, 0);
+            }
+
+            var qtyAccmp = await _qtyAccmpRepo.CloneQtyAccmpAsync(qtyAccmpId);
+
+            _unitOfWork.Commit();
+
+            return (false, qtyAccmp.QtyAccmpId);
         }
 
         private async Task ValidateQtyAccmp(QtyAccmpSaveDto qtyAccmp, Dictionary<string, List<string>> errors)

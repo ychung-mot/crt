@@ -58,6 +58,23 @@ namespace Crt.Api.Controllers
             return CreatedAtRoute("GetQtyAccmp", new { projectId = projectId, id = response.qtyAccmpId }, await _qtyAccmpService.GetQtyAccmpByIdAsync(response.qtyAccmpId));
         }
 
+        [HttpPost("{id}/clone", Name="CloneQtyAccmp")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<QtyAccmpDto>> CloneQtyAccmp(decimal projectId, decimal id)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var response = await _qtyAccmpService.CloneQtyAccmpAsync(projectId, id);
+
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtRoute("CloneQtyAccmp", new { projectId = projectId, id = response.id }, await _qtyAccmpService.GetQtyAccmpByIdAsync(response.id));
+        }
+
         [HttpPut("{id}")]
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult> UpdateQtyAccmp(decimal projectId, decimal id, QtyAccmpUpdateDto qtyAccmp)
