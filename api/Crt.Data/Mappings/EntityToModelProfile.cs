@@ -91,9 +91,11 @@ namespace Crt.Data.Mappings
 
             CreateMap<CrtQtyAccmp, QtyAccmpDto>();
             CreateMap<CrtQtyAccmp, QtyAccmpListDto>();
+            CreateMap<CrtQtyAccmp, QtyAccmpCreateDto>();
 
             CreateMap<CrtTender, TenderDto>();
             CreateMap<CrtTender, TenderListDto>();
+            CreateMap<CrtTender, TenderCreateDto>();
 
             CreateMap<CrtSegment, SegmentDto>();
             CreateMap<CrtSegment, SegmentCreateDto>();

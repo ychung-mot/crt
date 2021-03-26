@@ -58,6 +58,22 @@ namespace Crt.Api.Controllers
             return CreatedAtRoute("GetTender", new { projectId = projectId, id = response.tenderId }, await _tenderService.GetTenderByIdAsync(response.tenderId));
         }
 
+        [HttpPost("{id}/clone", Name ="CloneTender")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult<TenderDto>> CloneTender(decimal projectId, decimal id)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var response = await _tenderService.CloneTenderAsync(projectId, id);
+            if (response.NotFound)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtRoute("CloneTender", new { projectId = projectId, id = response.id }, await _tenderService.GetTenderByIdAsync(response.id));
+        }
+
         [HttpPut("{id}")]
         [RequiresPermission(Permissions.ProjectWrite)]
         public async Task<ActionResult> UpdateTender(decimal projectId, decimal id, TenderUpdateDto tender)

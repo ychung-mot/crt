@@ -14,6 +14,7 @@ namespace Crt.Data.Repositories
         Task<CrtQtyAccmp> CreateQtyAccmpAsync(QtyAccmpCreateDto qtyAccmp);
         Task UpdateQtyAccmpAsync(QtyAccmpUpdateDto qtyAccmp);
         Task DeleteQtyAccmpAsync(decimal qtyAccmpId);
+        Task<CrtQtyAccmp> CloneQtyAccmpAsync(decimal qtyAccmpId);
     }
 
     public class QtyAccmpRepository : CrtRepositoryBase<CrtQtyAccmp>, IQtyAccmpRepository
@@ -61,6 +62,18 @@ namespace Crt.Data.Repositories
                                 .FirstAsync(x => x.QtyAccmpId == qtyAccmpId);
 
             DbSet.Remove(crtQtyAccmp);
+        }
+
+        public async Task<CrtQtyAccmp> CloneQtyAccmpAsync(decimal qtyAccmpId)
+        {
+            var crtQtyAccmp = await DbSet
+                .FirstAsync(x => x.QtyAccmpId == qtyAccmpId);
+
+            var qtyAccmpCreateDto = new QtyAccmpCreateDto();
+
+            Mapper.Map(crtQtyAccmp, qtyAccmpCreateDto);
+
+            return await CreateQtyAccmpAsync(qtyAccmpCreateDto);
         }
     }
 }
