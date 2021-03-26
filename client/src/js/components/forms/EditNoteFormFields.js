@@ -14,7 +14,15 @@ const defaultValues = {
 
 const validationSchema = Yup.object({});
 
-const EditNoteFormFields = ({ setInitialValues, formValues, setValidationSchema, projectId, id, formType }) => {
+const EditNoteFormFields = ({
+  setInitialValues,
+  formValues,
+  setValidationSchema,
+  projectId,
+  id,
+  formType,
+  autofocus,
+}) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -50,6 +58,7 @@ const EditNoteFormFields = ({ setInitialValues, formValues, setValidationSchema,
         placeholder="Insert Comment Here"
         id="comment"
         value={formValues.comment}
+        innerRef={autofocus}
       />
     </React.Fragment>
   );
