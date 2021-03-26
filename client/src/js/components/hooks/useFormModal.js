@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { Formik, Form } from 'formik';
 
@@ -16,6 +16,8 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
   const [validationSchema, setValidationSchema] = useState({});
   //saveCheck modal states:
   const [modalSaveCheckOpen, setModalSaveCheckOpen] = useState(false);
+
+  const autofocus = useRef();
 
   const { size = '', saveCheck = false, showModalHeader = true, showModalFooter = true } = options;
 
@@ -51,9 +53,16 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
 
   const title = formType === Constants.FORM_TYPE.ADD ? `Add ${formTitle}` : `Edit ${formTitle}`;
 
+  const setFocus = () => {
+    //need to delay because sometimes, autofocus.current is set after onOpened
+    setTimeout(() => {
+      autofocus.current && autofocus.current.focus();
+    }, 200);
+  };
+
   const formModal = () => {
     return (
-      <Modal isOpen={isOpen} toggle={toggle} backdrop="static" size={size}>
+      <Modal isOpen={isOpen} toggle={toggle} backdrop="static" size={size} onOpened={setFocus}>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
@@ -72,6 +81,7 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
                     setInitialValues,
                     setValidationSchema,
                     closeForm,
+                    autofocus,
                   })}
               </ModalBody>
               {showModalFooter && (
