@@ -19,6 +19,7 @@ const EditElementFormFields = ({
   programs,
   programCategories,
   serviceLines,
+  autofocus,
 }) => {
   const defaultValues = {
     code: '',
@@ -63,7 +64,7 @@ const EditElementFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="code" label="Element*" helper="elementCode">
-        <FormInput type="text" name="code" id={`code`} />
+        <FormInput type="text" name="code" id={`code`} innerRef={autofocus} />
       </FormRow>
       <FormRow name="description" label="Element Description*" helper="elementDescription">
         <FormInput type="text" name="description" id={`description`} />

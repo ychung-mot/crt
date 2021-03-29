@@ -36,6 +36,7 @@ const EditTenderFormFields = ({
   tenderId,
   formType,
   contractors,
+  autofocus,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -84,7 +85,7 @@ const EditTenderFormFields = ({
   return (
     <React.Fragment>
       <FormRow name="tenderNumber" label="Tender Number*" helper="tenderNumber">
-        <FormInput type="text" name="tenderNumber" placeholder="Tender Number" id="tenderNumber" />
+        <FormInput type="text" name="tenderNumber" placeholder="Tender Number" id="tenderNumber" innerRef={autofocus} />
       </FormRow>
       <FormRow name="plannedDate" label="Planned Date" helper="plannedDate">
         <SingleDateField name="plannedDate" placeholder={Constants.DATE_DISPLAY_FORMAT} isOutsideRange={() => false} />

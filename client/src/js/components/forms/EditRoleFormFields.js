@@ -23,7 +23,7 @@ const validationSchema = Yup.object({
   permissions: Yup.array().required('Require at least one permission'),
 });
 
-const EditRoleFormFields = ({ setInitialValues, formValues, setValidationSchema, formType, roleId }) => {
+const EditRoleFormFields = ({ setInitialValues, formValues, setValidationSchema, formType, roleId, autofocus }) => {
   const [permissionIds, setPermissionIds] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +54,7 @@ const EditRoleFormFields = ({ setInitialValues, formValues, setValidationSchema,
   return (
     <React.Fragment>
       <FormRow name="name" label="Role Name*">
-        <FormInput type="text" name="name" placeholder="Role Name" id="name" />
+        <FormInput type="text" name="name" placeholder="Role Name" id="name" innerRef={autofocus} />
       </FormRow>
       <FormRow name="description" label="Role Description*">
         <FormInput type="text" name="description" placeholder="Role Description" id="description" />

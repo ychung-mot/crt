@@ -15,6 +15,7 @@ const EditCodeSetFormFields = ({
   codeSetId,
   codeValueText,
   defaultDisplayOrder,
+  autofocus,
 }) => {
   const defaultValues = { codeValueText: '', codeName: '', displayOrder: defaultDisplayOrder, codeSet: codeValueText };
 
@@ -51,7 +52,7 @@ const EditCodeSetFormFields = ({
         <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
       </FormRow>
       <FormRow name="codeValueText" label="Code Value" helper="codeValueText">
-        <FormInput type="text" name="codeValueText" id={`codeValue`} />
+        <FormInput type="text" name="codeValueText" id={`codeValue`} innerRef={autofocus} />
       </FormRow>
       <FormRow name="codeName*" label="Code Name" helper="codeName">
         <FormInput type="text" name="codeName" id={`codeName`} />
