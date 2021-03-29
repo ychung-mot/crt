@@ -138,6 +138,10 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
     qtyAccmpFormModal.openForm(Constants.FORM_TYPE.EDIT, { qtyAccmpId, projectId: data.id });
   };
 
+  const onQACloneClicked = (qtyAccmpId) => {
+    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.CLONE, { qtyAccmpId, projectId: data.id });
+  };
+
   const onQADeleteClicked = (qtyAccmpId) => {
     api
       .deleteQtyAccmp(data.id, qtyAccmpId)
@@ -148,20 +152,10 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
       });
   };
 
-  const onQACloneClicked = (qtyAccmpId) => {
-    api
-      .cloneQtyAccmp(data.id, qtyAccmpId)
-      .then(() => refreshData())
-      .catch((error) => {
-        console.log(error.response);
-        showValidationErrorDialog(error.response.data);
-      });
-  };
-
   const handleEditQtyAccmptFormSubmit = (values, formType) => {
     if (!qtyAccmpFormModal.submitting) {
       qtyAccmpFormModal.setSubmitting(true);
-      if (formType === Constants.FORM_TYPE.ADD) {
+      if (formType === Constants.FORM_TYPE.ADD || formType === Constants.FORM_TYPE.CLONE) {
         api
           .postQtyAccmp(data.id, values)
           .then(() => {

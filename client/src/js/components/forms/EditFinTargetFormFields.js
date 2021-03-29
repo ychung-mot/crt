@@ -51,7 +51,7 @@ const EditFinTargetFormFields = ({
     setInitialValues({ ...defaultValues, fiscalYearLkupId: defaultFiscalYearLkupId });
     setValidationSchema(validationSchema);
 
-    if (formType === Constants.FORM_TYPE.EDIT) {
+    if (formType === Constants.FORM_TYPE.EDIT || formType === Constants.FORM_TYPE.CLONE) {
       setLoading(true);
       api
         .getFinTarget(projectId, finTargetId)
