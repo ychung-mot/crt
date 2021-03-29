@@ -900,7 +900,8 @@ class CRTsegmentCreator {
     $("." + parentClass + " .dr-clear-input-btn").click(function () {
       // Clear the input and attributes
       var associatedInput = $(this).parent().siblings(".dr-location-input");
-      associatedInput.val("");
+      associatedInput.
+      "");
       associatedInput.attr("longitude", null);
       associatedInput.attr("latitude", null);
 
