@@ -28,11 +28,21 @@ namespace Crt.Data.Repositories
 
         public async Task<List<NoteDto>> GetNotesAsync(decimal projectId)
         {
-            var notes = await DbSet.AsNoTracking()
+            var crtNotes = await DbSet.AsNoTracking()
                 .Where(x => x.ProjectId == projectId)
                 .ToListAsync();
 
-            return Mapper.Map<List<NoteDto>>(notes);
+            var notes = Mapper.Map<List<NoteDto>>(crtNotes);
+
+            foreach (var note in notes)
+            {
+                var user = await DbContext.CrtSystemUsers
+                    .FirstOrDefaultAsync(x => x.Username == note.UserId);
+
+                note.UserName = user == null ? note.UserId : $"{user.LastName}, {user.FirstName}";
+            }
+
+            return notes;
         }
 
         public async Task<NoteDto> GetNoteByIdAsync(decimal noteId)

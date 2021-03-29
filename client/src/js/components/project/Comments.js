@@ -32,7 +32,7 @@ const Comments = ({ title, dataList, projectId, noteType, show = 1 }) => {
 
   const tableColumns = [
     { heading: 'Date Added', key: 'noteDate', nosort: true },
-    { heading: 'User', key: 'userId', nosort: true },
+    { heading: 'User', key: 'userName', nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true, markdown: true },
   ];
 
