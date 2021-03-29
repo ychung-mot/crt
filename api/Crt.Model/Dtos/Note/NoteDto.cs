@@ -13,5 +13,6 @@ namespace Crt.Model.Dtos.Note
         public string UserId { get; set; }
         public DateTime NoteDate { get; set; }
         public bool CanDelete { get => true; }
+        public string UserName { get; set; }
     }
 }

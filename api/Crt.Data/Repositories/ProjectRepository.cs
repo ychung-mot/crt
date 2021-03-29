@@ -94,7 +94,7 @@ namespace Crt.Data.Repositories
 
         public async Task<ProjectDto> GetProjectAsync(decimal projectId)
         {
-            var project = await DbSet.AsNoTracking()
+            var crtProject = await DbSet.AsNoTracking()
                 .Include(x => x.ProjectMgrLkup)
                 .Include(x => x.NearstTwnLkup)
                 .Include(x => x.CapIndxLkup)
@@ -103,7 +103,17 @@ namespace Crt.Data.Repositories
                 .Include(x => x.Region)
                 .FirstOrDefaultAsync(x => x.ProjectId == projectId);
 
-            return Mapper.Map<ProjectDto>(project);
+            var project = Mapper.Map<ProjectDto>(crtProject);
+
+            foreach (var note in project.Notes)
+            {
+                var user = await DbContext.CrtSystemUsers
+                    .FirstOrDefaultAsync(x => x.Username == note.UserId);
+
+                note.UserName = user == null ? note.UserId : $"{user.LastName}, {user.FirstName}";
+            }
+
+            return project;
         }
 
         public async Task<CrtProject> CreateProjectAsync(ProjectCreateDto project)
