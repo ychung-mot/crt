@@ -18,7 +18,7 @@ app.config = {
       name: "CRTsegmentCreator",
       tabName: "Define Segments",
       enabled: true,
-      allowWayPoints: true,
+      allowWayPoints: false,
       visibleLayerSearchEnabled: true,
       visibleLayerSearchMaxResults: 5,
       geoCoderEnabled: true,
