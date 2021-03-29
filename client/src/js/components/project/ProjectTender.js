@@ -66,7 +66,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
-  //temporary fix hard code quantity and accomplishments
   const qtyAccmpArray = [
     { id: 'ALL', name: 'Show All Qty/Accmp' },
     { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
@@ -74,8 +73,16 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
   ];
 
   //Tender edit, delete, put, post functions.
+  const onAddTenderClicked = () => {
+    tendersFormModal.openForm(Constants.FORM_TYPE.ADD);
+  };
+
   const onTenderEditClicked = (tenderId) => {
     tendersFormModal.openForm(Constants.FORM_TYPE.EDIT, { tenderId, projectId: data.id });
+  };
+
+  const onTenderCloneClicked = (tenderId) => {
+    tendersFormModal.openForm(Constants.FORM_TYPE.CLONE, { tenderId, projectId: data.id });
   };
 
   const onTenderDeleteClicked = (tenderId) => {
@@ -90,55 +97,43 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
       });
   };
 
-  //temporary fix if tender doesn't clone remove.
-  // const onTenderCloneClicked = (tenderId) => {
-  //   api
-  //     .cloneTender(data.id, tenderId)
-  //     .then(() => {
-  //       refreshData();
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response);
-  //       showValidationErrorDialog(error.response.data);
-  //     });
-  // };
-
-  const addTenderClicked = () => {
-    tendersFormModal.openForm(Constants.FORM_TYPE.ADD);
-  };
-
   const handleEditTenderFormSubmit = (values, formType) => {
     if (!tendersFormModal.submitting) {
       tendersFormModal.setSubmitting(true);
-      if (formType === Constants.FORM_TYPE.ADD) {
-        api
-          .postTender(data.id, values)
-          .then(() => {
-            tendersFormModal.closeForm();
-            refreshData();
-          })
-          .catch((error) => {
-            console.log(error.response);
-            showValidationErrorDialog(error.response.data);
-          })
-          .finally(() => tendersFormModal.setSubmitting(false));
-      } else if (formType === Constants.FORM_TYPE.EDIT) {
-        api
-          .putTender(data.id, values.id, values)
-          .then(() => {
-            tendersFormModal.closeForm();
-            refreshData();
-          })
-          .catch((error) => {
-            console.log(error.response);
-            showValidationErrorDialog(error.response.data);
-          })
-          .finally(() => tendersFormModal.setSubmitting(false));
-      }
+    }
+
+    if (formType === Constants.FORM_TYPE.ADD || formType === Constants.FORM_TYPE.CLONE) {
+      api
+        .postTender(data.id, values)
+        .then(() => {
+          tendersFormModal.closeForm();
+          refreshData();
+        })
+        .catch((error) => {
+          console.log(error.response);
+          showValidationErrorDialog(error.response.data);
+        })
+        .finally(() => tendersFormModal.setSubmitting(false));
+    } else if (formType === Constants.FORM_TYPE.EDIT) {
+      api
+        .putTender(data.id, values.id, values)
+        .then(() => {
+          tendersFormModal.closeForm();
+          refreshData();
+        })
+        .catch((error) => {
+          console.log(error.response);
+          showValidationErrorDialog(error.response.data);
+        })
+        .finally(() => tendersFormModal.setSubmitting(false));
     }
   };
 
   //Quantity Accomplishments edit, delete, put, post functions.
+  const onAddQAClicked = () => {
+    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.ADD);
+  };
+
   const onQAEditClicked = (qtyAccmpId) => {
     qtyAccmpFormModal.openForm(Constants.FORM_TYPE.EDIT, { qtyAccmpId, projectId: data.id });
   };
@@ -161,10 +156,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         console.log(error.response);
         showValidationErrorDialog(error.response.data);
       });
-  };
-
-  const addQAClicked = () => {
-    qtyAccmpFormModal.openForm(Constants.FORM_TYPE.ADD);
   };
 
   const handleEditQtyAccmptFormSubmit = (values, formType) => {
@@ -305,7 +296,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
               <Col xs="auto">Project Tender Details</Col>
               <Col>
                 <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={addTenderClicked}>
+                  <Button color="primary" className="float-right" onClick={onAddTenderClicked}>
                     + Add
                   </Button>
                 </Authorize>
@@ -318,9 +309,8 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
           tableColumns={projectTenderTableColumns}
           editable
           deletable
-          //temporary fix removed because it doesn't work correctly
-          // cloneable
-          //onCloneClicked={onTenderCloneClicked}
+          cloneable
+          onCloneClicked={onTenderCloneClicked}
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
           onEditClicked={onTenderEditClicked}
           onDeleteClicked={onTenderDeleteClicked}
@@ -349,7 +339,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
               </Col>
               <Col>
                 <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={addQAClicked}>
+                  <Button color="primary" className="float-right" onClick={onAddQAClicked}>
                     + Add
                   </Button>
                 </Authorize>

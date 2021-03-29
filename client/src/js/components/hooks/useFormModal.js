@@ -51,7 +51,14 @@ const useFormModal = (formTitle, formFieldsChildElement, handleFormSubmit, optio
 
   const onFormSubmit = (values) => handleFormSubmit(values, formType);
 
-  const title = formType === Constants.FORM_TYPE.ADD ? `Add ${formTitle}` : `Edit ${formTitle}`;
+  const formatTitle = (title) => {
+    //converts the title to display based on formType. ie. ADD_FORM -> Add EDIT_FORM -> Edit
+    let formattedTitle = title.match(/^[^_]+/)[0];
+    formattedTitle = formattedTitle[0] + formattedTitle.slice(1).toLowerCase();
+    return formattedTitle;
+  };
+
+  const title = `${formatTitle(formType)} ${formTitle}`;
 
   const setFocus = () => {
     //need to delay because sometimes, autofocus.current is set after onOpened
