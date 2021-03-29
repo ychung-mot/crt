@@ -43,6 +43,7 @@ const EditProjectFormFields = ({
   projectMgrs,
   nearestTowns,
   rcNumbers,
+  autofocus,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -66,7 +67,13 @@ const EditProjectFormFields = ({
     <React.Fragment>
       <FormMultiRow>
         <FormRow name="projectNumber" label="Project Number*" helper="projectNumber">
-          <FormInput type="text" name="projectNumber" placeholder="Project Number" id="projectNumber" />
+          <FormInput
+            type="text"
+            name="projectNumber"
+            placeholder="Project Number"
+            id="projectNumber"
+            innerRef={autofocus}
+          />
         </FormRow>
         <FormRow name="projectName" label="Project Name*" helper="projectName">
           <FormInput type="text" name="projectName" placeholder="Project Name" id="projectName" />
