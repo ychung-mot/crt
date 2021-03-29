@@ -77,7 +77,7 @@ export const DATE_UTC_FORMAT = 'YYYY-MM-DDTHH:mm';
 
 export const FISCAL_YEAR_END = '03-31';
 
-export const FORM_TYPE = { ADD: 'ADD_FORM', EDIT: 'EDIT_FORM' };
+export const FORM_TYPE = { ADD: 'ADD_FORM', EDIT: 'EDIT_FORM', CLONE: 'CLONE_FORM' };
 
 export const PERMISSIONS = {
   CODE_W: 'CODE_W',

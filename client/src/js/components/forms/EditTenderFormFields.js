@@ -59,6 +59,23 @@ const EditTenderFormFields = ({
         .catch((error) => console.log(error.response));
     }
 
+    if (formType === Constants.FORM_TYPE.CLONE) {
+      setLoading(true);
+      api
+        .getTender(projectId, tenderId)
+        .then((response) => {
+          setInitialValues({
+            ...response.data,
+            tenderNumber: '',
+            plannedDate: response.data.plannedDate ? moment(response.data.plannedDate) : null,
+            actualDate: response.data.actualDate ? moment(response.data.actualDate) : null,
+            comment: response.data.comment ? response.data.comment : '',
+          });
+          setLoading(false);
+        })
+        .catch((error) => console.log(error.response));
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
