@@ -29,7 +29,6 @@ const validationSchema = Yup.object({
   actual: Yup.number().lessThan(10000000, 'Value must be less than 10 million'),
 });
 
-//temporary fix hard code quantity and accomplishments
 const qtyAccmpArray = [
   { id: 'ACCOMPLISHMENT', name: 'Accomplishment' },
   { id: 'QUANTITY', name: 'Quantity' },
@@ -56,7 +55,7 @@ const EditQtyAccmpFormFields = ({
     setInitialValues({ ...defaultValues, fiscalYearLkupId: defaultFiscalYearLkupId });
     setValidationSchema(validationSchema);
 
-    if (formType === Constants.FORM_TYPE.EDIT) {
+    if (formType === Constants.FORM_TYPE.EDIT || formType === Constants.FORM_TYPE.CLONE) {
       setLoading(true);
       api
         .getQtyAccmp(projectId, qtyAccmpId)
@@ -93,7 +92,7 @@ const EditQtyAccmpFormFields = ({
           name="qtyOrAccmp"
           handleOnChange={handleOnChange}
           defaultTitle={qtyOrAccmp}
-          disabled={formType === Constants.FORM_TYPE.EDIT}
+          disabled={formType === Constants.FORM_TYPE.EDIT || formType === Constants.FORM_TYPE.CLONE}
         />
       </FormRow>
       {qtyOrAccmp && (
