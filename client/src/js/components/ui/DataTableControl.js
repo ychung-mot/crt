@@ -4,6 +4,8 @@ import { Table, Badge } from 'reactstrap';
 
 import { Link } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 
 import Authorize from '../fragments/Authorize';
 import FontAwesomeButton from './FontAwesomeButton';
@@ -51,12 +53,12 @@ const DataTableControl = ({
 
   const displayFormatter = (item = {}, column = {}) => {
     //checks if item should be rendered as a special type. ie. currency, link or no formatting
+    const label = item[column.key] ?? '';
+
     if (column.link) {
       return (
         <Link to={() => linkFormatter(item, column.link)} title={column.link?.title}>
-          {(column.currency && (
-            <NumberFormat value={item[column.key]} prefix="$" thousandSeparator={true} displayType="text" />
-          )) ||
+          {(column.currency && <NumberFormat value={label} prefix="$" thousandSeparator={true} displayType="text" />) ||
             item[column.link?.key] ||
             column.link?.heading}
         </Link>
@@ -64,14 +66,18 @@ const DataTableControl = ({
     }
 
     if (column.currency) {
-      return <NumberFormat value={item[column.key]} prefix="$" thousandSeparator={true} displayType="text" />;
+      return <NumberFormat value={label} prefix="$" thousandSeparator={true} displayType="text" />;
     }
 
     if (column.thousandSeparator) {
-      return <NumberFormat value={item[column.key]} thousandSeparator={true} displayType="text" />;
+      return <NumberFormat value={label} thousandSeparator={true} displayType="text" />;
     }
 
-    return item[column.key];
+    if (column.markdown) {
+      return <ReactMarkdown linkTarget="_blank" plugins={[gfm]} source={label.replace(/\n/g, '  \n')}></ReactMarkdown>;
+    }
+
+    return label;
   };
 
   const ConditionalWrapper = ({ condition, children, wrapper }) => {
