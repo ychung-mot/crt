@@ -58,8 +58,16 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
   ];
 
   //Financial Target edit, delete, put, post functions.
+  const addFinTargetClicked = () => {
+    finTargetsFormModal.openForm(Constants.FORM_TYPE.ADD);
+  };
+
   const onFinTargetEditClicked = (finTargetId) => {
     finTargetsFormModal.openForm(Constants.FORM_TYPE.EDIT, { finTargetId, projectId: data.id });
+  };
+
+  const onFinTargetCloneClicked = (finTargetId) => {
+    finTargetsFormModal.openForm(Constants.FORM_TYPE.CLONE, { finTargetId, projectId: data.id });
   };
 
   const onFinTargetDeleteClicked = (finTargetId) => {
@@ -74,26 +82,10 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
       });
   };
 
-  const onFinTargetCloneClicked = (finTargetId) => {
-    api
-      .cloneFinTarget(data.id, finTargetId)
-      .then(() => {
-        refreshData();
-      })
-      .catch((error) => {
-        console.log(error.response);
-        showValidationErrorDialog(error.response.data);
-      });
-  };
-
-  const addFinTargetClicked = () => {
-    finTargetsFormModal.openForm(Constants.FORM_TYPE.ADD);
-  };
-
   const handleEditFinTargetFormSubmit = (values, formType) => {
     if (!finTargetsFormModal.submitting) {
       finTargetsFormModal.setSubmitting(true);
-      if (formType === Constants.FORM_TYPE.ADD) {
+      if (formType === Constants.FORM_TYPE.ADD || formType === Constants.FORM_TYPE.CLONE) {
         api
           .postFinTarget(data.id, values)
           .then(() => {
