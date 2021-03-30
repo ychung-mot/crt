@@ -19,17 +19,12 @@ import useSearchData from './hooks/useSearchData';
 import useFormModal from './hooks/useFormModal';
 import EditProjectFormFields from '../components/forms/EditProjectFormFields';
 
-import {
-  showValidationErrorDialog,
-  setProjectSearchHistory,
-  setProjectSearchFormikValues,
-  resetProjectSearchFormikValues,
-} from '../redux/actions';
+import { showValidationErrorDialog, updateProjectsSearch } from '../redux/actions';
 
 import * as Constants from '../Constants';
 import * as api from '../Api';
 
-const defaultSearchFormValues = { searchText: '', regionIds: [], projectManagerIds: [], isInProgress: [] };
+const defaultSearchFormValues = { searchText: '', regionIds: [], projectManagerIds: [], isInProgress: ['inProgress'] };
 
 const defaultSearchOptions = {
   searchText: '',
@@ -37,6 +32,8 @@ const defaultSearchOptions = {
   dataPath: Constants.API_PATHS.PROJECTS,
   regionIds: '',
 };
+
+const dataPath = Constants.API_PATHS.PROJECTS;
 
 const tableColumns = [
   { heading: 'Region', key: 'regionId' },
@@ -81,80 +78,107 @@ const tableColumns = [
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
 ];
 
-let formikInitialValues = {
-  searchText: '',
-  regionIds: [],
-  projectManagerIds: [],
-  isInProgress: ['inProgress'],
-};
-
 //temporary fix hardcode project status
 const isInProgress = [
   { id: 'inProgress', name: 'In Progress' },
   { id: 'complete', name: 'Completed' },
 ];
 
-const Projects = ({
-  currentUser,
-  projectMgrs,
-  setProjectSearchHistory,
-  setProjectSearchFormikValues,
-  resetProjectSearchFormikValues,
-  showValidationErrorDialog,
-  reduxFormikValues,
-}) => {
+const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationErrorDialog, updateProjectsSearch }) => {
   const location = useLocation();
-  const searchData = useSearchData(defaultSearchOptions);
-  const [searchInitialValues, setSearchInitialValues] = useState(defaultSearchFormValues);
 
-  // Run on load, parse URL query params
-  useEffect(() => {
-    const params = queryString.parse(location.search);
+  const searchData = useSearchData(defaultSearchOptions, updateProjectsSearch);
+  const [searchInitialValues, setSearchInitialValues] = useState(null);
 
-    const options = {
-      ...defaultSearchOptions,
-      ...params,
+  const buildFormikValuesFromSearchOptions = ({ searchText, regionIds, projectManagerIds, isInProgress }) => {
+    if (!regionIds || regionIds === '') {
+      regionIds = [];
+    } else {
+      regionIds = regionIds.split(',');
+    }
+
+    if (!projectManagerIds || projectManagerIds === '') {
+      projectManagerIds = [];
+    } else {
+      projectManagerIds.split(',');
+    }
+
+    if (isInProgress === true) {
+      isInProgress = ['inProgress'];
+    } else if (isInProgress === false) {
+      isInProgress = ['complete'];
+    } else {
+      isInProgress = ['inProgress', 'complete'];
+    }
+
+    const values = {
+      searchText: searchText || '',
+      regionIds,
+      projectManagerIds,
+      isInProgress,
     };
+    return values;
+  };
 
-    searchData.updateSearchOptions(options);
-
-    const searchText = options.searchText || '';
-
-    setSearchInitialValues({
-      ...searchInitialValues,
-      searchText,
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setProjectSearchHistory(location.pathname + location.search);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [`${location.search}`]);
-
-  const handleSearchFormSubmit = (values) => {
-    setProjectSearchFormikValues(values);
+  const buildSearchOptionsFromForikValues = (values) => {
     const searchText = values.searchText.trim() || null;
+
     let isInProgress = null;
     if (values.isInProgress.length === 1) {
       isInProgress = values.isInProgress[0] === 'inProgress';
     }
 
     const options = {
-      ...searchData.searchOptions,
+      dataPath,
       isInProgress,
       searchText,
       regionIds: values.regionIds.join(',') || null,
       projectManagerIds: values.projectManagerIds.join(',') || null,
-      pageNumber: 1,
     };
+
+    if (searchData) {
+      return { ...searchData.searchOptions, ...options };
+    }
+
+    return options;
+  };
+
+  // Run on load, parse URL query params
+  useEffect(() => {
+    const params = queryString.parse(location.search);
+
+    let options = {};
+
+    if (location.search !== '') {
+      options = {
+        ...defaultSearchOptions,
+        ...params,
+      };
+    } else if (searchOptions) {
+      options = {
+        ...defaultSearchOptions,
+        ...searchOptions,
+      };
+    }
+
     searchData.updateSearchOptions(options);
+
+    const searchText = options.searchText || '';
+
+    setSearchInitialValues({
+      ...buildFormikValuesFromSearchOptions(options),
+      searchText,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSearchFormSubmit = (values) => {
+    searchData.updateSearchOptions({ ...buildSearchOptionsFromForikValues(values), pageNumber: 1 });
   };
 
   const handleSearchFormReset = () => {
     setSearchInitialValues(defaultSearchFormValues);
-    resetProjectSearchFormikValues();
     searchData.refresh(true);
   };
 
@@ -197,99 +221,101 @@ const Projects = ({
   }));
 
   return (
-    <React.Fragment>
-      <MaterialCard>
-        <UIHeader>Projects</UIHeader>
-        <Formik
-          initialValues={reduxFormikValues}
-          enableReinitialize={false}
-          onSubmit={(values) => handleSearchFormSubmit(values)}
-          onReset={handleSearchFormReset}
-        >
-          {(formikProps) => (
-            <Form>
-              <Row form>
-                <Col>
-                  <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
-                </Col>
-                <Col>
-                  <Field
-                    type="text"
-                    name="searchText"
-                    placeholder="Number/Name/Description/Scope"
-                    className="form-control"
-                    title="Searches Project Number, Name, Description and Scope fields"
-                  />
-                </Col>
-                <Col>
-                  <MultiDropdownField
-                    {...formikProps}
-                    items={projectMgrs}
-                    name="projectManagerIds"
-                    title="Project Manager"
-                    searchable
-                  />
-                </Col>
-                <Col>
-                  <MultiDropdownField {...formikProps} items={isInProgress} name="isInProgress" title="Status" />
-                </Col>
-                <Col>
-                  <div className="float-right">
-                    <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
-                      Search
-                    </SubmitButton>
-                    <Button
-                      type="reset"
-                      onClick={() => {
-                        //needed to reset form if formik initial values are not the default values
-                        formikProps.resetForm({ values: formikInitialValues });
-                      }}
-                    >
-                      Reset
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </Form>
-          )}
-        </Formik>
-      </MaterialCard>
-      <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-        <Row>
-          <Col>
-            <Button
-              size="sm"
-              color="primary"
-              className="float-right mb-3"
-              onClick={() => formModal.openForm(Constants.FORM_TYPE.ADD)}
-            >
-              Add Project
-            </Button>
-          </Col>
-        </Row>
-      </Authorize>
-      {searchData.loading && <PageSpinner />}
-      {!searchData.loading && (
+    searchInitialValues && (
+      <React.Fragment>
         <MaterialCard>
-          {data.length > 0 && (
-            <DataTableWithPaginaionControl
-              dataList={data}
-              tableColumns={tableColumns}
-              searchPagination={searchData.pagination}
-              onPageNumberChange={searchData.handleChangePage}
-              onPageSizeChange={searchData.handleChangePageSize}
-              deletable
-              easyDelete
-              editPermissionName={Constants.PERMISSIONS.PROJECT_W}
-              onDeleteClicked={onDeleteClicked}
-              onHeadingSortClicked={searchData.handleHeadingSortClicked}
-            />
-          )}
-          {searchData.data.length <= 0 && <div>No records found</div>}
+          <UIHeader>Projects</UIHeader>
+          <Formik
+            initialValues={searchInitialValues}
+            enableReinitialize={true}
+            onSubmit={(values) => handleSearchFormSubmit(values)}
+            onReset={handleSearchFormReset}
+          >
+            {(formikProps) => (
+              <Form>
+                <Row form>
+                  <Col>
+                    <MultiDropdownField {...formikProps} items={currentUser.regions} name="regionIds" title="Regions" />
+                  </Col>
+                  <Col>
+                    <Field
+                      type="text"
+                      name="searchText"
+                      placeholder="Number/Name/Description/Scope"
+                      className="form-control"
+                      title="Searches Project Number, Name, Description and Scope fields"
+                    />
+                  </Col>
+                  <Col>
+                    <MultiDropdownField
+                      {...formikProps}
+                      items={projectMgrs}
+                      name="projectManagerIds"
+                      title="Project Manager"
+                      searchable
+                    />
+                  </Col>
+                  <Col>
+                    <MultiDropdownField {...formikProps} items={isInProgress} name="isInProgress" title="Status" />
+                  </Col>
+                  <Col>
+                    <div className="float-right">
+                      <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
+                        Search
+                      </SubmitButton>
+                      <Button
+                        type="reset"
+                        onClick={() => {
+                          //needed to reset form if formik initial values are not the default values
+                          formikProps.resetForm({ values: defaultSearchFormValues });
+                        }}
+                      >
+                        Reset
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
+            )}
+          </Formik>
         </MaterialCard>
-      )}
-      {formModal.formElement}
-    </React.Fragment>
+        <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+          <Row>
+            <Col>
+              <Button
+                size="sm"
+                color="primary"
+                className="float-right mb-3"
+                onClick={() => formModal.openForm(Constants.FORM_TYPE.ADD)}
+              >
+                Add Project
+              </Button>
+            </Col>
+          </Row>
+        </Authorize>
+        {searchData.loading && <PageSpinner />}
+        {!searchData.loading && (
+          <MaterialCard>
+            {data.length > 0 && (
+              <DataTableWithPaginaionControl
+                dataList={data}
+                tableColumns={tableColumns}
+                searchPagination={searchData.pagination}
+                onPageNumberChange={searchData.handleChangePage}
+                onPageSizeChange={searchData.handleChangePageSize}
+                deletable
+                easyDelete
+                editPermissionName={Constants.PERMISSIONS.PROJECT_W}
+                onDeleteClicked={onDeleteClicked}
+                onHeadingSortClicked={searchData.handleHeadingSortClicked}
+              />
+            )}
+            {searchData.data.length <= 0 && <div>No records found</div>}
+          </MaterialCard>
+        )}
+        {formModal.formElement}
+      </React.Fragment>
+    )
   );
 };
 
@@ -297,17 +323,8 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.user.current,
     projectMgrs: Object.values(state.codeLookups.projectMgrs),
-    reduxFormikValues: state.projectSearchHistory.reduxFormikValues,
+    searchOptions: state.search.projects,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    showValidationErrorDialog: (error) => dispatch(showValidationErrorDialog(error)),
-    setProjectSearchHistory: (url) => dispatch(setProjectSearchHistory(url)),
-    setProjectSearchFormikValues: (values) => dispatch(setProjectSearchFormikValues(values)),
-    resetProjectSearchFormikValues: () => dispatch(resetProjectSearchFormikValues()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Projects);
+export default connect(mapStateToProps, { showValidationErrorDialog, updateProjectsSearch })(Projects);
