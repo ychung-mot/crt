@@ -94,13 +94,13 @@ const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationError
     if (!regionIds || regionIds === '') {
       regionIds = [];
     } else {
-      regionIds = regionIds.split(',');
+      regionIds = regionIds.split(',').map(Number);
     }
 
     if (!projectManagerIds || projectManagerIds === '') {
       projectManagerIds = [];
     } else {
-      projectManagerIds.split(',');
+      projectManagerIds = projectManagerIds.split(',').map(Number);
     }
 
     if (isInProgress === true) {
