@@ -13,10 +13,7 @@ const MultiDropdownField = ({ values, setFieldValue, items, name, title, searcha
   const updateTitle = () => {
     if (selectedValues.length === 0) return title;
     else if (selectedValues.length > maxSelectedItemDisplay) return `(${selectedValues.length}) selected`;
-    else {
-      const names = selectedValues?.map((v) => items.find((o) => o.id == v)?.name) || [];
-      return names.join(', ');
-    }
+    else return selectedValues.map((v) => items.find((o) => o.id === v).name).join(', ');
   };
 
   const displayItems = useMemo(() => {
@@ -101,7 +98,7 @@ const MultiDropdownField = ({ values, setFieldValue, items, name, title, searcha
                         name={name}
                         type="checkbox"
                         value={item.id}
-                        checked={values[name]?.includes(item.id) || values[name]?.includes(item.id.toString())}
+                        checked={values[name].includes(item.id)}
                         onChange={(e) => {
                           handleItemSelected(e.target.checked, item.id, push, remove);
                         }}
