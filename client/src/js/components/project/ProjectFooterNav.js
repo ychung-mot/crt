@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { NavLink as RRNavLink } from 'react-router-dom';
 
 //components
@@ -7,7 +6,7 @@ import { Nav, NavLink, NavItem } from 'reactstrap';
 
 import * as Constants from '../../Constants';
 
-function ProjectFooterNav({ projectSearchHistory, projectId }) {
+function ProjectFooterNav({ projectId }) {
   const exactPathMatch = (match) => {
     return match && match.isExact;
   };
@@ -60,7 +59,7 @@ function ProjectFooterNav({ projectSearchHistory, projectId }) {
           </NavLink>
         </NavItem>
         <NavItem className="bg-danger ">
-          <NavLink tag={RRNavLink} className="text-light" to={projectSearchHistory} isActive={exactPathMatch}>
+          <NavLink tag={RRNavLink} className="text-light" to={`${Constants.PATHS.PROJECTS}`} isActive={exactPathMatch}>
             Close
           </NavLink>
         </NavItem>
@@ -69,10 +68,4 @@ function ProjectFooterNav({ projectSearchHistory, projectId }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    projectSearchHistory: state.projectSearchHistory.projectSearch,
-  };
-};
-
-export default connect(mapStateToProps, null)(ProjectFooterNav);
+export default ProjectFooterNav;
