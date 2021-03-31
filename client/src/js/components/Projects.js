@@ -120,7 +120,7 @@ const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationError
     return values;
   };
 
-  const buildSearchOptionsFromForikValues = (values) => {
+  const buildSearchOptionsFromFormikValues = (values) => {
     const searchText = values.searchText.trim() || null;
 
     let isInProgress = null;
@@ -174,7 +174,7 @@ const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationError
   }, []);
 
   const handleSearchFormSubmit = (values) => {
-    searchData.updateSearchOptions({ ...buildSearchOptionsFromForikValues(values), pageNumber: 1 });
+    searchData.updateSearchOptions({ ...buildSearchOptionsFromFormikValues(values), pageNumber: 1 });
   };
 
   const handleSearchFormReset = () => {
