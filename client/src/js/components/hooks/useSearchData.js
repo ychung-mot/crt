@@ -8,7 +8,7 @@ import { updateQueryParamsFromHistory } from '../../utils';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
 
-const useSearchData = (defaultSearchOptions, action) => {
+const useSearchData = (defaultSearchOptions, reduxSearchAction) => {
   const history = useHistory();
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({
@@ -23,23 +23,25 @@ const useSearchData = (defaultSearchOptions, action) => {
   const [searchOptions, setSearchOptions] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(null);
 
+  const setAndSaveSearchOptions = (options) => {
+    setSearchOptions(options);
+    reduxSearchAction && reduxSearchAction(options);
+  };
+
   const updateSearchOptions = (options) => {
     if (!options.pageNumber) options.pageNumber = 1;
     if (!options.pageSize) options.pageSize = Constants.DEFAULT_PAGE_SIZE;
-    setSearchOptions(options);
-    action && action(options);
+    setAndSaveSearchOptions(options);
   };
 
   const handleChangePage = (newPage) => {
     const options = { ...searchOptions, pageNumber: newPage };
-    setSearchOptions(options);
-    action && action(options);
+    setAndSaveSearchOptions(options);
   };
 
   const handleChangePageSize = (newSize) => {
     const options = { ...searchOptions, pageNumber: 1, pageSize: newSize };
-    setSearchOptions(options);
-    action && action(options);
+    setAndSaveSearchOptions(options);
   };
 
   const handleHeadingSortClicked = (headingKey) => {
@@ -49,8 +51,7 @@ const useSearchData = (defaultSearchOptions, action) => {
         : Constants.SORT_DIRECTION.ASCENDING;
 
     const options = { ...searchOptions, pageNumber: 1, orderBy: headingKey, direction };
-    setSearchOptions(options);
-    action && action(options);
+    setAndSaveSearchOptions(options);
   };
 
   const refresh = (reset) => {

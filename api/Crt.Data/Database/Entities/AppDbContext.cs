@@ -25,6 +25,7 @@ namespace Crt.Data.Database.Entities
         public virtual DbSet<CrtFinTarget> CrtFinTargets { get; set; }
         public virtual DbSet<CrtFinTargetHist> CrtFinTargetHists { get; set; }
         public virtual DbSet<CrtNote> CrtNotes { get; set; }
+        public virtual DbSet<CrtNoteHist> CrtNoteHists { get; set; }
         public virtual DbSet<CrtPermission> CrtPermissions { get; set; }
         public virtual DbSet<CrtPermissionHist> CrtPermissionHists { get; set; }
         public virtual DbSet<CrtProject> CrtProjects { get; set; }
@@ -415,17 +416,17 @@ namespace Crt.Data.Database.Entities
                 entity.HasOne(d => d.ProgramCategoryLkup)
                     .WithMany(p => p.CrtElementProgramCategoryLkups)
                     .HasForeignKey(d => d.ProgramCategoryLkupId)
-                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_PROGRAM_CATEGORY");
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_PROG_CAT_PROG_CAT_FK");
 
                 entity.HasOne(d => d.ProgramLkup)
                     .WithMany(p => p.CrtElementProgramLkups)
                     .HasForeignKey(d => d.ProgramLkupId)
-                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_PROGRAM");
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_PROG_PROG_FK");
 
                 entity.HasOne(d => d.ServiceLineLkup)
                     .WithMany(p => p.CrtElementServiceLineLkups)
                     .HasForeignKey(d => d.ServiceLineLkupId)
-                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_SERVICE_LINE");
+                    .HasConstraintName("CRT_CODE_LOOKUP_CRT_ELEMENT_SRV_LINE_SRV_LINE_FK");
             });
 
             modelBuilder.Entity<CrtElementHist>(entity =>
@@ -435,79 +436,98 @@ namespace Crt.Data.Database.Entities
 
                 entity.ToTable("CRT_ELEMENT_HIST");
 
+                entity.HasComment("Defines CRT project element history");
+
                 entity.Property(e => e.ElementHistId)
                     .HasColumnType("numeric(9, 0)")
                     .HasColumnName("ELEMENT_HIST_ID")
-                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_ELEMENT_H_ID_SEQ])");
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_ELEMENT_H_ID_SEQ])")
+                    .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.AppCreateTimestamp)
                     .HasColumnType("datetime")
-                    .HasColumnName("APP_CREATE_TIMESTAMP");
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
 
-                entity.Property(e => e.AppCreateUserGuid).HasColumnName("APP_CREATE_USER_GUID");
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
 
                 entity.Property(e => e.AppCreateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("APP_CREATE_USERID");
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
 
                 entity.Property(e => e.AppLastUpdateTimestamp)
                     .HasColumnType("datetime")
-                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP");
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
 
-                entity.Property(e => e.AppLastUpdateUserGuid).HasColumnName("APP_LAST_UPDATE_USER_GUID");
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.AppLastUpdateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("APP_LAST_UPDATE_USERID");
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.Code)
                     .IsRequired()
                     .HasMaxLength(40)
                     .IsUnicode(false)
-                    .HasColumnName("CODE");
+                    .HasColumnName("CODE")
+                    .HasComment("Unique identifier for element code");
 
                 entity.Property(e => e.Comment)
                     .HasMaxLength(2000)
                     .IsUnicode(false)
-                    .HasColumnName("COMMENT");
+                    .HasColumnName("COMMENT")
+                    .HasComment("Comment on project element");
 
                 entity.Property(e => e.ConcurrencyControlNumber)
                     .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
-                    .HasDefaultValueSql("((1))");
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
 
                 entity.Property(e => e.DbAuditCreateTimestamp)
                     .HasColumnType("datetime")
                     .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
-                    .HasDefaultValueSql("(getutcdate())");
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
 
                 entity.Property(e => e.DbAuditCreateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("DB_AUDIT_CREATE_USERID")
-                    .HasDefaultValueSql("(user_name())");
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
 
                 entity.Property(e => e.DbAuditLastUpdateTimestamp)
                     .HasColumnType("datetime")
                     .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
-                    .HasDefaultValueSql("(getutcdate())");
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
 
                 entity.Property(e => e.DbAuditLastUpdateUserid)
                     .IsRequired()
                     .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
-                    .HasDefaultValueSql("(user_name())");
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("DESCRIPTION");
+                    .HasColumnName("DESCRIPTION")
+                    .HasComment("Description of project element");
 
                 entity.Property(e => e.DisplayOrder)
                     .HasColumnType("numeric(9, 0)")
@@ -521,11 +541,13 @@ namespace Crt.Data.Database.Entities
 
                 entity.Property(e => e.ElementId)
                     .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("ELEMENT_ID");
+                    .HasColumnName("ELEMENT_ID")
+                    .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.EndDate)
                     .HasColumnType("datetime")
-                    .HasColumnName("END_DATE");
+                    .HasColumnName("END_DATE")
+                    .HasComment("Date the project is completed. This shows is proxy for project status, either active or complete");
 
                 entity.Property(e => e.EndDateHist)
                     .HasColumnType("datetime")
@@ -851,7 +873,7 @@ namespace Crt.Data.Database.Entities
 
                 entity.HasComment("Defines CRT projects");
 
-                entity.HasIndex(e => e.ProjectId, "CRT_NOTE_FK_I");
+                entity.HasIndex(e => new { e.ProjectId, e.NoteId }, "CRT_NOTE_FK_I");
 
                 entity.Property(e => e.NoteId)
                     .HasColumnType("numeric(9, 0)")
@@ -946,6 +968,118 @@ namespace Crt.Data.Database.Entities
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("CRT_PROJECT_CRT_NOTE");
+            });
+
+            modelBuilder.Entity<CrtNoteHist>(entity =>
+            {
+                entity.HasKey(e => e.NoteHistId)
+                    .HasName("CRT_NOTE_HIST_PK");
+
+                entity.ToTable("CRT_NOTE_HIST");
+
+                entity.HasComment("History of CRT project notes");
+
+                entity.Property(e => e.NoteHistId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("NOTE_HIST_ID")
+                    .HasComment("Identifier for the note history attached to the project.");
+
+                entity.Property(e => e.AppCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_CREATE_TIMESTAMP")
+                    .HasComment("Date and time of record creation");
+
+                entity.Property(e => e.AppCreateUserGuid)
+                    .HasColumnName("APP_CREATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_CREATE_USERID")
+                    .HasComment("Unique idenifier of user who created record");
+
+                entity.Property(e => e.AppLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("APP_LAST_UPDATE_TIMESTAMP")
+                    .HasComment("Date and time of last record update");
+
+                entity.Property(e => e.AppLastUpdateUserGuid)
+                    .HasColumnName("APP_LAST_UPDATE_USER_GUID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.AppLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("APP_LAST_UPDATE_USERID")
+                    .HasComment("Unique idenifier of user who last updated record");
+
+                entity.Property(e => e.Comment)
+                    .IsRequired()
+                    .IsUnicode(false)
+                    .HasColumnName("COMMENT")
+                    .HasComment("Comments on the project");
+
+                entity.Property(e => e.ConcurrencyControlNumber)
+                    .HasColumnName("CONCURRENCY_CONTROL_NUMBER")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("Record under edit indicator used for optomisitc record contention management.  If number differs from start of edit, then user will be prompted to that record has been updated by someone else.");
+
+                entity.Property(e => e.DbAuditCreateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_CREATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record created in the database");
+
+                entity.Property(e => e.DbAuditCreateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_CREATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who created record");
+
+                entity.Property(e => e.DbAuditLastUpdateTimestamp)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_TIMESTAMP")
+                    .HasDefaultValueSql("(getutcdate())")
+                    .HasComment("Date and time record was last updated in the database.");
+
+                entity.Property(e => e.DbAuditLastUpdateUserid)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DB_AUDIT_LAST_UPDATE_USERID")
+                    .HasDefaultValueSql("(user_name())")
+                    .HasComment("Named database user who last updated record");
+
+                entity.Property(e => e.EffectiveDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EFFECTIVE_DATE_HIST")
+                    .HasDefaultValueSql("(getutcdate())");
+
+                entity.Property(e => e.EndDateHist)
+                    .HasColumnType("datetime")
+                    .HasColumnName("END_DATE_HIST");
+
+                entity.Property(e => e.NoteId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("NOTE_ID")
+                    .HasDefaultValueSql("(NEXT VALUE FOR [CRT_NOTE_H_ID_SEQ])")
+                    .HasComment("Identifier for the notes attached to the project.");
+
+                entity.Property(e => e.NoteType)
+                    .IsRequired()
+                    .HasMaxLength(9)
+                    .IsUnicode(false)
+                    .HasColumnName("NOTE_TYPE")
+                    .HasComment("A system generated unique identifier that specifies the note type: as either STATUS or EMR");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("PROJECT_ID");
             });
 
             modelBuilder.Entity<CrtPermission>(entity =>
@@ -4148,6 +4282,10 @@ namespace Crt.Data.Database.Entities
                 .HasMax(99999999999);
 
             modelBuilder.HasSequence("CRT_FIN_TARGET_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
+
+            modelBuilder.HasSequence("CRT_NOTE_H_ID_SEQ")
                 .HasMin(1)
                 .HasMax(99999999999);
 
