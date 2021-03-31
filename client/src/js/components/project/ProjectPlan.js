@@ -214,6 +214,7 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
 
   return (
     <React.Fragment>
+      <ProjectFooterNav projectId={data.id} />
       <UIHeader>
         <MaterialCard>
           <Row>
@@ -316,7 +317,6 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
           />
         </DisplayRow>
       </MaterialCard>
-      <ProjectFooterNav projectId={data.id} />
       {finTargetsFormModal.formElement}
       {announcementFormModal.formElement}
     </React.Fragment>

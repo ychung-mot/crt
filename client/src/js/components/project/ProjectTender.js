@@ -279,10 +279,12 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
 
   return (
     <React.Fragment>
+      <ProjectFooterNav projectId={data.id} />
       <UIHeader>
-        <MaterialCard>{data.projectNumber} </MaterialCard>{' '}
+        <MaterialCard>
+          <Col xs="auto">{data.projectNumber}</Col>
+        </MaterialCard>
       </UIHeader>
-
       <MaterialCard>
         <UIHeader>
           <Container>
@@ -353,7 +355,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
           onCloneClicked={onQACloneClicked}
         />
       </MaterialCard>
-      <ProjectFooterNav projectId={data.id} />
       {tendersFormModal.formElement}
       {qtyAccmpFormModal.formElement}
     </React.Fragment>

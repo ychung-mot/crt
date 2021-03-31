@@ -83,6 +83,7 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
 
   return (
     <React.Fragment>
+      <ProjectFooterNav projectId={data.id} />
       <MaterialCard>
         <UIHeader>
           Project Details{' '}
@@ -137,8 +138,6 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
         show={1}
       />
       <Comments title="EMR Comments" dataList={commentFilter('EMR')} noteType="EMR" projectId={data.id} show={1} />
-
-      <ProjectFooterNav projectId={data.id} />
 
       {formModal.formElement}
     </React.Fragment>

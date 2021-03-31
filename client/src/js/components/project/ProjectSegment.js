@@ -144,6 +144,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
 
   return (
     <React.Fragment>
+      <ProjectFooterNav projectId={data.id} />
       <UIHeader>
         <MaterialCard>
           <Row>
@@ -151,7 +152,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
           </Row>
         </MaterialCard>
       </UIHeader>
-
       <MaterialCard>
         <UIHeader>
           <Row>
@@ -248,7 +248,6 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
           </Col>
         </Row>
       </MaterialCard>
-      <ProjectFooterNav projectId={data.id} />
       {segmentsFormModal.formElement}
     </React.Fragment>
   );
