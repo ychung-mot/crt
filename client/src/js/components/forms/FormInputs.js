@@ -65,6 +65,7 @@ export const FormNumberInput = ({ className, children, ...props }) => {
         thousandSeparator={true}
         prefix={props.prefix}
         value={props.value || undefined}
+        decimalScale={props.decimalScale || undefined}
         onValueChange={(val) => {
           helpers.setTouched(true);
           helpers.setValue(val.floatValue);

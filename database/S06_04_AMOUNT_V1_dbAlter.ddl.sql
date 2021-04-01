@@ -1,0 +1,524 @@
+/* ---------------------------------------------------------------------- */
+/* Script generated with: DeZign for Databases 12.1.0                     */
+/* Target DBMS:           MS SQL Server 2017                              */
+/* Project file:          S06_04_APP_CRT_V1.dez                           */
+/* Project name:          Capital Rehabilitation Tracking Reporting       */
+/* Author:                Ayodeji Kuponiyi                                */
+/* Script type:           Alter database script                           */
+/* Created on:            2021-03-31 12:54                                */
+/* ---------------------------------------------------------------------- */
+
+USE CRT_DEV;
+GO
+
+/*
+- Updated all $$ value to numeric(12,2) under
+	-	CRT_PROJECT
+		- Announcement Value
+		- C-035 Value
+	-	CRT_TENDER
+		- Tender Value
+		- Winning Bid
+	-	CRT_FINANCIAL_TARGET and all the history tables
+		- Amount
+*/
+
+/* ---------------------------------------------------------------------- */
+/* Drop triggers                                                          */
+/* ---------------------------------------------------------------------- */
+
+DROP TRIGGER [dbo].[CRT_ELEMENT_I_S_I_TR]
+GO
+
+
+DROP TRIGGER [dbo].[CRT_ELEMENT_I_S_U_TR]
+GO
+
+
+DROP TRIGGER [dbo].[CRT_SEGMENT_I_S_I_TR]
+GO
+
+
+DROP TRIGGER [dbo].[CRT_SEGMENT_I_S_U_TR]
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Drop foreign key constraints                                           */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_ELEMENT] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_ELEMENT_PROG_PROG_FK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_ELEMENT] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_ELEMENT_PROG_CAT_PROG_CAT_FK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_ELEMENT] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_ELEMENT_SRV_LINE_SRV_LINE_FK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] DROP CONSTRAINT [CRT_PROJECT_CRT_FIN_TARGET]
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] DROP CONSTRAINT [CRT_ELEMENT_CRT_FIN_TARGET]
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_FIN_TARGET_FSCL_YR]
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_FIN_TARGET_PHS]
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_FIN_TARGET_FUND_TYP]
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] DROP CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_CAP_INDX_FK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] DROP CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_NRST_TWN_FK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] DROP CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_RC_NUM_FK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_PROJECT_PRJ_MGR_FK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] DROP CONSTRAINT [CRT_REGION_CRT_PROJECT]
+GO
+
+
+ALTER TABLE [dbo].[CRT_SEGMENT] DROP CONSTRAINT [CRT_PROJECT_CRT_SEGMENT]
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER] DROP CONSTRAINT [CRT_PROJECT_CRT_TENDER]
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER] DROP CONSTRAINT [CRT_CODE_LOOKUP_CRT_TENDER]
+GO
+
+
+ALTER TABLE [dbo].[CRT_NOTE] DROP CONSTRAINT [CRT_PROJECT_CRT_NOTE]
+GO
+
+
+ALTER TABLE [dbo].[CRT_QTY_ACCMP] DROP CONSTRAINT [CRT_PROJECT_CRT_QTY_ACCMP]
+GO
+
+
+ALTER TABLE [dbo].[CRT_RATIO] DROP CONSTRAINT [CRT_PROJECT_CRT_RATIO]
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Alter table "dbo.CRT_PROJECT"                                          */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_PROJECT] DROP CONSTRAINT [CRT_PROJECT_PK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ALTER COLUMN [ANNCMENT_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ALTER COLUMN [C035_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_PROJECT_PK] 
+    PRIMARY KEY CLUSTERED ([PROJECT_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Alter table "dbo.CRT_PROJECT_HIST"                                     */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_PROJECT_HIST] DROP CONSTRAINT [CRT_PROJECT_HIST_PK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT_HIST] ALTER COLUMN [ANNCMENT_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT_HIST] ALTER COLUMN [C035_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT_HIST] ADD CONSTRAINT [CRT_PROJECT_HIST_PK] 
+    PRIMARY KEY CLUSTERED ([PROJECT_HIST_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Alter table "dbo.CRT_FIN_TARGET"                                       */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] DROP CONSTRAINT [CRT_FIN_TARGET_PK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] ALTER COLUMN [AMOUNT] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] ADD CONSTRAINT [CRT_FIN_TARGET_PK] 
+    PRIMARY KEY CLUSTERED ([FIN_TARGET_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Alter table "dbo.CRT_TENDER"                                           */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_TENDER] DROP CONSTRAINT [CRT_TENDER_PK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER] ALTER COLUMN [TENDER_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER] ALTER COLUMN [BID_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER] ADD CONSTRAINT [CRT_TENDER_PK] 
+    PRIMARY KEY CLUSTERED ([TENDER_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Alter table "dbo.CRT_FIN_TARGET_HIST"                                  */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET_HIST] DROP CONSTRAINT [CRT_FIN_TARGET_HIST_PK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET_HIST] ALTER COLUMN [AMOUNT] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET_HIST] ADD CONSTRAINT [CRT_FIN_TARGET_HIST_PK] 
+    PRIMARY KEY CLUSTERED ([FIN_TARGET_HIST_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Alter table "dbo.CRT_TENDER_HIST"                                      */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_TENDER_HIST] DROP CONSTRAINT [CRT_TENDER_HIST_PK]
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER_HIST] ALTER COLUMN [TENDER_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER_HIST] ALTER COLUMN [BID_VALUE] NUMERIC(12,2)
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER_HIST] ADD CONSTRAINT [CRT_TENDER_HIST_PK] 
+    PRIMARY KEY CLUSTERED ([TENDER_HIST_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Add foreign key constraints                                            */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_REGION_CRT_PROJECT] 
+    FOREIGN KEY ([REGION_ID]) REFERENCES [dbo].[CRT_REGION] ([REGION_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_CAP_INDX_FK] 
+    FOREIGN KEY ([CAP_INDX_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_NRST_TWN_FK] 
+    FOREIGN KEY ([NEARST_TWN_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_CODE_LOOKUP_PROJECT_RC_NUM_FK] 
+    FOREIGN KEY ([RC_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_PROJECT] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_PROJECT_PRJ_MGR_FK] 
+    FOREIGN KEY ([PROJECT_MGR_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] ADD CONSTRAINT [CRT_ELEMENT_CRT_FIN_TARGET] 
+    FOREIGN KEY ([ELEMENT_ID]) REFERENCES [dbo].[CRT_ELEMENT] ([ELEMENT_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] ADD CONSTRAINT [CRT_PROJECT_CRT_FIN_TARGET] 
+    FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_FIN_TARGET_FSCL_YR] 
+    FOREIGN KEY ([FISCAL_YEAR_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_FIN_TARGET_PHS] 
+    FOREIGN KEY ([PHASE_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_FIN_TARGET] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_FIN_TARGET_FUND_TYP] 
+    FOREIGN KEY ([FUNDING_TYPE_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_ELEMENT] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_ELEMENT_PROG_PROG_FK] 
+    FOREIGN KEY ([PROGRAM_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_ELEMENT] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_ELEMENT_PROG_CAT_PROG_CAT_FK] 
+    FOREIGN KEY ([PROGRAM_CATEGORY_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_ELEMENT] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_ELEMENT_SRV_LINE_SRV_LINE_FK] 
+    FOREIGN KEY ([SERVICE_LINE_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER] ADD CONSTRAINT [CRT_PROJECT_CRT_TENDER] 
+    FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_TENDER] ADD CONSTRAINT [CRT_CODE_LOOKUP_CRT_TENDER] 
+    FOREIGN KEY ([WINNING_CNTRCTR_LKUP_ID]) REFERENCES [dbo].[CRT_CODE_LOOKUP] ([CODE_LOOKUP_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_SEGMENT] ADD CONSTRAINT [CRT_PROJECT_CRT_SEGMENT] 
+    FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_NOTE] ADD CONSTRAINT [CRT_PROJECT_CRT_NOTE] 
+    FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_QTY_ACCMP] ADD CONSTRAINT [CRT_PROJECT_CRT_QTY_ACCMP] 
+    FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
+GO
+
+
+ALTER TABLE [dbo].[CRT_RATIO] ADD CONSTRAINT [CRT_PROJECT_CRT_RATIO] 
+    FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Repair/add triggers                                                    */
+/* ---------------------------------------------------------------------- */
+
+CREATE TRIGGER [dbo].[CRT_ELEMENT_I_S_I_TR] ON CRT_ELEMENT INSTEAD OF INSERT AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM inserted)
+    RETURN;
+
+  insert into CRT_ELEMENT ("ELEMENT_ID",
+	  "DESCRIPTION", 
+	  "CODE", 
+	  "COMMENT",
+	  "PROGRAM_LKUP_ID",
+	  "PROGRAM_CATEGORY_LKUP_ID",
+	  "SERVICE_LINE_LKUP_ID",   
+	  "IS_ACTIVE",
+	  "DISPLAY_ORDER",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID")
+    select "ELEMENT_ID",
+	  "DESCRIPTION", 
+	  "CODE", 
+	  "COMMENT",
+  	  "PROGRAM_LKUP_ID",
+	  "PROGRAM_CATEGORY_LKUP_ID",
+	  "SERVICE_LINE_LKUP_ID",
+	  "IS_ACTIVE",
+	  "DISPLAY_ORDER",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID"
+    from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_ELEMENT_I_S_U_TR] ON CRT_ELEMENT INSTEAD OF UPDATE AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+
+  if exists (select 1 from inserted, deleted where inserted.CONCURRENCY_CONTROL_NUMBER != deleted.CONCURRENCY_CONTROL_NUMBER+1 AND inserted.ELEMENT_ID = deleted.ELEMENT_ID)
+    raiserror('CONCURRENCY FAILURE.',16,1)
+
+
+
+  update CRT_ELEMENT
+    set "ELEMENT_ID" = inserted."ELEMENT_ID", 
+	  "DESCRIPTION" = inserted."DESCRIPTION", 
+	  "CODE" = inserted."CODE", 
+	  "COMMENT" = inserted."COMMENT", 
+	  "PROGRAM_LKUP_ID" = inserted."PROGRAM_LKUP_ID",
+	  "PROGRAM_CATEGORY_LKUP_ID" = inserted."PROGRAM_CATEGORY_LKUP_ID",
+	  "SERVICE_LINE_LKUP_ID" = inserted."SERVICE_LINE_LKUP_ID",   
+	  "IS_ACTIVE" = inserted."IS_ACTIVE",
+	  "DISPLAY_ORDER" = inserted."DISPLAY_ORDER",
+	  "END_DATE" = inserted."END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER",
+      "APP_LAST_UPDATE_USERID" = inserted."APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP" = inserted."APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID" = inserted."APP_LAST_UPDATE_USER_GUID"
+    , DB_AUDIT_LAST_UPDATE_TIMESTAMP = getutcdate()
+    , DB_AUDIT_LAST_UPDATE_USERID = user_name()
+    from CRT_ELEMENT
+    inner join inserted
+    on (CRT_ELEMENT.ELEMENT_ID = inserted.ELEMENT_ID);
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_SEGMENT_I_S_I_TR] ON CRT_SEGMENT INSTEAD OF INSERT AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM inserted)
+    RETURN;
+
+  insert into CRT_SEGMENT ("SEGMENT_ID",
+	  "PROJECT_ID",
+	  "DESCRIPTION", 
+	  "START_LATITUDE", 
+	  "START_LONGITUDE", 
+	  "END_LATITUDE", 
+	  "END_LONGITUDE", 
+	  "GEOMETRY",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID")
+    select "SEGMENT_ID",
+	  "PROJECT_ID", 
+	  "DESCRIPTION",
+	  "START_LATITUDE", 
+	  "START_LONGITUDE", 
+	  "END_LATITUDE", 
+	  "END_LONGITUDE", 
+	  "GEOMETRY",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID"
+    from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_SEGMENT_I_S_U_TR] ON CRT_SEGMENT INSTEAD OF UPDATE AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+
+  if exists (select 1 from inserted, deleted where inserted.CONCURRENCY_CONTROL_NUMBER != deleted.CONCURRENCY_CONTROL_NUMBER+1 AND inserted.SEGMENT_ID = deleted.SEGMENT_ID)
+    raiserror('CONCURRENCY FAILURE.',16,1)
+
+
+
+  update CRT_SEGMENT
+    set "SEGMENT_ID" = inserted."SEGMENT_ID", 
+	  "PROJECT_ID" = inserted."PROJECT_ID", 
+	  "DESCRIPTION" = inserted."DESCRIPTION",
+	  "START_LATITUDE" = inserted."START_LATITUDE", 
+	  "START_LONGITUDE" = inserted."START_LONGITUDE", 
+	  "END_LATITUDE" = inserted."END_LATITUDE", 
+	  "END_LONGITUDE" = inserted."END_LONGITUDE", 
+	  "GEOMETRY" = inserted."GEOMETRY",
+	  "END_DATE" = inserted."END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER",
+      "APP_LAST_UPDATE_USERID" = inserted."APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP" = inserted."APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID" = inserted."APP_LAST_UPDATE_USER_GUID"
+    , DB_AUDIT_LAST_UPDATE_TIMESTAMP = getutcdate()
+    , DB_AUDIT_LAST_UPDATE_USERID = user_name()
+    from CRT_SEGMENT
+    inner join inserted
+    on (CRT_SEGMENT.SEGMENT_ID = inserted.SEGMENT_ID);
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH
+GO
+

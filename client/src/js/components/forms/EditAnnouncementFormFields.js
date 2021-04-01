@@ -50,10 +50,16 @@ const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidatio
   return (
     <React.Fragment>
       <FormRow name="anncmentValue" label="Announcement Value" helper="anncmentValue">
-        <FormNumberInput name="anncmentValue" id="anncmentValue" prefix="$" value={formValues.anncmentValue} />
+        <FormNumberInput
+          name="anncmentValue"
+          id="anncmentValue"
+          decimalScale="0"
+          prefix="$"
+          value={formValues.anncmentValue}
+        />
       </FormRow>
       <FormRow name="c035Value" label="C-035 Value" helper="c035Value">
-        <FormNumberInput name="c035Value" id="c035Value" prefix="$" value={formValues.c035Value} />
+        <FormNumberInput name="c035Value" id="c035Value" decimalScale="0" prefix="$" value={formValues.c035Value} />
       </FormRow>
       <FormRow name="anncmentComment" label="Annoucement Notes" helper="anncmentComment">
         <FormInput
