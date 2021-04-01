@@ -591,7 +591,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.Amount)
-                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("AMOUNT")
                     .HasDefaultValueSql("((0))")
                     .HasComment("Dollar value associated with financial target");
@@ -743,7 +743,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("A system generated unique identifier.");
 
                 entity.Property(e => e.Amount)
-                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("AMOUNT")
                     .HasDefaultValueSql("((0))")
                     .HasComment("Dollar value associated with financial target");
@@ -1313,7 +1313,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Comments on project announcements");
 
                 entity.Property(e => e.AnncmentValue)
-                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("ANNCMENT_VALUE")
                     .HasComment("Project value as communicated through announcement done by GCPE");
 
@@ -1350,7 +1350,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.C035Value)
-                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("C035_VALUE")
                     .HasComment("Value on the road side signs for the project value");
 
@@ -1494,7 +1494,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Comments on project announcements");
 
                 entity.Property(e => e.AnncmentValue)
-                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("ANNCMENT_VALUE")
                     .HasComment("Project value as communicated through announcement done by GCPE");
 
@@ -1531,7 +1531,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.C035Value)
-                    .HasColumnType("numeric(10, 2)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("C035_VALUE")
                     .HasComment("Value on the road side signs for the project value");
 
@@ -3776,7 +3776,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.BidValue)
-                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("BID_VALUE")
                     .HasComment("Bid amount in response to tender");
 
@@ -3842,7 +3842,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Number associated with a tender");
 
                 entity.Property(e => e.TenderValue)
-                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("TENDER_VALUE")
                     .HasComment("Dollar value of tender");
 
@@ -3916,7 +3916,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Unique idenifier of user who last updated record");
 
                 entity.Property(e => e.BidValue)
-                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("BID_VALUE")
                     .HasComment("Bid amount in response to tender");
 
@@ -3995,7 +3995,7 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Number associated with a tender");
 
                 entity.Property(e => e.TenderValue)
-                    .HasColumnType("numeric(10, 3)")
+                    .HasColumnType("numeric(12, 2)")
                     .HasColumnName("TENDER_VALUE")
                     .HasComment("Dollar value of tender");
 

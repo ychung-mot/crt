@@ -94,13 +94,19 @@ const EditTenderFormFields = ({
         <SingleDateField name="actualDate" placeholder={Constants.DATE_DISPLAY_FORMAT} isOutsideRange={() => false} />
       </FormRow>
       <FormRow name="tenderValue" label="Tender Value" helper="tenderValue">
-        <FormNumberInput name="tenderValue" id="tenderValue" prefix="$" value={formValues.tenderValue} />
+        <FormNumberInput
+          name="tenderValue"
+          id="tenderValue"
+          decimalScale="0"
+          prefix="$"
+          value={formValues.tenderValue}
+        />
       </FormRow>
       <FormRow name="winningCntrctrLkupId" label="Winning Contractor" helper="winningCntrctrLkupId">
         <SingleDropdownField items={contractors} name="winningCntrctrLkupId" searchable clearable />
       </FormRow>
       <FormRow name="bidValue" label="Winning Bid" helper="bidValue">
-        <FormNumberInput name="bidValue" id="bidValue" prefix="$" value={formValues.bidValue} />
+        <FormNumberInput name="bidValue" id="bidValue" decimalScale="0" prefix="$" value={formValues.bidValue} />
       </FormRow>
       <FormRow name="comment" label="Comment">
         <FormInput
