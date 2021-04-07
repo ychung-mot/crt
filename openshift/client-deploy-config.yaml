@@ -67,6 +67,16 @@ objects:
                   value: ${SUFFIX}
                 - name: OGS_SERVER
                   value: ${OGS_SERVER}
+                - name: USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: service-account-${ENV}
+                      key: SERVICE_USER
+                - name: PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: service-account-${ENV}
+                      key: SERVICE_PASSWORD
       test: false
       triggers:
         - imageChangeParams:
