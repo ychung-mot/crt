@@ -4277,6 +4277,10 @@ namespace Crt.Data.Database.Entities
                 .HasMin(1)
                 .HasMax(99999999999);
 
+            modelBuilder.HasSequence("CRT_ELEMENT_TMP_ID_SEQ")
+                .HasMin(1)
+                .HasMax(99999999999);
+
             modelBuilder.HasSequence("CRT_FIN_TARGET_H_ID_SEQ")
                 .HasMin(1)
                 .HasMax(99999999999);
