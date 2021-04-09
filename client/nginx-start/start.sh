@@ -8,8 +8,5 @@ echo "window.RUNTIME_REACT_APP_SSO_REALM='${REACT_APP_SSO_REALM}';" >> $JS_PATH
 echo "window.RUNTIME_REACT_APP_SSO_CLIENT='${REACT_APP_SSO_CLIENT}';" >> $JS_PATH
 echo "window.RUNTIME_REACT_APP_API_HOST='${REACT_APP_API_HOST}';" >> $JS_PATH
 
-echo "---> Set service account"
-export SERVICE_ACCOUNT=$(echo -n ${USER}:${PASSWORD} | base64)
-
 echo "---> Creating nginx.conf ..."
-envsubst '${CRT_DEPLOY_SUFFIX} ${OGS_SERVER} ${SERVICE_ACCOUNT}' < /tmp/src/nginx.conf.tmpl > /etc/nginx/nginx.conf
+envsubst '${CRT_DEPLOY_SUFFIX} ${OGS_SERVER}' < /tmp/src/nginx.conf.tmpl > /etc/nginx/nginx.conf
