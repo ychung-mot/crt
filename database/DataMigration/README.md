@@ -45,14 +45,11 @@ The following tables will require manual mapping adjustments
 7. You'll notice there are more legacy entries than CRT ones. You'll need to make the following manual adjustments
     - The first mismatch should be ***GAS/Seal Coat (lane km)***. Highlight Col C & D of this row and Insert, Shift Cells Down
     - Enter in the values for ***Hwy - GAS/Seal Coat  (lane km)***  
-<br/>
     - The next mismatch will be ***GAS/Seal Coat (m2)***. Highlight Col C & D of this row and Insert, Shift Cells Down
     - Enter in the values for ***Hwy - GAS/Seal Coat  (m2)***  
-<br/>
     - The last mismatch will be ***Gravelled (m3)***. Highlight Col C & D of this row and Insert, Shift Cells Down
-    - Enter in the values for ***Gravel in Stockpile  (m3)***
-<br/>
-
+    - Enter in the values for ***Gravel in Stockpile  (m3)***  
+  
     | Legacy Value | Updated CRT Value |
     | --- | --- |
     | GAS/Seal Coat (lane km) | Hwy - GAS/Seal Coat  (lane km) |
@@ -63,7 +60,8 @@ The following tables will require manual mapping adjustments
 9. Copy the generated SQL inserts and paste them into the _01_ETL_MAP_QTYACCOMP_V1_dml.sql_ file where the generated inserts go. (It's commented)
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
 ### Mapping tblProjectPhases
@@ -88,7 +86,8 @@ The following tables will require manual mapping adjustments
 7. You'll notice there are more legacy entries than CRT ones. You'll need to make the following manual adjustments
     - The first mismatch should be ***Design***. Highlight Col C & D of this row and Insert, Shift Cells Down
     - Enter in the values for ***Engineer***  
-<br/>
+  
+
 
     | Legacy Value | Updated CRT Value |
     | --- | --- |
@@ -98,7 +97,8 @@ The following tables will require manual mapping adjustments
 9. Copy the generated SQL inserts and paste them into the **02_ETL_MAP_PHASE_V1_dml.sql** file where the generated inserts go. (It's commented)
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
 ### Mapping tblTowns
@@ -124,7 +124,8 @@ The following tables will require manual mapping adjustments
 7. You'll notice there are more legacy entries than CRT ones. You'll need to make the following manual adjustments
     Use the following table to make the adjustments as needed in order to get the values to line up. Most of the discrepencies are caused by duplicate values.
     Insert Cells where appropriate in order to map the duplicates
-<br/>
+  
+
     
     | Duplicate Value |
     | --- |
@@ -139,7 +140,8 @@ The following tables will require manual mapping adjustments
 9. Copy the generated SQL inserts and paste them into the **11_ETL_MAP_NEARESTTOWN_V1_dml.sql** file where the generated inserts go. (It's commented)
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
 ### Mapping tblCategories
@@ -172,7 +174,8 @@ The following tables will require manual mapping adjustments
 9. Copy the generated SQL inserts and paste them into the **12_ETL_MAP_PROGRAM_CATEGORY_V1_dml.sql** file where the generated inserts go. (It's commented)
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
 ### Mapping tblMOTIRegions
@@ -201,7 +204,8 @@ The following tables will require manual mapping adjustments
 9. Copy the generated SQL inserts and paste them into the **13_ETL_MAP_REGION_V1_dml.sql** file where the generated inserts go. (It's commented)
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
 ### Mapping tblProjectManager
@@ -265,7 +269,8 @@ The following tables will require manual mapping adjustments
 9. Copy the generated SQL inserts and paste them into the **14_ETL_MAP_PROJECT_MANAGER_V1_dml.sql** file where the generated inserts go. (It's commented)
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
 ### Mapping tblElements
@@ -288,7 +293,8 @@ The following tables will require manual mapping adjustments
 7. You'll notice there are more legacy entries than CRT ones. You'll need to make the following manual adjustments
     - The only mismatch should be ***Sl***. Highlight Col C & D of this row and Insert, Shift Cells Down
     - Enter in the values for ***Unknown***  
-<br/>
+  
+
 
     | Legacy Value | Updated CRT Value |
     | --- | --- |
@@ -298,13 +304,15 @@ The following tables will require manual mapping adjustments
 9. Copy the generated SQL inserts and paste them into the **16_ETL_MAP_ELEMENT_V1_dml.sql** file where the generated inserts go. (It's commented)
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
 ### Executing the Map
 
 
 [Back to Top](#mapping-access-data-to-crt-data)
-<br/>
+  
+
 
 ---
