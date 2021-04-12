@@ -75,7 +75,7 @@ const tableColumns = [
     },
     nosort: true,
   },
-  { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
+  { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'Active', inactive: 'Closed' } },
 ];
 
 //temporary fix hardcode project status
