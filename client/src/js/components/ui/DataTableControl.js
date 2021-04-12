@@ -219,7 +219,7 @@ DataTableControl.propTypes = {
   editable: PropTypes.bool.isRequired,
   deletable: PropTypes.bool.isRequired,
   cloneable: PropTypes.bool.isRequired,
-  cloneHoverText: PropTypes.string.isRequired,
+  cloneHoverText: PropTypes.string.isRequired, //changes hover (title) text for associated buttons
   editHoverText: PropTypes.string.isRequired,
   deleteHoverText: PropTypes.string.isRequired,
   disableHoverText: PropTypes.string.isRequired,
