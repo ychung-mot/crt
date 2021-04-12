@@ -17,6 +17,10 @@ const DataTableControl = ({
   editable,
   deletable,
   cloneable,
+  cloneHoverText,
+  editHoverText,
+  deleteHoverText,
+  disableHoverText,
   editPermissionName,
   onEditClicked,
   onDeleteClicked,
@@ -152,7 +156,7 @@ const DataTableControl = ({
                             icon="copy"
                             className="mr-1"
                             onClick={() => handleCloneClicked(item.id)}
-                            title="Clone"
+                            title={cloneHoverText}
                             color="success"
                           />
                         )}
@@ -161,7 +165,7 @@ const DataTableControl = ({
                             icon="edit"
                             className="mr-1"
                             onClick={() => handleEditClicked(item.id)}
-                            title="Edit"
+                            title={editHoverText}
                           />
                         )}
                         {deletable && (
@@ -171,7 +175,7 @@ const DataTableControl = ({
                             defaultEndDate={item.endDate}
                             onDeleteClicked={onDeleteClicked}
                             permanentDelete={item.canDelete}
-                            title={item.canDelete ? 'Delete' : 'Disable'}
+                            title={item.canDelete ? deleteHoverText : disableHoverText}
                             easyDelete={easyDelete}
                             isActive={item?.isActive} //to assist with items that do not save end date
                           ></DeleteButton>
@@ -215,6 +219,10 @@ DataTableControl.propTypes = {
   editable: PropTypes.bool.isRequired,
   deletable: PropTypes.bool.isRequired,
   cloneable: PropTypes.bool.isRequired,
+  cloneHoverText: PropTypes.string.isRequired,
+  editHoverText: PropTypes.string.isRequired,
+  deleteHoverText: PropTypes.string.isRequired,
+  disableHoverText: PropTypes.string.isRequired,
   editPermissionName: PropTypes.string,
   onEditClicked: PropTypes.func,
   onCloneClicked: PropTypes.func,
@@ -232,6 +240,10 @@ DataTableControl.defaultProps = {
   overflowY: false,
   easyDelete: false,
   hover: true,
+  cloneHoverText: 'Clone Record',
+  editHoverText: 'Edit Record',
+  deleteHoverText: 'Delete Record',
+  disableHoverText: 'Disable Record',
 };
 
 export default DataTableControl;
