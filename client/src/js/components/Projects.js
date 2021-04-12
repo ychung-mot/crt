@@ -80,8 +80,8 @@ const tableColumns = [
 
 //temporary fix hardcode project status
 const isInProgress = [
-  { id: 'inProgress', name: 'In Progress' },
-  { id: 'complete', name: 'Completed' },
+  { id: 'inProgress', name: 'Active' },
+  { id: 'complete', name: 'Closed' },
 ];
 
 const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationErrorDialog, updateProjectsSearch }) => {
