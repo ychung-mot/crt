@@ -21,6 +21,7 @@ The following tables will require manual mapping adjustments
 | [Details](#mapping-tblprojectmanager) | tblProjectManager | CRT_CODE_LOOKUP |
 | [Details](#mapping-tblelements) | tblElements | CRT_ELEMENT |
 <br>
+
 ### Mapping tblAccomplishments 
 
 1. Open the Mapping workbook -> ./Mapping.xslx
