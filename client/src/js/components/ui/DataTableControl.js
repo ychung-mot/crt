@@ -21,6 +21,8 @@ const DataTableControl = ({
   editHoverText,
   deleteHoverText,
   disableHoverText,
+  deleteButtonDefaultText,
+  deleteButtonAltText,
   editPermissionName,
   onEditClicked,
   onDeleteClicked,
@@ -173,6 +175,8 @@ const DataTableControl = ({
                             itemId={item.id}
                             buttonId={`item_${item.id}_delete`}
                             defaultEndDate={item.endDate}
+                            defaultButtonText={deleteButtonDefaultText}
+                            altButtonText={deleteButtonAltText}
                             onDeleteClicked={onDeleteClicked}
                             permanentDelete={item.canDelete}
                             title={item.canDelete ? deleteHoverText : disableHoverText}
@@ -223,6 +227,8 @@ DataTableControl.propTypes = {
   editHoverText: PropTypes.string.isRequired,
   deleteHoverText: PropTypes.string.isRequired,
   disableHoverText: PropTypes.string.isRequired,
+  deleteButtonDefaultText: PropTypes.string, //sets default button text for the delete button popover. Default is "disable".
+  deleteButtonAltText: PropTypes.string, //sets button text for "disabled" state of the record popover.
   editPermissionName: PropTypes.string,
   onEditClicked: PropTypes.func,
   onCloneClicked: PropTypes.func,

@@ -305,7 +305,9 @@ const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationError
                 onPageSizeChange={searchData.handleChangePageSize}
                 deletable
                 easyDelete
-                disableHoverText={'Set Project To Be Closed/Active'}
+                disableHoverText={'Close/Activate Project'}
+                deleteButtonDefaultText={'Close Project'}
+                deleteButtonAltText={'Activate Project'}
                 editPermissionName={Constants.PERMISSIONS.PROJECT_W}
                 onDeleteClicked={onDeleteClicked}
                 onHeadingSortClicked={searchData.handleHeadingSortClicked}

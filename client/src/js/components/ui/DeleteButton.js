@@ -16,29 +16,31 @@ const DeleteButton = ({
   onComplete,
   permanentDelete,
   easyDelete,
-  isActive, //needed for elements who do not use endDate for disable
+  defaultButtonText,
+  altButtonText,
+  isActive, //needed for elements which do not use endDate for disable
   ...props
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [date, setDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState(false);
   const [focusClassName, setFocusClassName] = useState('');
-  const [buttonText, setButtonText] = useState('Disable');
+  const [buttonText, setButtonText] = useState(defaultButtonText || 'Disable');
 
   useEffect(() => {
     if (defaultEndDate) {
       setDate(moment(defaultEndDate));
-      setButtonText(easyDelete ? 'Activate' : 'Update');
+      setButtonText(easyDelete ? altButtonText || 'Activate' : 'Update');
     } else {
       setDate(null);
     }
-  }, [defaultEndDate, popoverOpen, easyDelete]);
+  }, [altButtonText, defaultEndDate, popoverOpen, easyDelete]);
 
   useEffect(() => {
     if (isActive === false) {
-      setButtonText(easyDelete ? 'Activate' : 'Update');
+      setButtonText(easyDelete ? altButtonText || 'Activate' : 'Update');
     }
-  }, [isActive, easyDelete]);
+  }, [altButtonText, isActive, easyDelete]);
 
   const togglePopover = () => {
     setPopoverOpen(!popoverOpen);
