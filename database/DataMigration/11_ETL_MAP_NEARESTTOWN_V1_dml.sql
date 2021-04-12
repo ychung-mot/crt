@@ -5,6 +5,7 @@
 -- retrieve values from Legacy table
 SELECT ID, [Town Name] 
 FROM tblTowns
+WHERE ID NOT IN (3, 121)
 ORDER BY [Town Name]
 
 --retrieve values from CRT Code Table
@@ -35,319 +36,320 @@ GO
 BEGIN TRANSACTION
 SET NOCOUNT ON;
 
-INSERT INTO MAP_NEAREST_TWN VALUES (23, 37);  --100 Mile House > 100 Mile House
-INSERT INTO MAP_NEAREST_TWN VALUES (309, 38);  --150 Mile House > 150 Mile House
-INSERT INTO MAP_NEAREST_TWN VALUES (40, 39);  --70 Mile > 70 Mile
-INSERT INTO MAP_NEAREST_TWN VALUES (43, 40);  --70 Mile House > 70 Mile House
-INSERT INTO MAP_NEAREST_TWN VALUES (217, 41);  --Abbotsford > Abbotsford
-INSERT INTO MAP_NEAREST_TWN VALUES (312, 42);  --Adams Lake > Adams Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (80, 43);  --Agassiz > Agassiz
-INSERT INTO MAP_NEAREST_TWN VALUES (212, 44);  --Aldergrove > Aldergrove
-INSERT INTO MAP_NEAREST_TWN VALUES (176, 45);  --Alexis Creek > Alexis Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (171, 46);  --Anahim Lake > Anahim Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (33, 47);  --Armstrong > Armstrong
-INSERT INTO MAP_NEAREST_TWN VALUES (233, 48);  --Ashcroft > Ashcroft
-INSERT INTO MAP_NEAREST_TWN VALUES (283, 49);  --Atlin > Atlin
-INSERT INTO MAP_NEAREST_TWN VALUES (134, 50);  --Balfour > Balfour
-INSERT INTO MAP_NEAREST_TWN VALUES (279, 51);  --Bamfield > Bamfield
-INSERT INTO MAP_NEAREST_TWN VALUES (168, 52);  --Barkerville > Barkerville
-INSERT INTO MAP_NEAREST_TWN VALUES (118, 53);  --Barriere > Barriere
-INSERT INTO MAP_NEAREST_TWN VALUES (144, 54);  --Beaverdell > Beaverdell
-INSERT INTO MAP_NEAREST_TWN VALUES (174, 55);  --Bella Coola > Bella Coola
-INSERT INTO MAP_NEAREST_TWN VALUES (237, 56);  --Blaeberry > Blaeberry
-INSERT INTO MAP_NEAREST_TWN VALUES (298, 57);  --Blind Bay > Blind Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (113, 58);  --Blue River > Blue River
-INSERT INTO MAP_NEAREST_TWN VALUES (240, 59);  --Boston Bar > Boston Bar
-INSERT INTO MAP_NEAREST_TWN VALUES (135, 60);  --Boswell > Boswell
-INSERT INTO MAP_NEAREST_TWN VALUES (305, 61);  --Bowser > Bowser
-INSERT INTO MAP_NEAREST_TWN VALUES (248, 62);  --Bridge Lake > Bridge Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (21, 63);  --Britannia Beach > Britannia Beach
-INSERT INTO MAP_NEAREST_TWN VALUES (300, 64);  --Burnaby, Delta, West Van > Burnaby, Delta, West Van
-INSERT INTO MAP_NEAREST_TWN VALUES (200, 65);  --Burns Lake > Burns Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (294, 66);  --Burns Lake/Decker Lake > Burns Lake/Decker Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (267, 67);  --Burns Lake/Houston > Burns Lake/Houston
-INSERT INTO MAP_NEAREST_TWN VALUES (285, 68);  --Burns Lake/Smithers > Burns Lake/Smithers
-INSERT INTO MAP_NEAREST_TWN VALUES (205, 69);  --Burns Lake/Telkwa/Prince George > Burns Lake/Telkwa/Prince George
-INSERT INTO MAP_NEAREST_TWN VALUES (106, 70);  --Burton > Burton
-INSERT INTO MAP_NEAREST_TWN VALUES (51, 71);  --Cache Creek > Cache Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (166, 72);  --Campbell River > Campbell River
-INSERT INTO MAP_NEAREST_TWN VALUES (74, 73);  --Canal Flats > Canal Flats
-INSERT INTO MAP_NEAREST_TWN VALUES (314, 74);  --Canim Lake > Canim Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (131, 75);  --Castlegar > Castlegar
-INSERT INTO MAP_NEAREST_TWN VALUES (84, 76);  --Cecil Lake > Cecil Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (52, 77);  --Charlie Lake > Charlie Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (228, 78);  --Chase > Chase
-INSERT INTO MAP_NEAREST_TWN VALUES (289, 79);  --Chase/Qualicum > Chase/Qualicum
-INSERT INTO MAP_NEAREST_TWN VALUES (235, 80);  --Chemainus > Chemainus
-INSERT INTO MAP_NEAREST_TWN VALUES (243, 81);  --Cherry Creek > Cherry Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (98, 82);  --Cherryville > Cherryville
-INSERT INTO MAP_NEAREST_TWN VALUES (45, 83);  --Chetwynd > Chetwynd
-INSERT INTO MAP_NEAREST_TWN VALUES (161, 84);  --Chetwynd/Hudson's Hope > Chetwynd/Hudson's Hope
-INSERT INTO MAP_NEAREST_TWN VALUES (82, 85);  --Chilliwack > Chilliwack
-INSERT INTO MAP_NEAREST_TWN VALUES (274, 86);  --Chilliwack/Hope > Chilliwack/Hope
-INSERT INTO MAP_NEAREST_TWN VALUES (158, 87);  --Christina Lake > Christina Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (117, 88);  --Clearwater > Clearwater
-INSERT INTO MAP_NEAREST_TWN VALUES (258, 89);  --Clearwater/Barriere > Clearwater/Barriere
-INSERT INTO MAP_NEAREST_TWN VALUES (256, 90);  --Clearwater/Merritt > Clearwater/Merritt
-INSERT INTO MAP_NEAREST_TWN VALUES (54, 91);  --Clinton > Clinton
-INSERT INTO MAP_NEAREST_TWN VALUES (206, 92);  --Cloverdale > Cloverdale
-INSERT INTO MAP_NEAREST_TWN VALUES (97, 93);  --Coldstream > Coldstream
-INSERT INTO MAP_NEAREST_TWN VALUES (183, 94);  --Comox > Comox
-INSERT INTO MAP_NEAREST_TWN VALUES (244, 95);  --Coquitlam > Coquitlam
-INSERT INTO MAP_NEAREST_TWN VALUES (242, 96);  --Coquitlam/Delta > Coquitlam/Delta
-INSERT INTO MAP_NEAREST_TWN VALUES (181, 97);  --Courtenay > Courtenay
-INSERT INTO MAP_NEAREST_TWN VALUES (187, 98);  --Cowichan 1 > Cowichan 1
-INSERT INTO MAP_NEAREST_TWN VALUES (297, 99);  --Cowichan Bay > Cowichan Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (69, 100);  --Cranbrook > Cranbrook
-INSERT INTO MAP_NEAREST_TWN VALUES (150, 101);  --Creston > Creston
-INSERT INTO MAP_NEAREST_TWN VALUES (299, 102);  --Crofton > Crofton
-INSERT INTO MAP_NEAREST_TWN VALUES (38, 103);  --Dawson Creek > Dawson Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (138, 104);  --Dease Lake > Dease Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (14, 105);  --Delta > Delta
-INSERT INTO MAP_NEAREST_TWN VALUES (78, 106);  --Delta/New Westminster > Delta/New Westminster
-INSERT INTO MAP_NEAREST_TWN VALUES (9, 107);  --Delta/Surrey > Delta/Surrey
-INSERT INTO MAP_NEAREST_TWN VALUES (88, 108);  --Deroche > Deroche
-INSERT INTO MAP_NEAREST_TWN VALUES (229, 109);  --Donald > Donald
-INSERT INTO MAP_NEAREST_TWN VALUES (227, 110);  --Duncan > Duncan
-INSERT INTO MAP_NEAREST_TWN VALUES (247, 111);  --Edgewood > Edgewood
-INSERT INTO MAP_NEAREST_TWN VALUES (152, 112);  --Elkford > Elkford
-INSERT INTO MAP_NEAREST_TWN VALUES (154, 113);  --Elko > Elko
-INSERT INTO MAP_NEAREST_TWN VALUES (34, 114);  --Enderby > Enderby
-INSERT INTO MAP_NEAREST_TWN VALUES (282, 115);  --Esquimalt > Esquimalt
-INSERT INTO MAP_NEAREST_TWN VALUES (76, 116);  --Fairmont > Fairmont
-INSERT INTO MAP_NEAREST_TWN VALUES (254, 117);  --Fairmont Hot Springs > Fairmont Hot Springs
-INSERT INTO MAP_NEAREST_TWN VALUES (65, 118);  --Falkland > Falkland
-INSERT INTO MAP_NEAREST_TWN VALUES (102, 119);  --Fauquier > Fauquier
-INSERT INTO MAP_NEAREST_TWN VALUES (156, 120);  --Fernie > Fernie
-INSERT INTO MAP_NEAREST_TWN VALUES (58, 121);  --Fort Nelson > Fort Nelson
-INSERT INTO MAP_NEAREST_TWN VALUES (293, 122);  --Fort St John > Fort St John
-INSERT INTO MAP_NEAREST_TWN VALUES (167, 123);  --Fort St. James > Fort St. James
-INSERT INTO MAP_NEAREST_TWN VALUES (49, 124);  --Fort St. John > Fort St. John
-INSERT INTO MAP_NEAREST_TWN VALUES (75, 125);  --Fort Steele > Fort Steele
-INSERT INTO MAP_NEAREST_TWN VALUES (202, 126);  --Fraser Lake > Fraser Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (130, 127);  --Fruitvale > Fruitvale
-INSERT INTO MAP_NEAREST_TWN VALUES (281, 128);  --Gabriola > Gabriola
-INSERT INTO MAP_NEAREST_TWN VALUES (287, 129);  --Gabriola Island > Gabriola Island
-INSERT INTO MAP_NEAREST_TWN VALUES (147, 130);  --Galena Bay > Galena Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (273, 131);  --Ganges > Ganges
-INSERT INTO MAP_NEAREST_TWN VALUES (221, 132);  --Gibsons > Gibsons
-INSERT INTO MAP_NEAREST_TWN VALUES (249, 133);  --Gold Bridge > Gold Bridge
-INSERT INTO MAP_NEAREST_TWN VALUES (164, 134);  --Gold River > Gold River
-INSERT INTO MAP_NEAREST_TWN VALUES (165, 135);  --Gold River/ Tahsis > Gold River/ Tahsis
-INSERT INTO MAP_NEAREST_TWN VALUES (71, 136);  --Golden > Golden
-INSERT INTO MAP_NEAREST_TWN VALUES (153, 137);  --Grand Forks > Grand Forks
-INSERT INTO MAP_NEAREST_TWN VALUES (215, 138);  --Greenville > Greenville
-INSERT INTO MAP_NEAREST_TWN VALUES (257, 139);  --Hagensborg > Hagensborg
-INSERT INTO MAP_NEAREST_TWN VALUES (89, 140);  --Haig > Haig
-INSERT INTO MAP_NEAREST_TWN VALUES (219, 141);  --Halfmoon Bay > Halfmoon Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (172, 142);  --Hanceville > Hanceville
-INSERT INTO MAP_NEAREST_TWN VALUES (81, 143);  --Harrison / Kent > Harrison / Kent
-INSERT INTO MAP_NEAREST_TWN VALUES (79, 144);  --Harrison Hot Springs > Harrison Hot Springs
-INSERT INTO MAP_NEAREST_TWN VALUES (72, 145);  --Harrogate > Harrogate
-INSERT INTO MAP_NEAREST_TWN VALUES (204, 146);  --Hazelton > Hazelton
-INSERT INTO MAP_NEAREST_TWN VALUES (151, 147);  --Hedley > Hedley
-INSERT INTO MAP_NEAREST_TWN VALUES (120, 148);  --Heffley Creek > Heffley Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (63, 149);  --Hixon > Hixon
-INSERT INTO MAP_NEAREST_TWN VALUES (303, 150);  --Holberg > Holberg
-INSERT INTO MAP_NEAREST_TWN VALUES (119, 151);  --Hope > Hope
-INSERT INTO MAP_NEAREST_TWN VALUES (159, 152);  --Hope/ Powell River > Hope/ Powell River
-INSERT INTO MAP_NEAREST_TWN VALUES (310, 153);  --Horsefly > Horsefly
-INSERT INTO MAP_NEAREST_TWN VALUES (315, 154);  --Hosmer > Hosmer
-INSERT INTO MAP_NEAREST_TWN VALUES (198, 155);  --Houston > Houston
-INSERT INTO MAP_NEAREST_TWN VALUES (163, 156);  --Hudson's Hope > Hudson's Hope
-INSERT INTO MAP_NEAREST_TWN VALUES (225, 157);  --Invermere > Invermere
-INSERT INTO MAP_NEAREST_TWN VALUES (66, 158);  --Kaleden > Kaleden
-INSERT INTO MAP_NEAREST_TWN VALUES (64, 159);  --Kamloops > Kamloops
-INSERT INTO MAP_NEAREST_TWN VALUES (107, 160);  --Kamloops/Merritt > Kamloops/Merritt
-INSERT INTO MAP_NEAREST_TWN VALUES (146, 161);  --Kaslo > Kaslo
-INSERT INTO MAP_NEAREST_TWN VALUES (44, 162);  --Kelowna > Kelowna
-INSERT INTO MAP_NEAREST_TWN VALUES (132, 163);  --Keremeos > Keremeos
-INSERT INTO MAP_NEAREST_TWN VALUES (68, 164);  --Kimberley > Kimberley
-INSERT INTO MAP_NEAREST_TWN VALUES (139, 165);  --Kitimat > Kitimat
-INSERT INTO MAP_NEAREST_TWN VALUES (141, 166);  --Kitimat/Terrace > Kitimat/Terrace
-INSERT INTO MAP_NEAREST_TWN VALUES (137, 167);  --Kitwanga > Kitwanga
-INSERT INTO MAP_NEAREST_TWN VALUES (255, 168);  --Lac la Hache > Lac la Hache
-INSERT INTO MAP_NEAREST_TWN VALUES (307, 169);  --Lake Country > Lake Country
-INSERT INTO MAP_NEAREST_TWN VALUES (276, 170);  --Lake Cowichan > Lake Cowichan
-INSERT INTO MAP_NEAREST_TWN VALUES (290, 171);  --Lake Cowichan and Sidney > Lake Cowichan and Sidney
-INSERT INTO MAP_NEAREST_TWN VALUES (210, 172);  --Langford > Langford
-INSERT INTO MAP_NEAREST_TWN VALUES (213, 173);  --Langley > Langley
-INSERT INTO MAP_NEAREST_TWN VALUES (224, 174);  --Langley/ Maple Ridge > Langley/ Maple Ridge
-INSERT INTO MAP_NEAREST_TWN VALUES (271, 175);  --Likely > Likely
-INSERT INTO MAP_NEAREST_TWN VALUES (8, 176);  --Lillooet > Lillooet
-INSERT INTO MAP_NEAREST_TWN VALUES (26, 177);  --Lillooett > Lillooett
-INSERT INTO MAP_NEAREST_TWN VALUES (20, 178);  --Lions Bay > Lions Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (110, 179);  --Little Fort > Little Fort
-INSERT INTO MAP_NEAREST_TWN VALUES (27, 180);  --Logan Lake > Logan Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (169, 181);  --Lone Butte > Lone Butte
-INSERT INTO MAP_NEAREST_TWN VALUES (100, 182);  --Lumby > Lumby
-INSERT INTO MAP_NEAREST_TWN VALUES (214, 183);  --Lytton > Lytton
-INSERT INTO MAP_NEAREST_TWN VALUES (56, 184);  --Mackenzie > Mackenzie
-INSERT INTO MAP_NEAREST_TWN VALUES (86, 185);  --Maple Ridge > Maple Ridge
-INSERT INTO MAP_NEAREST_TWN VALUES (87, 186);  --Maple Ridge/Mission > Maple Ridge/Mission
-INSERT INTO MAP_NEAREST_TWN VALUES (93, 187);  --Maple Ridge/Pitt Meadows > Maple Ridge/Pitt Meadows
-INSERT INTO MAP_NEAREST_TWN VALUES (259, 188);  --Mara > Mara
-INSERT INTO MAP_NEAREST_TWN VALUES (203, 189);  --Masset/Port Clements > Masset/Port Clements
-INSERT INTO MAP_NEAREST_TWN VALUES (111, 190);  --McBride > McBride
-INSERT INTO MAP_NEAREST_TWN VALUES (269, 191);  --McBride/Valemount > McBride/Valemount
-INSERT INTO MAP_NEAREST_TWN VALUES (286, 192);  --McClure > McClure
-INSERT INTO MAP_NEAREST_TWN VALUES (28, 193);  --Merritt > Merritt
-INSERT INTO MAP_NEAREST_TWN VALUES (29, 194);  --Merritt &Kelowna > Merritt & Kelowna
-INSERT INTO MAP_NEAREST_TWN VALUES (241, 195);  --Mill Bay > Mill Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (231, 196);  --Mill Bay/Langford > Mill Bay/Langford
-INSERT INTO MAP_NEAREST_TWN VALUES (264, 197);  --misc > misc
-INSERT INTO MAP_NEAREST_TWN VALUES (90, 198);  --Mission > Mission
-INSERT INTO MAP_NEAREST_TWN VALUES (216, 199);  --Mission/Abbotsford > Mission/Abbotsford
-INSERT INTO MAP_NEAREST_TWN VALUES (59, 200);  --Monte Lake > Monte Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (129, 201);  --Montrose > Montrose
-INSERT INTO MAP_NEAREST_TWN VALUES (25, 202);  --Mount Currie > Mount Currie
-INSERT INTO MAP_NEAREST_TWN VALUES (142, 203);  --Moyie > Moyie
-INSERT INTO MAP_NEAREST_TWN VALUES (2, 204);  --n/a > n/a
-INSERT INTO MAP_NEAREST_TWN VALUES (105, 205);  --Nakusp > Nakusp
-INSERT INTO MAP_NEAREST_TWN VALUES (178, 206);  --Nanaimo > Nanaimo
-INSERT INTO MAP_NEAREST_TWN VALUES (186, 207);  --Nanaimo/ Courtenay > Nanaimo/ Courtenay
-INSERT INTO MAP_NEAREST_TWN VALUES (180, 208);  --Nanoose Bay > Nanoose Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (313, 209);  --Naramata > Naramata
-INSERT INTO MAP_NEAREST_TWN VALUES (1, 210);  --Nearest Town > Nearest Town
-INSERT INTO MAP_NEAREST_TWN VALUES (101, 211);  --Nelson > Nelson
-INSERT INTO MAP_NEAREST_TWN VALUES (252, 212);  --Nelson/Castlegar > Nelson/Castlegar
-INSERT INTO MAP_NEAREST_TWN VALUES (308, 213);  --New Aiyansh > New Aiyansh
-INSERT INTO MAP_NEAREST_TWN VALUES (145, 214);  --New Denver > New Denver
-INSERT INTO MAP_NEAREST_TWN VALUES (280, 215);  --New Westminster > New Westminster
-INSERT INTO MAP_NEAREST_TWN VALUES (77, 216);  --New Westminster/Surrey > New Westminster/Surrey
-INSERT INTO MAP_NEAREST_TWN VALUES (288, 217);  --North Van, Vancouver, Richmond > North Van, Vancouver, Richmond
-INSERT INTO MAP_NEAREST_TWN VALUES (19, 218);  --North Vancouver > North Vancouver
-INSERT INTO MAP_NEAREST_TWN VALUES (50, 219);  --Okanagan Falls > Okanagan Falls
-INSERT INTO MAP_NEAREST_TWN VALUES (57, 220);  --Oliver > Oliver
-INSERT INTO MAP_NEAREST_TWN VALUES (133, 221);  --Ootischenia > Ootischenia
-INSERT INTO MAP_NEAREST_TWN VALUES (67, 222);  --Osoyoos > Osoyoos
-INSERT INTO MAP_NEAREST_TWN VALUES (41, 223);  --Oyama > Oyama
-INSERT INTO MAP_NEAREST_TWN VALUES (250, 224);  --Panorama > Panorama
-INSERT INTO MAP_NEAREST_TWN VALUES (122, 225);  --Parksville > Parksville
-INSERT INTO MAP_NEAREST_TWN VALUES (30, 226);  --Peachland > Peachland
-INSERT INTO MAP_NEAREST_TWN VALUES (10, 227);  --Pemberton > Pemberton
-INSERT INTO MAP_NEAREST_TWN VALUES (222, 228);  --Pender Harbor > Pender Harbor
-INSERT INTO MAP_NEAREST_TWN VALUES (53, 229);  --Penticton > Penticton
-INSERT INTO MAP_NEAREST_TWN VALUES (92, 230);  --Pitt Meadows > Pitt Meadows
-INSERT INTO MAP_NEAREST_TWN VALUES (123, 231);  --Port Alberni > Port Alberni
-INSERT INTO MAP_NEAREST_TWN VALUES (148, 232);  --Port Alice > Port Alice
-INSERT INTO MAP_NEAREST_TWN VALUES (85, 233);  --Port Coquitlam > Port Coquitlam
-INSERT INTO MAP_NEAREST_TWN VALUES (184, 234);  --Port McNeill > Port Mcneill
-INSERT INTO MAP_NEAREST_TWN VALUES (261, 234);  --Port McNeill > Port McNeill
-INSERT INTO MAP_NEAREST_TWN VALUES (272, 235);  --Port Mellon > Port Mellon
-INSERT INTO MAP_NEAREST_TWN VALUES (211, 236);  --Port Renfrew > Port Renfrew
-INSERT INTO MAP_NEAREST_TWN VALUES (177, 237);  --Pouce Coupe > Pouce Coupe
-INSERT INTO MAP_NEAREST_TWN VALUES (6, 238);  --Powell River > Powell River
-INSERT INTO MAP_NEAREST_TWN VALUES (47, 239);  --Prince George > Prince George
-INSERT INTO MAP_NEAREST_TWN VALUES (284, 240);  --Prince George/Fort St. James > Prince George/Fort St. James
-INSERT INTO MAP_NEAREST_TWN VALUES (191, 241);  --Prince George/Smithers > Prince George/Smithers
-INSERT INTO MAP_NEAREST_TWN VALUES (292, 242);  --Prince Geroge > Prince Geroge
-INSERT INTO MAP_NEAREST_TWN VALUES (192, 243);  --Prince Rupert > Prince Rupert
-INSERT INTO MAP_NEAREST_TWN VALUES (109, 244);  --Princeton > Princeton
-INSERT INTO MAP_NEAREST_TWN VALUES (251, 245);  --Pritchard > Pritchard
-INSERT INTO MAP_NEAREST_TWN VALUES (266, 246);  --Quadra Island > Quadra Island
-INSERT INTO MAP_NEAREST_TWN VALUES (278, 247);  --Qualicum > Qualicum
-INSERT INTO MAP_NEAREST_TWN VALUES (196, 248);  --Queen Charlotte City > Queen Charlotte City
-INSERT INTO MAP_NEAREST_TWN VALUES (42, 249);  --Quesnel > Quesnel
-INSERT INTO MAP_NEAREST_TWN VALUES (108, 250);  --Quilchena > Quilchena
-INSERT INTO MAP_NEAREST_TWN VALUES (70, 251);  --Radium Hot Springs > Radium Hot Springs
-INSERT INTO MAP_NEAREST_TWN VALUES (170, 252);  --Revelstoke > Revelstoke
-INSERT INTO MAP_NEAREST_TWN VALUES (236, 253);  --Revelstoke/Golden > Revelstoke/Golden
-INSERT INTO MAP_NEAREST_TWN VALUES (13, 254);  --Richmond > Richmond
-INSERT INTO MAP_NEAREST_TWN VALUES (15, 255);  --Richmond/Delta > Richmond/Delta
-INSERT INTO MAP_NEAREST_TWN VALUES (175, 256);  --Riske Creek > Riske Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (220, 257);  --Roberts Creek > Roberts Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (143, 258);  --Rock Creek > Rock Creek
-INSERT INTO MAP_NEAREST_TWN VALUES (194, 259);  --Rose Lake > Rose Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (128, 260);  --Rossland > Rossland
-INSERT INTO MAP_NEAREST_TWN VALUES (91, 261);  --Ruskin > Ruskin
-INSERT INTO MAP_NEAREST_TWN VALUES (260, 262);  --Rutland > Rutland
-INSERT INTO MAP_NEAREST_TWN VALUES (188, 263);  --Saanich > Saanich
-INSERT INTO MAP_NEAREST_TWN VALUES (301, 264);  --Saanich/Duncan > Saanich/Duncan
-INSERT INTO MAP_NEAREST_TWN VALUES (104, 265);  --Salmo > Salmo
-INSERT INTO MAP_NEAREST_TWN VALUES (31, 266);  --Salmon Arm > Salmon Arm
-INSERT INTO MAP_NEAREST_TWN VALUES (302, 267);  --Savary Island > Savary Island
-INSERT INTO MAP_NEAREST_TWN VALUES (239, 268);  --Savona > Savona
-INSERT INTO MAP_NEAREST_TWN VALUES (182, 269);  --Sayward > Sayward
-INSERT INTO MAP_NEAREST_TWN VALUES (218, 270);  --Sechelt > Sechelt
-INSERT INTO MAP_NEAREST_TWN VALUES (246, 271);  --Seton Portage > Seton Portage
-INSERT INTO MAP_NEAREST_TWN VALUES (234, 272);  --Shawnigan Lake > Shawnigan Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (32, 273);  --Sicamous > Sicamous
-INSERT INTO MAP_NEAREST_TWN VALUES (189, 274);  --Sidney > Sidney
-INSERT INTO MAP_NEAREST_TWN VALUES (96, 275);  --Silverton > Silverton
-INSERT INTO MAP_NEAREST_TWN VALUES (73, 276);  --Skookumchuck > Skookumchuck
-INSERT INTO MAP_NEAREST_TWN VALUES (99, 277);  --Slocan > Slocan
-INSERT INTO MAP_NEAREST_TWN VALUES (199, 278);  --Smithers > Smithers
-INSERT INTO MAP_NEAREST_TWN VALUES (209, 279);  --Sooke > Sooke
-INSERT INTO MAP_NEAREST_TWN VALUES (226, 280);  --Sorrento > Sorrento
-INSERT INTO MAP_NEAREST_TWN VALUES (94, 281);  --South Slocan > South Slocan
-INSERT INTO MAP_NEAREST_TWN VALUES (35, 282);  --Spallumcheen > Spallumcheen
-INSERT INTO MAP_NEAREST_TWN VALUES (149, 283);  --Sparwood > Sparwood
-INSERT INTO MAP_NEAREST_TWN VALUES (83, 284);  --Spences Bridge > Spences Bridge
-INSERT INTO MAP_NEAREST_TWN VALUES (232, 285);  --Spuzzum > Spuzzum
-INSERT INTO MAP_NEAREST_TWN VALUES (17, 286);  --Squamish > Squamish
-INSERT INTO MAP_NEAREST_TWN VALUES (245, 287);  --Squilax > Squilax
-INSERT INTO MAP_NEAREST_TWN VALUES (136, 288);  --Stewart > Stewart
-INSERT INTO MAP_NEAREST_TWN VALUES (291, 289);  --Stewrt > Stewrt
-INSERT INTO MAP_NEAREST_TWN VALUES (60, 290);  --Summerland > Summerland
-INSERT INTO MAP_NEAREST_TWN VALUES (12, 291);  --Surrey > Surrey
-INSERT INTO MAP_NEAREST_TWN VALUES (208, 291);  --Surrey > Surrey  
-INSERT INTO MAP_NEAREST_TWN VALUES (265, 292);  --Surrey, Langley > Surrey, Langley
-INSERT INTO MAP_NEAREST_TWN VALUES (207, 293);  --Surrey/Cloverdale > Surrey/Cloverdale
-INSERT INTO MAP_NEAREST_TWN VALUES (223, 294);  --Surrey/Richmond > Surrey/Richmond
-INSERT INTO MAP_NEAREST_TWN VALUES (306, 295);  --Tahsis > Tahsis
-INSERT INTO MAP_NEAREST_TWN VALUES (230, 296);  --Tappen > Tappen
-INSERT INTO MAP_NEAREST_TWN VALUES (173, 297);  --Tatla Lake > Tatla Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (39, 298);  --Taylor > Taylor
-INSERT INTO MAP_NEAREST_TWN VALUES (140, 299);  --Telkwa > Telkwa
-INSERT INTO MAP_NEAREST_TWN VALUES (4, 300);  --Terrace > Terrace
-INSERT INTO MAP_NEAREST_TWN VALUES (268, 302);  --Tlell > Tlell
-INSERT INTO MAP_NEAREST_TWN VALUES (124, 303);  --Tofino > Tofino
-INSERT INTO MAP_NEAREST_TWN VALUES (195, 304);  --Topley > Topley
-INSERT INTO MAP_NEAREST_TWN VALUES (126, 305);  --Trail > Trail
-INSERT INTO MAP_NEAREST_TWN VALUES (157, 306);  --Trail/Rossland > Trail/Rossland
-INSERT INTO MAP_NEAREST_TWN VALUES (197, 301);  --Tte Jaune Cache > Tête Jaune Cache
-INSERT INTO MAP_NEAREST_TWN VALUES (162, 307);  --Tumbler Ridge > Tumbler Ridge
-INSERT INTO MAP_NEAREST_TWN VALUES (125, 308);  --Ucluelet > Ucluelet
-INSERT INTO MAP_NEAREST_TWN VALUES (185, 309);  --Union Bay > Union Bay
-INSERT INTO MAP_NEAREST_TWN VALUES (304, 310);  --Unknown > Unknown
-INSERT INTO MAP_NEAREST_TWN VALUES (115, 311);  --Valemount > Valemount
-INSERT INTO MAP_NEAREST_TWN VALUES (116, 312);  --Valemount/Blue River > Valemount/Blue River
-INSERT INTO MAP_NEAREST_TWN VALUES (112, 313);  --Valmount > Valmount
-INSERT INTO MAP_NEAREST_TWN VALUES (11, 314);  --Vancouver > Vancouver
-INSERT INTO MAP_NEAREST_TWN VALUES (263, 314);  --Vancouver > Vancouver  
-INSERT INTO MAP_NEAREST_TWN VALUES (262, 315);  --Vancouver/Richmond > Vancouver/Richmond
-INSERT INTO MAP_NEAREST_TWN VALUES (24, 316);  --Vancouver/West Vancouver > Vancouver/West Vancouver
-INSERT INTO MAP_NEAREST_TWN VALUES (22, 317);  --Vancouver/Whistler > Vancouver/Whistler
-INSERT INTO MAP_NEAREST_TWN VALUES (201, 318);  --Vanderhoof > Vanderhoof
-INSERT INTO MAP_NEAREST_TWN VALUES (270, 319);  --Vanderhoof/Fraser Lake/Fort St James > Vanderhoof/Fraser Lake/Fort St James
-INSERT INTO MAP_NEAREST_TWN VALUES (5, 320);  --Various > various
-INSERT INTO MAP_NEAREST_TWN VALUES (37, 320);  --Various > Various
-INSERT INTO MAP_NEAREST_TWN VALUES (114, 321);  --Vavenby > Vavenby
-INSERT INTO MAP_NEAREST_TWN VALUES (48, 322);  --Vernon > Vernon
-INSERT INTO MAP_NEAREST_TWN VALUES (190, 323);  --Victoria > Victoria
-INSERT INTO MAP_NEAREST_TWN VALUES (295, 324);  --View Royal > View Royal
-INSERT INTO MAP_NEAREST_TWN VALUES (275, 325);  --Walhachin > Walhachin
-INSERT INTO MAP_NEAREST_TWN VALUES (160, 326);  --Wardner > Wardner
-INSERT INTO MAP_NEAREST_TWN VALUES (127, 327);  --Warfield > Warfield
-INSERT INTO MAP_NEAREST_TWN VALUES (36, 328);  --West Kelowna > West Kelowna
-INSERT INTO MAP_NEAREST_TWN VALUES (62, 329);  --West Kelowna/Kelowna > West Kelowna/Kelowna
-INSERT INTO MAP_NEAREST_TWN VALUES (16, 330);  --West Vancouver > West Vancouver
-INSERT INTO MAP_NEAREST_TWN VALUES (61, 331);  --Westbank > Westbank
-INSERT INTO MAP_NEAREST_TWN VALUES (253, 332);  --Westwold > Westwold
-INSERT INTO MAP_NEAREST_TWN VALUES (7, 333);  --Whistler > Whistler
-INSERT INTO MAP_NEAREST_TWN VALUES (18, 334);  --Whistler/Pemberton > Whistler/Pemberton
-INSERT INTO MAP_NEAREST_TWN VALUES (46, 335);  --williams Lake > Williams Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (55, 335);  --williams Lake > williams Lake
-INSERT INTO MAP_NEAREST_TWN VALUES (311, 336);  --Windermere > Windermere
-INSERT INTO MAP_NEAREST_TWN VALUES (95, 337);  --Winlaw > Winlaw
-INSERT INTO MAP_NEAREST_TWN VALUES (193, 338);  --Witset > Witset
-INSERT INTO MAP_NEAREST_TWN VALUES (179, 339);  --Woss > Woss
-INSERT INTO MAP_NEAREST_TWN VALUES (155, 340);  --Yahk > Yahk
-INSERT INTO MAP_NEAREST_TWN VALUES (238, 341);  --Yale > Yale
-INSERT INTO MAP_NEAREST_TWN VALUES (103, 342);  --Ymir > Ymir
-INSERT INTO MAP_NEAREST_TWN VALUES (277, 343);  --Youbou > Youbou
-INSERT INTO MAP_NEAREST_TWN VALUES (296, 344);  --Zeballos > Zeballos
+/*** Generated Inserts Go Here ***/
+INSERT INTO MAP_NEAREST_TWN VALUES (23, 381);  --100 Mile House > 100 Mile House
+INSERT INTO MAP_NEAREST_TWN VALUES (309, 382);  --150 Mile House > 150 Mile House
+INSERT INTO MAP_NEAREST_TWN VALUES (40, 383);  --70 Mile > 70 Mile
+INSERT INTO MAP_NEAREST_TWN VALUES (43, 384);  --70 Mile House > 70 Mile House
+INSERT INTO MAP_NEAREST_TWN VALUES (217, 385);  --Abbotsford > Abbotsford
+INSERT INTO MAP_NEAREST_TWN VALUES (312, 386);  --Adams Lake > Adams Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (80, 387);  --Agassiz > Agassiz
+INSERT INTO MAP_NEAREST_TWN VALUES (212, 388);  --Aldergrove > Aldergrove
+INSERT INTO MAP_NEAREST_TWN VALUES (176, 389);  --Alexis Creek > Alexis Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (171, 390);  --Anahim Lake > Anahim Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (33, 391);  --Armstrong > Armstrong
+INSERT INTO MAP_NEAREST_TWN VALUES (233, 392);  --Ashcroft > Ashcroft
+INSERT INTO MAP_NEAREST_TWN VALUES (283, 393);  --Atlin > Atlin
+INSERT INTO MAP_NEAREST_TWN VALUES (134, 394);  --Balfour > Balfour
+INSERT INTO MAP_NEAREST_TWN VALUES (279, 395);  --Bamfield > Bamfield
+INSERT INTO MAP_NEAREST_TWN VALUES (168, 396);  --Barkerville > Barkerville
+INSERT INTO MAP_NEAREST_TWN VALUES (118, 397);  --Barriere > Barriere
+INSERT INTO MAP_NEAREST_TWN VALUES (144, 398);  --Beaverdell > Beaverdell
+INSERT INTO MAP_NEAREST_TWN VALUES (174, 399);  --Bella Coola > Bella Coola
+INSERT INTO MAP_NEAREST_TWN VALUES (237, 400);  --Blaeberry > Blaeberry
+INSERT INTO MAP_NEAREST_TWN VALUES (298, 401);  --Blind Bay > Blind Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (113, 402);  --Blue River > Blue River
+INSERT INTO MAP_NEAREST_TWN VALUES (240, 403);  --Boston Bar > Boston Bar
+INSERT INTO MAP_NEAREST_TWN VALUES (135, 404);  --Boswell > Boswell
+INSERT INTO MAP_NEAREST_TWN VALUES (305, 405);  --Bowser > Bowser
+INSERT INTO MAP_NEAREST_TWN VALUES (248, 406);  --Bridge Lake > Bridge Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (21, 407);  --Britannia Beach > Britannia Beach
+INSERT INTO MAP_NEAREST_TWN VALUES (300, 408);  --Burnaby, Delta, West Van > Burnaby, Delta, West Van
+INSERT INTO MAP_NEAREST_TWN VALUES (200, 409);  --Burns Lake > Burns Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (294, 410);  --Burns Lake/Decker Lake > Burns Lake/Decker Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (267, 411);  --Burns Lake/Houston > Burns Lake/Houston
+INSERT INTO MAP_NEAREST_TWN VALUES (285, 412);  --Burns Lake/Smithers > Burns Lake/Smithers
+INSERT INTO MAP_NEAREST_TWN VALUES (205, 413);  --Burns Lake/Telkwa/Prince George > Burns Lake/Telkwa/Prince George
+INSERT INTO MAP_NEAREST_TWN VALUES (106, 414);  --Burton > Burton
+INSERT INTO MAP_NEAREST_TWN VALUES (51, 415);  --Cache Creek > Cache Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (166, 416);  --Campbell River > Campbell River
+INSERT INTO MAP_NEAREST_TWN VALUES (74, 417);  --Canal Flats > Canal Flats
+INSERT INTO MAP_NEAREST_TWN VALUES (314, 418);  --Canim Lake > Canim Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (131, 419);  --Castlegar > Castlegar
+INSERT INTO MAP_NEAREST_TWN VALUES (84, 420);  --Cecil Lake > Cecil Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (52, 421);  --Charlie Lake > Charlie Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (228, 422);  --Chase > Chase
+INSERT INTO MAP_NEAREST_TWN VALUES (289, 423);  --Chase/Qualicum > Chase/Qualicum
+INSERT INTO MAP_NEAREST_TWN VALUES (235, 424);  --Chemainus > Chemainus
+INSERT INTO MAP_NEAREST_TWN VALUES (243, 425);  --Cherry Creek > Cherry Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (98, 426);  --Cherryville > Cherryville
+INSERT INTO MAP_NEAREST_TWN VALUES (45, 427);  --Chetwynd > Chetwynd
+INSERT INTO MAP_NEAREST_TWN VALUES (161, 428);  --Chetwynd/Hudson's Hope > Chetwynd/Hudson's Hope
+INSERT INTO MAP_NEAREST_TWN VALUES (82, 429);  --Chilliwack > Chilliwack
+INSERT INTO MAP_NEAREST_TWN VALUES (274, 430);  --Chilliwack/Hope > Chilliwack/Hope
+INSERT INTO MAP_NEAREST_TWN VALUES (158, 431);  --Christina Lake > Christina Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (117, 432);  --Clearwater > Clearwater
+INSERT INTO MAP_NEAREST_TWN VALUES (258, 433);  --Clearwater/Barriere > Clearwater/Barriere
+INSERT INTO MAP_NEAREST_TWN VALUES (256, 434);  --Clearwater/Merritt > Clearwater/Merritt
+INSERT INTO MAP_NEAREST_TWN VALUES (54, 435);  --Clinton > Clinton
+INSERT INTO MAP_NEAREST_TWN VALUES (206, 436);  --Cloverdale > Cloverdale
+INSERT INTO MAP_NEAREST_TWN VALUES (97, 437);  --Coldstream > Coldstream
+INSERT INTO MAP_NEAREST_TWN VALUES (183, 438);  --Comox > Comox
+INSERT INTO MAP_NEAREST_TWN VALUES (244, 439);  --Coquitlam > Coquitlam
+INSERT INTO MAP_NEAREST_TWN VALUES (242, 440);  --Coquitlam/Delta > Coquitlam/Delta
+INSERT INTO MAP_NEAREST_TWN VALUES (181, 441);  --Courtenay > Courtenay
+INSERT INTO MAP_NEAREST_TWN VALUES (187, 442);  --Cowichan 1 > Cowichan 1
+INSERT INTO MAP_NEAREST_TWN VALUES (297, 443);  --Cowichan Bay > Cowichan Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (69, 444);  --Cranbrook > Cranbrook
+INSERT INTO MAP_NEAREST_TWN VALUES (150, 445);  --Creston > Creston
+INSERT INTO MAP_NEAREST_TWN VALUES (299, 446);  --Crofton > Crofton
+INSERT INTO MAP_NEAREST_TWN VALUES (38, 447);  --Dawson Creek > Dawson Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (138, 448);  --Dease Lake > Dease Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (14, 449);  --Delta > Delta
+INSERT INTO MAP_NEAREST_TWN VALUES (78, 450);  --Delta/New Westminster > Delta/New Westminster
+INSERT INTO MAP_NEAREST_TWN VALUES (9, 451);  --Delta/Surrey > Delta/Surrey
+INSERT INTO MAP_NEAREST_TWN VALUES (88, 452);  --Deroche > Deroche
+INSERT INTO MAP_NEAREST_TWN VALUES (229, 453);  --Donald > Donald
+INSERT INTO MAP_NEAREST_TWN VALUES (227, 454);  --Duncan > Duncan
+INSERT INTO MAP_NEAREST_TWN VALUES (247, 455);  --Edgewood > Edgewood
+INSERT INTO MAP_NEAREST_TWN VALUES (152, 456);  --Elkford > Elkford
+INSERT INTO MAP_NEAREST_TWN VALUES (154, 457);  --Elko > Elko
+INSERT INTO MAP_NEAREST_TWN VALUES (34, 458);  --Enderby > Enderby
+INSERT INTO MAP_NEAREST_TWN VALUES (282, 459);  --Esquimalt > Esquimalt
+INSERT INTO MAP_NEAREST_TWN VALUES (76, 460);  --Fairmont > Fairmont
+INSERT INTO MAP_NEAREST_TWN VALUES (254, 461);  --Fairmont Hot Springs > Fairmont Hot Springs
+INSERT INTO MAP_NEAREST_TWN VALUES (65, 462);  --Falkland > Falkland
+INSERT INTO MAP_NEAREST_TWN VALUES (102, 463);  --Fauquier > Fauquier
+INSERT INTO MAP_NEAREST_TWN VALUES (156, 464);  --Fernie > Fernie
+INSERT INTO MAP_NEAREST_TWN VALUES (58, 465);  --Fort Nelson > Fort Nelson
+INSERT INTO MAP_NEAREST_TWN VALUES (293, 466);  --Fort St John > Fort St John
+INSERT INTO MAP_NEAREST_TWN VALUES (167, 467);  --Fort St. James > Fort St. James
+INSERT INTO MAP_NEAREST_TWN VALUES (49, 468);  --Fort St. John > Fort St. John
+INSERT INTO MAP_NEAREST_TWN VALUES (75, 469);  --Fort Steele > Fort Steele
+INSERT INTO MAP_NEAREST_TWN VALUES (202, 470);  --Fraser Lake > Fraser Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (130, 471);  --Fruitvale > Fruitvale
+INSERT INTO MAP_NEAREST_TWN VALUES (281, 472);  --Gabriola > Gabriola
+INSERT INTO MAP_NEAREST_TWN VALUES (287, 473);  --Gabriola Island > Gabriola Island
+INSERT INTO MAP_NEAREST_TWN VALUES (147, 474);  --Galena Bay > Galena Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (273, 475);  --Ganges > Ganges
+INSERT INTO MAP_NEAREST_TWN VALUES (221, 476);  --Gibsons > Gibsons
+INSERT INTO MAP_NEAREST_TWN VALUES (249, 477);  --Gold Bridge > Gold Bridge
+INSERT INTO MAP_NEAREST_TWN VALUES (164, 478);  --Gold River > Gold River
+INSERT INTO MAP_NEAREST_TWN VALUES (165, 479);  --Gold River/ Tahsis > Gold River/ Tahsis
+INSERT INTO MAP_NEAREST_TWN VALUES (71, 480);  --Golden > Golden
+INSERT INTO MAP_NEAREST_TWN VALUES (153, 481);  --Grand Forks > Grand Forks
+INSERT INTO MAP_NEAREST_TWN VALUES (215, 482);  --Greenville > Greenville
+INSERT INTO MAP_NEAREST_TWN VALUES (257, 483);  --Hagensborg > Hagensborg
+INSERT INTO MAP_NEAREST_TWN VALUES (89, 484);  --Haig > Haig
+INSERT INTO MAP_NEAREST_TWN VALUES (219, 485);  --Halfmoon Bay > Halfmoon Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (172, 486);  --Hanceville > Hanceville
+INSERT INTO MAP_NEAREST_TWN VALUES (81, 487);  --Harrison / Kent > Harrison / Kent
+INSERT INTO MAP_NEAREST_TWN VALUES (79, 488);  --Harrison Hot Springs > Harrison Hot Springs
+INSERT INTO MAP_NEAREST_TWN VALUES (72, 489);  --Harrogate > Harrogate
+INSERT INTO MAP_NEAREST_TWN VALUES (204, 490);  --Hazelton > Hazelton
+INSERT INTO MAP_NEAREST_TWN VALUES (151, 491);  --Hedley > Hedley
+INSERT INTO MAP_NEAREST_TWN VALUES (120, 492);  --Heffley Creek > Heffley Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (63, 493);  --Hixon > Hixon
+INSERT INTO MAP_NEAREST_TWN VALUES (303, 494);  --Holberg > Holberg
+INSERT INTO MAP_NEAREST_TWN VALUES (119, 495);  --Hope > Hope
+INSERT INTO MAP_NEAREST_TWN VALUES (159, 496);  --Hope/ Powell River > Hope/ Powell River
+INSERT INTO MAP_NEAREST_TWN VALUES (310, 497);  --Horsefly > Horsefly
+INSERT INTO MAP_NEAREST_TWN VALUES (315, 498);  --Hosmer > Hosmer
+INSERT INTO MAP_NEAREST_TWN VALUES (198, 499);  --Houston > Houston
+INSERT INTO MAP_NEAREST_TWN VALUES (163, 500);  --Hudson's Hope > Hudson's Hope
+INSERT INTO MAP_NEAREST_TWN VALUES (225, 501);  --Invermere > Invermere
+INSERT INTO MAP_NEAREST_TWN VALUES (66, 502);  --Kaleden > Kaleden
+INSERT INTO MAP_NEAREST_TWN VALUES (64, 503);  --Kamloops > Kamloops
+INSERT INTO MAP_NEAREST_TWN VALUES (107, 504);  --Kamloops/Merritt > Kamloops/Merritt
+INSERT INTO MAP_NEAREST_TWN VALUES (146, 505);  --Kaslo > Kaslo
+INSERT INTO MAP_NEAREST_TWN VALUES (44, 506);  --Kelowna > Kelowna
+INSERT INTO MAP_NEAREST_TWN VALUES (132, 507);  --Keremeos > Keremeos
+INSERT INTO MAP_NEAREST_TWN VALUES (68, 508);  --Kimberley > Kimberley
+INSERT INTO MAP_NEAREST_TWN VALUES (139, 509);  --Kitimat > Kitimat
+INSERT INTO MAP_NEAREST_TWN VALUES (141, 510);  --Kitimat/Terrace > Kitimat/Terrace
+INSERT INTO MAP_NEAREST_TWN VALUES (137, 511);  --Kitwanga > Kitwanga
+INSERT INTO MAP_NEAREST_TWN VALUES (255, 512);  --Lac la Hache > Lac la Hache
+INSERT INTO MAP_NEAREST_TWN VALUES (307, 513);  --Lake Country > Lake Country
+INSERT INTO MAP_NEAREST_TWN VALUES (276, 514);  --Lake Cowichan > Lake Cowichan
+INSERT INTO MAP_NEAREST_TWN VALUES (290, 515);  --Lake Cowichan and Sidney > Lake Cowichan and Sidney
+INSERT INTO MAP_NEAREST_TWN VALUES (210, 516);  --Langford > Langford
+INSERT INTO MAP_NEAREST_TWN VALUES (213, 517);  --Langley > Langley
+INSERT INTO MAP_NEAREST_TWN VALUES (224, 518);  --Langley/ Maple Ridge > Langley/ Maple Ridge
+INSERT INTO MAP_NEAREST_TWN VALUES (271, 519);  --Likely > Likely
+INSERT INTO MAP_NEAREST_TWN VALUES (8, 520);  --Lillooet > Lillooet
+INSERT INTO MAP_NEAREST_TWN VALUES (26, 521);  --Lillooett > Lillooett
+INSERT INTO MAP_NEAREST_TWN VALUES (20, 522);  --Lions Bay > Lions Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (110, 523);  --Little Fort > Little Fort
+INSERT INTO MAP_NEAREST_TWN VALUES (27, 524);  --Logan Lake > Logan Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (169, 525);  --Lone Butte > Lone Butte
+INSERT INTO MAP_NEAREST_TWN VALUES (100, 526);  --Lumby > Lumby
+INSERT INTO MAP_NEAREST_TWN VALUES (214, 527);  --Lytton > Lytton
+INSERT INTO MAP_NEAREST_TWN VALUES (56, 528);  --Mackenzie > Mackenzie
+INSERT INTO MAP_NEAREST_TWN VALUES (86, 529);  --Maple Ridge > Maple Ridge
+INSERT INTO MAP_NEAREST_TWN VALUES (87, 530);  --Maple Ridge/Mission > Maple Ridge/Mission
+INSERT INTO MAP_NEAREST_TWN VALUES (93, 531);  --Maple Ridge/Pitt Meadows > Maple Ridge/Pitt Meadows
+INSERT INTO MAP_NEAREST_TWN VALUES (259, 532);  --Mara > Mara
+INSERT INTO MAP_NEAREST_TWN VALUES (203, 533);  --Masset/Port Clements > Masset/Port Clements
+INSERT INTO MAP_NEAREST_TWN VALUES (111, 534);  --McBride > McBride
+INSERT INTO MAP_NEAREST_TWN VALUES (269, 535);  --McBride/Valemount > McBride/Valemount
+INSERT INTO MAP_NEAREST_TWN VALUES (286, 536);  --McClure > McClure
+INSERT INTO MAP_NEAREST_TWN VALUES (28, 537);  --Merritt > Merritt
+INSERT INTO MAP_NEAREST_TWN VALUES (29, 538);  --Merritt &Kelowna > Merritt & Kelowna
+INSERT INTO MAP_NEAREST_TWN VALUES (241, 539);  --Mill Bay > Mill Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (231, 540);  --Mill Bay/Langford > Mill Bay/Langford
+INSERT INTO MAP_NEAREST_TWN VALUES (264, 541);  --misc > misc
+INSERT INTO MAP_NEAREST_TWN VALUES (90, 542);  --Mission > Mission
+INSERT INTO MAP_NEAREST_TWN VALUES (216, 543);  --Mission/Abbotsford > Mission/Abbotsford
+INSERT INTO MAP_NEAREST_TWN VALUES (59, 544);  --Monte Lake > Monte Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (129, 545);  --Montrose > Montrose
+INSERT INTO MAP_NEAREST_TWN VALUES (25, 546);  --Mount Currie > Mount Currie
+INSERT INTO MAP_NEAREST_TWN VALUES (142, 547);  --Moyie > Moyie
+INSERT INTO MAP_NEAREST_TWN VALUES (2, 548);  --n/a > n/a
+INSERT INTO MAP_NEAREST_TWN VALUES (105, 549);  --Nakusp > Nakusp
+INSERT INTO MAP_NEAREST_TWN VALUES (178, 550);  --Nanaimo > Nanaimo
+INSERT INTO MAP_NEAREST_TWN VALUES (186, 551);  --Nanaimo/ Courtenay > Nanaimo/ Courtenay
+INSERT INTO MAP_NEAREST_TWN VALUES (180, 552);  --Nanoose Bay > Nanoose Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (313, 553);  --Naramata > Naramata
+INSERT INTO MAP_NEAREST_TWN VALUES (1, 554);  --Nearest Town > Nearest Town
+INSERT INTO MAP_NEAREST_TWN VALUES (101, 555);  --Nelson > Nelson
+INSERT INTO MAP_NEAREST_TWN VALUES (252, 556);  --Nelson/Castlegar > Nelson/Castlegar
+INSERT INTO MAP_NEAREST_TWN VALUES (308, 557);  --New Aiyansh > New Aiyansh
+INSERT INTO MAP_NEAREST_TWN VALUES (145, 558);  --New Denver > New Denver
+INSERT INTO MAP_NEAREST_TWN VALUES (280, 559);  --New Westminster > New Westminster
+INSERT INTO MAP_NEAREST_TWN VALUES (77, 560);  --New Westminster/Surrey > New Westminster/Surrey
+INSERT INTO MAP_NEAREST_TWN VALUES (288, 561);  --North Van, Vancouver, Richmond > North Van, Vancouver, Richmond
+INSERT INTO MAP_NEAREST_TWN VALUES (19, 562);  --North Vancouver > North Vancouver
+INSERT INTO MAP_NEAREST_TWN VALUES (50, 563);  --Okanagan Falls > Okanagan Falls
+INSERT INTO MAP_NEAREST_TWN VALUES (57, 564);  --Oliver > Oliver
+INSERT INTO MAP_NEAREST_TWN VALUES (133, 565);  --Ootischenia > Ootischenia
+INSERT INTO MAP_NEAREST_TWN VALUES (67, 566);  --Osoyoos > Osoyoos
+INSERT INTO MAP_NEAREST_TWN VALUES (41, 567);  --Oyama > Oyama
+INSERT INTO MAP_NEAREST_TWN VALUES (250, 568);  --Panorama > Panorama
+INSERT INTO MAP_NEAREST_TWN VALUES (122, 569);  --Parksville > Parksville
+INSERT INTO MAP_NEAREST_TWN VALUES (30, 570);  --Peachland > Peachland
+INSERT INTO MAP_NEAREST_TWN VALUES (10, 571);  --Pemberton > Pemberton
+INSERT INTO MAP_NEAREST_TWN VALUES (222, 572);  --Pender Harbor > Pender Harbor
+INSERT INTO MAP_NEAREST_TWN VALUES (53, 573);  --Penticton > Penticton
+INSERT INTO MAP_NEAREST_TWN VALUES (92, 574);  --Pitt Meadows > Pitt Meadows
+INSERT INTO MAP_NEAREST_TWN VALUES (123, 575);  --Port Alberni > Port Alberni
+INSERT INTO MAP_NEAREST_TWN VALUES (148, 576);  --Port Alice > Port Alice
+INSERT INTO MAP_NEAREST_TWN VALUES (85, 577);  --Port Coquitlam > Port Coquitlam
+INSERT INTO MAP_NEAREST_TWN VALUES (261, 578);  --Port McNeill > Port McNeill
+INSERT INTO MAP_NEAREST_TWN VALUES (184, 578);  --Port McNeill > Port Mcneill
+INSERT INTO MAP_NEAREST_TWN VALUES (272, 579);  --Port Mellon > Port Mellon
+INSERT INTO MAP_NEAREST_TWN VALUES (211, 580);  --Port Renfrew > Port Renfrew
+INSERT INTO MAP_NEAREST_TWN VALUES (177, 581);  --Pouce Coupe > Pouce Coupe
+INSERT INTO MAP_NEAREST_TWN VALUES (6, 582);  --Powell River > Powell River
+INSERT INTO MAP_NEAREST_TWN VALUES (47, 583);  --Prince George > Prince George
+INSERT INTO MAP_NEAREST_TWN VALUES (284, 584);  --Prince George/Fort St. James > Prince George/Fort St. James
+INSERT INTO MAP_NEAREST_TWN VALUES (191, 585);  --Prince George/Smithers > Prince George/Smithers
+INSERT INTO MAP_NEAREST_TWN VALUES (292, 586);  --Prince Geroge > Prince Geroge
+INSERT INTO MAP_NEAREST_TWN VALUES (192, 587);  --Prince Rupert > Prince Rupert
+INSERT INTO MAP_NEAREST_TWN VALUES (109, 588);  --Princeton > Princeton
+INSERT INTO MAP_NEAREST_TWN VALUES (251, 589);  --Pritchard > Pritchard
+INSERT INTO MAP_NEAREST_TWN VALUES (266, 590);  --Quadra Island > Quadra Island
+INSERT INTO MAP_NEAREST_TWN VALUES (278, 591);  --Qualicum > Qualicum
+INSERT INTO MAP_NEAREST_TWN VALUES (196, 592);  --Queen Charlotte City > Queen Charlotte City
+INSERT INTO MAP_NEAREST_TWN VALUES (42, 593);  --Quesnel > Quesnel
+INSERT INTO MAP_NEAREST_TWN VALUES (108, 594);  --Quilchena > Quilchena
+INSERT INTO MAP_NEAREST_TWN VALUES (70, 595);  --Radium Hot Springs > Radium Hot Springs
+INSERT INTO MAP_NEAREST_TWN VALUES (170, 596);  --Revelstoke > Revelstoke
+INSERT INTO MAP_NEAREST_TWN VALUES (236, 597);  --Revelstoke/Golden > Revelstoke/Golden
+INSERT INTO MAP_NEAREST_TWN VALUES (13, 598);  --Richmond > Richmond
+INSERT INTO MAP_NEAREST_TWN VALUES (15, 599);  --Richmond/Delta > Richmond/Delta
+INSERT INTO MAP_NEAREST_TWN VALUES (175, 600);  --Riske Creek > Riske Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (220, 601);  --Roberts Creek > Roberts Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (143, 602);  --Rock Creek > Rock Creek
+INSERT INTO MAP_NEAREST_TWN VALUES (194, 603);  --Rose Lake > Rose Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (128, 604);  --Rossland > Rossland
+INSERT INTO MAP_NEAREST_TWN VALUES (91, 605);  --Ruskin > Ruskin
+INSERT INTO MAP_NEAREST_TWN VALUES (260, 606);  --Rutland > Rutland
+INSERT INTO MAP_NEAREST_TWN VALUES (188, 607);  --Saanich > Saanich
+INSERT INTO MAP_NEAREST_TWN VALUES (301, 608);  --Saanich/Duncan > Saanich/Duncan
+INSERT INTO MAP_NEAREST_TWN VALUES (104, 609);  --Salmo > Salmo
+INSERT INTO MAP_NEAREST_TWN VALUES (31, 610);  --Salmon Arm > Salmon Arm
+INSERT INTO MAP_NEAREST_TWN VALUES (302, 611);  --Savary Island > Savary Island
+INSERT INTO MAP_NEAREST_TWN VALUES (239, 612);  --Savona > Savona
+INSERT INTO MAP_NEAREST_TWN VALUES (182, 613);  --Sayward > Sayward
+INSERT INTO MAP_NEAREST_TWN VALUES (218, 614);  --Sechelt > Sechelt
+INSERT INTO MAP_NEAREST_TWN VALUES (246, 615);  --Seton Portage > Seton Portage
+INSERT INTO MAP_NEAREST_TWN VALUES (234, 616);  --Shawnigan Lake > Shawnigan Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (32, 617);  --Sicamous > Sicamous
+INSERT INTO MAP_NEAREST_TWN VALUES (189, 618);  --Sidney > Sidney
+INSERT INTO MAP_NEAREST_TWN VALUES (96, 619);  --Silverton > Silverton
+INSERT INTO MAP_NEAREST_TWN VALUES (73, 620);  --Skookumchuck > Skookumchuck
+INSERT INTO MAP_NEAREST_TWN VALUES (99, 621);  --Slocan > Slocan
+INSERT INTO MAP_NEAREST_TWN VALUES (199, 622);  --Smithers > Smithers
+INSERT INTO MAP_NEAREST_TWN VALUES (209, 623);  --Sooke > Sooke
+INSERT INTO MAP_NEAREST_TWN VALUES (226, 624);  --Sorrento > Sorrento
+INSERT INTO MAP_NEAREST_TWN VALUES (94, 625);  --South Slocan > South Slocan
+INSERT INTO MAP_NEAREST_TWN VALUES (35, 626);  --Spallumcheen > Spallumcheen
+INSERT INTO MAP_NEAREST_TWN VALUES (149, 627);  --Sparwood > Sparwood
+INSERT INTO MAP_NEAREST_TWN VALUES (83, 628);  --Spences Bridge > Spences Bridge
+INSERT INTO MAP_NEAREST_TWN VALUES (232, 629);  --Spuzzum > Spuzzum
+INSERT INTO MAP_NEAREST_TWN VALUES (17, 630);  --Squamish > Squamish
+INSERT INTO MAP_NEAREST_TWN VALUES (245, 631);  --Squilax > Squilax
+INSERT INTO MAP_NEAREST_TWN VALUES (136, 632);  --Stewart > Stewart
+INSERT INTO MAP_NEAREST_TWN VALUES (291, 633);  --Stewrt > Stewrt
+INSERT INTO MAP_NEAREST_TWN VALUES (60, 634);  --Summerland > Summerland
+INSERT INTO MAP_NEAREST_TWN VALUES (12, 635);  --Surrey > Surrey
+INSERT INTO MAP_NEAREST_TWN VALUES (208, 635);  --Surrey > Surrey  
+INSERT INTO MAP_NEAREST_TWN VALUES (265, 636);  --Surrey, Langley > Surrey, Langley
+INSERT INTO MAP_NEAREST_TWN VALUES (207, 637);  --Surrey/Cloverdale > Surrey/Cloverdale
+INSERT INTO MAP_NEAREST_TWN VALUES (223, 638);  --Surrey/Richmond > Surrey/Richmond
+INSERT INTO MAP_NEAREST_TWN VALUES (306, 639);  --Tahsis > Tahsis
+INSERT INTO MAP_NEAREST_TWN VALUES (230, 640);  --Tappen > Tappen
+INSERT INTO MAP_NEAREST_TWN VALUES (173, 641);  --Tatla Lake > Tatla Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (39, 642);  --Taylor > Taylor
+INSERT INTO MAP_NEAREST_TWN VALUES (140, 643);  --Telkwa > Telkwa
+INSERT INTO MAP_NEAREST_TWN VALUES (4, 644);  --Terrace > Terrace
+INSERT INTO MAP_NEAREST_TWN VALUES (197, 645);  --Tte Jaune Cache > Tête Jaune Cache
+INSERT INTO MAP_NEAREST_TWN VALUES (268, 646);  --Tlell > Tlell
+INSERT INTO MAP_NEAREST_TWN VALUES (124, 647);  --Tofino > Tofino
+INSERT INTO MAP_NEAREST_TWN VALUES (195, 648);  --Topley > Topley
+INSERT INTO MAP_NEAREST_TWN VALUES (126, 649);  --Trail > Trail
+INSERT INTO MAP_NEAREST_TWN VALUES (157, 650);  --Trail/Rossland > Trail/Rossland
+INSERT INTO MAP_NEAREST_TWN VALUES (162, 651);  --Tumbler Ridge > Tumbler Ridge
+INSERT INTO MAP_NEAREST_TWN VALUES (125, 652);  --Ucluelet > Ucluelet
+INSERT INTO MAP_NEAREST_TWN VALUES (185, 653);  --Union Bay > Union Bay
+INSERT INTO MAP_NEAREST_TWN VALUES (304, 654);  --Unknown > Unknown
+INSERT INTO MAP_NEAREST_TWN VALUES (115, 655);  --Valemount > Valemount
+INSERT INTO MAP_NEAREST_TWN VALUES (116, 656);  --Valemount/Blue River > Valemount/Blue River
+INSERT INTO MAP_NEAREST_TWN VALUES (112, 657);  --Valmount > Valmount
+INSERT INTO MAP_NEAREST_TWN VALUES (11, 658);  --Vancouver > Vancouver
+INSERT INTO MAP_NEAREST_TWN VALUES (263, 658);  --Vancouver > Vancouver  
+INSERT INTO MAP_NEAREST_TWN VALUES (262, 659);  --Vancouver/Richmond > Vancouver/Richmond
+INSERT INTO MAP_NEAREST_TWN VALUES (24, 660);  --Vancouver/West Vancouver > Vancouver/West Vancouver
+INSERT INTO MAP_NEAREST_TWN VALUES (22, 661);  --Vancouver/Whistler > Vancouver/Whistler
+INSERT INTO MAP_NEAREST_TWN VALUES (201, 662);  --Vanderhoof > Vanderhoof
+INSERT INTO MAP_NEAREST_TWN VALUES (270, 663);  --Vanderhoof/Fraser Lake/Fort St James > Vanderhoof/Fraser Lake/Fort St James
+INSERT INTO MAP_NEAREST_TWN VALUES (37, 664);  --Various > Various
+INSERT INTO MAP_NEAREST_TWN VALUES (5, 664);  --Various > various
+INSERT INTO MAP_NEAREST_TWN VALUES (114, 665);  --Vavenby > Vavenby
+INSERT INTO MAP_NEAREST_TWN VALUES (48, 666);  --Vernon > Vernon
+INSERT INTO MAP_NEAREST_TWN VALUES (190, 667);  --Victoria > Victoria
+INSERT INTO MAP_NEAREST_TWN VALUES (295, 668);  --View Royal > View Royal
+INSERT INTO MAP_NEAREST_TWN VALUES (275, 669);  --Walhachin > Walhachin
+INSERT INTO MAP_NEAREST_TWN VALUES (160, 670);  --Wardner > Wardner
+INSERT INTO MAP_NEAREST_TWN VALUES (127, 671);  --Warfield > Warfield
+INSERT INTO MAP_NEAREST_TWN VALUES (36, 672);  --West Kelowna > West Kelowna
+INSERT INTO MAP_NEAREST_TWN VALUES (62, 673);  --West Kelowna/Kelowna > West Kelowna/Kelowna
+INSERT INTO MAP_NEAREST_TWN VALUES (16, 674);  --West Vancouver > West Vancouver
+INSERT INTO MAP_NEAREST_TWN VALUES (61, 675);  --Westbank > Westbank
+INSERT INTO MAP_NEAREST_TWN VALUES (253, 676);  --Westwold > Westwold
+INSERT INTO MAP_NEAREST_TWN VALUES (7, 677);  --Whistler > Whistler
+INSERT INTO MAP_NEAREST_TWN VALUES (18, 678);  --Whistler/Pemberton > Whistler/Pemberton
+INSERT INTO MAP_NEAREST_TWN VALUES (46, 679);  --williams Lake > Williams Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (55, 679);  --williams Lake > williams Lake
+INSERT INTO MAP_NEAREST_TWN VALUES (311, 680);  --Windermere > Windermere
+INSERT INTO MAP_NEAREST_TWN VALUES (95, 681);  --Winlaw > Winlaw
+INSERT INTO MAP_NEAREST_TWN VALUES (193, 682);  --Witset > Witset
+INSERT INTO MAP_NEAREST_TWN VALUES (179, 683);  --Woss > Woss
+INSERT INTO MAP_NEAREST_TWN VALUES (155, 684);  --Yahk > Yahk
+INSERT INTO MAP_NEAREST_TWN VALUES (238, 685);  --Yale > Yale
+INSERT INTO MAP_NEAREST_TWN VALUES (103, 686);  --Ymir > Ymir
+INSERT INTO MAP_NEAREST_TWN VALUES (277, 687);  --Youbou > Youbou
+INSERT INTO MAP_NEAREST_TWN VALUES (296, 688);  --Zeballos > Zeballos
 
 COMMIT
 GO

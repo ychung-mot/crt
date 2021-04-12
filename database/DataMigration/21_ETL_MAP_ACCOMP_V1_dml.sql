@@ -44,6 +44,6 @@ DECLARE @legacyCnt int, @crtCnt int, @mappedCnt int;
 SELECT @legacyCnt = COUNT(*) FROM tblProjectAccomplishments
 SELECT @crtCnt = COUNT(*) FROM CRT_QTY_ACCMP
 
-PRINT CHAR(10) + 'Found ' + CONVERT(varchar, @legacyCnt) + ' Legacy QtyAccmp and ' + CONVERT(varchar, @crtCnt) + ' CRT QtyAccmp'
-
---NOTE there is one project 8509 that has 3 accomplishments but the project NO longer exists in the DB
+/*NOTE there is one project 8509 that has 3 accomplishments but the project NO longer exists in the DB
+we'll adjust the count to account for this */
+PRINT CHAR(10) + 'Found ' + CONVERT(varchar, (@legacyCnt - 3)) + ' Legacy QtyAccmp and ' + CONVERT(varchar, @crtCnt) + ' CRT QtyAccmp'

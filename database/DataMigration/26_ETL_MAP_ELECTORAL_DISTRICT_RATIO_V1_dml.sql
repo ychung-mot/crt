@@ -46,6 +46,6 @@ SELECT @ratioType = CODE_LOOKUP_ID FROM CRT_CODE_LOOKUP WHERE CODE_SET = 'RATIO_
 SELECT @legacyCnt = COUNT(*) FROM tblEDRatios WHERE [Electoral District] IS NOT NULL AND Project IS NOT NULL
 SELECT @crtCnt = COUNT(*) FROM CRT_RATIO WHERE RATIO_RECORD_LKUP_ID IS NOT NULL AND RATIO_RECORD_TYPE_LKUP_ID = @ratioType
 
-PRINT CHAR(10) + 'Found ' + CONVERT(varchar, @legacyCnt) + ' Legacy Electoral District Ratios and ' + CONVERT(varchar, @crtCnt) + ' CRT Electoral District Ratio items'
-
---There are 10 Electoral District Ratios that have no associated project 
+/*NOTE: There are 10 Electoral District Ratios that have no associated project, 
+adjusting the legacy count */
+PRINT CHAR(10) + 'Found ' + CONVERT(varchar, (@legacyCnt - 10)) + ' Legacy Electoral District Ratios and ' + CONVERT(varchar, @crtCnt) + ' CRT Electoral District Ratio items'
