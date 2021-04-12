@@ -92,7 +92,7 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
               icon="edit"
               className="float-right"
               onClick={() => onEditClicked(data.id)}
-              title="Edit Record"
+              title="Edit Project"
               iconSize="lg"
             />
           </Authorize>
@@ -121,7 +121,7 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
             hoverTitle={`${data.capIndxLkup?.codeName}`}
             helper="capIndxLkupId"
           />
-          <ColumnTwoGroups name="Project Completed?" label={data.endDate ? 'Yes' : 'No'} helper="endDate" />
+          <ColumnTwoGroups name="Project Closed" label={data.endDate ? 'Yes' : 'No'} helper="endDate" />
         </DisplayRow>
         <DisplayRow>
           <ColumnGroup name="Project Description" label={data.description} helper="description" />

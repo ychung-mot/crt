@@ -104,7 +104,7 @@ const EditProjectFormFields = ({
       <FormRow name="scope" label="Project Scope" helper="scope">
         <FormInput type="textarea" rows={5} name="scope" placeholder="Project Scope" id="scope" />
       </FormRow>
-      <FormRow name="endDate" label="Project Complete" helper="endDate">
+      <FormRow name="endDate" label="Project Closed" helper="endDate">
         <FormCheckboxInput name="endDate" type="checkbox" />
       </FormRow>
     </React.Fragment>

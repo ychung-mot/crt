@@ -17,6 +17,12 @@ const DataTableControl = ({
   editable,
   deletable,
   cloneable,
+  cloneHoverText,
+  editHoverText,
+  deleteHoverText,
+  disableHoverText,
+  deleteButtonDefaultText,
+  deleteButtonAltText,
   editPermissionName,
   onEditClicked,
   onDeleteClicked,
@@ -152,7 +158,7 @@ const DataTableControl = ({
                             icon="copy"
                             className="mr-1"
                             onClick={() => handleCloneClicked(item.id)}
-                            title="Clone Record"
+                            title={cloneHoverText}
                             color="success"
                           />
                         )}
@@ -161,7 +167,7 @@ const DataTableControl = ({
                             icon="edit"
                             className="mr-1"
                             onClick={() => handleEditClicked(item.id)}
-                            title="Edit Record"
+                            title={editHoverText}
                           />
                         )}
                         {deletable && (
@@ -169,9 +175,11 @@ const DataTableControl = ({
                             itemId={item.id}
                             buttonId={`item_${item.id}_delete`}
                             defaultEndDate={item.endDate}
+                            defaultButtonText={deleteButtonDefaultText}
+                            altButtonText={deleteButtonAltText}
                             onDeleteClicked={onDeleteClicked}
                             permanentDelete={item.canDelete}
-                            title={item.canDelete ? 'Delete Record' : 'Disable Record'}
+                            title={item.canDelete ? deleteHoverText : disableHoverText}
                             easyDelete={easyDelete}
                             isActive={item?.isActive} //to assist with items that do not save end date
                           ></DeleteButton>
@@ -215,6 +223,12 @@ DataTableControl.propTypes = {
   editable: PropTypes.bool.isRequired,
   deletable: PropTypes.bool.isRequired,
   cloneable: PropTypes.bool.isRequired,
+  cloneHoverText: PropTypes.string.isRequired, //changes hover (title) text for associated buttons
+  editHoverText: PropTypes.string.isRequired,
+  deleteHoverText: PropTypes.string.isRequired,
+  disableHoverText: PropTypes.string.isRequired,
+  deleteButtonDefaultText: PropTypes.string, //sets default button text for the delete button popover. Default is "disable".
+  deleteButtonAltText: PropTypes.string, //sets button text for "disabled" state of the record popover.
   editPermissionName: PropTypes.string,
   onEditClicked: PropTypes.func,
   onCloneClicked: PropTypes.func,
@@ -232,6 +246,10 @@ DataTableControl.defaultProps = {
   overflowY: false,
   easyDelete: false,
   hover: true,
+  cloneHoverText: 'Clone Record',
+  editHoverText: 'Edit Record',
+  deleteHoverText: 'Delete Record',
+  disableHoverText: 'Disable Record',
 };
 
 export default DataTableControl;

@@ -75,13 +75,13 @@ const tableColumns = [
     },
     nosort: true,
   },
-  { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'In-Progress', inactive: 'Completed' } },
+  { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'Active', inactive: 'Closed' } },
 ];
 
 //temporary fix hardcode project status
 const isInProgress = [
-  { id: 'inProgress', name: 'In Progress' },
-  { id: 'complete', name: 'Completed' },
+  { id: 'inProgress', name: 'Active' },
+  { id: 'complete', name: 'Closed' },
 ];
 
 const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationErrorDialog, updateProjectsSearch }) => {
@@ -305,6 +305,9 @@ const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationError
                 onPageSizeChange={searchData.handleChangePageSize}
                 deletable
                 easyDelete
+                disableHoverText={'Close/Activate Project'}
+                deleteButtonDefaultText={'Close Project'}
+                deleteButtonAltText={'Activate Project'}
                 editPermissionName={Constants.PERMISSIONS.PROJECT_W}
                 onDeleteClicked={onDeleteClicked}
                 onHeadingSortClicked={searchData.handleHeadingSortClicked}
