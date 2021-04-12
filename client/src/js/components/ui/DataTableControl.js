@@ -152,7 +152,7 @@ const DataTableControl = ({
                             icon="copy"
                             className="mr-1"
                             onClick={() => handleCloneClicked(item.id)}
-                            title="Clone Record"
+                            title="Clone"
                             color="success"
                           />
                         )}
@@ -161,7 +161,7 @@ const DataTableControl = ({
                             icon="edit"
                             className="mr-1"
                             onClick={() => handleEditClicked(item.id)}
-                            title="Edit Record"
+                            title="Edit"
                           />
                         )}
                         {deletable && (
@@ -171,7 +171,7 @@ const DataTableControl = ({
                             defaultEndDate={item.endDate}
                             onDeleteClicked={onDeleteClicked}
                             permanentDelete={item.canDelete}
-                            title={item.canDelete ? 'Delete Record' : 'Disable Record'}
+                            title={item.canDelete ? 'Delete' : 'Disable'}
                             easyDelete={easyDelete}
                             isActive={item?.isActive} //to assist with items that do not save end date
                           ></DeleteButton>
