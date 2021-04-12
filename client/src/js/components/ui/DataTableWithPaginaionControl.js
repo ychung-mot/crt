@@ -56,6 +56,12 @@ DataTableWithPaginaionControl.propTypes = {
   editable: PropTypes.bool.isRequired,
   deletable: PropTypes.bool.isRequired,
   cloneable: PropTypes.bool.isRequired,
+  cloneHoverText: PropTypes.string.isRequired, //changes hover (title) text for associated buttons
+  editHoverText: PropTypes.string.isRequired,
+  deleteHoverText: PropTypes.string.isRequired,
+  disableHoverText: PropTypes.string.isRequired,
+  deleteButtonDefaultText: PropTypes.string, //sets default button text for the delete button popover. Default is "disable".
+  deleteButtonAltText: PropTypes.string, //sets button text for "disabled" state of the record popover.
   editPermissionName: PropTypes.string,
   searchPagination: PropTypes.shape({
     pageNumber: PropTypes.number.isRequired,
@@ -82,6 +88,10 @@ DataTableWithPaginaionControl.defaultProps = {
   cloneable: false,
   easyDelete: false,
   hover: false,
+  cloneHoverText: 'Clone Record',
+  editHoverText: 'Edit Record',
+  deleteHoverText: 'Delete Record',
+  disableHoverText: 'Disable Record',
 };
 
 export default DataTableWithPaginaionControl;
