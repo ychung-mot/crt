@@ -42,7 +42,7 @@ namespace Crt.Proxy
             services.AddCrtAutoMapper();
             services.AddCrtTypes();
             services.AddHttpClients(Configuration);
-            services.AddReverseProxy();
+            services.AddReverseProxy().LoadFromConfig(Configuration.GetSection("ReverseProxy"));
             services.AddHttpProxy();
             services.AddCrtHealthCheck(connectionString);
         }
