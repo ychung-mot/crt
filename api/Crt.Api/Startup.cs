@@ -48,9 +48,9 @@ namespace Crt.Api
 
             app.UseExceptionMiddleware();
             app.UseCrtHealthCheck();
-            app.UseAuthorization();
-            app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseCrtEndpoints();
             app.UseCrtSwagger(env, Configuration.GetSection("Constants:SwaggerApiUrl").Value);
 
