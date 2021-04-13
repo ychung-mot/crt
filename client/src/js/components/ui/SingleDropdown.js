@@ -118,7 +118,8 @@ const SingleDropdown = (props) => {
                 e.preventDefault();
                 resetFieldValue();
               }}
-              icon={['fa', 'times-circle']}
+              icon={'times-circle'}
+              className="bg-warning"
             ></FontAwesomeButton>
           </InputGroupAddon>
         )}
