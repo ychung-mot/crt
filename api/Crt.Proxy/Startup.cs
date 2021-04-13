@@ -16,13 +16,18 @@ namespace Crt.Proxy
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
         private IWebHostEnvironment _env;
+        private HttpMessageInvoker _httpClient;
+        private string _ogsServer;
+        private RequestProxyOptions _proxyOptions;
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             _env = env;
+            _httpClient = GetClientForInternalOgs();
+            _ogsServer = Configuration.GetValue<string>("ServiceAccount:OgsServer");
+            _proxyOptions = new RequestProxyOptions { Timeout = TimeSpan.FromSeconds(100) };
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -37,7 +42,7 @@ namespace Crt.Proxy
             services.AddCrtAutoMapper();
             services.AddCrtTypes();
             services.AddHttpClients(Configuration);
-            services.AddReverseProxy().LoadFromConfig(Configuration.GetSection("ReverseProxy"));
+            services.AddReverseProxy();
             services.AddHttpProxy();
             services.AddCrtHealthCheck(connectionString);
         }
@@ -60,9 +65,9 @@ namespace Crt.Proxy
                 endpoints.Map("/{**catch-all}", async httpContext =>
                 {
                     await httpProxy.ProxyAsync(httpContext,
-                        Configuration.GetValue<string>("ServiceAccount:OgsServer"),
-                        GetClientForInternalOgs(),
-                        new RequestProxyOptions { Timeout = TimeSpan.FromSeconds(100) },
+                        _ogsServer,
+                        _httpClient,
+                        _proxyOptions,
                         HttpTransformer.Default);
 
                     var errorFeature = httpContext.Features.Get<IProxyErrorFeature>();
