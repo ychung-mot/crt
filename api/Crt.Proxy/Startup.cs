@@ -60,7 +60,7 @@ namespace Crt.Proxy
                 endpoints.Map("/{**catch-all}", async httpContext =>
                 {
                     await httpProxy.ProxyAsync(httpContext,
-                        Configuration.GetValue<string>("OGS_SERVER"),
+                        Configuration.GetValue<string>("ServiceAccount:OgsServer"),
                         GetClientForInternalOgs(),
                         new RequestProxyOptions { Timeout = TimeSpan.FromSeconds(100) },
                         HttpTransformer.Default);

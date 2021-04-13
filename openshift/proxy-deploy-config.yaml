@@ -99,38 +99,11 @@ objects:
                     secretKeyRef:
                       name: service-account-${ENV}
                       key: SERVICE_PASSWORD
-                - name: ServiceAccount__Server
+                - name: ServiceAccount__OgsServer
                   valueFrom:
                     secretKeyRef:
                       name: service-account-${ENV}
-                      key: SERVER
-                - name: ServiceAccount__Port
-                  valueFrom:
-                    secretKeyRef:
-                      name: service-account-${ENV}
-                      key: PORT
-                - name: Keycloak__ServiceClientId
-                  valueFrom:
-                    secretKeyRef:
-                      name: keycloak-service-account
-                      key: clientId
-                - name: Keycloak__ServiceClientSecret
-                  valueFrom:
-                    secretKeyRef:
-                      name: keycloak-service-account
-                      key: clientSecret
-                - name: Router__ApiKey
-                  valueFrom:
-                    secretKeyRef:
-                      name: api-keys-${ENV}
-                      key: router
-                - name: Geocoder__ApiKey
-                  valueFrom:
-                    secretKeyRef:
-                      name: api-keys-${ENV}
-                      key: geocoder
-                - name: OGS_SERVER
-                  value: ${OGS_SERVER}
+                      key: OGS_SERVER
                 - name: ASPNETCORE_ENVIRONMENT
                   value: ${ASPNETCORE_ENVIRONMENT}
               volumeMounts:
@@ -205,11 +178,6 @@ parameters:
   - description: HOST
     displayName: HOST
     name: HOST
-    required: true
-    value: ""
-  - description: OGS_SERVER
-    displayName: OGS_SERVER
-    name: OGS_SERVER
     required: true
     value: ""
   - description: SOURCE_REPOSITORY_URL
