@@ -4,6 +4,7 @@ import { useField } from 'formik';
 import MouseoverTooltip from '../ui/MouseoverTooltip';
 import NumberFormat from 'react-number-format';
 import classNames from 'classnames';
+import _ from 'lodash';
 
 import { HELPER_TEXT } from '../helpers/helperText';
 
@@ -59,7 +60,7 @@ export const FormNumberInput = ({ className, children, ...props }) => {
 
   return (
     <React.Fragment>
-      <Input type="hidden" {...field} {...props} invalid={meta.error && meta.touched} />
+      <Input type="hidden" {...field} {..._.omit(props, ['decimalScale'])} invalid={meta.error && meta.touched} />
       <NumberFormat
         className={classNames('form-control', className)}
         thousandSeparator={true}
