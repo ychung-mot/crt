@@ -3,7 +3,12 @@ This script should only be run once, unlike the code lookups.
 If you do ever run this more than once, you need to reset the sequence 
 and clean the CRT_PROJECT table, not recommended!!
 
+DELETE FROM CRT_RATIO
 
+ALTER SEQUENCE CRT_RATIO_ID_SEQ
+ RESTART WITH 1
+
+---
 DELETE FROM CRT_SEGMENT
 
 ALTER SEQUENCE CRT_SEGMENT_ID_SEQ
@@ -126,7 +131,7 @@ BEGIN
 		SET @projNumSeq = @projNumSeq + 1;
 	END;
 	
-	PRINT @prjNum;
+	--PRINT @prjNum;
 
 	INSERT INTO CRT_PROJECT 
 		 (PROJECT_NUMBER

@@ -3,7 +3,14 @@
 -- retrieve values from Legacy table
 SELECT ID, Category FROM tblCategories
 WHERE Active = 1
-ORDER BY Category
+ORDER BY CASE
+	WHEN ID = 1 THEN 1 -- capital
+	WHEN ID = 2 THEN 2 -- preservation
+	WHEN ID = 6 THEN 3 -- stimulus
+	WHEN ID = 3 THEN 4 -- transit
+	WHEN ID = 4 THEN 5
+	ELSE 9 -- default in case
+END
 
 --retrieve values from CRT Code Table
 SELECT CODE_LOOKUP_ID, CODE_NAME FROM CRT_CODE_LOOKUP
@@ -34,11 +41,12 @@ GO
 BEGIN TRANSACTION
 SET NOCOUNT ON
 
-INSERT INTO MAP_CATEGORY VALUES (1, 890);  --Capital  > Capital Expansion
-INSERT INTO MAP_CATEGORY VALUES (4, 894);  --Unclassified > Other
-INSERT INTO MAP_CATEGORY VALUES (2, 891);  --Preservation > Preservation
-INSERT INTO MAP_CATEGORY VALUES (6, 892);  --Stimulus > Stimulus
-INSERT INTO MAP_CATEGORY VALUES (3, 893);  --Transit > Transit
+/*** Generated Inserts Go Here ***/
+INSERT INTO MAP_PROGRAM_CATEGORY VALUES (1, 1234);  --Capital  > Capital Expansion
+INSERT INTO MAP_PROGRAM_CATEGORY VALUES (4, 1238);  --Unclassified > Other
+INSERT INTO MAP_PROGRAM_CATEGORY VALUES (2, 1235);  --Preservation > Preservation
+INSERT INTO MAP_PROGRAM_CATEGORY VALUES (6, 1236);  --Stimulus > Stimulus
+INSERT INTO MAP_PROGRAM_CATEGORY VALUES (3, 1237);  --Transit > Transit
 
 COMMIT
 GO

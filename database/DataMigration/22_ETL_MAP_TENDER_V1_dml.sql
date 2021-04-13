@@ -107,4 +107,6 @@ DECLARE @legacyCnt int, @crtCnt int, @mappedCnt int;
 SELECT @legacyCnt = COUNT(*) FROM tblProjectTenderBids WHERE [Winning Bid] = 1
 SELECT @crtCnt = COUNT(*) FROM CRT_TENDER
 
-PRINT CHAR(10) + 'Found ' + CONVERT(varchar, @legacyCnt) + ' Legacy Tender and ' + CONVERT(varchar, @crtCnt) + ' CRT Tender'
+/*NOTE: one project as 3 tenders marked as winning bid, but we only import one of them
+adjusting the count to accomodate for this*/
+PRINT CHAR(10) + 'Found ' + CONVERT(varchar, (@legacyCnt - 2)) + ' Legacy Tender and ' + CONVERT(varchar, @crtCnt) + ' CRT Tender'
