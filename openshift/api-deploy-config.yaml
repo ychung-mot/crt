@@ -67,7 +67,8 @@ objects:
                   path: /healthz
                   port: 8080
                 initialDelaySeconds: 15
-                periodSeconds: 5
+                timeoutSeconds: 5
+                periodSeconds: 10
               env:
                 - name: ConnectionStrings__CRT
                   valueFrom:
