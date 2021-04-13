@@ -64,6 +64,21 @@ $(document).ready(function () {
   initKeycloak();
 });
 
+function imageLoader(image, src) {
+  var client = new XMLHttpRequest();
+  client.open("GET", src, true);
+  client.setRequestHeader("Access-Control-Allow-Origin", "*");
+  client.setRequestHeader("Pragma", "no-cache");
+  client.setRequestHeader("Authorization", "Bearer " + keycloak.token);
+
+  client.onload = function () {
+    var byteArray = new Uint8Array(this.response);
+    var blob = new Blob([byteArray], { type: "image/png" });
+    image.setImage(blob);
+  };
+  client.send();
+}
+
 function onLoginSuccess() {
   console.log("user: " + keycloak.idTokenParsed.preferred_username);
 
@@ -113,12 +128,11 @@ function onLoginSuccess() {
   });
 
   // Determine which app config was called and try to load it
- // projectId = getUrlParameterByName("project");
+  // projectId = getUrlParameterByName("project");
   var configName = getUrlParameterByName("c");
   // project parameter is CRT specific
   app.projectId = getUrlParameterByName("project");
   app.segmentId = getUrlParameterByName("segment");
-  
 
   loadConfig(configName, 0);
 }
@@ -386,12 +400,11 @@ function init() {
     }
   }, 25);
 
- 	// Execute config specific init (if it exists)
-   if ("init" in app.config && isFunction(app.config.init)) {
-		app.config.init();
-	}
-	
- 
+  // Execute config specific init (if it exists)
+  if ("init" in app.config && isFunction(app.config.init)) {
+    app.config.init();
+  }
+
   // Redo the layout
   doLayout();
 

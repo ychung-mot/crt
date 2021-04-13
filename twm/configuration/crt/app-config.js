@@ -24,7 +24,7 @@ app.config = {
       geoCoderEnabled: true,
       geoCoderMaxResults: 5,
     },
-   {
+    {
       name: "LayerController",
       tabName: "Layers",
       enabled: true,
@@ -38,7 +38,7 @@ app.config = {
           name: "MoTI (Int)",
           url: " ../ogs-internal/ows",
         },
-       {
+        {
           name: "BCGW",
           url: "https://openmaps.gov.bc.ca/geo/ows",
         },
@@ -60,60 +60,16 @@ app.config = {
       maxResults: 5,
     },
   ],
-  init: function() {
+  init: function () {
     // zoom map to area of interest
     var spinner = new Spinner(app.spinnerOptionsMedium).spin(
       $(app.plugins.CRTsegmentCreator.tabContent)[0]
     );
     // go to a specific segment
     if (app.segmentId) {
-       var url = "api/projects/"+app.projectId+"/segments/"+app.segmentId;
-         $.ajax({
-          url: url,  
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            Pragma: "no-cache",
-            Authorization: "Bearer " + keycloak.token,
-          },
-          timeout: 7500,
-        })
-      // Handle a successful result
-      .done(function (data) {
-        console.log("extract start and end points from data object");
-        var startLat = data.startLatitude;
-        var startLon = data.startLongitude;
-        var endLat = data.endLatitude;
-        var endLon = data.endLongitude;
-        if (data.description) {
-          $("#segment-description").val(data.description);
-          $("#segment-description").attr("fromDB",true); // inhibit overwriting of existing descriptions
-        }
-        if (startLat > 0) { // it has at least one point
-              var startLat = data.startCoordinates.split(',')[0];
-              var startLon = data.startCoordinates.split(',')[1];
-              $(".dr-location-input-start").attr("longitude", startLon);
-              $(".dr-location-input-start").attr("latitude", startLat);    
-              $(".dr-location-input-start").val(startLat + ", " + startLon);
-              if (endLat > 0) { // it is a line
-                    $(".dr-location-input-end").attr("longitude", endLon);
-                    $(".dr-location-input-end").attr("latitude", endLat);
-                    $(".dr-location-input-end").val(endLat + ", " + endLon);
-              } else {
-                // zoom map to start coordinates
-                console.log("zoom map to single point");
-                app.map.getView().setCenter(ol.proj.fromLonLat([startLon, startLat]));
-                app.map.getView().setZoom(16);  
-              }
-              app.plugins.CRTsegmentCreator.findRoute();
-        }
-        spinner.stop();
-      })
-
-    } else {
-    // otherwise, just zoom to project extent
-    var url = " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ASEGMENT_RECORD&outputFormat=application%2Fjson&cql_filter=project_id="+app.projectId;
+      var url = "api/projects/" + app.projectId + "/segments/" + app.segmentId;
       $.ajax({
-        url: url,  
+        url: url,
         headers: {
           "Access-Control-Allow-Origin": "*",
           Pragma: "no-cache",
@@ -121,28 +77,93 @@ app.config = {
         },
         timeout: 7500,
       })
-      // Handle a successful result
-      .done(function (data) {
-        console.log("heere it is");
-        var lowerBound = [data.bbox[0],data.bbox[1]]; // [-125.20585,48.9071,-118.45954,55.88242]
-        var upperBound = [data.bbox[2],data.bbox[3]]; // [-125.20585,48.9071,-118.45954,55.88242]
-        var zoomLower = ol.proj.transform(lowerBound, 'EPSG:4326', 'EPSG:3857');
-        var zoomUpper = ol.proj.transform(upperBound, 'EPSG:4326', 'EPSG:3857');
-        var zoomExtent = [zoomLower[0],zoomLower[1],zoomUpper[0],zoomUpper[1]];
-        if (isFinite(zoomExtent[0])) {
-          app.map.getView().fit(zoomExtent, {padding: [20,20,20,20]});
-        } 
-
-        spinner.stop();
+        // Handle a successful result
+        .done(function (data) {
+          console.log("extract start and end points from data object");
+          var startLat = data.startLatitude;
+          var startLon = data.startLongitude;
+          var endLat = data.endLatitude;
+          var endLon = data.endLongitude;
+          if (data.description) {
+            $("#segment-description").val(data.description);
+            $("#segment-description").attr("fromDB", true); // inhibit overwriting of existing descriptions
+          }
+          if (startLat > 0) {
+            // it has at least one point
+            var startLat = data.startCoordinates.split(",")[0];
+            var startLon = data.startCoordinates.split(",")[1];
+            $(".dr-location-input-start").attr("longitude", startLon);
+            $(".dr-location-input-start").attr("latitude", startLat);
+            $(".dr-location-input-start").val(startLat + ", " + startLon);
+            if (endLat > 0) {
+              // it is a line
+              $(".dr-location-input-end").attr("longitude", endLon);
+              $(".dr-location-input-end").attr("latitude", endLat);
+              $(".dr-location-input-end").val(endLat + ", " + endLon);
+            } else {
+              // zoom map to start coordinates
+              console.log("zoom map to single point");
+              app.map
+                .getView()
+                .setCenter(ol.proj.fromLonLat([startLon, startLat]));
+              app.map.getView().setZoom(16);
+            }
+            app.plugins.CRTsegmentCreator.findRoute();
+          }
+          spinner.stop();
+        });
+    } else {
+      // otherwise, just zoom to project extent
+      var url =
+        " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ASEGMENT_RECORD&outputFormat=application%2Fjson&cql_filter=project_id=" +
+        app.projectId;
+      $.ajax({
+        url: url,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Pragma: "no-cache",
+          Authorization: "Bearer " + keycloak.token,
+        },
+        timeout: 7500,
       })
-      // Handle a failure
-      .fail(function (jqxhr, settings, exception) {
-        spinner.stop();
-        console.log('argh '+ exception);
-        logger("ERROR", app.plugins.CRTsegmentCreator.name + ": Error finding segments");
-      });
+        // Handle a successful result
+        .done(function (data) {
+          console.log("heere it is");
+          var lowerBound = [data.bbox[0], data.bbox[1]]; // [-125.20585,48.9071,-118.45954,55.88242]
+          var upperBound = [data.bbox[2], data.bbox[3]]; // [-125.20585,48.9071,-118.45954,55.88242]
+          var zoomLower = ol.proj.transform(
+            lowerBound,
+            "EPSG:4326",
+            "EPSG:3857"
+          );
+          var zoomUpper = ol.proj.transform(
+            upperBound,
+            "EPSG:4326",
+            "EPSG:3857"
+          );
+          var zoomExtent = [
+            zoomLower[0],
+            zoomLower[1],
+            zoomUpper[0],
+            zoomUpper[1],
+          ];
+          if (isFinite(zoomExtent[0])) {
+            app.map.getView().fit(zoomExtent, { padding: [20, 20, 20, 20] });
+          }
+
+          spinner.stop();
+        })
+        // Handle a failure
+        .fail(function (jqxhr, settings, exception) {
+          spinner.stop();
+          console.log("argh " + exception);
+          logger(
+            "ERROR",
+            app.plugins.CRTsegmentCreator.name + ": Error finding segments"
+          );
+        });
     }
-	}, 	
+  },
 
   map: {
     default: {
@@ -167,17 +188,19 @@ app.config = {
           url: " ../ogs-internal/ows",
           params: {
             LAYERS: "crt:SEGMENT_RECORD",
-            CQL_FILTER: "project_id="+app.projectId,
+            CQL_FILTER: "project_id=" + app.projectId,
           },
-        fields: [
-          {
-            name: "description",
-            searchable: true,
-            nameTransform: function (name) {
-              return "Desciption:";
+          imageLoadFunction: imageLoader,
+          fields: [
+            {
+              name: "description",
+              searchable: true,
+              nameTransform: function (name) {
+                return "Desciption:";
+              },
             },
-          },
-        ],          transition: 0,
+          ],
+          transition: 0,
         }),
       }),
 
@@ -219,6 +242,7 @@ app.config = {
           params: {
             LAYERS: "cwr:V_NM_NLT_RFI_GRFI_SDO_DT",
           },
+          imageLoadFunction: imageLoader,
           transition: 0,
         }),
         fields: [
@@ -278,6 +302,7 @@ app.config = {
           params: {
             LAYERS: "hwy:DSA_CONTRACT_AREA",
           },
+          imageLoadFunction: imageLoader,
           transition: 0,
         }),
         fields: [
@@ -298,7 +323,7 @@ app.config = {
           },
         ],
       }),
-      
+
       new ol.layer.Image({
         title: "MoTI District",
         type: "overlay",
@@ -308,6 +333,7 @@ app.config = {
           params: {
             LAYERS: "hwy:DSA_DISTRICT_BOUNDARY",
           },
+          imageLoadFunction: imageLoader,
           transition: 0,
         }),
         fields: [
@@ -327,7 +353,6 @@ app.config = {
           },
         ],
       }),
-
 
       new ol.layer.Image({
         title: "Economic Regions",
