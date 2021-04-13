@@ -67,7 +67,8 @@ objects:
           "Geocoder": {
             "Url": "https://geocoder.api.gov.bc.ca/addresses.json",
             "ApiKey": "ApiKey"
-          }
+          },
+          "OGS_SERVER": "https://devoas4.apps.th.gov.bc.ca/ogs-geoV06"
         }
     kind: ConfigMap
     metadata:
