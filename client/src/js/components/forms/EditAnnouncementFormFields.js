@@ -15,9 +15,8 @@ const defaultValues = {
 };
 
 const validationSchema = Yup.object({
-  // temporary fix, reimplement when DB is changed to accept 9 digits
-  // anncmentValue: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
-  // c035Value: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
+  anncmentValue: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
+  c035Value: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
 });
 
 const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidationSchema, projectId, formType }) => {
