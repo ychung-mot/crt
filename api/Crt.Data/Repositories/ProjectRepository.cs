@@ -103,6 +103,9 @@ namespace Crt.Data.Repositories
                 .Include(x => x.Region)
                 .FirstOrDefaultAsync(x => x.ProjectId == projectId);
 
+            if (crtProject == null)
+                return null;
+
             var project = Mapper.Map<ProjectDto>(crtProject);
 
             foreach (var note in project.Notes)
