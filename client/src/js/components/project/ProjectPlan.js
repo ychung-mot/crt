@@ -10,7 +10,7 @@ import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
 import { Button, Container, Row, Col } from 'reactstrap';
 import SingleDropdown from '../ui/SingleDropdown';
-import { DisplayRow, ColumnTwoGroups, ColumnGroupWithMarkdown } from './ProjectDisplayHelper';
+import { DisplayRow, DisplayMultiRow, ColumnGroup, ColumnGroupWithMarkdown } from './ProjectDisplayHelper';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import NumberFormat from 'react-number-format';
 import EditFinTargetFormFields from '../forms/EditFinTargetFormFields';
@@ -260,7 +260,7 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
         <Container>
           <Row>
             <Col className="text-right">
-              <strong>Total Project Estimate</strong>
+              <strong>Total Project Estimate </strong>
               <NumberFormat
                 value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
                 prefix="$"
@@ -290,30 +290,33 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
             </Row>
           </Container>
         </UIHeader>
-        <DisplayRow>
-          <ColumnTwoGroups
+        <DisplayMultiRow>
+          <ColumnGroup
             name="Announcement Value"
             label={
               <NumberFormat value={data?.anncmentValue || ''} prefix="$" thousandSeparator={true} displayType="text" />
             }
             helper="anncmentValue"
-            sm={2}
+            sm={4}
           />
-          <ColumnTwoGroups
+          <ColumnGroup
             name="C-035 Value"
             label={
               <NumberFormat value={data?.c035Value || ''} prefix="$" thousandSeparator={true} displayType="text" />
             }
             helper="c035Value"
-            sm={'auto'}
           />
-        </DisplayRow>
+          <ColumnGroup
+            name="Estimated Value"
+            label={<NumberFormat value={undefined || ''} prefix="$" thousandSeparator={true} displayType="text" />}
+            helper="estimatedValue"
+          />
+        </DisplayMultiRow>
         <DisplayRow>
           <ColumnGroupWithMarkdown
             name="Announcement Comment"
             label={data.anncmentComment?.replace(/\n/g, '  \n')}
             helper="anncmentComment"
-            sm={2}
           />
         </DisplayRow>
       </MaterialCard>
