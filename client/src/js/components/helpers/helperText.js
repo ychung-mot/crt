@@ -8,7 +8,7 @@ export const HELPER_TEXT = {
   rcLkupId: `Financial Code`,
   projectMgrLkupId: `Key contact for the project`,
   nearstTwnLkupId: `Used to report on project outcomes`,
-  endDate: `Checked means project is complete`,
+  endDate: `Is project complete`,
   tenderNumber: `Identifier for the tender <project#>-####`,
   plannedDate: `Planned date for posting Tender at Provincial Contracts`,
   actualDate: `Actual date for posting Tender at Provincial Contracts`,
