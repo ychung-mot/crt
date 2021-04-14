@@ -72,12 +72,12 @@ function imageLoader(image, src) {
   client.setRequestHeader("Authorization", "Bearer " + keycloak.token);
 
   client.onload = function () {
-    var byteArray = new Uint8Array(this.response);
-    var blob = new Blob([byteArray], { type: "image/png" });
+  //  var byteArray = new Uint8Array(this.response);
+  //  var blob = new Blob([byteArray], { type: "image/png" });
    // image.setImage(blob);
-    var data = 'data:image/png;base64,' + btoa(unescape(encodeURIComponent(this.response)));
+    var data = 'data:image/png;base64,' + window.btoa(unescape(encodeURIComponent(this.responseText)));
     image.getImage().src = data;
-    console.log("working?");
+    console.log("<img src='" + data +"'>");
   };
   client.send();
 }
