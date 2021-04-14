@@ -236,12 +236,12 @@ app.config = {
         title: "RFI Roads",
         type: "overlay",
         visible: false,
-        source: new ol.source.tileWMS({
+        source: new ol.source.TileWMS({
           url: " ../ogs-internal/ows",
           params: {
             LAYERS: "cwr:V_NM_NLT_RFI_GRFI_SDO_DT",
           },
-          tileLoadFunction: tileLoader,
+          tileLoadFunction: imageLoader,
           transition: 0,
         }),
         fields: [
