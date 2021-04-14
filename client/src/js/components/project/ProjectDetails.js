@@ -11,7 +11,7 @@ import PageSpinner from '../ui/PageSpinner';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
 import EditProjectFormFields from '../forms/EditProjectFormFields';
 import Comments from './Comments';
-import { DisplayRow, ColumnGroup, ColumnTwoGroups } from './ProjectDisplayHelper';
+import { DisplayRow, DisplayMultiRow, ColumnGroup } from './ProjectDisplayHelper';
 import ProjectFooterNav from './ProjectFooterNav';
 
 import useFormModal from '../hooks/useFormModal';
@@ -97,32 +97,32 @@ const ProjectDetails = ({ match, showValidationErrorDialog }) => {
             />
           </Authorize>
         </UIHeader>
-        <DisplayRow>
-          <ColumnTwoGroups name="Project Number" label={data.projectNumber} helper="projectNumber" strong />
-          <ColumnTwoGroups name="Project Name" label={data.projectName} helper="projectName" strong />
-        </DisplayRow>
-        <DisplayRow>
-          <ColumnTwoGroups name="MoTI Region" label={data.region.name} />
-          <ColumnTwoGroups name="Nearest Town" label={data.nearstTwnLkup?.codeName} helper="nearstTwnLkupId" />
-        </DisplayRow>
-        <DisplayRow>
-          <ColumnTwoGroups
+        <DisplayMultiRow>
+          <ColumnGroup name="Project Number" label={data.projectNumber} helper="projectNumber" strong />
+          <ColumnGroup name="Project Name" label={data.projectName} helper="projectName" strong />
+        </DisplayMultiRow>
+        <DisplayMultiRow>
+          <ColumnGroup name="MoTI Region" label={data.region.name} />
+          <ColumnGroup name="Nearest Town" label={data.nearstTwnLkup?.codeName} helper="nearstTwnLkupId" />
+        </DisplayMultiRow>
+        <DisplayMultiRow>
+          <ColumnGroup
             name="RC Number"
             label={data.rcLkup?.codeValueText}
             hoverTitle={data.rcLkup?.codeName}
             helper="rcLkupId"
           />
-          <ColumnTwoGroups name="Project Manager" label={data.projectMgrLkup?.codeName} helper={'projectMgrLkupId'} />
-        </DisplayRow>
-        <DisplayRow>
-          <ColumnTwoGroups
+          <ColumnGroup name="Project Manager" label={data.projectMgrLkup?.codeName} helper={'projectMgrLkupId'} />
+        </DisplayMultiRow>
+        <DisplayMultiRow>
+          <ColumnGroup
             name="Capital Index"
             label={`${data.capIndxLkup?.codeValueText}`}
             hoverTitle={`${data.capIndxLkup?.codeName}`}
             helper="capIndxLkupId"
           />
-          <ColumnTwoGroups name="Project Closed" label={data.endDate ? 'Yes' : 'No'} helper="endDate" />
-        </DisplayRow>
+          <ColumnGroup name="Project Closed" label={data.endDate ? 'Yes' : 'No'} helper="endDate" />
+        </DisplayMultiRow>
         <DisplayRow>
           <ColumnGroup name="Project Description" label={data.description} helper="description" />
         </DisplayRow>
