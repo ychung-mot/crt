@@ -87,14 +87,12 @@ const EditProjectFormFields = ({
           <SingleDropdownField items={nearestTowns} name="nearstTwnLkupId" searchable clearable />
         </FormRow>
       </FormMultiRow>
-      <FormMultiRow>
-        <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
-          <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
-        </FormRow>
-        <FormRow name="projectMgrLkupId" label="Project Manager" helper="projectMgrLkupId">
-          <SingleDropdownField items={projectMgrs} name="projectMgrLkupId" clearable searchable />
-        </FormRow>
-      </FormMultiRow>
+      <FormRow name="rcLkupId" label="RC Number*" helper="rcLkupId">
+        <SingleDropdownField items={rcNumbers} name="rcLkupId" searchable />
+      </FormRow>
+      <FormRow name="projectMgrLkupId" label="Project Manager" helper="projectMgrLkupId">
+        <SingleDropdownField items={projectMgrs} name="projectMgrLkupId" clearable searchable />
+      </FormRow>
       <FormRow name="capIndxLkupId" label="Capital Index*" helper="capIndxLkupId">
         <SingleDropdownField items={capitalIndexes} name="capIndxLkupId" searchable />
       </FormRow>
