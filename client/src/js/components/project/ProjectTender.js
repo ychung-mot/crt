@@ -10,7 +10,7 @@ import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
 import SingleDropdown from '../ui/SingleDropdown';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Button, Row, Col } from 'reactstrap';
 import EditTenderFormFields from '../forms/EditTenderFormFields';
 import EditQtyAccmpFormFields from '../forms/EditQtyAccmpFormFields';
 
@@ -287,18 +287,16 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
       </UIHeader>
       <MaterialCard>
         <UIHeader>
-          <Container>
-            <Row>
-              <Col xs="auto">Project Tender Details</Col>
-              <Col>
-                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={onAddTenderClicked}>
-                    + Add
-                  </Button>
-                </Authorize>
-              </Col>
-            </Row>
-          </Container>
+          <Row>
+            <Col xs="auto">Project Tender Details</Col>
+            <Col>
+              <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                <Button color="primary" className="float-right" onClick={onAddTenderClicked}>
+                  + Add
+                </Button>
+              </Authorize>
+            </Col>
+          </Row>
         </UIHeader>
         <DataTableControl
           dataList={data.tenders}
@@ -314,34 +312,32 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
       </MaterialCard>
       <MaterialCard>
         <UIHeader>
-          <Container>
-            <Row>
-              <Col xs="auto">Quantities/Accomplishments</Col>
-              <Col xs={3}>
-                <SingleDropdown
-                  items={qtyAccmpArray}
-                  handleOnChange={onQtyAccmpFilterChange}
-                  defaultTitle="Show All Qty/Accmp"
-                />
-              </Col>
-              <Col xs={3}>
-                <SingleDropdown
-                  items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
-                    displayOnlyValidFiscalYears(fiscalYears, data.qtyAccmps)
-                  )}
-                  handleOnChange={onFiscalYearFilterChange}
-                  defaultTitle="Show All Fiscal Years"
-                />
-              </Col>
-              <Col>
-                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={onAddQAClicked}>
-                    + Add
-                  </Button>
-                </Authorize>
-              </Col>
-            </Row>
-          </Container>
+          <Row>
+            <Col xs="auto">Quantities/Accomplishments</Col>
+            <Col xs={3}>
+              <SingleDropdown
+                items={qtyAccmpArray}
+                handleOnChange={onQtyAccmpFilterChange}
+                defaultTitle="Show All Qty/Accmp"
+              />
+            </Col>
+            <Col xs={3}>
+              <SingleDropdown
+                items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
+                  displayOnlyValidFiscalYears(fiscalYears, data.qtyAccmps)
+                )}
+                handleOnChange={onFiscalYearFilterChange}
+                defaultTitle="Show All Fiscal Years"
+              />
+            </Col>
+            <Col>
+              <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                <Button color="primary" className="float-right" onClick={onAddQAClicked}>
+                  + Add
+                </Button>
+              </Authorize>
+            </Col>
+          </Row>
         </UIHeader>
         <DataTableControl
           dataList={displayAfterQtyAccmpsFilter(displayAfterYearFilter(data.qtyAccmps))}

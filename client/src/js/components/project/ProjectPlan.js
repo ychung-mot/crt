@@ -8,7 +8,7 @@ import MaterialCard from '../ui/MaterialCard';
 import UIHeader from '../ui/UIHeader';
 import PageSpinner from '../ui/PageSpinner';
 import DataTableControl from '../ui/DataTableControl';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Button, Row, Col } from 'reactstrap';
 import SingleDropdown from '../ui/SingleDropdown';
 import { DisplayRow, DisplayMultiRow, ColumnGroup, ColumnGroupWithMarkdown } from './ProjectDisplayHelper';
 import FontAwesomeButton from '../ui/FontAwesomeButton';
@@ -224,27 +224,25 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
       </UIHeader>
       <MaterialCard>
         <UIHeader>
-          <Container>
-            <Row>
-              <Col xs="auto">Financial Planning Targets</Col>
-              <Col xs={3}>
-                <SingleDropdown
-                  items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
-                    displayOnlyValidFiscalYears(fiscalYears, data.finTargets)
-                  )}
-                  handleOnChange={onFiscalYearFilterChange}
-                  defaultTitle="Show All Fiscal Years"
-                />
-              </Col>
-              <Col>
-                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
-                    + Add
-                  </Button>
-                </Authorize>
-              </Col>
-            </Row>
-          </Container>
+          <Row>
+            <Col xs="auto">Financial Planning Targets</Col>
+            <Col xs={3}>
+              <SingleDropdown
+                items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
+                  displayOnlyValidFiscalYears(fiscalYears, data.finTargets)
+                )}
+                handleOnChange={onFiscalYearFilterChange}
+                defaultTitle="Show All Fiscal Years"
+              />
+            </Col>
+            <Col>
+              <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                <Button color="primary" className="float-right" onClick={addFinTargetClicked}>
+                  + Add
+                </Button>
+              </Authorize>
+            </Col>
+          </Row>
         </UIHeader>
         <DataTableControl
           dataList={displayAfterYearFilter(data.finTargets)}
@@ -257,38 +255,34 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
           onDeleteClicked={onFinTargetDeleteClicked}
           onCloneClicked={onFinTargetCloneClicked}
         />
-        <Container>
-          <Row>
-            <Col className="text-right">
-              <strong>Total Project Estimate </strong>
-              <NumberFormat
-                value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
-                prefix="$"
-                thousandSeparator={true}
-                displayType="text"
-              />
-            </Col>
-          </Row>
-        </Container>
+        <Row>
+          <Col className="text-right">
+            <strong>Total Project Estimate </strong>
+            <NumberFormat
+              value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
+              prefix="$"
+              thousandSeparator={true}
+              displayType="text"
+            />
+          </Col>
+        </Row>
       </MaterialCard>
       <MaterialCard>
         <UIHeader>
-          <Container>
-            <Row>
-              <Col xs="auto">Public Project Information</Col>
-              <Col>
-                <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
-                  <FontAwesomeButton
-                    icon="edit"
-                    className="float-right"
-                    onClick={() => handleAnnouncementEditFormClick(data.id)}
-                    title="Edit Record"
-                    iconSize="lg"
-                  />
-                </Authorize>
-              </Col>
-            </Row>
-          </Container>
+          <Row>
+            <Col xs="auto">Public Project Information</Col>
+            <Col>
+              <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                <FontAwesomeButton
+                  icon="edit"
+                  className="float-right"
+                  onClick={() => handleAnnouncementEditFormClick(data.id)}
+                  title="Edit Record"
+                  iconSize="lg"
+                />
+              </Authorize>
+            </Col>
+          </Row>
         </UIHeader>
         <DisplayMultiRow>
           <ColumnGroup
