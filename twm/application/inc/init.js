@@ -74,28 +74,14 @@ function imageLoader(image, src) {
   client.onload = function () {
     var byteArray = new Uint8Array(this.response);
     var blob = new Blob([byteArray], { type: "image/png" });
-    image.setImage(blob);
-  //  var data = 'data:image/png;base64,' + btoa(unescape(encodeURIComponent(this.response)));
-  //  image.getImage().src = this.responseURL;
+   // image.setImage(blob);
+    var data = 'data:image/png;base64,' + btoa(unescape(encodeURIComponent(this.response)));
+    image.getImage().src = data;
     console.log("working?");
   };
   client.send();
 }
 
-function tileLoader(tile, src) {
-  var client = new XMLHttpRequest();
-  client.open("GET", src, true);
-  client.setRequestHeader("Access-Control-Allow-Origin", "*");
-  client.setRequestHeader("Pragma", "no-cache");
-  client.setRequestHeader("Authorization", "Bearer " + keycloak.token);
-
-  client.onload = function () {
-    var data = 'data:image/png;base64,' + btoa(unescape(encodeURIComponent(this.responseText)));
-    tile.getImage().src = this.responseURL;
-    console.log("is this an image?");
-  };
-  client.send();
-}
 function onLoginSuccess() {
   console.log("user: " + keycloak.idTokenParsed.preferred_username);
 
