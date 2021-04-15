@@ -38,6 +38,8 @@ namespace Crt.Api.Middlewares
 
             if (targetUri != null)
             {
+                Console.WriteLine($"Proxy - {targetUri}");
+
                 var targetRequestMessage = CreateTargetMessage(context, targetUri);
 
                 using (var responseMessage = await _httpClient.SendAsync(targetRequestMessage, HttpCompletionOption.ResponseHeadersRead, context.RequestAborted))
