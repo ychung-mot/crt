@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Crt.Api.Middlewares;
 
 namespace Crt.Api
 {
@@ -51,6 +52,7 @@ namespace Crt.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<ReverseProxyMiddleware>();
             app.UseCrtEndpoints();
             app.UseCrtSwagger(env, Configuration.GetSection("Constants:SwaggerApiUrl").Value);
 
