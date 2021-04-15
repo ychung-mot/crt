@@ -29,10 +29,7 @@ module.exports = function (app) {
     app.use(
       '/ogs-internal',
       createProxyMiddleware({
-        target: 'https://crt-proxy-2d982c-dev.apps.silver.devops.gov.bc.ca/',
-        pathRewrite: {
-          '^/ogs-internal/': '/',
-        },
+        target: process.env.REACT_APP_API_HOST || 'http://localhost:27238',
         changeOrigin: true,
       })
     ),
