@@ -38,7 +38,7 @@ namespace Crt.Api.Middlewares
 
             if (targetUri != null)
             {
-                Console.WriteLine($"Proxy - {targetUri}");
+                Console.WriteLine($"Proxy - {_ogsServer} {targetUri}");
 
                 var targetRequestMessage = CreateTargetMessage(context, targetUri);
 
