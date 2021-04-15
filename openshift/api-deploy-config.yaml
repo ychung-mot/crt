@@ -110,6 +110,11 @@ objects:
                     secretKeyRef:
                       name: service-account-${ENV}
                       key: PORT
+                - name: ServiceAccount__OgsServer
+                  valueFrom:
+                    secretKeyRef:
+                      name: service-account-${ENV}
+                      key: OGS_SERVER
                 - name: Keycloak__ServiceClientId
                   valueFrom:
                     secretKeyRef:
