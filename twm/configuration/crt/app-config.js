@@ -180,7 +180,7 @@ app.config = {
       // Overlay Layers
 
       new ol.layer.Image({
-        title: "Segments",
+        title: "Project Segments",
         type: "overlay",
         visible: true,
         source: new ol.source.ImageWMS({
@@ -189,7 +189,8 @@ app.config = {
             LAYERS: "crt:SEGMENT_RECORD",
             CQL_FILTER: "project_id=" + app.projectId,
           },
-          imageLoadFunction: imageLoader,
+          imageLoadFunction: imageLoader
+        }),
           fields: [
             {
               name: "description",
@@ -200,7 +201,7 @@ app.config = {
             },
           ],
           transition: 0,
-        }),
+
       }),
 
       new ol.layer.Image({
@@ -263,7 +264,7 @@ app.config = {
       }),
 
       new ol.layer.Image({
-        title: "Electoral Districts",
+        title: "Electoral District",
         type: "overlay",
         visible: false,
         source: new ol.source.ImageWMS({
