@@ -17,6 +17,7 @@ import EditServiceAreaFormFields from '../forms/EditServiceAreaFormFields';
 import EditDistrictFormFields from '../forms/EditDistrictFormFields';
 import EditEconomicRegionFormFields from '../forms/EditEconomicRegionFormFields';
 import ProjectFooterNav from './ProjectFooterNav';
+import DetermineSegmentModal from './DetermineSegmentModal';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -57,6 +58,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [ratiosData, setRatiosData] = useState({});
+  const [detSegModalOpen, setDetSegModalOpen] = useState(false);
 
   useEffect(() => {
     api
@@ -106,6 +108,11 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
     showModalHeader: false,
     showModalFooter: false,
   });
+
+  //determine segment modal functions
+  const detSegToggle = () => {
+    setDetSegModalOpen(!detSegModalOpen);
+  };
 
   //helper functions
 
@@ -180,6 +187,15 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
         <UIHeader>
           <Row>
             <Col xs="auto">{'Project Ratios'}</Col>
+            <Col>
+              <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
+                {data?.segments.length > 0 && (
+                  <Button color="primary" className="float-right" onClick={detSegToggle}>
+                    Determine Using Segments
+                  </Button>
+                )}
+              </Authorize>
+            </Col>
           </Row>
         </UIHeader>
         <Row>
@@ -249,6 +265,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
         </Row>
       </MaterialCard>
       {segmentsFormModal.formElement}
+      <DetermineSegmentModal isOpen={detSegModalOpen} toggle={detSegToggle} />
     </React.Fragment>
   );
 }
