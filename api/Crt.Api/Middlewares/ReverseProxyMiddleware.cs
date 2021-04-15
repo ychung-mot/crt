@@ -26,7 +26,7 @@ namespace Crt.Api.Middlewares
             var userId = config.GetValue<string>("ServiceAccount:User");
             var password = config.GetValue<string>("ServiceAccount:Password");
 
-            _httpClient.Timeout = new TimeSpan(0, 0, 15);
+            _httpClient.Timeout = new TimeSpan(0, 1, 30);
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{userId}:{password}")));
