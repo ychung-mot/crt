@@ -128,7 +128,6 @@ app.config = {
       })
         // Handle a successful result
         .done(function (data) {
-          console.log("heere it is");
           var lowerBound = [data.bbox[0], data.bbox[1]]; // [-125.20585,48.9071,-118.45954,55.88242]
           var upperBound = [data.bbox[2], data.bbox[3]]; // [-125.20585,48.9071,-118.45954,55.88242]
           var zoomLower = ol.proj.transform(
@@ -233,16 +232,16 @@ app.config = {
         ],
       }),
 
-      new ol.layer.Image({
+      new ol.layer.Tile({
         title: "RFI Roads",
         type: "overlay",
         visible: false,
-        source: new ol.source.ImageWMS({
+        source: new ol.source.TileWMS({
           url: " ../ogs-internal/ows",
           params: {
             LAYERS: "cwr:V_NM_NLT_RFI_GRFI_SDO_DT",
           },
-          imageLoadFunction: imageLoader,
+          tileLoadFunction: imageLoader,
           transition: 0,
         }),
         fields: [

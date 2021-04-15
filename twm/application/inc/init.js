@@ -70,11 +70,15 @@ function imageLoader(image, src) {
   client.setRequestHeader("Access-Control-Allow-Origin", "*");
   client.setRequestHeader("Pragma", "no-cache");
   client.setRequestHeader("Authorization", "Bearer " + keycloak.token);
-
+  client.setRequestHeader( 'Content-Type',   'image/png' );
+  client.setRequestHeader( 'Accept', 'image/png' );
+  client.responseType = 'blob';
   client.onload = function () {
-    var byteArray = new Uint8Array(this.response);
-    var blob = new Blob([byteArray], { type: "image/png" });
-    image.setImage(blob);
+  var objectURL = URL.createObjectURL(client.response);
+  image.getImage().onload = function() {
+    URL.revokeObjectURL(objectURL);
+  };
+  image.getImage().src = objectURL;
   };
   client.send();
 }
