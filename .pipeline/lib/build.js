@@ -59,21 +59,6 @@ module.exports = (settings) => {
     )
   );
 
-  objects.push(
-    ...oc.processDeploymentTemplate(
-      `${templatesLocalBaseUrl}/proxy-build-config.yaml`,
-      {
-        param: {
-          NAME: `${settings.phases[phase].name}-proxy`,
-          SUFFIX: settings.phases[phase].suffix,
-          VERSION: settings.phases[phase].tag,
-          SOURCE_REPOSITORY_URL: `${oc.git.uri}`,
-          SOURCE_REPOSITORY_REF: `${oc.git.branch_ref}`,
-        },
-      }
-    )
-  );
-
   // objects.push(
   //   ...oc.processDeploymentTemplate(
   //     `${templatesLocalBaseUrl}/hangfire-build-config.yaml`,
