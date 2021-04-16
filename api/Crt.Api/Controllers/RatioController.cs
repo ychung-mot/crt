@@ -116,6 +116,24 @@ namespace Crt.Api.Controllers
             return NoContent();
         }
 
+        [HttpPut]
+        [Route("~/api/projects/{projectId}/ratios")]
+        [RequiresPermission(Permissions.ProjectWrite)]
+        public async Task<ActionResult> DetermineProjectRatios(decimal projectId)
+        {
+            var result = await IsProjectAuthorized(projectId);
+            if (result != null) return result;
+
+            var response = await _ratioService.CalculateProjectRatios(projectId);
+
+            if (response.errors.Count > 0)
+            {
+                return ValidationUtils.GetValidationErrorResult(response.errors, ControllerContext);
+            }
+
+            return NoContent();
+        }
+
         private async Task<ActionResult> IsProjectAuthorized(decimal projectId)
         {
             var project = await _projectService.GetProjectAsync(projectId);
@@ -133,6 +151,7 @@ namespace Crt.Api.Controllers
 
             return null;
         }
+
     }
 }
 
