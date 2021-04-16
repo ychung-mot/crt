@@ -2,7 +2,6 @@
 using Crt.Data.Repositories;
 using Crt.Model;
 using Crt.Model.Dtos.Keycloak;
-using Crt.Model.Dtos.User;
 using Crt.Model.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

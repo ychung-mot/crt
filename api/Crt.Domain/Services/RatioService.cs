@@ -2,16 +2,10 @@
 using Crt.Data.Repositories;
 using Crt.Domain.Services.Base;
 using Crt.HttpClients;
-using Crt.HttpClients.Models;
 using Crt.Model;
 using Crt.Model.Dtos.Ratio;
-using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
-using NetTopologySuite.Geometries;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Crt.Domain.Services
