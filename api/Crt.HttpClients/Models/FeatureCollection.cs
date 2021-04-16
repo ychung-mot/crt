@@ -5,6 +5,8 @@
         public Feature<T> [] features { get; set; }
         public int totalFeatures { get; set; }
         public int numberMatched { get; set; }
+        public double[] bbox { get; set; }
+
     }
 
     public class FeatureCollection
@@ -12,5 +14,6 @@
         public SimpleFeature[] features { get; set; }
         public int totalFeatures { get; set; }
         public int numberMatched { get; set; }
+        public double[] bbox { get; set; }
     }
 }

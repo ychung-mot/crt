@@ -24,6 +24,25 @@ namespace Crt.HttpClients
                 client.DefaultRequestHeaders.Clear();
             });
 
+            services.AddHttpClient<IGeoServerApi, GeoServerApi>(client =>
+            {
+                client.BaseAddress = new Uri(config.GetValue<string>("GeoServer:Url"));
+                client.Timeout = new TimeSpan(0, 0, 30);
+                client.DefaultRequestHeaders.Clear();
+
+                var userId = config.GetValue<string>("ServiceAccount:User");
+                var password = config.GetValue<string>("ServiceAccount:Password");
+                var basicAuth = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{userId}:{password}"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
+            });
+
+            services.AddHttpClient<IDataBCApi, DataBCApi>(client =>
+            {
+                client.BaseAddress = new Uri(config.GetValue<string>("DataBC:Url"));
+                client.Timeout = new TimeSpan(0, 0, 30);
+                client.DefaultRequestHeaders.Clear();
+            });
+
             services.AddHttpClient<IOasApi, OasApi>(client =>
             {
                 client.BaseAddress = new Uri(config.GetValue<string>("CHRIS:OASUrl"));
