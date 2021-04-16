@@ -68,8 +68,20 @@ objects:
             "Url": "https://geocoder.api.gov.bc.ca/addresses.json",
             "ApiKey": "ApiKey"
           },
-          "GeoServer": {
+          "GeoServerDEV": {
             "Url": "https://devoas4.apps.th.gov.bc.ca",
+            "Path": "ogs-geoV06/ows?"
+          },
+          "GeoServerTST": {
+            "Url": "https://tstoas5.apps.th.gov.bc.ca",
+            "Path": "ogs-geoV06/ows?"
+          },
+          "GeoServerUAT": {
+            "Url": "https://tstoas5.apps.th.gov.bc.ca",
+            "Path": "ogs-geoV06/ows?"
+          },
+          "GeoServerPRD": {
+            "Url": "https://prdoas5.apps.th.gov.bc.ca/ogs-geoV06",
             "Path": "ogs-geoV06/ows?"
           },
           "DataBC": {

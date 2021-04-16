@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
+using Crt.Model.Utils;
 
 namespace Crt.HttpClients
 {
@@ -19,7 +20,8 @@ namespace Crt.HttpClients
 
             services.AddHttpClient<IGeoServerApi, GeoServerApi>(client =>
             {
-                client.BaseAddress = new Uri(config.GetValue<string>("GeoServer:Url"));
+                var env = config.GetEnvironment();
+                client.BaseAddress = new Uri(config.GetValue<string>($"GeoServer{env}:Url"));
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
 
