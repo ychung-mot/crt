@@ -11,17 +11,18 @@ namespace Crt.Api.Middlewares
 {
     public class ReverseProxyMiddleware
     {
-        private readonly HttpClient _httpClient;
+        private HttpClient _httpClient;
         private readonly RequestDelegate _nextMiddleware;
 
-        public ReverseProxyMiddleware(RequestDelegate nextMiddleware, IGeoServerApi geoServerApi)
+        public ReverseProxyMiddleware(RequestDelegate nextMiddleware)
         {
             _nextMiddleware = nextMiddleware;
-            _httpClient = geoServerApi.Client;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IGeoServerApi geoServerApi)
         {
+            _httpClient = geoServerApi.Client;
+
             var targetUri = BuildTargetUri(context.Request);
 
             if (targetUri != null)
