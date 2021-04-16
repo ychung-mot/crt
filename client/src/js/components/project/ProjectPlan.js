@@ -257,7 +257,7 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
         />
         <Row>
           <Col className="text-right">
-            <strong>Total Project Estimate </strong>
+            <strong>Total Project Funding </strong>
             <NumberFormat
               value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
               prefix="$"
