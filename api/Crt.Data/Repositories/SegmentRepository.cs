@@ -21,6 +21,8 @@ namespace Crt.Data.Repositories
         Task DeleteSegmentAsync(decimal segmentId);
         Task<SegmentListDto> GetSegmentByIdAsync(decimal segmentId);
         Task<List<SegmentListDto>> GetSegmentsAsync(decimal projectId);
+
+        Task<List<SegmentGeometryListDto>> GetSegmentGeometryListsAsync(decimal projectId);
     }
 
     public class SegmentRepository : CrtRepositoryBase<CrtSegment>, ISegmentRepository
@@ -106,6 +108,15 @@ namespace Crt.Data.Repositories
                 .ToListAsync();
 
             return Mapper.Map<List<SegmentListDto>>(segments);
+        }
+
+        public async Task<List<SegmentGeometryListDto>> GetSegmentGeometryListsAsync(decimal projectId)
+        {
+            var segments = await DbSet.AsNoTracking()
+                .Where(x => x.ProjectId == projectId)
+                .ToListAsync();
+
+            return Mapper.Map<List<SegmentGeometryListDto>>(segments);
         }
     }
 }
