@@ -67,6 +67,14 @@ objects:
           "Geocoder": {
             "Url": "https://geocoder.api.gov.bc.ca/addresses.json",
             "ApiKey": "ApiKey"
+          },
+          "GeoServer": {
+            "Url": "https://devoas4.apps.th.gov.bc.ca",
+            "Path": "ogs-geoV06/ows?"
+          },
+          "DataBC": {
+            "Url": "https://openmaps.gov.bc.ca",
+            "Path": "geo/ows?"
           }
         }
     kind: ConfigMap

@@ -26,7 +26,7 @@ namespace Crt.Model.Utils
 
         public static string CovertToString(DateTime date)
         {
-            return date == null ? "" : date.ToString("yyyy-MM-dd");
+            return date.ToString("yyyy-MM-dd");
         }
 
         /// <summary>
