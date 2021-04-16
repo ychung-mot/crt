@@ -9,12 +9,12 @@
         public double POINT_VARIANCE { get; set; }
         //complete & clipped length used by Ratio determination
         public double COMPLETE_LENGTH_KM { get; set; }
-        public double CLIPPED_LENGTH_KM { get; set; }
+        public double? CLIPPED_LENGTH_KM { get; set; }
         //ED_ABBREV and ECONO REGION returned from DataBC calls
         public string ED_ABBREVIATION { get; set; }
         public string ECONOMIC_REGION_NAME { get; set; }
         //CONTRACT_AREA (Service) & DISTRICT number returned from GeoServer
-        public string CONTRACT_AREA_NUMBER { get; set; }
-        public string DISTRICT_NUMBER { get; set; }
+        public int CONTRACT_AREA_NUMBER { get; set; }
+        public int DISTRICT_NUMBER { get; set; }
     }
 }

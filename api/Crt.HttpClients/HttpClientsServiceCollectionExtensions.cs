@@ -30,10 +30,10 @@ namespace Crt.HttpClients
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
 
-                /*var userId = config.GetValue<string>("ServiceAccount:User");
+                var userId = config.GetValue<string>("ServiceAccount:User");
                 var password = config.GetValue<string>("ServiceAccount:Password");
                 var basicAuth = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{userId}:{password}"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);*/
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
             });
 
             services.AddHttpClient<IDataBCApi, DataBCApi>(client =>
