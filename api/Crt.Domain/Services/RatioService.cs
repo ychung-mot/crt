@@ -1,9 +1,13 @@
 ﻿using Crt.Data.Database;
 using Crt.Data.Repositories;
 using Crt.Domain.Services.Base;
+using Crt.HttpClients;
+using Crt.HttpClients.Models;
 using Crt.Model;
 using Crt.Model.Dtos.Ratio;
+using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
+using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,19 +24,27 @@ namespace Crt.Domain.Services
         Task<(decimal ratioId, Dictionary<string, List<string>> errors)> CreateRatioAsync(RatioCreateDto ratio);
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> UpdateRatioAsync(RatioUpdateDto ratio);
         Task<(bool NotFound, Dictionary<string, List<string>> errors)> DeleteRatioAsync(decimal projectId, decimal ratioId);
+        Task<(bool NotFound, Dictionary<string, List<string>> errors)> CalculateProjectRatios(decimal projectId);
     }
 
     public class RatioService : CrtServiceBase, IRatioService
     {
         private IRatioRepository _ratioRepo;
         private IUserRepository _userRepo;
+        private ISegmentRepository _segmentRepo;
+        private IGeoServerApi _geoServerApi;
+        private IDataBCApi _dataBCApi;
 
         public RatioService(CrtCurrentUser currentUser, IFieldValidatorService validator, IUnitOfWork unitOfWork,
-                IRatioRepository segmentRepo, IUserRepository userRepo)
+                IRatioRepository ratioRepo, ISegmentRepository segmentRepo, IUserRepository userRepo, IGeoServerApi geoServerApi, 
+                IDataBCApi dataBCApi)
             : base(currentUser, validator, unitOfWork)
         {
-            _ratioRepo = segmentRepo;
+            _ratioRepo = ratioRepo;
             _userRepo = userRepo;
+            _segmentRepo = segmentRepo;
+            _geoServerApi = geoServerApi;
+            _dataBCApi = dataBCApi;
         }
 
         public async Task<(decimal ratioId, Dictionary<string, List<string>> errors)> CreateRatioAsync(RatioCreateDto ratio)
@@ -105,6 +117,13 @@ namespace Crt.Domain.Services
             await _ratioRepo.UpdateRatioAsync(ratio);
 
             _unitOfWork.Commit();
+
+            return (false, errors);
+        }
+
+        public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> CalculateProjectRatios(decimal projectId)
+        {
+            var errors = new Dictionary<string, List<string>>();
 
             return (false, errors);
         }
