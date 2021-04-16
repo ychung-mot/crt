@@ -21,14 +21,12 @@ namespace Crt.Api.Controllers
     {
         private IUserService _userService;
         private IKeycloakService _keyCloakService;
-        private CrtCurrentUser _currentUser;
 
         public UsersController(IUserService userService, IKeycloakService keyCloakService, CrtCurrentUser currentUser)
                : base(currentUser)
         {
             _userService = userService;
             _keyCloakService = keyCloakService;
-            _currentUser = currentUser;
         }
 
         [HttpGet("current")]
