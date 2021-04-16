@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { showValidationErrorDialog } from '../../redux/actions';
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PageSpinner from '../ui/PageSpinner';
 
-function DetermineRatiosModal({ isOpen, toggle, dirty }) {
+import * as api from '../../Api';
+
+function DetermineRatiosModal({ isOpen, toggle, dirty, projectId }) {
   //helper functions
   const calculateRatios = () => {
     setModalState(MODAL_STATE.PROCEED);
-    setTimeout(() => setModalState(MODAL_STATE.SUCCESS), 2000);
+    api
+      .putDetermineProjectRatios(projectId)
+      .then(() => {
+        setModalState(MODAL_STATE.SUCCESS);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        showValidationErrorDialog(error.response.data);
+        setModalState(MODAL_STATE.FAIL);
+      });
   };
 
   const dirtyCheck = (dirty) => {
@@ -43,12 +56,7 @@ function DetermineRatiosModal({ isOpen, toggle, dirty }) {
         ),
       },
       PROCEED: {
-        body: (
-          <div>
-            Loading: This will succeed in 2 seconds
-            <PageSpinner />
-          </div>
-        ),
+        body: <PageSpinner />,
       },
       SUCCESS: {
         body:
@@ -86,4 +94,4 @@ function DetermineRatiosModal({ isOpen, toggle, dirty }) {
   );
 }
 
-export default DetermineRatiosModal;
+export default connect(null, { showValidationErrorDialog })(DetermineRatiosModal);
