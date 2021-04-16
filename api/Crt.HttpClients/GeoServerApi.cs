@@ -1,4 +1,5 @@
 ﻿using Crt.HttpClients.Models;
+using Crt.Model.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
@@ -31,7 +32,9 @@ namespace Crt.HttpClients
             _client = client;
             _queries = new GeoServerQueries();
             _api = api;
-            _path = config.GetValue<string>("GeoServer:Path");
+
+            var env = config.GetEnvironment();
+            _path = config.GetValue<string>($"GeoServer{env}:Path");
             _logger = logger;
         }
 
