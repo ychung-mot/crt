@@ -14,7 +14,7 @@ namespace Crt.HttpClients
             services.AddHttpClient<IRouterApi, RouterApi>(client =>
             {
                 client.BaseAddress = new Uri(config.GetValue<string>("Router:Url"));
-                client.Timeout = new TimeSpan(0, 0, 15);
+                client.Timeout = new TimeSpan(0, 1, 30);
                 client.DefaultRequestHeaders.Clear();
             });
 
