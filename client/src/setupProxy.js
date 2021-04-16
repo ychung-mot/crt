@@ -31,6 +31,9 @@ module.exports = function (app) {
       createProxyMiddleware({
         target: process.env.REACT_APP_API_HOST || 'http://localhost:27238',
         changeOrigin: true,
+        pathRewrite: {
+          '^/ogs-internal/': '/ogs-internal/ogs-geoV06/',
+        },
       })
     ),
     app.use(

@@ -2,34 +2,22 @@
 using Crt.HttpClients;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Crt.Api.Middlewares
 {
     public class ReverseProxyMiddleware
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient;
         private readonly RequestDelegate _nextMiddleware;
-        private readonly string _ogsServer;
 
-        public ReverseProxyMiddleware(RequestDelegate nextMiddleware, IConfiguration config)
+        public ReverseProxyMiddleware(RequestDelegate nextMiddleware, IGeoServerApi geoServerApi)
         {
             _nextMiddleware = nextMiddleware;
-            _ogsServer = config.GetValue<string>("ServiceAccount:OgsServer");
-
-            var userId = config.GetValue<string>("ServiceAccount:User");
-            var password = config.GetValue<string>("ServiceAccount:Password");
-
-            _httpClient.Timeout = new TimeSpan(0, 1, 30);
-            _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{userId}:{password}")));
+            _httpClient = geoServerApi.Client;
         }
 
         public async Task Invoke(HttpContext context)
@@ -135,7 +123,7 @@ namespace Crt.Api.Middlewares
 
             if (request.Path.StartsWithSegments("/ogs-internal", out var remainingPath))
             {
-                targetUri = new Uri(_ogsServer + remainingPath + request.QueryString);
+                targetUri = new Uri(_httpClient.BaseAddress + remainingPath + request.QueryString);
             }
 
             return targetUri;

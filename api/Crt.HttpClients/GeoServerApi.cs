@@ -14,14 +14,16 @@ namespace Crt.HttpClients
         Task<string> GetProjectExtent(decimal projectId);
         Task<object> GetPolygonOfInterestForServiceArea(string boundingBox);
         Task<string> GetPolygonOfInterestForDistrict(string boundingBox);
+        HttpClient Client { get; }
+        public string Path { get; }
     }
 
     public class GeoServerApi : IGeoServerApi
     {
-        private HttpClient _client;
+        public HttpClient Client { get; private set; }
+        public string Path { get; private set; }
         private GeoServerQueries _queries;
         private IApi _api;
-        private string _path;
         private ILogger<IGeoServerApi> _logger;
 
         private const string DEFAULT_POLYXY = "-140.58\\,47.033";   //it's in the ocean 
@@ -29,12 +31,12 @@ namespace Crt.HttpClients
 
         public GeoServerApi(HttpClient client, IApi api, IConfiguration config, ILogger<IGeoServerApi> logger)
         {
-            _client = client;
+            Client = client;
             _queries = new GeoServerQueries();
             _api = api;
 
             var env = config.GetEnvironment();
-            _path = config.GetValue<string>($"GeoServer{env}:Path");
+            Path = config.GetValue<string>($"GeoServer{env}:Path");
             _logger = logger;
         }
 
@@ -46,7 +48,7 @@ namespace Crt.HttpClients
 
             var body = string.Format(_queries.LineWithinPolygonQuery, DEFAULT_SRID, lineString, DEFAULT_SRID, DEFAULT_POLYXY);
 
-            var content = await (await _api.PostWithRetry(_client, _path, body)).Content.ReadAsStringAsync();
+            var content = await (await _api.PostWithRetry(Client, Path, body)).Content.ReadAsStringAsync();
 
             var results = JsonSerializer.Deserialize<FeatureCollection<object>>(content);
 
@@ -60,9 +62,9 @@ namespace Crt.HttpClients
 
         public async Task<string> GetProjectExtent(decimal projectId)
         {
-            var query = _path + string.Format(_queries.BoundingBoxForProject, projectId);
+            var query = Path + string.Format(_queries.BoundingBoxForProject, projectId);
 
-            var content = await (await _api.GetWithRetry(_client, query)).Content.ReadAsStringAsync();
+            var content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
 
             var results = JsonSerializer.Deserialize<FeatureCollection<object>>(content);
 
@@ -71,9 +73,9 @@ namespace Crt.HttpClients
 
         public async Task<object> GetPolygonOfInterestForServiceArea(string boundingBox)
         {
-            var query = _path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_CONTRACT_AREA", boundingBox);
+            var query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_CONTRACT_AREA", boundingBox);
 
-            var content = await (await _api.GetWithRetry(_client, query)).Content.ReadAsStringAsync();
+            var content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
             
             var results = JsonSerializer.Deserialize<FeatureCollection<object>>(content);
             
@@ -82,9 +84,9 @@ namespace Crt.HttpClients
 
         public async Task<string> GetPolygonOfInterestForDistrict(string boundingBox)
         {
-            var query = _path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_DISTRICT_BOUNDARY", boundingBox);
+            var query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_DISTRICT_BOUNDARY", boundingBox);
 
-            var content = await (await _api.GetWithRetry(_client, query)).Content.ReadAsStringAsync();
+            var content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
 
             var results = JsonSerializer.Deserialize<FeatureCollection<object>>(content);
 
