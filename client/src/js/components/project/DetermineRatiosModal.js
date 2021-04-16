@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PageSpinner from '../ui/PageSpinner';
 
-function DetermineSegmentModal({ isOpen, toggle, dirty }) {
+function DetermineRatiosModal({ isOpen, toggle, dirty }) {
   //helper functions
   const calculateRatios = () => {
     setModalState(MODAL_STATE.PROCEED);
@@ -26,6 +26,7 @@ function DetermineSegmentModal({ isOpen, toggle, dirty }) {
     CONFIRM: 'CONFIRM',
     PROCEED: 'PROCEED',
     SUCCESS: 'SUCCESS',
+    FAIL: 'FAIL',
 
     properties: {
       CONFIRM: {
@@ -53,14 +54,24 @@ function DetermineSegmentModal({ isOpen, toggle, dirty }) {
         body:
           'Ratios determined. These calculated values are suggestions and can be updated manually by the users to make corrections, if required.',
       },
+      FAIL: {
+        body: 'Unable to determine ratios',
+      },
     },
   };
 
-  //component useState hooks
+  //component hooks
   const [modalState, setModalState] = useState(MODAL_STATE.CONFIRM);
 
   return (
-    <Modal size="sm" isOpen={isOpen} toggle={toggle} onClosed={resetState} onOpened={() => dirtyCheck(dirty)}>
+    <Modal
+      size="sm"
+      isOpen={isOpen}
+      toggle={toggle}
+      backdrop="static"
+      onClosed={resetState}
+      onOpened={() => dirtyCheck(dirty)}
+    >
       <ModalHeader toggle={toggle}>Determine Ratios Using Segments</ModalHeader>
       <ModalBody>{MODAL_STATE.properties[modalState].body}</ModalBody>
       <ModalFooter>
@@ -75,4 +86,4 @@ function DetermineSegmentModal({ isOpen, toggle, dirty }) {
   );
 }
 
-export default DetermineSegmentModal;
+export default DetermineRatiosModal;

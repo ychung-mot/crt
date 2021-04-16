@@ -17,7 +17,7 @@ import EditServiceAreaFormFields from '../forms/EditServiceAreaFormFields';
 import EditDistrictFormFields from '../forms/EditDistrictFormFields';
 import EditEconomicRegionFormFields from '../forms/EditEconomicRegionFormFields';
 import ProjectFooterNav from './ProjectFooterNav';
-import DetermineSegmentModal from './DetermineSegmentModal';
+import DetermineRatiosModal from './DetermineRatiosModal';
 
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
@@ -265,7 +265,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
         </Row>
       </MaterialCard>
       {segmentsFormModal.formElement}
-      <DetermineSegmentModal isOpen={detSegModalOpen} toggle={detSegToggle} dirty={data?.ratios.length > 0} />
+      <DetermineRatiosModal isOpen={detSegModalOpen} toggle={detSegToggle} dirty={data?.ratios.length > 0} />
     </React.Fragment>
   );
 }
