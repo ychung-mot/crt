@@ -45,6 +45,7 @@ namespace Crt.Data.Database.Entities
         public virtual DbSet<CrtRolePermissionHist> CrtRolePermissionHists { get; set; }
         public virtual DbSet<CrtSegment> CrtSegments { get; set; }
         public virtual DbSet<CrtSegmentHist> CrtSegmentHists { get; set; }
+        public virtual DbSet<CrtSegmentRecordVw> CrtSegmentRecordVws { get; set; }
         public virtual DbSet<CrtServiceArea> CrtServiceAreas { get; set; }
         public virtual DbSet<CrtServiceAreaHist> CrtServiceAreaHists { get; set; }
         public virtual DbSet<CrtSystemUser> CrtSystemUsers { get; set; }
@@ -53,7 +54,6 @@ namespace Crt.Data.Database.Entities
         public virtual DbSet<CrtTenderHist> CrtTenderHists { get; set; }
         public virtual DbSet<CrtUserRole> CrtUserRoles { get; set; }
         public virtual DbSet<CrtUserRoleHist> CrtUserRoleHists { get; set; }
-        public virtual DbSet<SegmentRecord> SegmentRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -3303,6 +3303,36 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Spatial Coordinates denoting the starting Longitude for the project/project segment	");
             });
 
+            modelBuilder.Entity<CrtSegmentRecordVw>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("CRT_SEGMENT_RECORD_VW");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("description");
+
+                entity.Property(e => e.Geometry)
+                    .HasColumnType("geometry")
+                    .HasColumnName("geometry");
+
+                entity.Property(e => e.ProjectId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("project_id");
+
+                entity.Property(e => e.ProjectName)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("project_name");
+
+                entity.Property(e => e.SegmentId)
+                    .HasColumnType("numeric(9, 0)")
+                    .HasColumnName("segment_id");
+            });
+
             modelBuilder.Entity<CrtServiceArea>(entity =>
             {
                 entity.HasKey(e => e.ServiceAreaId)
@@ -4227,36 +4257,6 @@ namespace Crt.Data.Database.Entities
                     .HasComment("Unique identifier for a record");
             });
 
-            modelBuilder.Entity<SegmentRecord>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("SEGMENT_RECORD");
-
-                entity.Property(e => e.Description)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("description");
-
-                entity.Property(e => e.Geometry)
-                    .HasColumnType("geometry")
-                    .HasColumnName("geometry");
-
-                entity.Property(e => e.ProjectId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("project_id");
-
-                entity.Property(e => e.ProjectName)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("project_name");
-
-                entity.Property(e => e.SegmentId)
-                    .HasColumnType("numeric(9, 0)")
-                    .HasColumnName("segment_id");
-            });
-
             modelBuilder.HasSequence("CRT_CODE_LKUP_ID_SEQ")
                 .HasMin(1)
                 .HasMax(999999999);
@@ -4274,10 +4274,6 @@ namespace Crt.Data.Database.Entities
                 .HasMax(9999999999);
 
             modelBuilder.HasSequence("CRT_ELEMENT_ID_SEQ")
-                .HasMin(1)
-                .HasMax(99999999999);
-
-            modelBuilder.HasSequence("CRT_ELEMENT_TMP_ID_SEQ")
                 .HasMin(1)
                 .HasMax(99999999999);
 
