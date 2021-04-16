@@ -265,7 +265,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
         </Row>
       </MaterialCard>
       {segmentsFormModal.formElement}
-      <DetermineSegmentModal isOpen={detSegModalOpen} toggle={detSegToggle} />
+      <DetermineSegmentModal isOpen={detSegModalOpen} toggle={detSegToggle} dirty={data?.ratios.length > 0} />
     </React.Fragment>
   );
 }
