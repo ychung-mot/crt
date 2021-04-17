@@ -2,9 +2,12 @@
 using Crt.Model.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.Simplify;
 
 namespace Crt.HttpClients
 {
@@ -12,8 +15,8 @@ namespace Crt.HttpClients
     {
         Task<double> GetSegmentLength(string lineString);
         Task<string> GetProjectExtent(decimal projectId);
-        Task<object> GetPolygonOfInterestForServiceArea(string boundingBox);
-        Task<string> GetPolygonOfInterestForDistrict(string boundingBox);
+        Task<List<Boundary>> GetPolygonOfInterestForServiceArea(string boundingBox);
+        Task<List<Boundary>> GetPolygonOfInterestForDistrict(string boundingBox);
         HttpClient Client { get; }
         public string Path { get; }
     }
@@ -71,26 +74,82 @@ namespace Crt.HttpClients
             return string.Join(",", results.bbox);
         }
 
-        public async Task<object> GetPolygonOfInterestForServiceArea(string boundingBox)
+        public async Task<List<Boundary>> GetPolygonOfInterestForServiceArea(string boundingBox)
         {
+            List<Boundary> boundaries = new List<Boundary>();
+
             var query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_CONTRACT_AREA", boundingBox);
 
             var content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
-            
-            var results = JsonSerializer.Deserialize<FeatureCollection<object>>(content);
-            
-            return null;
+
+            var reader = new NetTopologySuite.IO.GeoJsonReader();
+            var featureCollection = reader.Read<GeoJSON.Net.Feature.FeatureCollection>(content);
+            if (featureCollection == null)
+                return null;
+
+            foreach (GeoJSON.Net.Feature.Feature feature in featureCollection.Features)
+            {
+                var polygon = feature.Geometry as GeoJSON.Net.Geometry.Polygon;
+                var coordinates = new List<Coordinate>();
+                foreach (var ring in polygon.Coordinates)
+                {
+                    foreach (var coordinate in ring.Coordinates)
+                    {
+                        coordinates.Add(new Coordinate(coordinate.Longitude, coordinate.Latitude));
+                    }
+                }
+
+                var polygonGeom = new Polygon(new LinearRing(coordinates.ToArray()));
+                var geometry = TopologyPreservingSimplifier.Simplify(polygonGeom, 0.005);
+
+                boundaries.Add(new Boundary
+                {
+                    NTSGeometry = geometry,
+                    Name = (string)feature.Properties["CONTRACT_AREA_NAME"],
+                    Number = feature.Properties["CONTRACT_AREA_NUMBER"].ToString()
+                });
+            }
+
+            return boundaries;
         }
 
-        public async Task<string> GetPolygonOfInterestForDistrict(string boundingBox)
+        public async Task<List<Boundary>> GetPolygonOfInterestForDistrict(string boundingBox)
         {
+            List<Boundary> boundaries = new List<Boundary>();
+
             var query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_DISTRICT_BOUNDARY", boundingBox);
 
             var content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
 
-            var results = JsonSerializer.Deserialize<FeatureCollection<object>>(content);
+            var reader = new NetTopologySuite.IO.GeoJsonReader();
+            var featureCollection = reader.Read<GeoJSON.Net.Feature.FeatureCollection>(content);
+            if (featureCollection == null)
+                return null;
 
-            return null;
+            foreach (GeoJSON.Net.Feature.Feature feature in featureCollection.Features)
+            {
+                var polygon = feature.Geometry as GeoJSON.Net.Geometry.Polygon;
+                var coordinates = new List<Coordinate>();
+                foreach (var ring in polygon.Coordinates)
+                {
+                    foreach (var coordinate in ring.Coordinates)
+                    {
+                        coordinates.Add(new Coordinate(coordinate.Longitude, coordinate.Latitude));
+                    }
+                }
+
+                var polygonGeom = new Polygon(new LinearRing(coordinates.ToArray()));
+                var geometry = TopologyPreservingSimplifier.Simplify(polygonGeom, 0.005);
+
+                boundaries.Add(new Boundary
+                {
+                    NTSGeometry = geometry,
+                    Name = (string)feature.Properties["DISTRICT_NAME"],
+                    Number = feature.Properties["DISTRICT_NUMBER"].ToString()
+                });
+            }
+
+            return boundaries;
         }
     }
 }

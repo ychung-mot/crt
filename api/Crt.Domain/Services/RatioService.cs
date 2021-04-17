@@ -2,10 +2,16 @@
 using Crt.Data.Repositories;
 using Crt.Domain.Services.Base;
 using Crt.HttpClients;
+using Crt.HttpClients.Models;
 using Crt.Model;
 using Crt.Model.Dtos.Ratio;
+using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
+using NetTopologySuite.Geometries;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Crt.Domain.Services
@@ -117,10 +123,64 @@ namespace Crt.Domain.Services
 
         public async Task<(bool NotFound, Dictionary<string, List<string>> errors)> CalculateProjectRatios(decimal projectId)
         {
+            var totalLength = 0.0;
             var errors = new Dictionary<string, List<string>>();
+
+            //??clear the current ratios??
+
+
+            //load the project segments
+            List<SegmentGeometryListDto> projectSegments = await _segmentRepo.GetSegmentGeometryListsAsync(projectId);
+            
+            //  determine the project extent
+            var segmentBBox = await _geoServerApi.GetProjectExtent(projectId);
+
+            //iterate thru the segments 
+            foreach (var segment in projectSegments)
+            {
+                string geometryLineString = BuildGeometryStringFromCoordinates(segment.Geometry);
+                //  call GetSegmentLength
+                var segmentLength = await _geoServerApi.GetSegmentLength(geometryLineString);
+                totalLength += segmentLength;
+            }
+
+            //get polygons of interest for each Electoral District, Service Area, MoTI District & Economic Region
+            var serviceAreaPolygons = await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox);
+            
+            var districtPolygons = await _geoServerApi.GetPolygonOfInterestForDistrict(segmentBBox);
+
+            var electoralPolygons = await _dataBCApi.GetPolygonOfInterestForElectoralDistrict(segmentBBox);
+
+            var economicRegionPolygons = await _dataBCApi.GetPolygonOfInterestForEconomicRegion(segmentBBox);
+
+            //build the line string
+            string geometryString = BuildGeometryStringFromCoordinates(serviceAreaPolygons[0].NTSGeometry);
+            
+            //      iterate the polygons returned
+            //      determine how much of the line segment is within each polygon
+            //      create the ratio
+
+            //save the determined ratios to the database
 
             return (false, errors);
         }
+
+        private string BuildGeometryStringFromCoordinates(NetTopologySuite.Geometries.Geometry geometry)
+        {
+            string geometryString = "";
+
+            foreach (Coordinate coordinate in geometry.Coordinates)
+            {
+                geometryString += coordinate.X + "\\," + coordinate.Y;
+                if (coordinate != geometry.Coordinates.Last())
+                {
+                    geometryString += "\\,";
+                }
+            }
+
+            return geometryString;
+        }
+
 
         private async Task ValidateRatio(RatioSaveDto ratio, Dictionary<string, List<string>> errors)
         {
