@@ -117,6 +117,7 @@ class UberSearchLayerSearchAddOn {
 				$.extend(params, options);
 								
 				// Issue the request (async)
+				console.log("in layer ubersearch")
 				$.ajax({
 					type: "GET",
 					url: url,
