@@ -265,7 +265,13 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
         </Row>
       </MaterialCard>
       {segmentsFormModal.formElement}
-      <DetermineRatiosModal isOpen={detSegModalOpen} toggle={detSegToggle} dirty={data?.ratios.length > 0} />
+      <DetermineRatiosModal
+        isOpen={detSegModalOpen}
+        toggle={detSegToggle}
+        projectId={data.id}
+        dirty={data?.ratios.length > 0}
+        refreshData={refreshData}
+      />
     </React.Fragment>
   );
 }
