@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { showValidationErrorDialog } from '../../redux/actions';
 
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap';
 import PageSpinner from '../ui/PageSpinner';
 
 import * as api from '../../Api';
 
-function DetermineRatiosModal({ isOpen, toggle, dirty, projectId }) {
+function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData }) {
   //helper functions
   const calculateRatios = () => {
     setModalState(MODAL_STATE.PROCEED);
@@ -15,6 +15,7 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId }) {
       .putDetermineProjectRatios(projectId)
       .then(() => {
         setModalState(MODAL_STATE.SUCCESS);
+        refreshData();
       })
       .catch((error) => {
         console.log(error.response);
@@ -45,8 +46,10 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId }) {
       CONFIRM: {
         body: (
           <div>
-            <strong>Warning! </strong>This action will overwrite the current project ratios information based on the
-            current project segments. Do you want to contiue?
+            <strong>Warning!</strong>
+            <br />
+            This action will overwrite the current project ratios information based on the current project segments. Do
+            you want to contiue?
           </div>
         ),
         nextButton: (
@@ -59,11 +62,17 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId }) {
         body: <PageSpinner />,
       },
       SUCCESS: {
-        body:
-          'Ratios determined. These calculated values are suggestions and can be updated manually by the users to make corrections, if required.',
+        body: (
+          <Alert color="success">
+            <strong>Ratios determined.</strong>
+            <hr />
+            These calculated values are suggestions and can be updated manually by the users to make corrections, if
+            required.,
+          </Alert>
+        ),
       },
       FAIL: {
-        body: 'Unable to determine ratios',
+        body: <Alert color="danger">Operation Failed</Alert>,
       },
     },
   };

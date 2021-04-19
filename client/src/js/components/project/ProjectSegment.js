@@ -270,6 +270,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
         toggle={detSegToggle}
         projectId={data.id}
         dirty={data?.ratios.length > 0}
+        refreshData={refreshData}
       />
     </React.Fragment>
   );
