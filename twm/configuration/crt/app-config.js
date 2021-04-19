@@ -115,7 +115,7 @@ app.config = {
     } else {
       // otherwise, just zoom to project extent
       var url =
-        " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ASEGMENT_RECORD&outputFormat=application%2Fjson&cql_filter=project_id=" +
+        " ../ogs-internal/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=crt%3ACRT_SEGMENT_RECORD_VW&outputFormat=application%2Fjson&cql_filter=project_id=" +
         app.projectId;
       $.ajax({
         url: url,
@@ -186,7 +186,7 @@ app.config = {
         source: new ol.source.ImageWMS({
           url: " ../ogs-internal/ows",
           params: {
-            LAYERS: "crt:SEGMENT_RECORD",
+            LAYERS: "crt:CRT_SEGMENT_RECORD_VW",
             CQL_FILTER: "project_id=" + app.projectId,
           },
           imageLoadFunction: imageLoader
