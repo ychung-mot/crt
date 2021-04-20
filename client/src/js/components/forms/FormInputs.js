@@ -60,7 +60,12 @@ export const FormNumberInput = ({ className, children, ...props }) => {
 
   return (
     <React.Fragment>
-      <Input type="hidden" {...field} {..._.omit(props, ['decimalScale'])} invalid={meta.error && meta.touched} />
+      <Input
+        type="hidden"
+        {...field}
+        {..._.omit(props, ['decimalScale', 'getInputRef', 'id'])}
+        invalid={meta.error && meta.touched}
+      />
       <NumberFormat
         className={classNames('form-control', className)}
         thousandSeparator={true}
