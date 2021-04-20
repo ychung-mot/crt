@@ -29,6 +29,7 @@ namespace Crt.Data.Database.Entities
         public decimal? ProjectMgrLkupId { get; set; }
         public decimal? AnncmentValue { get; set; }
         public decimal? C035Value { get; set; }
+        public decimal? EstimatedValue { get; set; }
         public string AnncmentComment { get; set; }
         public DateTime? EndDate { get; set; }
         public long ConcurrencyControlNumber { get; set; }

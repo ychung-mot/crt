@@ -20,6 +20,7 @@ namespace Crt.Model.Dtos.Project
         public decimal? AnncmentValue { get; set; }
         public decimal? C035Value { get; set; }
         public string AnncmentComment { get; set; }
+        public decimal? EstimatedValue { get; set; }
 
         public List<FinTargetListDto> FinTargets { get; set; }
 

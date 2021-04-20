@@ -69,6 +69,7 @@ namespace Crt.Domain.Services
             
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.AnncmentValue, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.C035Value, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
+            _rules.Add(new FieldValidationRule(Entities.Project, Fields.EstimatedValue, FieldTypes.String, false, null, null, null, null, null, null, _regex.GetRegexInfo(RegexDefs.DollarValue), null));
 
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.AnncmentComment, FieldTypes.String, false, 1, 2000, null, null, null, null, null, null));
             _rules.Add(new FieldValidationRule(Entities.Project, Fields.EndDate, FieldTypes.Date, false, null, null, null, null, new DateTime(1900, 1, 1), new DateTime(9999, 12, 31), null, null));
