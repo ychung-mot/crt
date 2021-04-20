@@ -21,7 +21,14 @@ const validationSchema = Yup.object({
   estimatedValue: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
 });
 
-const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidationSchema, projectId, formType }) => {
+const EditAnnouncementFormFields = ({
+  setInitialValues,
+  formValues,
+  setValidationSchema,
+  projectId,
+  formType,
+  autofocus,
+}) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -57,6 +64,7 @@ const EditAnnouncementFormFields = ({ setInitialValues, formValues, setValidatio
           decimalScale="0"
           prefix="$"
           value={formValues.anncmentValue}
+          getInputRef={autofocus}
         />
       </FormRow>
       <FormRow name="c035Value" label="C-035 Value" helper="c035Value">
