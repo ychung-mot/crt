@@ -123,7 +123,7 @@ namespace Crt.Data.Repositories
                 .AnyAsync(x => x.FiscalYearLkupId == id || x.FundingTypeLkupId == id);
             var inProject = await DbContext.CrtProjects.AsNoTracking()
                 .AnyAsync(x => x.NearstTwnLkupId == id || x.RegionId == id
-                || x.CapIndxLkupId == id || x.RcLkupId == id);
+                || x.CapIndxLkupId == id || x.RcLkupId == id || x.ProjectMgrLkupId == id );
             var inQtyAccmp = await DbContext.CrtQtyAccmps.AsNoTracking()
                 .AnyAsync(x => x.FiscalYearLkupId == id || x.QtyAccmpLkupId == id);
             var inRatio = await DbContext.CrtRatios.AsNoTracking()
