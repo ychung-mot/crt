@@ -302,7 +302,9 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
           />
           <ColumnGroup
             name="Estimated Value"
-            label={<NumberFormat value={undefined || ''} prefix="$" thousandSeparator={true} displayType="text" />}
+            label={
+              <NumberFormat value={data?.estimatedValue || ''} prefix="$" thousandSeparator={true} displayType="text" />
+            }
             helper="estimatedValue"
           />
         </DisplayMultiRow>
