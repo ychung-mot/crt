@@ -51,7 +51,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
     { heading: 'Tender #', key: 'tenderNumber', nosort: true },
     { heading: 'Planned Date', key: 'plannedDate', nosort: true },
     { heading: 'Actual Date', key: 'actualDate', nosort: true },
-    { heading: 'Tender Value', key: 'tenderValue', currency: true, nosort: true },
+    { heading: 'Ministry Estimate', key: 'tenderValue', currency: true, nosort: true },
     { heading: 'Winning Contractor', key: 'winningCntrctr', nosort: true },
     { heading: 'Winning Bid', key: 'bidValue', currency: true, nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },

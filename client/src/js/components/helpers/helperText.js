@@ -12,7 +12,7 @@ export const HELPER_TEXT = {
   tenderNumber: `Identifier for the tender <project#>-####`,
   plannedDate: `Planned date for posting Tender at Provincial Contracts`,
   actualDate: `Actual date for posting Tender at Provincial Contracts`,
-  tenderValue: `Dollar value of the Tender`,
+  tenderValue: `Estimated dollar value of contract`,
   winningCntrctrLkupId: `Contractor that wins the tender`,
   bidValue: `Dollar value of the winning bid`,
   anncmentValue: `Project value as communicated through announcement done by GCPE`,
