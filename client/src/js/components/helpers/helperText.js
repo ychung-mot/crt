@@ -5,10 +5,10 @@ export const HELPER_TEXT = {
   description: `Non-technical description of the project; meant for public consumption`,
   scope: `Technical description, meant for internal consumption`,
   capIndxLkupId: `A value assigned to indicate whether expenditures related to a project are capitalizable (contributes to extending the life of an asset) or expensable (does not materially contribute to extending the life of an asset)`,
-  rcLkupId: `Financial Code`,
+  rcLkupId: `Responsibility Center`,
   projectMgrLkupId: `Key contact for the project`,
   nearstTwnLkupId: `Used to report on project outcomes`,
-  endDate: `Is project complete`,
+  endDate: `Is the project active/closed?`,
   tenderNumber: `Identifier for the tender <project#>-####`,
   plannedDate: `Planned date for posting Tender at Provincial Contracts`,
   actualDate: `Actual date for posting Tender at Provincial Contracts`,
@@ -19,7 +19,7 @@ export const HELPER_TEXT = {
   c035Value: `Value on the road side signs for the project value`,
   anncmentComment: `Comments on project announcements`,
   // temporary fix remove when estimated value is implemented
-  estimatedValue: `THIS FIELD IS NOT ACTIVE YET Project Value determined through available information, in the absence of formal announcement and/or C-035 Values`,
+  estimatedValue: `Project Value determined through available information, in the absence of formal announcement and/or C-035 Values`,
 
   //codetables
   codeValueText: `Representative values for descriptive fields (e.g. C for Construct). For records with no such values this field can be left empty, and just Code Name can be provide, (e.g. names of towns)`,

@@ -189,7 +189,7 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
           {(formikProps) => (
             <Form>
               <Row form>
-                <Col>
+                <Col xs={3}>
                   <Field
                     type="text"
                     name="searchText"
@@ -198,7 +198,7 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
                     title="Searches through element, description, program category, program and service line."
                   />
                 </Col>
-                <Col>
+                <Col xs={3}>
                   <MultiDropdownField {...formikProps} items={isActive} name="isActive" title="Status" />
                 </Col>
                 <Col>
