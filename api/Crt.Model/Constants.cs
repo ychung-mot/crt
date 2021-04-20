@@ -97,6 +97,7 @@ namespace Crt.Model
         public const string AnncmentValue = "AnncmentValue";
         public const string C035Value = "C035Value";
         public const string AnncmentComment = "AnncmentComment";
+        public const string EstimatedValue = "EstimatedValue";
 
         public const string NoteType = "NoteType";
         public const string Comment = "Comment";
