@@ -91,7 +91,9 @@ const getLastVistedPath = (currentUser) => {
 const CommonRoutes = () => {
   return (
     <Switch>
-      <Route path={Constants.PATHS.API_ACCESS} exact component={ApiAccess} />
+      <AuthorizedRoute path={Constants.PATHS.API_ACCESS} requires={Constants.PERMISSIONS.API_W}>
+        <Route path={Constants.PATHS.API_ACCESS} exact component={ApiAccess} />
+      </AuthorizedRoute>
       <Route path={Constants.PATHS.VERSION} exact component={Version} />
       <Route path={Constants.PATHS.UNAUTHORIZED} exact component={Unauthorized} />
       <Route path="*" component={NoMatch} />
@@ -111,16 +113,12 @@ const AdminRoutes = (currentUser) => {
       <AuthorizedRoute path={Constants.PATHS.ADMIN_ROLES} requires={Constants.PERMISSIONS.ROLE_R}>
         <Route path={Constants.PATHS.ADMIN_ROLES} exact component={RoleAdmin} />
       </AuthorizedRoute>
-      <AuthorizedRoute
-        path={Constants.PATHS.ADMIN_CODE_TABLES}
-        requires={Constants.PERMISSIONS.CODE_R}
-        component={CodeTableAdmin}
-      ></AuthorizedRoute>
-      <AuthorizedRoute
-        path={Constants.PATHS.ADMIN_ELEMENTS}
-        requires={Constants.PERMISSIONS.CODE_R}
-        component={ElementAdmin}
-      ></AuthorizedRoute>
+      <AuthorizedRoute path={Constants.PATHS.ADMIN_CODE_TABLES} requires={Constants.PERMISSIONS.CODE_R}>
+        <Route path={Constants.PATHS.ADMIN_CODE_TABLES} exact component={CodeTableAdmin} />
+      </AuthorizedRoute>
+      <AuthorizedRoute path={Constants.PATHS.ADMIN_ELEMENTS} requires={Constants.PERMISSIONS.CODE_R}>
+        <Route path={Constants.PATHS.ADMIN_ELEMENTS} exact component={ElementAdmin} />
+      </AuthorizedRoute>
       {ProjectRoutes()}
       {CommonRoutes()}
     </Switch>

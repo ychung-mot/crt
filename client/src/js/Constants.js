@@ -90,6 +90,7 @@ export const PERMISSIONS = {
   ROLE_R: 'ROLE_R',
   USER_W: 'USER_W',
   USER_R: 'USER_R',
+  API_W: 'API_W',
 };
 
 export const USER_TYPE = { INTERNAL: 'INTERNAL', BUSINESS: 'BUSINESS' };
