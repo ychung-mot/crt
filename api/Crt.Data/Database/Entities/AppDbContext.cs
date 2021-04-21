@@ -3823,7 +3823,7 @@ namespace Crt.Data.Database.Entities
                 entity.Property(e => e.TenderValue)
                     .HasColumnType("numeric(12, 2)")
                     .HasColumnName("TENDER_VALUE")
-                    .HasComment("Dollar value of tender");
+                    .HasComment("Dollar value of tender. This field is captured on the screen as  \"Ministry Estimate\"");
 
                 entity.Property(e => e.WinningCntrctrLkupId)
                     .HasColumnType("numeric(9, 0)")
@@ -3976,7 +3976,7 @@ namespace Crt.Data.Database.Entities
                 entity.Property(e => e.TenderValue)
                     .HasColumnType("numeric(12, 2)")
                     .HasColumnName("TENDER_VALUE")
-                    .HasComment("Dollar value of tender");
+                    .HasComment("Dollar value of tender. This field is captured on the screen as  \"Ministry Estimate\"");
 
                 entity.Property(e => e.WinningCntrctrLkupId)
                     .HasColumnType("numeric(9, 0)")
