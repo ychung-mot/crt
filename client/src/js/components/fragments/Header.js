@@ -106,9 +106,11 @@ const Header = ({ currentUser }) => {
                       Elements
                     </DropdownItem>
                   </Authorize>
-                  <DropdownItem tag={Link} to={Constants.PATHS.API_ACCESS}>
-                    API Access
-                  </DropdownItem>
+                  <Authorize requires={Constants.PERMISSIONS.API_W}>
+                    <DropdownItem tag={Link} to={Constants.PATHS.API_ACCESS}>
+                      API Access
+                    </DropdownItem>
+                  </Authorize>
                   <DropdownItem tag={Link} to={Constants.PATHS.VERSION}>
                     Version
                   </DropdownItem>
