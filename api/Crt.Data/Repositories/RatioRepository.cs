@@ -19,6 +19,7 @@ namespace Crt.Data.Repositories
         Task DeleteRatioAsync(decimal ratioId);
         Task<bool> DistrictExists(decimal districtId);
         Task<bool> ServiceAreaExists(decimal serviceAreaId);
+        Task DeleteAllRatiosByProjectIdAsync(decimal projectId);
     }
 
     public class RatioRepository : CrtRepositoryBase<CrtRatio>, IRatioRepository
@@ -45,6 +46,16 @@ namespace Crt.Data.Repositories
                 .FirstAsync(x => x.RatioId == ratioId);
 
             DbSet.Remove(ratio);
+        }
+
+        public async Task DeleteAllRatiosByProjectIdAsync(decimal projectId)
+        {
+            var ratios = await GetAllAsync<CrtRatio>(x => x.ProjectId == projectId);
+
+            foreach (var ratio in ratios)
+            {
+                DbSet.Remove(ratio);
+            }
         }
 
         public async Task<RatioDto> GetRatioByIdAsync(decimal ratioId)

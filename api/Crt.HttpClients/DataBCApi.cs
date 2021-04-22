@@ -77,7 +77,7 @@ namespace Crt.HttpClients
                 {
                     //override economic region distance tolerance, the polygons are huge and we need to 
                     // simplify them more
-                    var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature, 0.01);
+                    var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
 
                     layerPolygons.Add(new PolygonLayer
                     {

@@ -131,7 +131,7 @@ namespace Crt.Domain.Services
             var errors = new Dictionary<string, List<string>>();
 
             //clear the current ratios
-            /* */
+            await _ratioRepo.DeleteAllRatiosByProjectIdAsync(projectId);
 
             //load the project segments
             List<SegmentGeometryListDto> projectSegments = await _segmentRepo.GetSegmentGeometryListsAsync(projectId);
@@ -216,9 +216,8 @@ namespace Crt.Domain.Services
                                 .FirstOrDefault().ServiceAreaId;
                             break;
                         case RatioRecordType.EconomicRegion:
-                            //TODO: fix this when we have the lookup setup properly
                             newRatio.RatioRecordLkupId = _validator.CodeLookup
-                                .Where(x => x.CodeSet == CodeSet.EconomicRegion && x.CodeName == "Province")
+                                .Where(x => x.CodeSet == CodeSet.EconomicRegion && x.CodeValueText == polygon.Number)
                                 .FirstOrDefault().CodeLookupId;
                             break;
                         case RatioRecordType.ElectoralDistrict:

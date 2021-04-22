@@ -9,7 +9,10 @@ namespace Crt.HttpClients
 {
     public static class SpatialUtils
     {
-        public static Geometry GenerateSimplifiedPolygonGeometry(Feature feature, double distanceTolerance = 0.005)
+        /***
+         * 
+         * */
+        public static Geometry GenerateSimplifiedPolygonGeometry(Feature feature, double distanceTolerance = 0.001)
         {
             //* we'll pull out the rings and coordinates out and create a new collection
             //* of coordinates that we can then put into a NetTopology geometry object
