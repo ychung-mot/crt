@@ -148,10 +148,6 @@ namespace Crt.Domain.Services
                     await _geoServerApi.GetTotalSegmentLength(BuildGeometryStringFromCoordinates(segment.Geometry));
                 totalLengthOfSegments += segmentLength;
             }
-
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-
-            System.Diagnostics.Debug.WriteLine($"Creating Tasks");
             
             //get polygons of interest for each Electoral District, Service Area, MoTI District & Economic Region
             var saTask = Task.Run(async() => await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox));
@@ -166,10 +162,6 @@ namespace Crt.Domain.Services
             var electoralPolygons = ecTask.Result;
             var economicRegionPolygons = erTask.Result;
 
-            watch.Stop();
-            System.Diagnostics.Debug.WriteLine($"Creating Tasks took: {watch.ElapsedMilliseconds.ToString()}");
-            watch = System.Diagnostics.Stopwatch.StartNew();
-
             var taskList = new List<Task>();
             
             //call function to create the ratios
@@ -179,9 +171,6 @@ namespace Crt.Domain.Services
             taskList.Add(Task.Run(async () => await CreateDeterminedRatios(economicRegionPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.EconomicRegion)));
 
             Task.WaitAll(taskList.ToArray());
-
-            watch.Stop();
-            System.Diagnostics.Debug.WriteLine($"Creating Determinations took: {watch.ElapsedMilliseconds.ToString()}");
 
             //save the determined ratios to the database
             _unitOfWork.Commit();
