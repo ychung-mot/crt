@@ -165,6 +165,7 @@ namespace Crt.Api.Controllers
 
         #region API Client
         [HttpGet("api-client", Name = "GetUserKeycloakClient")]
+        [RequiresPermission(Permissions.ApiClientWrite)]
         public async Task<ActionResult<KeycloakClientDto>> GetUserKeycloakClient()
         {
             var client = await _keyCloakService.GetUserClientAsync();
@@ -178,6 +179,7 @@ namespace Crt.Api.Controllers
         }
 
         [HttpPost("api-client")]
+        [RequiresPermission(Permissions.ApiClientWrite)]
         public async Task<ActionResult<KeycloakClientDto>> CreateUserKeycloakClient()
         {
             var response = await _keyCloakService.CreateUserClientAsync();
@@ -191,6 +193,7 @@ namespace Crt.Api.Controllers
         }
 
         [HttpPost("api-client/secret")]
+        [RequiresPermission(Permissions.ApiClientWrite)]
         public async Task<ActionResult> RegenerateUserKeycloakClientSecret()
         {
             var response = await _keyCloakService.RegenerateUserClientSecretAsync();

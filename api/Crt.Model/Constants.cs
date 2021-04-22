@@ -44,6 +44,7 @@ namespace Crt.Model
         public const string ExportRead = "EXPORT_R";
         public const string ProjectRead = "PROJECT_R";
         public const string ProjectWrite = "PROJECT_W";
+        public const string ApiClientWrite = "API_W";
     }
 
     public static class Entities
