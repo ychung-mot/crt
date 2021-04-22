@@ -118,7 +118,7 @@ WHILE 1 = 1
 BEGIN
 	FETCH NEXT FROM prj_cursor 
 	INTO @legProjId, @prjNum, @prjName, @desc, @scope, @prjRegionId, @prjCapIndxId, @prjNrstTwnId, @prjRCId
-	, @prjPMId, @prjAnncmtVal, @prjC035Val, @prjAnncmtComm, @prjEndDate;
+	, @prjPMId, (@prjAnncmtVal * 1000), (@prjC035Val * 1000), @prjAnncmtComm, @prjEndDate;
 	
 	IF @@FETCH_STATUS <> 0
 	BEGIN
