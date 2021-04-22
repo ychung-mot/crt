@@ -9,6 +9,7 @@ using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
 using NetTopologySuite.Geometries;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -147,18 +148,29 @@ namespace Crt.Domain.Services
                     await _geoServerApi.GetTotalSegmentLength(BuildGeometryStringFromCoordinates(segment.Geometry));
                 totalLengthOfSegments += segmentLength;
             }
-
+            
             //get polygons of interest for each Electoral District, Service Area, MoTI District & Economic Region
-            var serviceAreaPolygons = await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox);
-            var districtPolygons = await _geoServerApi.GetPolygonOfInterestForDistrict(segmentBBox);
-            var electoralPolygons = await _dataBCApi.GetPolygonOfInterestForElectoralDistrict(segmentBBox);
-            var economicRegionPolygons = await _dataBCApi.GetPolygonOfInterestForEconomicRegion(segmentBBox);
+            var saTask = Task.Run(async() => await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox));
+            var diTask = Task.Run(async() => await _geoServerApi.GetPolygonOfInterestForDistrict(segmentBBox));
+            var ecTask = Task.Run(async() => await _dataBCApi.GetPolygonOfInterestForElectoralDistrict(segmentBBox));
+            var erTask = Task.Run(async() => await _dataBCApi.GetPolygonOfInterestForEconomicRegion(segmentBBox));
+            
+            Task.WaitAll(saTask, diTask, ecTask, erTask);
 
+            var serviceAreaPolygons = saTask.Result;
+            var districtPolygons = diTask.Result;
+            var electoralPolygons = ecTask.Result;
+            var economicRegionPolygons = erTask.Result;
+
+            var taskList = new List<Task>();
+            
             //call function to create the ratios
-            await CreateDeterminedRatios(serviceAreaPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ServiceArea);
-            await CreateDeterminedRatios(districtPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.District);
-            await CreateDeterminedRatios(electoralPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ElectoralDistrict);
-            await CreateDeterminedRatios(economicRegionPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.EconomicRegion);
+            taskList.Add(Task.Run(async() => await CreateDeterminedRatios(serviceAreaPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ServiceArea)));
+            taskList.Add(Task.Run(async () => await CreateDeterminedRatios(districtPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.District)));
+            taskList.Add(Task.Run(async () => await CreateDeterminedRatios(electoralPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ElectoralDistrict)));
+            taskList.Add(Task.Run(async () => await CreateDeterminedRatios(economicRegionPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.EconomicRegion)));
+
+            Task.WaitAll(taskList.ToArray());
 
             //save the determined ratios to the database
             _unitOfWork.Commit();
@@ -170,16 +182,16 @@ namespace Crt.Domain.Services
             double totalLengthOfSegments, decimal projectId, string recordType)
         {
             var totalRatio = 0.0;
-            //get the service area ratio record lookup id
+            //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType 
                 && x.CodeName == recordType).FirstOrDefault().CodeLookupId;
 
-            //how much of this segment resides within the service area polygon
+            //how much of this segment resides within the polygon
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
-                var percentInPolygon = await GetLengthWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
+                var percentInPolygon = await GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
 
                 if (percentInPolygon > 0)
                 {
@@ -237,9 +249,9 @@ namespace Crt.Domain.Services
             }
         }
 
-        private async Task<double> GetLengthWithinPolygon(double totalLengthOfSegments, List<SegmentGeometryListDto> projectSegments, PolygonLayer layerPolygon)
+        private async Task<double> GetPercentageOfSegmentWithinPolygon(double totalLengthOfSegments, List<SegmentGeometryListDto> projectSegments, PolygonLayer layerPolygon)
         {
-            var serviceAreaLength = 0.0;
+            var clippedLength = 0.0;
 
             foreach (var segment in projectSegments)
             {
@@ -247,10 +259,10 @@ namespace Crt.Domain.Services
                     , BuildGeometryStringFromCoordinates(layerPolygon.NTSGeometry));
 
                 //get the clipped length, this is how much of this segment exists within the polygon
-                serviceAreaLength += result.clippedLength;
+                clippedLength += result.clippedLength;
             }
 
-            var percentInPolygon = Math.Round((serviceAreaLength / totalLengthOfSegments), 2);
+            var percentInPolygon = Math.Round(clippedLength / totalLengthOfSegments, 2);
             
             return percentInPolygon;
         }
