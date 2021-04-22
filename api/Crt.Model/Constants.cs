@@ -170,6 +170,15 @@ namespace Crt.Model
         public const string ServiceLine = "SERVICE_LINE";
     }
 
+    public static class RatioRecordType
+    {
+        public const string ElectoralDistrict = "Electoral District";
+        public const string EconomicRegion = "Economic Region";
+        public const string Highway = "Highway";
+        public const string District = "District";
+        public const string ServiceArea = "Service Area";
+    }
+
     public static class CrtEnvironments
     {
         public const string Dev = "DEV";
