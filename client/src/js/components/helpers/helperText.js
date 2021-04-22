@@ -18,7 +18,6 @@ export const HELPER_TEXT = {
   anncmentValue: `Project value as communicated through announcement done by GCPE`,
   c035Value: `Value on the road side signs for the project value`,
   anncmentComment: `Comments on project announcements`,
-  // temporary fix remove when estimated value is implemented
   estimatedValue: `Project Value determined through available information, in the absence of formal announcement and/or C-035 Values`,
 
   //codetables

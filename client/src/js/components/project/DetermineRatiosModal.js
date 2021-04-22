@@ -59,7 +59,13 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData })
         ),
       },
       PROCEED: {
-        body: <PageSpinner />,
+        body: (
+          <div className="text-center">
+            <span>This may take up to 30 seconds to complete</span>
+            <PageSpinner />
+            <strong>Saving...</strong>
+          </div>
+        ),
       },
       SUCCESS: {
         body: (

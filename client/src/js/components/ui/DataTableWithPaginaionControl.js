@@ -51,6 +51,10 @@ DataTableWithPaginaionControl.propTypes = {
       }),
       currency: PropTypes.bool, //if true then format values as currency
       thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
+      labelHoverText: PropTypes.shape({
+        key: PropTypes.string, //will display what is in item[key] when hovered using html title property. Takes precdence over title.
+        title: PropTypes.string, //will display this string if item[key] doesn't exist.
+      }),
     })
   ).isRequired,
   editable: PropTypes.bool.isRequired,

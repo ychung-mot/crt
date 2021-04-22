@@ -78,7 +78,6 @@ const tableColumns = [
   { heading: '', key: 'isInProgress', nosort: true, badge: { active: 'Active', inactive: 'Closed' } },
 ];
 
-//temporary fix hardcode project status
 const isInProgress = [
   { id: 'inProgress', name: 'Active' },
   { id: 'complete', name: 'Closed' },
@@ -263,15 +262,7 @@ const Projects = ({ currentUser, projectMgrs, searchOptions, showValidationError
                       <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
                         Search
                       </SubmitButton>
-                      <Button
-                        type="reset"
-                        onClick={() => {
-                          //needed to reset form if formik initial values are not the default values
-                          formikProps.resetForm({ values: defaultSearchFormValues });
-                        }}
-                      >
-                        Reset
-                      </Button>
+                      <Button type="reset">Reset</Button>
                     </div>
                   </Col>
                 </Row>

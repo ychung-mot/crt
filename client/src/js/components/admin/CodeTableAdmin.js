@@ -115,7 +115,6 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
   };
 
   const handleSearchFormReset = () => {
-    //temporary fix confirm when code sets are returned
     setCodeSetName(codeSets[0].codeName);
     setCodeValueText(codeSets[0].codeValueText);
     setSearchInitialValues(defaultSearchFormValues);
