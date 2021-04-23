@@ -37,6 +37,8 @@ namespace Crt.Domain.Services
         private IDataBCApi _dataBCApi;
         private IServiceAreaRepository _serviceAreaRepo;
         private IDistrictRepository _districtRepo;
+        private IEnumerable<Model.Dtos.ServiceArea.ServiceAreaDto> serviceAreas;
+        private IEnumerable<Model.Dtos.District.DistrictDto> districts;
 
         public RatioService(CrtCurrentUser currentUser, IFieldValidatorService validator, IUnitOfWork unitOfWork,
                 IRatioRepository ratioRepo, ISegmentRepository segmentRepo, IUserRepository userRepo, IGeoServerApi geoServerApi, 
@@ -131,6 +133,9 @@ namespace Crt.Domain.Services
             var totalLengthOfSegments = 0.0;
             var errors = new Dictionary<string, List<string>>();
 
+            serviceAreas = await _serviceAreaRepo.GetAllServiceAreasAsync();
+            districts = await _districtRepo.GetAllDistrictsAsync();
+
             //clear the current ratios
             await _ratioRepo.DeleteAllRatiosByProjectIdAsync(projectId);
 
@@ -163,14 +168,29 @@ namespace Crt.Domain.Services
             var economicRegionPolygons = erTask.Result;
 
             var taskList = new List<Task>();
-            
+            var newRatios = new ConcurrentBag<List<RatioCreateDto>>();
+
             //call function to create the ratios
-            taskList.Add(Task.Run(async() => await CreateDeterminedRatios(serviceAreaPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ServiceArea)));
-            taskList.Add(Task.Run(async () => await CreateDeterminedRatios(districtPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.District)));
-            taskList.Add(Task.Run(async () => await CreateDeterminedRatios(electoralPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ElectoralDistrict)));
-            taskList.Add(Task.Run(async () => await CreateDeterminedRatios(economicRegionPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.EconomicRegion)));
+            taskList.Add(Task.Run(async() => newRatios.Add(await CreateDeterminedRatios(serviceAreaPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ServiceArea))));
+            taskList.Add(Task.Run(async () => newRatios.Add(await CreateDeterminedRatios(districtPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.District))));
+            taskList.Add(Task.Run(async () => newRatios.Add(await CreateDeterminedRatios(electoralPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.ElectoralDistrict))));
+            taskList.Add(Task.Run(async () => newRatios.Add(await CreateDeterminedRatios(economicRegionPolygons, projectSegments, totalLengthOfSegments, projectId, RatioRecordType.EconomicRegion))));
 
             Task.WaitAll(taskList.ToArray());
+
+            foreach (var ratioGroup in newRatios)
+            {
+                var totalRatio = Convert.ToDecimal(ratioGroup.Sum(x => x.Ratio));
+                if (ratioGroup.Sum(x => x.Ratio) >= 1.00M)
+                    ratioGroup.First().Ratio -= totalRatio - 1.00M;
+                else
+                    ratioGroup.First().Ratio += 1.00M - totalRatio;
+
+                foreach (var ratio in ratioGroup)
+                {
+                    await _ratioRepo.CreateRatioAsync(ratio);
+                }
+            }
 
             //save the determined ratios to the database
             _unitOfWork.Commit();
@@ -178,14 +198,14 @@ namespace Crt.Domain.Services
             return (false, errors);
         }
 
-        private async Task CreateDeterminedRatios(List<PolygonLayer> polygons, List<SegmentGeometryListDto> projectSegments,
+        private async Task<List<RatioCreateDto>> CreateDeterminedRatios(List<PolygonLayer> polygons, List<SegmentGeometryListDto> projectSegments,
             double totalLengthOfSegments, decimal projectId, string recordType)
         {
-            var totalRatio = 0.0;
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType 
                 && x.CodeName == recordType).FirstOrDefault().CodeLookupId;
+            var createdRatios = new List<RatioCreateDto>();
 
             //how much of this segment resides within the polygon
             foreach (var polygon in polygons)
@@ -195,21 +215,6 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
-                    totalRatio += percentInPolygon;
-                    
-                    //we need to do a check on the last segment to verify 
-                    // our total ratio doesn't exceed or recede 1.00
-                    if (totalRatio >= 1.00)
-                    {
-                        //we need to adjust it down to 100
-                        percentInPolygon = percentInPolygon - (totalRatio - 1.00);
-                    } else
-                    {
-                        //we'll only adjust the ratio up if it's the last item
-                        if (polygon == polygons.Last())
-                            percentInPolygon = percentInPolygon + (1.00 - totalRatio);
-                    }
-                                        
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -223,7 +228,7 @@ namespace Crt.Domain.Services
                     {
                         case RatioRecordType.ServiceArea:
                             //service Id lines up with the 
-                            newRatio.ServiceAreaId = _serviceAreaRepo.GetAllServiceAreas()
+                            newRatio.ServiceAreaId = serviceAreas
                                 .Where(x => x.ServiceAreaNumber == Convert.ToDecimal(polygon.Number))
                                 .FirstOrDefault().ServiceAreaId;
                             break;
@@ -238,15 +243,17 @@ namespace Crt.Domain.Services
                                 .FirstOrDefault().CodeLookupId;
                             break;
                         case RatioRecordType.District:
-                            newRatio.DistrictId = _districtRepo.GetAllDistricts()
+                            newRatio.DistrictId = districts
                                 .Where(x => x.DistrictNumber == Convert.ToDecimal(polygon.Number))
                                 .FirstOrDefault().DistrictId;
                             break;
                     }
-                    
-                    await _ratioRepo.CreateRatioAsync(newRatio);
+
+                    createdRatios.Add(newRatio);
                 }
             }
+
+            return createdRatios;
         }
 
         private async Task<double> GetPercentageOfSegmentWithinPolygon(double totalLengthOfSegments, List<SegmentGeometryListDto> projectSegments, PolygonLayer layerPolygon)
@@ -270,6 +277,7 @@ namespace Crt.Domain.Services
         private string BuildGeometryStringFromCoordinates(NetTopologySuite.Geometries.Geometry geometry)
         {
             string geometryString = "";
+            var isPoint = (geometry.Coordinates.Length == 1);
 
             foreach (Coordinate coordinate in geometry.Coordinates)
             {
@@ -279,6 +287,11 @@ namespace Crt.Domain.Services
                     geometryString += "\\,";
                 }
             }
+
+            //geometry strings being used in the line within polygon requires 2 points or the query throws an error
+            // so we'll double up the coordinates making the line start and end at the same point
+            if (isPoint)
+                geometryString += "\\," + geometryString;
 
             return geometryString;
         }
