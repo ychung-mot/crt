@@ -109,11 +109,12 @@ const EditTenderFormFields = ({
       </FormRow>
       <FormRow name="comment" label="Comment">
         <FormInput
-          type="textArea"
+          type="textarea"
           name="comment"
           placeholder="Insert Comment Here"
           id="comment"
           value={formValues.comment}
+          rows={5}
         />
       </FormRow>
     </React.Fragment>
