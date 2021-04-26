@@ -34,7 +34,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         data = {
           ...data,
           qtyAccmps: sortByFiscalYear(data.qtyAccmps),
-          tenders: changeDateFormat(response.data.tenders),
+          tenders: roundPercentage(changeDateFormat(response.data.tenders)),
         };
 
         setData(data);
@@ -54,6 +54,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
     { heading: 'Ministry Estimate', key: 'tenderValue', currency: true, nosort: true },
     { heading: 'Winning Contractor', key: 'winningCntrctr', nosort: true },
     { heading: 'Winning Bid', key: 'bidValue', currency: true, nosort: true },
+    { heading: '%Min.Est.', key: 'ministryEstPerc', nosort: true },
     { heading: 'Comment', key: 'comment', nosort: true },
   ];
 
@@ -241,7 +242,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         data = {
           ...data,
           qtyAccmps: sortByFiscalYear(data.qtyAccmps),
-          tenders: changeDateFormat(response.data.tenders),
+          tenders: roundPercentage(changeDateFormat(response.data.tenders)),
         };
 
         setData(data);
@@ -259,6 +260,17 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         plannedDate:
           tender.plannedDate === null ? null : moment(tender.plannedDate).format(Constants.DATE_DISPLAY_FORMAT),
         actualDate: tender.actualDate === null ? null : moment(tender.actualDate).format(Constants.DATE_DISPLAY_FORMAT),
+      };
+    });
+
+    return changedTenderArray;
+  };
+
+  const roundPercentage = (tenderArray) => {
+    let changedTenderArray = tenderArray.map((tender) => {
+      return {
+        ...tender,
+        ministryEstPerc: tender.ministryEstPerc && Math.round(tender.ministryEstPerc) + '%',
       };
     });
 
