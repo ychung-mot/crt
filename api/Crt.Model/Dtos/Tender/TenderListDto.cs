@@ -14,6 +14,7 @@ namespace Crt.Model.Dtos.Tender
         public DateTime? ActualDate { get; set; }
         public decimal? TenderValue { get; set; }
         public decimal? BidValue { get; set; }
+        public decimal? MinistryEstPerc { get => (BidValue > 0 && TenderValue > 0) ? 100 * BidValue / TenderValue : null; }
         public string Comment { get; set; }
         public DateTime? EndDate { get; set; }
         public bool CanDelete { get => true; }
