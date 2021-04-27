@@ -112,16 +112,17 @@ export const arrayFormatter = (myArray) => {
     return this;
   }
 
-  function displayAfterFilter(filter, key) {
+  function displayAfterFilter(filterWord, key) {
+    //takes filter word and checks if key value = filter word.
     if (!checkIfPropertyExistsInArray('displayAfterFilter', key)) {
       return this;
     }
 
-    if (filter === 'ALL') {
+    if (filterWord === 'ALL') {
       return this;
     }
 
-    _myArray = _myArray.filter((items) => items[key] === filter);
+    _myArray = _myArray.filter((items) => items[key] === filterWord);
     return this;
   }
 
@@ -173,20 +174,9 @@ export const arrayFormatter = (myArray) => {
     return this;
   }
 
-  function sortByFiscalYear(fiscalYears) {
-    //requires list(Array) of fiscal years to sort by.
-
-    if (!checkIfPropertyExistsInArray('sortByFiscalYear', 'fiscalYear')) {
-      return this;
-    }
-
-    const sortFunctionFiscalYear = (a, b) => {
-      let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
-      let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
-
-      return displayOrderYearA - displayOrderYearB;
-    };
-    _myArray = _myArray.sort(sortFunctionFiscalYear);
+  function sortBy(sortFunction) {
+    //sorts array based on sort function
+    _myArray = _myArray.sort(sortFunction);
 
     return this;
   }
@@ -200,7 +190,7 @@ export const arrayFormatter = (myArray) => {
     displayAfterFilter,
     displayOnlyValidFiscalYears,
     roundPercentage,
-    sortByFiscalYear,
+    sortBy,
     get,
   };
 };

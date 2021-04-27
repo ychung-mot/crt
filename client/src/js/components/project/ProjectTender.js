@@ -33,7 +33,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         let data = response.data;
         data = {
           ...data,
-          qtyAccmps: arrayFormatter(data.qtyAccmps).sortByFiscalYear(fiscalYears).get(),
+          qtyAccmps: arrayFormatter(data.qtyAccmps).sortBy(sortFunctionFiscalYear).get(),
           tenders: arrayFormatter(data.tenders)
             .changeDateFormat(Constants.DATE_DISPLAY_FORMAT)
             .roundPercentage('ministryEstPerc')
@@ -221,6 +221,13 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         console.log(error.response);
         showValidationErrorDialog(error.response.data);
       });
+  };
+
+  const sortFunctionFiscalYear = (a, b) => {
+    let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
+    let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
+
+    return displayOrderYearA - displayOrderYearB;
   };
 
   const tendersFormModal = useFormModal('Tender Details', <EditTenderFormFields />, handleEditTenderFormSubmit, {
