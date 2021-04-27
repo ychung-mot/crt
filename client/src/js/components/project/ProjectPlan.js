@@ -208,7 +208,7 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
             <Col xs={3}>
               <SingleDropdown
                 items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
-                  arrayFormatter(data.finTargets).displayOnlyValidFiscalYears(fiscalYears).get()
+                  arrayFormatter(data.finTargets).findValidFiscalYears(fiscalYears).get()
                 )}
                 handleOnChange={onFiscalYearFilterChange}
                 defaultTitle="Show All Fiscal Years"

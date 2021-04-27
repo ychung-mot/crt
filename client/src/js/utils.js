@@ -126,7 +126,7 @@ export const arrayFormatter = (myArray) => {
     return this;
   }
 
-  function displayOnlyValidFiscalYears(fiscalYears = []) {
+  function findValidFiscalYears(fiscalYears = []) {
     //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
 
     if (!checkIfPropertyExistsInArray('displayOnlyValidFiscalYears', 'fiscalYear')) {
@@ -188,7 +188,7 @@ export const arrayFormatter = (myArray) => {
   return {
     changeDateFormat,
     displayAfterFilter,
-    displayOnlyValidFiscalYears,
+    findValidFiscalYears,
     roundPercentage,
     sortBy,
     get,
