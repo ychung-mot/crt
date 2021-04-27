@@ -61,7 +61,7 @@ $(document).ready(function () {
   );
   logger("INFO", "INIT: Beginning TWM Session");
 
-//  initKeycloak();
+  initKeycloak();
 });
 
 function imageLoader(image, src) {
@@ -70,15 +70,15 @@ function imageLoader(image, src) {
   client.setRequestHeader("Access-Control-Allow-Origin", "*");
   client.setRequestHeader("Pragma", "no-cache");
   client.setRequestHeader("Authorization", "Bearer " + keycloak.token);
-  client.setRequestHeader( 'Content-Type',   'image/png' );
-  client.setRequestHeader( 'Accept', 'image/png' );
-  client.responseType = 'blob';
+  client.setRequestHeader("Content-Type", "image/png");
+  client.setRequestHeader("Accept", "image/png");
+  client.responseType = "blob";
   client.onload = function () {
-  var objectURL = URL.createObjectURL(client.response);
-  image.getImage().onload = function() {
-    URL.revokeObjectURL(objectURL);
-  };
-  image.getImage().src = objectURL;
+    var objectURL = URL.createObjectURL(client.response);
+    image.getImage().onload = function () {
+      URL.revokeObjectURL(objectURL);
+    };
+    image.getImage().src = objectURL;
   };
   client.send();
 }
