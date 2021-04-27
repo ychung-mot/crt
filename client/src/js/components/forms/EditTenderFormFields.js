@@ -23,8 +23,8 @@ const defaultValues = {
 
 const validationSchema = Yup.object({
   tenderNumber: Yup.string().required('Tender Number is Required'),
-  tenderValue: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
-  bidValue: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion'),
+  tenderValue: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion').nullable(),
+  bidValue: Yup.number().lessThan(10000000000, 'Value must be less than 10 billion').nullable(),
 });
 
 const EditTenderFormFields = ({

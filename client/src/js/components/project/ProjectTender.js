@@ -15,9 +15,9 @@ import EditTenderFormFields from '../forms/EditTenderFormFields';
 import EditQtyAccmpFormFields from '../forms/EditQtyAccmpFormFields';
 
 import useFormModal from '../hooks/useFormModal';
-import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
+import { arrayFormatter } from '../../utils';
 
 const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
@@ -33,8 +33,11 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         let data = response.data;
         data = {
           ...data,
-          qtyAccmps: sortByFiscalYear(data.qtyAccmps),
-          tenders: roundPercentage(changeDateFormat(response.data.tenders)),
+          qtyAccmps: arrayFormatter(data.qtyAccmps).sortBy(sortFunctionFiscalYear).get(),
+          tenders: arrayFormatter(data.tenders)
+            .changeDateFormat(Constants.DATE_DISPLAY_FORMAT)
+            .roundPercentage('ministryEstPerc')
+            .get(),
         };
 
         setData(data);
@@ -198,42 +201,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
     setFiscalYearsFilter(result);
   };
 
-  const displayAfterYearFilter = (items) => {
-    let filteredResult = items;
-    if (fiscalYearsFilter === 'ALL') {
-      return filteredResult;
-    } else {
-      return filteredResult.filter((items) => items.fiscalYear === fiscalYearsFilter);
-    }
-  };
-
-  const displayOnlyValidFiscalYears = (fiscalYears = [], list = []) => {
-    //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
-    let listOfFiscalYears = list.map((item) => item.fiscalYear);
-
-    return fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
-  };
-
-  const displayAfterQtyAccmpsFilter = (items) => {
-    let filteredResult = items;
-    if (qtyOrAccmpFilter === 'ALL') {
-      return filteredResult;
-    } else {
-      return filteredResult.filter((items) => items.qtyAccmpType === qtyOrAccmpFilter);
-    }
-  };
-
-  const sortFunctionQtyAccmps = (a, b) => {
-    let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
-    let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
-
-    return displayOrderYearA - displayOrderYearB;
-  };
-
-  const sortByFiscalYear = (items = []) => {
-    return items.sort(sortFunctionQtyAccmps);
-  };
-
   const refreshData = () => {
     api
       .getProjectTender(data.id)
@@ -241,8 +208,11 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         let data = response.data;
         data = {
           ...data,
-          qtyAccmps: sortByFiscalYear(data.qtyAccmps),
-          tenders: roundPercentage(changeDateFormat(response.data.tenders)),
+          qtyAccmps: arrayFormatter(data.qtyAccmps).sortByFiscalYear(fiscalYears).get(),
+          tenders: arrayFormatter(data.tenders)
+            .changeDateFormat(Constants.DATE_DISPLAY_FORMAT)
+            .roundPercentage('ministryEstPerc')
+            .get(),
         };
 
         setData(data);
@@ -253,28 +223,11 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
       });
   };
 
-  const changeDateFormat = (tenderArray) => {
-    let changedTenderArray = tenderArray.map((tender) => {
-      return {
-        ...tender,
-        plannedDate:
-          tender.plannedDate === null ? null : moment(tender.plannedDate).format(Constants.DATE_DISPLAY_FORMAT),
-        actualDate: tender.actualDate === null ? null : moment(tender.actualDate).format(Constants.DATE_DISPLAY_FORMAT),
-      };
-    });
+  const sortFunctionFiscalYear = (a, b) => {
+    let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
+    let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
 
-    return changedTenderArray;
-  };
-
-  const roundPercentage = (tenderArray) => {
-    let changedTenderArray = tenderArray.map((tender) => {
-      return {
-        ...tender,
-        ministryEstPerc: tender.ministryEstPerc && Math.round(tender.ministryEstPerc) + '%',
-      };
-    });
-
-    return changedTenderArray;
+    return displayOrderYearA - displayOrderYearB;
   };
 
   const tendersFormModal = useFormModal('Tender Details', <EditTenderFormFields />, handleEditTenderFormSubmit, {
@@ -336,7 +289,7 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
             <Col xs={3}>
               <SingleDropdown
                 items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
-                  displayOnlyValidFiscalYears(fiscalYears, data.qtyAccmps)
+                  arrayFormatter(data.qtyAccmps).findValidFiscalYears(fiscalYears).get()
                 )}
                 handleOnChange={onFiscalYearFilterChange}
                 defaultTitle="Show All Fiscal Years"
@@ -352,7 +305,10 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
           </Row>
         </UIHeader>
         <DataTableControl
-          dataList={displayAfterQtyAccmpsFilter(displayAfterYearFilter(data.qtyAccmps))}
+          dataList={arrayFormatter(data.qtyAccmps)
+            .displayAfterFilter(qtyOrAccmpFilter, 'qtyAccmpType')
+            .displayAfterFilter(fiscalYearsFilter, 'fiscalYear')
+            .get()}
           tableColumns={qaTableColumns}
           editable
           deletable

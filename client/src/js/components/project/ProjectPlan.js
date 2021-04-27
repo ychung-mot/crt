@@ -20,6 +20,7 @@ import ProjectFooterNav from './ProjectFooterNav';
 import useFormModal from '../hooks/useFormModal';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
+import { arrayFormatter } from '../../utils';
 
 const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
@@ -31,11 +32,10 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
     api
       .getProjectPlan(match.params.id)
       .then((response) => {
-        //sort FinTarget and QtyAccmps
         let data = response.data;
         data = {
           ...data,
-          finTargets: sortByFiscalYearAndPecos(data.finTargets),
+          finTargets: arrayFormatter(data.finTargets).sortBy(sortFunctionByFiscalAndPecos).get(),
         };
 
         setData(data);
@@ -144,33 +144,13 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
     setFiscalYearsFilter(result);
   };
 
-  const displayAfterYearFilter = (items) => {
-    let filteredResult = items;
-    if (fiscalYearsFilter === 'ALL') {
-      return filteredResult;
-    } else {
-      return filteredResult.filter((items) => items.fiscalYear === fiscalYearsFilter);
-    }
-  };
-
-  const displayOnlyValidFiscalYears = (fiscalYears = [], list = []) => {
-    //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
-    let listOfFiscalYears = list.map((item) => item.fiscalYear);
-
-    return fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
-  };
-
-  const sortFunctionFinPlan = (a, b) => {
+  const sortFunctionByFiscalAndPecos = (a, b) => {
     let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
     let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
     let displayOrderPhaseA = phases.find((phase) => phase.name === a.projectPhase).displayOrder;
     let displayOrderPhaseB = phases.find((phase) => phase.name === b.projectPhase).displayOrder;
 
     return displayOrderYearA - displayOrderYearB || displayOrderPhaseA - displayOrderPhaseB;
-  };
-
-  const sortByFiscalYearAndPecos = (items = []) => {
-    return items.sort(sortFunctionFinPlan);
   };
 
   const sumByFiscalYear = (items = []) => {
@@ -181,11 +161,10 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
     api
       .getProjectPlan(data.id)
       .then((response) => {
-        //sort FinTarget and QtyAccmps
         let data = response.data;
         data = {
           ...data,
-          finTargets: sortByFiscalYearAndPecos(data.finTargets),
+          finTargets: arrayFormatter(data.finTargets).sortBy(sortFunctionByFiscalAndPecos).get(),
         };
 
         setData(data);
@@ -229,7 +208,7 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
             <Col xs={3}>
               <SingleDropdown
                 items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
-                  displayOnlyValidFiscalYears(fiscalYears, data.finTargets)
+                  arrayFormatter(data.finTargets).findValidFiscalYears(fiscalYears).get()
                 )}
                 handleOnChange={onFiscalYearFilterChange}
                 defaultTitle="Show All Fiscal Years"
@@ -245,7 +224,7 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
           </Row>
         </UIHeader>
         <DataTableControl
-          dataList={displayAfterYearFilter(data.finTargets)}
+          dataList={arrayFormatter(data.finTargets).displayAfterFilter(fiscalYearsFilter, 'fiscalYear').get()}
           tableColumns={finTargetTableColumns}
           editable
           deletable
@@ -259,7 +238,9 @@ const ProjectPlan = ({ match, fiscalYears, phases, showValidationErrorDialog }) 
           <Col className="text-right">
             <strong>Total Project Funding </strong>
             <NumberFormat
-              value={sumByFiscalYear(displayAfterYearFilter(data.finTargets))}
+              value={sumByFiscalYear(
+                arrayFormatter(data.finTargets).displayAfterFilter(fiscalYearsFilter, 'fiscalYear').get()
+              )}
               prefix="$"
               thousandSeparator={true}
               displayType="text"

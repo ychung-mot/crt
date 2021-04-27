@@ -85,3 +85,112 @@ export const myFiscalYear = () => {
   //date is after fiscal
   return fiscalYear;
 };
+
+export const arrayFormatter = (myArray) => {
+  //purpose: to take arrays of objects and format fields for UI display.
+  //public methods are chainable. ie. arrayFormatter(array).changeDateFormat().get().
+  //to get the changed array get() function must be called at the end.
+
+  let _myArray = [...myArray];
+
+  function changeDateFormat(dateFormat = 'DD-MM-YYYY') {
+    if (
+      !checkIfPropertyExistsInArray('changeDateFormat', 'plannedDate') ||
+      !checkIfPropertyExistsInArray('changeDateFormat', 'actualDate')
+    ) {
+      return this;
+    }
+
+    _myArray = _myArray.map((item) => {
+      return {
+        ...item,
+        plannedDate: item.plannedDate === null ? null : moment(item.plannedDate).format(dateFormat),
+        actualDate: item.actualDate === null ? null : moment(item.actualDate).format(dateFormat),
+      };
+    });
+
+    return this;
+  }
+
+  function displayAfterFilter(filterWord, key) {
+    //takes filter word and checks if key value = filter word.
+    if (!checkIfPropertyExistsInArray('displayAfterFilter', key)) {
+      return this;
+    }
+
+    if (filterWord === 'ALL') {
+      return this;
+    }
+
+    _myArray = _myArray.filter((items) => items[key] === filterWord);
+    return this;
+  }
+
+  function findValidFiscalYears(fiscalYears = []) {
+    //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
+
+    if (!checkIfPropertyExistsInArray('displayOnlyValidFiscalYears', 'fiscalYear')) {
+      return this;
+    }
+
+    let listOfFiscalYears = _myArray.map((item) => item.fiscalYear);
+
+    _myArray = fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
+
+    return this;
+  }
+
+  function checkIfPropertyExistsInArray(functionName, key) {
+    //throws warning if key doesn't exist. This should prevent misuse of utility functions.
+    //returns false (property doesn't exist)
+    //true (property exists)
+    if (_myArray.length !== 0 && !_myArray[0].hasOwnProperty(key)) {
+      console.warn(
+        _myArray,
+        `should not call function ${functionName} on this array because it does not have ${key} field property`
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  function roundPercentage(key) {
+    if (!checkIfPropertyExistsInArray('roundPercentage', key)) {
+      return this;
+    }
+
+    _myArray = _myArray.map((item) => {
+      if (item[key] === null) {
+        return item;
+      }
+
+      return {
+        ...item,
+        [key]: Math.round(item[key]) + '%',
+      };
+    });
+
+    return this;
+  }
+
+  function sortBy(sortFunction) {
+    //sorts array based on sort function
+    _myArray = _myArray.sort(sortFunction);
+
+    return this;
+  }
+
+  function get() {
+    return _myArray;
+  }
+
+  return {
+    changeDateFormat,
+    displayAfterFilter,
+    findValidFiscalYears,
+    roundPercentage,
+    sortBy,
+    get,
+  };
+};
