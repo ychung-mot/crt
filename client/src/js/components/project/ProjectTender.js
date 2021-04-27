@@ -34,7 +34,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         data = {
           ...data,
           qtyAccmps: arrayFormatter(data.qtyAccmps).sortByFiscalYear(fiscalYears).get(),
-          //tenders: roundPercentage(changeDateFormat(response.data.tenders)),
           tenders: arrayFormatter(data.tenders).changeDateFormat(Constants.DATE_DISPLAY_FORMAT).roundPercentage().get(),
         };
 
@@ -199,45 +198,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
     setFiscalYearsFilter(result);
   };
 
-  //temporary fix remove if not needed.
-  // const displayAfterYearFilter = (items) => {
-  //   let filteredResult = items;
-  //   if (fiscalYearsFilter === 'ALL') {
-  //     return filteredResult;
-  //   } else {
-  //     return filteredResult.filter((items) => items.fiscalYear === fiscalYearsFilter);
-  //   }
-  // };
-
-  const displayOnlyValidFiscalYears = (fiscalYears = [], list = []) => {
-    //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
-    let listOfFiscalYears = list.map((item) => item.fiscalYear);
-
-    return fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
-  };
-
-  //temporary fix remove if not needed.
-  // const displayAfterQtyAccmpsFilter = (items) => {
-  //   let filteredResult = items;
-  //   if (qtyOrAccmpFilter === 'ALL') {
-  //     return filteredResult;
-  //   } else {
-  //     return filteredResult.filter((items) => items.qtyAccmpType === qtyOrAccmpFilter);
-  //   }
-  // };
-
-  //temporary fix
-  // const sortFunctionQtyAccmps = (a, b) => {
-  //   let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
-  //   let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
-
-  //   return displayOrderYearA - displayOrderYearB;
-  // };
-
-  // const sortByFiscalYear = (items = []) => {
-  //   return items.sort(sortFunctionQtyAccmps);
-  // };
-
   const refreshData = () => {
     api
       .getProjectTender(data.id)
@@ -256,87 +216,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         showValidationErrorDialog(error.response.data);
       });
   };
-
-  //temporary fix remove if no longer needed
-  // const changeDateFormat = (tenderArray) => {
-  //   let changedTenderArray = tenderArray.map((tender) => {
-  //     return {
-  //       ...tender,
-  //       plannedDate:
-  //         tender.plannedDate === null ? null : moment(tender.plannedDate).format(Constants.DATE_DISPLAY_FORMAT),
-  //       actualDate: tender.actualDate === null ? null : moment(tender.actualDate).format(Constants.DATE_DISPLAY_FORMAT),
-  //     };
-  //   });
-
-  //   return changedTenderArray;
-  // };
-
-  // const roundPercentage = (tenderArray) => {
-  //   let changedTenderArray = tenderArray.map((tender) => {
-  //     return {
-  //       ...tender,
-  //       ministryEstPerc: tender.ministryEstPerc && Math.round(tender.ministryEstPerc) + '%',
-  //     };
-  //   });
-
-  //   return changedTenderArray;
-  // };
-
-  // const arrayFormatter = (myArray) => {
-  //   let _myArray = [...myArray];
-
-  //   const methods = {
-  //     changeDateFormat: function (dateFormat = 'DD-MM-YYYY') {
-  //       _myArray = _myArray.map((item) => {
-  //         return {
-  //           ...item,
-  //           plannedDate: item.plannedDate === null ? null : moment(item.plannedDate).format(dateFormat),
-  //           actualDate: item.actualDate === null ? null : moment(item.actualDate).format(dateFormat),
-  //         };
-  //       });
-
-  //       return this;
-  //     },
-
-  //     displayAfterFilter: function (filter, key) {
-  //       if (filter === 'ALL') {
-  //         return this;
-  //       }
-
-  //       _myArray = _myArray.filter((items) => items[key] === filter);
-  //       return this;
-  //     },
-
-  //     roundPercentage: function () {
-  //       _myArray = _myArray.map((item) => {
-  //         return {
-  //           ...item,
-  //           ministryEstPerc: item.ministryEstPerc && Math.round(item.ministryEstPerc) + '%',
-  //         };
-  //       });
-
-  //       return this;
-  //     },
-
-  //     sortByFiscalYear: function () {
-  //       const sortFunctionFiscalYear = (a, b) => {
-  //         let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
-  //         let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
-
-  //         return displayOrderYearA - displayOrderYearB;
-  //       };
-  //       _myArray = _myArray.sort(sortFunctionFiscalYear);
-
-  //       return this;
-  //     },
-
-  //     get: function () {
-  //       return _myArray;
-  //     },
-  //   };
-
-  //   return methods;
-  // };
 
   const arrayFormatter = (myArray) => {
     let _myArray = [...myArray];
@@ -507,9 +386,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
             </Col>
             <Col xs={3}>
               <SingleDropdown
-                // items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
-                //   displayOnlyValidFiscalYears(fiscalYears, data.qtyAccmps)
-                // )}
                 items={[{ id: 'ALL', name: 'Show All Fiscal Years' }].concat(
                   arrayFormatter(data.qtyAccmps).displayOnlyValidFiscalYears(fiscalYears).get()
                 )}
@@ -527,7 +403,6 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
           </Row>
         </UIHeader>
         <DataTableControl
-          //dataList={displayAfterQtyAccmpsFilter(displayAfterYearFilter(data.qtyAccmps))}
           dataList={arrayFormatter(data.qtyAccmps)
             .displayAfterFilter(qtyOrAccmpFilter, 'qtyAccmpType')
             .displayAfterFilter(fiscalYearsFilter, 'fiscalYear')
