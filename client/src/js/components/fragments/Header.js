@@ -51,27 +51,12 @@ const Header = ({ currentUser }) => {
       <Navbar expand="lg" className="navbar-dark">
         <Container>
           <NavbarBrand tag={Link} onClick={hideNavbar} to="/">
-            {/* temporary fix trying out new image */}
-            {/* <img
+            <img
               className="img-fluid d-none d-md-inline-block"
               src={`${process.env.PUBLIC_URL}/images/bcid-logo-rev-en.svg`}
               width="181"
               height="44"
               alt="B.C. Government Logo"
-            /> */}
-            <img
-              className="img-fluid d-none d-md-inline-block"
-              src={`${process.env.PUBLIC_URL}/images/bcid-symbol-rev.svg`}
-              width="64"
-              height="44"
-              alt="B.C. Government Logo"
-            />
-            <img
-              className="img-fluid d-none d-md-inline-block ml-2"
-              src={`${process.env.PUBLIC_URL}/images/cart-logo.png`}
-              width="64"
-              height="44"
-              alt="CaRT Logo"
             />
             <img
               className="img-fluid d-md-none"
@@ -81,7 +66,16 @@ const Header = ({ currentUser }) => {
               alt="B.C. Government Logo"
             />
           </NavbarBrand>
-          <div className="navbar-brand">MoTI Capital Rehabilitation Tracking</div>
+          <div className="navbar-brand">MoTI Capital and Rehabilitation Tracking</div>
+          <NavbarBrand tag={Link} onClick={hideNavbar} to="/">
+            <img
+              className="img-fluid d-none d-md-inline-block"
+              src={`${process.env.PUBLIC_URL}/images/cart-logo.png`}
+              width="64"
+              height="44"
+              alt="CaRT Logo"
+            />
+          </NavbarBrand>
           <NavbarToggler onClick={toggleNavbar} />
           {/* <Collapse> is needed to keep justify-content: space-between maintain correct spacing */}
           <Collapse isOpen={!collapsed} navbar />
