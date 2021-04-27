@@ -49,7 +49,7 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData })
             <strong>Warning!</strong>
             <br />
             This action will overwrite the current project ratios information based on the current project segments. Do
-            you want to contiue?
+            you want to continue?
           </div>
         ),
         nextButton: (
@@ -73,7 +73,7 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData })
             <strong>Ratios determined.</strong>
             <hr />
             These calculated values are suggestions and can be updated manually by the users to make corrections, if
-            required.,
+            required.
           </Alert>
         ),
       },

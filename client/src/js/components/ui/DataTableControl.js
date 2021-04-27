@@ -161,6 +161,14 @@ const DataTableControl = ({
                   {(editable || deletable) && (
                     <Authorize requires={editPermissionName}>
                       <td style={{ width: '1%', whiteSpace: 'nowrap' }}>
+                        {editable && (
+                          <FontAwesomeButton
+                            icon="edit"
+                            className="mr-1"
+                            onClick={() => handleEditClicked(item.id)}
+                            title={editHoverText}
+                          />
+                        )}
                         {cloneable && (
                           <FontAwesomeButton
                             icon="copy"
@@ -168,14 +176,6 @@ const DataTableControl = ({
                             onClick={() => handleCloneClicked(item.id)}
                             title={cloneHoverText}
                             color="success"
-                          />
-                        )}
-                        {editable && (
-                          <FontAwesomeButton
-                            icon="edit"
-                            className="mr-1"
-                            onClick={() => handleEditClicked(item.id)}
-                            title={editHoverText}
                           />
                         )}
                         {deletable && (
