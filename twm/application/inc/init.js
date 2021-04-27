@@ -61,7 +61,7 @@ $(document).ready(function () {
   );
   logger("INFO", "INIT: Beginning TWM Session");
 
-  initKeycloak();
+//  initKeycloak();
 });
 
 function imageLoader(image, src) {
