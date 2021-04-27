@@ -18,6 +18,7 @@ import useFormModal from '../hooks/useFormModal';
 import moment from 'moment';
 import * as api from '../../Api';
 import * as Constants from '../../Constants';
+import { arrayFormatter } from '../../utils';
 
 const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,10 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         data = {
           ...data,
           qtyAccmps: arrayFormatter(data.qtyAccmps).sortByFiscalYear(fiscalYears).get(),
-          tenders: arrayFormatter(data.tenders).changeDateFormat(Constants.DATE_DISPLAY_FORMAT).roundPercentage().get(),
+          tenders: arrayFormatter(data.tenders)
+            .changeDateFormat(Constants.DATE_DISPLAY_FORMAT)
+            .roundPercentage('ministryEstPerc')
+            .get(),
         };
 
         setData(data);
@@ -206,7 +210,10 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
         data = {
           ...data,
           qtyAccmps: arrayFormatter(data.qtyAccmps).sortByFiscalYear(fiscalYears).get(),
-          tenders: arrayFormatter(data.tenders).changeDateFormat(Constants.DATE_DISPLAY_FORMAT).roundPercentage().get(),
+          tenders: arrayFormatter(data.tenders)
+            .changeDateFormat(Constants.DATE_DISPLAY_FORMAT)
+            .roundPercentage('ministryEstPerc')
+            .get(),
         };
 
         setData(data);
@@ -217,116 +224,120 @@ const ProjectTender = ({ match, fiscalYears, showValidationErrorDialog }) => {
       });
   };
 
-  const arrayFormatter = (myArray) => {
-    let _myArray = [...myArray];
+  // const arrayFormatter = (myArray) => {
+  //   //purpose: to take arrays of objects and format fields for UI display.
+  //   //public methods are chainable. ie. arrayFormatter(array).changeDateFormat().get().
+  //   //to get the changed array get() function must be called at the end.
 
-    function changeDateFormat(dateFormat = 'DD-MM-YYYY') {
-      if (
-        !checkIfPropertyExistsInArray('changeDateFormat', 'plannedDate') ||
-        !checkIfPropertyExistsInArray('changeDateFormat', 'actualDate')
-      ) {
-        return this;
-      }
+  //   let _myArray = [...myArray];
 
-      _myArray = _myArray.map((item) => {
-        return {
-          ...item,
-          plannedDate: item.plannedDate === null ? null : moment(item.plannedDate).format(dateFormat),
-          actualDate: item.actualDate === null ? null : moment(item.actualDate).format(dateFormat),
-        };
-      });
+  //   function changeDateFormat(dateFormat = 'DD-MM-YYYY') {
+  //     if (
+  //       !checkIfPropertyExistsInArray('changeDateFormat', 'plannedDate') ||
+  //       !checkIfPropertyExistsInArray('changeDateFormat', 'actualDate')
+  //     ) {
+  //       return this;
+  //     }
 
-      return this;
-    }
+  //     _myArray = _myArray.map((item) => {
+  //       return {
+  //         ...item,
+  //         plannedDate: item.plannedDate === null ? null : moment(item.plannedDate).format(dateFormat),
+  //         actualDate: item.actualDate === null ? null : moment(item.actualDate).format(dateFormat),
+  //       };
+  //     });
 
-    function displayAfterFilter(filter, key) {
-      if (!checkIfPropertyExistsInArray('displayAfterFilter', key)) {
-        return this;
-      }
+  //     return this;
+  //   }
 
-      if (filter === 'ALL') {
-        return this;
-      }
+  //   function displayAfterFilter(filter, key) {
+  //     if (!checkIfPropertyExistsInArray('displayAfterFilter', key)) {
+  //       return this;
+  //     }
 
-      _myArray = _myArray.filter((items) => items[key] === filter);
-      return this;
-    }
+  //     if (filter === 'ALL') {
+  //       return this;
+  //     }
 
-    function displayOnlyValidFiscalYears(fiscalYears = []) {
-      //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
+  //     _myArray = _myArray.filter((items) => items[key] === filter);
+  //     return this;
+  //   }
 
-      if (!checkIfPropertyExistsInArray('displayOnlyValidFiscalYears', 'fiscalYear')) {
-        return this;
-      }
+  //   function displayOnlyValidFiscalYears(fiscalYears = []) {
+  //     //returns only the fiscalYears that exist in the project. Used for the filter dropdown.
 
-      let listOfFiscalYears = _myArray.map((item) => item.fiscalYear);
+  //     if (!checkIfPropertyExistsInArray('displayOnlyValidFiscalYears', 'fiscalYear')) {
+  //       return this;
+  //     }
 
-      _myArray = fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
+  //     let listOfFiscalYears = _myArray.map((item) => item.fiscalYear);
 
-      return this;
-    }
+  //     _myArray = fiscalYears.filter((fiscalYear) => listOfFiscalYears.includes(fiscalYear.codeName));
 
-    function checkIfPropertyExistsInArray(functionName, key) {
-      //throws warning if property doesn't exist. This should prevent misuse of utility function.
-      //returns false (property doesn't exist)
-      //true (property exists)
-      if (_myArray.length !== 0 && !_myArray[0].hasOwnProperty(key)) {
-        console.trace(
-          _myArray,
-          `should not call ${functionName} on this array because it does not have ${key} field property`
-        );
-        return false;
-      }
+  //     return this;
+  //   }
 
-      return true;
-    }
+  //   function checkIfPropertyExistsInArray(functionName, key) {
+  //     //throws warning if key doesn't exist. This should prevent misuse of utility functions.
+  //     //returns false (property doesn't exist)
+  //     //true (property exists)
+  //     if (_myArray.length !== 0 && !_myArray[0].hasOwnProperty(key)) {
+  //       console.trace(
+  //         _myArray,
+  //         `should not call ${functionName} on this array because it does not have ${key} field property`
+  //       );
+  //       return false;
+  //     }
 
-    function roundPercentage() {
-      if (!checkIfPropertyExistsInArray('roundPercentage', 'ministryEstPerc')) {
-        return this;
-      }
+  //     return true;
+  //   }
 
-      _myArray = _myArray.map((item) => {
-        return {
-          ...item,
-          ministryEstPerc: item.ministryEstPerc && Math.round(item.ministryEstPerc) + '%',
-        };
-      });
+  //   function roundPercentage(key) {
+  //     if (!checkIfPropertyExistsInArray('roundPercentage', 'ministryEstPerc')) {
+  //       return this;
+  //     }
 
-      return this;
-    }
+  //     _myArray = _myArray.map((item) => {
+  //       return {
+  //         ...item,
+  //         ministryEstPerc: Math.round(item.ministryEstPerc) + '%',
+  //       };
+  //     });
 
-    function sortByFiscalYear(fiscalYears) {
-      //requires list(Array) of fiscal years to sort by.
+  //     return this;
+  //   }
 
-      if (!checkIfPropertyExistsInArray('sortByFiscalYear', 'fiscalYear')) {
-        return this;
-      }
+  //   function sortByFiscalYear(fiscalYears) {
+  //     //requires list(Array) of fiscal years to sort by.
 
-      const sortFunctionFiscalYear = (a, b) => {
-        let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
-        let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
+  //     if (!checkIfPropertyExistsInArray('sortByFiscalYear', 'fiscalYear')) {
+  //       return this;
+  //     }
 
-        return displayOrderYearA - displayOrderYearB;
-      };
-      _myArray = _myArray.sort(sortFunctionFiscalYear);
+  //     const sortFunctionFiscalYear = (a, b) => {
+  //       let displayOrderYearA = fiscalYears.find((year) => year.codeName === a.fiscalYear).displayOrder;
+  //       let displayOrderYearB = fiscalYears.find((year) => year.codeName === b.fiscalYear).displayOrder;
 
-      return this;
-    }
+  //       return displayOrderYearA - displayOrderYearB;
+  //     };
+  //     _myArray = _myArray.sort(sortFunctionFiscalYear);
 
-    function get() {
-      return _myArray;
-    }
+  //     return this;
+  //   }
 
-    return {
-      changeDateFormat,
-      displayAfterFilter,
-      displayOnlyValidFiscalYears,
-      roundPercentage,
-      sortByFiscalYear,
-      get,
-    };
-  };
+  //   function get() {
+  //     return _myArray;
+  //   }
+
+  //   return {
+  //     changeDateFormat,
+  //     displayAfterFilter,
+  //     displayOnlyValidFiscalYears,
+  //     roundPercentage,
+  //     sortByFiscalYear,
+  //     get,
+  //   };
+  // };
 
   const tendersFormModal = useFormModal('Tender Details', <EditTenderFormFields />, handleEditTenderFormSubmit, {
     saveCheck: true,
