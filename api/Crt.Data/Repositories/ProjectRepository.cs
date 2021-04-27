@@ -76,7 +76,7 @@ namespace Crt.Data.Repositories
                 var winningContractor = DbContext.CrtTenders.AsNoTracking()
                     .Include(x => x.WinningCntrctrLkup)
                     .Where(x => x.ProjectId == result.ProjectId && x.WinningCntrctrLkupId != null)
-                    .OrderBy(x => x.DbAuditLastUpdateTimestamp)
+                    .OrderByDescending(x => x.DbAuditLastUpdateTimestamp)
                     .FirstOrDefault()?.WinningCntrctrLkup.CodeName;
                 
                 result.WinningContractorName = winningContractor;
