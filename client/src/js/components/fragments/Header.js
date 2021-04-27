@@ -51,6 +51,7 @@ const Header = ({ currentUser }) => {
       <Navbar expand="lg" className="navbar-dark">
         <Container>
           <NavbarBrand tag={Link} onClick={hideNavbar} to="/">
+            {/* temporary fix trying out new image */}
             {/* <img
               className="img-fluid d-none d-md-inline-block"
               src={`${process.env.PUBLIC_URL}/images/bcid-logo-rev-en.svg`}
