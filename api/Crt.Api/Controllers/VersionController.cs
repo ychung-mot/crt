@@ -6,6 +6,8 @@ using System.Runtime.Versioning;
 using Crt.Model;
 using Crt.Api.Controllers.Base;
 using Crt.Model.Utils;
+using System.Threading.Tasks;
+using System;
 
 namespace Crt.Api.Controllers
 {
@@ -49,6 +51,13 @@ namespace Crt.Api.Controllers
             };
 
             return Ok(versionInfo);
+        }
+
+        [HttpGet("test")]
+        public async Task<ActionResult<string>> GetCrtTestString()
+        {
+            await Task.Delay(TimeSpan.FromMinutes(1));
+            return Ok("Test");
         }
     }
 }
