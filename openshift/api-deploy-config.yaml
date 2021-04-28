@@ -169,7 +169,7 @@ objects:
     kind: Route
     metadata:
       annotations:
-        haproxy.router.openshift.io/timeout: 180s
+        haproxy.router.openshift.io/timeout: 5m
       creationTimestamp: null
       name: ${NAME}${SUFFIX}
     spec:
