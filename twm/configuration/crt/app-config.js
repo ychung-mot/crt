@@ -79,6 +79,14 @@ app.config = {
       })
         // Handle a successful result
         .done(function (data) {
+          //Tells parent that initial state of the form.
+          window.parent.postMessage(
+            {
+              message: "setInitialFormState",
+              formState: data,
+            },
+            "*"
+          );
           console.log("extract start and end points from data object");
           var startLat = data.startLatitude;
           var startLon = data.startLongitude;
@@ -189,19 +197,18 @@ app.config = {
             LAYERS: "crt:CRT_SEGMENT_RECORD_VW",
             CQL_FILTER: "project_id=" + app.projectId,
           },
-          imageLoadFunction: imageLoader
+          imageLoadFunction: imageLoader,
         }),
-          fields: [
-            {
-              name: "description",
-              searchable: true,
-              nameTransform: function (name) {
-                return "Desciption:";
-              },
+        fields: [
+          {
+            name: "description",
+            searchable: true,
+            nameTransform: function (name) {
+              return "Desciption:";
             },
-          ],
-          transition: 0,
-
+          },
+        ],
+        transition: 0,
       }),
 
       new ol.layer.Image({
