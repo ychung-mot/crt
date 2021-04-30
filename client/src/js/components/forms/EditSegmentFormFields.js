@@ -7,17 +7,24 @@ import PageSpinner from '../ui/PageSpinner';
 import * as Constants from '../../Constants';
 import * as api from '../../Api';
 
+const defaultFormState = { startCoordinates: '', endCoordinates: '', description: '' };
+
 function EditSegmentFormFields({ closeForm, projectId, refreshData, formType, segmentId }) {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [initialFormState, setInitialFormState] = useState(defaultFormState);
   const [url, setURL] = useState(`${Constants.PATHS.TWM}?c=crt&project=${projectId}`);
 
   const myIframe = useRef(null);
 
   useEffect(() => {
     window.addEventListener('message', addEventListenerCloseForm);
+    window.addEventListener('message', addEventListenerInitialFormState);
 
-    return removeEventListenerCloseForm;
+    return function cleanUp() {
+      removeEventListenerCloseForm();
+      removeEventListenerInitialFormState();
+    };
   });
 
   useEffect(() => {
@@ -63,8 +70,30 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData, formType, se
     }
   };
 
+  const addEventListenerInitialFormState = (event) => {
+    if (
+      event.data.message === 'setInitialFormState' &&
+      event.origin === `${window.location.protocol}//${window.location.host}`
+    ) {
+      let { startCoordinates, endCoordinates, description } = event.data.formState;
+
+      //space needed after comma in start/end coordinates to match TWM
+      //this is needed for the dirtyCheck();
+      //ie. startCoordinate = 56.698250,-121.707720
+      //convert to 56.698250, -121.707720
+      startCoordinates = startCoordinates.replace(',', ', ');
+      endCoordinates = endCoordinates.replace(',', ', ');
+
+      setInitialFormState({ ...defaultFormState, startCoordinates, endCoordinates, description });
+    }
+  };
+
   const removeEventListenerCloseForm = () => {
     window.removeEventListener('message', addEventListenerCloseForm);
+  };
+
+  const removeEventListenerInitialFormState = () => {
+    window.removeEventListener('message', addEventListenerInitialFormState);
   };
 
   //modal helper functions
@@ -86,14 +115,24 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData, formType, se
     let myForm = myIframe.current.contentWindow.document.forms['simple-router-form'];
     let dirtyFlag = false;
 
-    //fixes crash if myiFrame hasn't loaded.
+    //fixes crash if myiFrame hasn't loaded and user clicks cancel.
     if (!myForm) {
       return dirtyFlag;
     }
 
-    for (let i = 0; i < myForm.elements.length; i++) {
-      let fieldValue = myForm.elements[i].value;
-      if (fieldValue) {
+    //temporary fix for debug remove when tested
+    // console.log(myForm.startCoordinates.value);
+    // console.log(myForm.endCoordinates.value);
+    // console.log(myForm.description.value);
+
+    for (let each in initialFormState) {
+      // console.log('comparing');
+      // console.log(initialFormState[each]);
+      // console.log(myForm[each].value);
+      if (initialFormState[each] !== myForm[each].value) {
+        console.log(`${each} was dirty`);
+        console.log(`initial val: ${initialFormState[each]}`);
+        console.log(`end val: ${myForm[each].value}`);
         dirtyFlag = true;
       }
     }
