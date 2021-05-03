@@ -47,7 +47,7 @@ export const FormInput = ({ children, ...props }) => {
   const [field, meta] = useField({ ...props, type: 'checkbox' });
   return (
     <React.Fragment>
-      <Input {...field} {...props} invalid={meta.error && meta.touched}>
+      <Input {...field} {...props} invalid={meta.error && meta.touched} autoComplete="off">
         {children}
       </Input>
       {meta.error && meta.touched && <FormFeedback>{meta.error}</FormFeedback>}
