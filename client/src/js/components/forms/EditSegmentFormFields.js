@@ -120,19 +120,8 @@ function EditSegmentFormFields({ closeForm, projectId, refreshData, formType, se
       return dirtyFlag;
     }
 
-    //temporary fix for debug remove when tested
-    // console.log(myForm.startCoordinates.value);
-    // console.log(myForm.endCoordinates.value);
-    // console.log(myForm.description.value);
-
     for (let each in initialFormState) {
-      // console.log('comparing');
-      // console.log(initialFormState[each]);
-      // console.log(myForm[each].value);
       if (initialFormState[each] !== myForm[each].value) {
-        console.log(`${each} was dirty`);
-        console.log(`initial val: ${initialFormState[each]}`);
-        console.log(`end val: ${myForm[each].value}`);
         dirtyFlag = true;
       }
     }
