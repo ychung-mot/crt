@@ -79,7 +79,8 @@ app.config = {
       })
         // Handle a successful result
         .done(function (data) {
-          //Tells parent that initial state of the form.
+          //Tells parent the initial state of the form.
+          //Used to check if form has been edited for popup warning when closing TWM.
           window.parent.postMessage(
             {
               message: "setInitialFormState",
@@ -105,6 +106,8 @@ app.config = {
             $(".dr-location-input-start").val(startLat + ", " + startLon);
             if (endLat > 0) {
               // it is a line
+              endLat = data.endCoordinates.split(",")[0];
+              endLon = data.endCoordinates.split(",")[1];
               $(".dr-location-input-end").attr("longitude", endLon);
               $(".dr-location-input-end").attr("latitude", endLat);
               $(".dr-location-input-end").val(endLat + ", " + endLon);
