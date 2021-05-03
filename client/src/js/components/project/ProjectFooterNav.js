@@ -12,7 +12,7 @@ function ProjectFooterNav({ projectId }) {
   };
 
   return (
-    <div className="d-flex flex-row-reverse">
+    <div className="d-flex flex-row-reverse sticky-top">
       <Nav pills>
         <NavItem className="bg-secondary">
           <NavLink
