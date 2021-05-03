@@ -103,7 +103,7 @@ const DataTableControl = ({
       <ConditionalWrapper
         condition={overflowY}
         wrapper={(children) => (
-          <div className={'overflow-auto'} style={{ maxHeight: '25vh' }}>
+          <div className={'overflow-auto'} style={{ maxHeight: overflowY }}>
             {children}
           </div>
         )}
@@ -226,6 +226,7 @@ DataTableControl.propTypes = {
       }),
       currency: PropTypes.bool, //if true then format values as currency
       thousandSeparator: PropTypes.bool, //if true then format values with thousand comma separators
+      markdown: PropTypes.bool, //true to make field display markdown
       labelHoverText: PropTypes.shape({
         key: PropTypes.string, //will display what is in item[key] when hovered using html title property. Takes precdence over title.
         title: PropTypes.string, //will display this string if item[key] doesn't exist.
@@ -246,7 +247,7 @@ DataTableControl.propTypes = {
   onCloneClicked: PropTypes.func,
   onDeleteClicked: PropTypes.func,
   onHeadingSortClicked: PropTypes.func,
-  overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
+  overflowY: PropTypes.string, //sets whether or not to enable Y scroll based on max-height that is set by css max-height string ie. 50vh/500px
   easyDelete: PropTypes.bool, //allows user to not set end date to disable record
   hover: PropTypes.bool, //determines whether rows are highlighted when hovered
 };
@@ -255,7 +256,6 @@ DataTableControl.defaultProps = {
   editable: false,
   deletable: false,
   cloneable: false,
-  overflowY: false,
   easyDelete: false,
   hover: true,
   cloneHoverText: 'Clone Record',

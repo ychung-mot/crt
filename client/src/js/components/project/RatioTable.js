@@ -159,5 +159,5 @@ RatioTable.propTypes = {
   ).isRequired,
   formModalFields: PropTypes.element.isRequired, //these will be displayed when dialog opens
   refreshData: PropTypes.func.isRequired, //used to refresh page when data is changed
-  overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
+  overflowY: PropTypes.string, //sets whether or not to enable Y scroll based on max-height that is set by css max-height string ie. 50vh/500px
 };

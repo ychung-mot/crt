@@ -26,7 +26,7 @@ import * as Constants from '../../Constants';
 const segmentTableColumns = [
   { heading: 'Segment start coordinates', key: 'startCoordinates', nosort: true },
   { heading: 'Segment end coordinates', key: 'endCoordinates', nosort: true },
-  { heading: 'Description', key: 'description', nosort: true },
+  { heading: 'Description', key: 'description', nosort: true, markdown: true },
 ];
 
 const highwayTableColumns = [
@@ -185,7 +185,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
           editPermissionName={Constants.PERMISSIONS.PROJECT_W}
           onEditClicked={onEditSegmentClicked}
           onDeleteClicked={onDeleteSegmentClicked}
-          overflowY={true}
+          overflowY={'50vh'}
         />
       </MaterialCard>
       <MaterialCard>
@@ -213,7 +213,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
               tableColumns={electoralDistrictTableColumns}
               formModalFields={<EditElectoralDistrictFormFields />}
               refreshData={refreshData}
-              overflowY={true}
+              overflowY={'25vh'}
             />
           </Col>
           <Col xs={4}>
@@ -225,7 +225,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
               tableColumns={highwayTableColumns}
               formModalFields={<EditHighwayFormFields />}
               refreshData={refreshData}
-              overflowY={true}
+              overflowY={'25vh'}
             />
           </Col>
           <Col xs={4}>
@@ -237,7 +237,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
               tableColumns={serviceAreaTableColumns}
               formModalFields={<EditServiceAreaFormFields />}
               refreshData={refreshData}
-              overflowY={true}
+              overflowY={'25vh'}
             />
           </Col>
         </Row>
@@ -252,7 +252,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
               tableColumns={districtTableColumns}
               formModalFields={<EditDistrictFormFields />}
               refreshData={refreshData}
-              overflowY={true}
+              overflowY={'25vh'}
             />
           </Col>
           <Col xs={4}>
@@ -264,7 +264,7 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
               tableColumns={economicRegionTableColumns}
               formModalFields={<EditEconomicRegionFormFields />}
               refreshData={refreshData}
-              overflowY={true}
+              overflowY={'25vh'}
             />
           </Col>
         </Row>
