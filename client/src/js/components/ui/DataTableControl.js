@@ -103,7 +103,7 @@ const DataTableControl = ({
       <ConditionalWrapper
         condition={overflowY}
         wrapper={(children) => (
-          <div className={'overflow-auto'} style={{ maxHeight: '25vh' }}>
+          <div className={'overflow-auto'} style={{ maxHeight: overflowY }}>
             {children}
           </div>
         )}
@@ -247,7 +247,7 @@ DataTableControl.propTypes = {
   onCloneClicked: PropTypes.func,
   onDeleteClicked: PropTypes.func,
   onHeadingSortClicked: PropTypes.func,
-  overflowY: PropTypes.bool, //sets whether or not to enable Y scroll based on max-height 25vh
+  overflowY: PropTypes.string, //sets whether or not to enable Y scroll based on max-height that is set by css max-height string ie. 50vh/500px
   easyDelete: PropTypes.bool, //allows user to not set end date to disable record
   hover: PropTypes.bool, //determines whether rows are highlighted when hovered
 };
@@ -256,7 +256,6 @@ DataTableControl.defaultProps = {
   editable: false,
   deletable: false,
   cloneable: false,
-  overflowY: false,
   easyDelete: false,
   hover: true,
   cloneHoverText: 'Clone Record',
