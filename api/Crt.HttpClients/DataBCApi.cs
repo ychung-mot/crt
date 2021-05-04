@@ -31,29 +31,38 @@ namespace Crt.HttpClients
 
         public async Task<List<PolygonLayer>> GetPolygonOfInterestForElectoralDistrict(string boundingBox)
         {
-            List<PolygonLayer> layerPolygons = new List<PolygonLayer>(); 
-            
-            var query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" +
+            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
+            var query = "";
+            var content = "";
+
+            try
+            {
+                query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" +
                 $"&typeName=pub:WHSE_ADMIN_BOUNDARIES.EBC_PROV_ELECTORAL_DIST_SVW&srsName=EPSG:4326&BBOX={boundingBox},EPSG:4326";
 
-            var content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
+                content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
 
-            var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
-            //continue if we have a feature collection
-            if (featureCollection != null)
-            {
-                //iterate the features in the parsed geoJSON collection
-                foreach (GJFeature.Feature feature in featureCollection.Features)
+                var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
+                //continue if we have a feature collection
+                if (featureCollection != null)
                 {
-                    var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
-
-                    layerPolygons.Add(new PolygonLayer
+                    //iterate the features in the parsed geoJSON collection
+                    foreach (GJFeature.Feature feature in featureCollection.Features)
                     {
-                        NTSGeometry = simplifiedGeom,
-                        Name = (string)feature.Properties["ED_ABBREVIATION"],
-                        Number = feature.Properties["ELECTORAL_DISTRICT_ID"].ToString()
-                    });
+                        var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
+
+                        layerPolygons.Add(new PolygonLayer
+                        {
+                            NTSGeometry = simplifiedGeom,
+                            Name = (string)feature.Properties["ED_ABBREVIATION"],
+                            Number = feature.Properties["ELECTORAL_DISTRICT_ID"].ToString()
+                        });
+                    }
                 }
+            } catch (System.Exception ex)
+            {
+                _logger.LogError($"Exception {ex.Message} - GetPolygonOfInterestForElectoralDistrict({boundingBox}): {query} - {content}");
+                throw;
             }
 
             return layerPolygons;
@@ -62,30 +71,39 @@ namespace Crt.HttpClients
         public async Task<List<PolygonLayer>> GetPolygonOfInterestForEconomicRegion(string boundingBox)
         {
             List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
+            var query = "";
+            var content = "";
 
-            var query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" + 
+            try
+            {
+                query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" +
                 $"&typeName=pub:WHSE_HUMAN_CULTURAL_ECONOMIC.CEN_ECONOMIC_REGIONS_SVW&srsName=EPSG:4326&BBOX={boundingBox},EPSG:4326";
 
-            var content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
+                content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
 
-            var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
-            //continue if we have a feature collection
-            if (featureCollection != null)
-            {
-                //iterate the features in the parsed geoJSON collection
-                foreach (GJFeature.Feature feature in featureCollection.Features)
+                var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
+                //continue if we have a feature collection
+                if (featureCollection != null)
                 {
-                    //override economic region distance tolerance, the polygons are huge and we need to 
-                    // simplify them more
-                    var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
-
-                    layerPolygons.Add(new PolygonLayer
+                    //iterate the features in the parsed geoJSON collection
+                    foreach (GJFeature.Feature feature in featureCollection.Features)
                     {
-                        NTSGeometry = simplifiedGeom,
-                        Name = (string)feature.Properties["ECONOMIC_REGION_NAME"],
-                        Number = feature.Properties["ECONOMIC_REGION_ID"].ToString()
-                    });
+                        //override economic region distance tolerance, the polygons are huge and we need to 
+                        // simplify them more
+                        var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
+
+                        layerPolygons.Add(new PolygonLayer
+                        {
+                            NTSGeometry = simplifiedGeom,
+                            Name = (string)feature.Properties["ECONOMIC_REGION_NAME"],
+                            Number = feature.Properties["ECONOMIC_REGION_ID"].ToString()
+                        });
+                    }
                 }
+            } catch (System.Exception ex)
+            {
+                _logger.LogError($"Exception {ex.Message} - GetPolygonOfInterestForEconomicRegion({boundingBox}): {query} - {content}");
+                throw;
             }
 
             return layerPolygons;

@@ -147,9 +147,9 @@ namespace Crt.HttpClients
 
                 return layerPolygons;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                _logger.LogError($"Exception - GetPolygonOfInterestForHighways({boundingBox}): {query} - {content}");
+                _logger.LogError($"Exception {ex.Message} - GetPolygonOfInterestForHighways({boundingBox}): {query} - {content}");
                 throw;
             }
         }
@@ -186,9 +186,9 @@ namespace Crt.HttpClients
 
                 return layerPolygons;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                _logger.LogError($"Exception - GetPolygonOfInterestForServiceArea({boundingBox}): {query} - {content}");
+                _logger.LogError($"Exception {ex.Message} - GetPolygonOfInterestForServiceArea({boundingBox}): {query} - {content}");
                 throw;
             }
         }
@@ -224,9 +224,9 @@ namespace Crt.HttpClients
 
                 return layerPolygons;
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                _logger.LogError($"Exception - GetPolygonOfInterestForDistrict({boundingBox}): {query} - {content}");
+                _logger.LogError($"Exception {ex.Message} - GetPolygonOfInterestForDistrict({boundingBox}): {query} - {content}");
                 throw;
             }
         }

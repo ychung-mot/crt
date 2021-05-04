@@ -7,12 +7,12 @@ using Crt.Model;
 using Crt.Model.Dtos.Ratio;
 using Crt.Model.Dtos.Segments;
 using Crt.Model.Utils;
+using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Crt.Domain.Services
@@ -39,10 +39,11 @@ namespace Crt.Domain.Services
         private IDistrictRepository _districtRepo;
         private IEnumerable<Model.Dtos.ServiceArea.ServiceAreaDto> serviceAreas;
         private IEnumerable<Model.Dtos.District.DistrictDto> districts;
+        private ILogger<IRatioService> _logger;
 
         public RatioService(CrtCurrentUser currentUser, IFieldValidatorService validator, IUnitOfWork unitOfWork,
                 IRatioRepository ratioRepo, ISegmentRepository segmentRepo, IUserRepository userRepo, IGeoServerApi geoServerApi, 
-                IDataBCApi dataBCApi, IServiceAreaRepository serviceAreaRepo, IDistrictRepository districtRepo)
+                IDataBCApi dataBCApi, IServiceAreaRepository serviceAreaRepo, IDistrictRepository districtRepo, ILogger<IRatioService> logger)
             : base(currentUser, validator, unitOfWork)
         {
             _ratioRepo = ratioRepo;
@@ -52,6 +53,7 @@ namespace Crt.Domain.Services
             _dataBCApi = dataBCApi;
             _serviceAreaRepo = serviceAreaRepo;
             _districtRepo = districtRepo;
+            _logger = logger;
         }
 
         public async Task<(decimal ratioId, Dictionary<string, List<string>> errors)> CreateRatioAsync(RatioCreateDto ratio)
@@ -187,7 +189,7 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformServiceAreaRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox, 
             double totalLengthOfSegments, decimal projectId)
         {
-
+            _logger.LogInformation($"Staring PerformServiceAreaRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -195,8 +197,10 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
+            _logger.LogInformation($"executing GetPolygonOfInterestForServiceArea for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox);
 
+            _logger.LogInformation($"GetPolygonOfInterestForServiceArea returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
@@ -204,6 +208,7 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
+                    _logger.LogInformation($"Creating new ratio for Service Area {polygon.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -225,6 +230,7 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformDistrictRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
+            _logger.LogInformation($"Staring PerformDistrictRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -232,8 +238,10 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
+            _logger.LogInformation($"executing GetPolygonOfInterestForDistrict for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForDistrict(segmentBBox);
 
+            _logger.LogInformation($"GetPolygonOfInterestForDistrict returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
@@ -241,6 +249,7 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
+                    _logger.LogInformation($"Creating new ratio for District {polygon.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -262,6 +271,7 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformElectoralRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
+            _logger.LogInformation($"Staring PerformElectoralRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -269,8 +279,10 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
+            _logger.LogInformation($"executing GetPolygonOfInterestForElectoralDistrict for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _dataBCApi.GetPolygonOfInterestForElectoralDistrict(segmentBBox);
 
+            _logger.LogInformation($"GetPolygonOfInterestForElectoralDistrict returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
@@ -278,6 +290,7 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
+                    _logger.LogInformation($"Creating new ratio for Electoral District {polygon.Name}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -299,6 +312,7 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformEconomicRegionRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
+            _logger.LogInformation($"Staring PerformEconomicRegionRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -306,8 +320,10 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
+            _logger.LogInformation($"executing GetPolygonOfInterestForEconomicRegion for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _dataBCApi.GetPolygonOfInterestForEconomicRegion(segmentBBox);
 
+            _logger.LogInformation($"GetPolygonOfInterestForEconomicRegion returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
@@ -315,6 +331,7 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
+                    _logger.LogInformation($"Creating new ratio for Economic Region {polygon.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -336,6 +353,7 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformHighwayRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
+            _logger.LogInformation($"Staring PerformHighwayRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -343,8 +361,10 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
+            _logger.LogInformation($"executing GetPolygonOfInterestForHighways for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForHighways(segmentBBox);
 
+            _logger.LogInformation($"GetPolygonOfInterestForHighways returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
@@ -352,6 +372,7 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
+                    _logger.LogInformation($"Creating new ratio for Highway {polygon.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -376,10 +397,11 @@ namespace Crt.Domain.Services
 
             foreach (var segment in projectSegments)
             {
-                
+                _logger.LogInformation($"GetSegmentLengthWithinPolygon for Segment Id {segment.SegmentId} against Polygon {layerPolygon.Name}");
                 var result = await _geoServerApi.GetSegmentLengthWithinPolygon(BuildGeometryStringFromCoordinates(segment.Geometry)
                     , BuildGeometryStringFromCoordinates(layerPolygon.NTSGeometry));
 
+                _logger.LogInformation($"Segment Id {segment.SegmentId} clipped length is {result.clippedLength}");
                 //get the clipped length, this is how much of this segment exists within the polygon
                 clippedLength += result.clippedLength;
             }
