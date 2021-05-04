@@ -136,9 +136,6 @@ namespace Crt.Domain.Services
             serviceAreas = await _serviceAreaRepo.GetAllServiceAreasAsync();
             districts = await _districtRepo.GetAllDistrictsAsync();
 
-            //clear the current ratios
-            await _ratioRepo.DeleteAllRatiosByProjectIdAsync(projectId);
-
             //load the project segments
             List<SegmentGeometryListDto> projectSegments = await _segmentRepo.GetSegmentGeometryListsAsync(projectId);
             
@@ -164,6 +161,9 @@ namespace Crt.Domain.Services
 
             Task.WaitAll(taskList.ToArray());
 
+            //clear the current ratios
+            await _ratioRepo.DeleteAllRatiosByProjectIdAsync(projectId);
+            
             foreach (var ratioGroup in newRatios)
             {
                 var totalRatio = Convert.ToDecimal(ratioGroup.Sum(x => x.Ratio));
