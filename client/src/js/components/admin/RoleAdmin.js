@@ -139,10 +139,17 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
                 <Col />
                 <Col>
                   <div className="float-right">
-                    <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
+                    <SubmitButton
+                      className="mr-2"
+                      disabled={searchData.loading}
+                      submitting={searchData.loading}
+                      title={'Search'}
+                    >
                       Search
                     </SubmitButton>
-                    <Button type="reset">Reset</Button>
+                    <Button type="reset" title={'Reset Search'}>
+                      Reset
+                    </Button>
                   </div>
                 </Col>
               </Row>
@@ -158,6 +165,7 @@ const RoleAdmin = ({ showValidationErrorDialog }) => {
               color="primary"
               className="float-right mb-3"
               onClick={() => formModal.openForm(Constants.FORM_TYPE.ADD)}
+              title={'Add Role'}
             >
               Add Role
             </Button>

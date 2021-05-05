@@ -69,7 +69,7 @@ const Header = ({ currentUser }) => {
           <div className="navbar-brand">MoTI Capital and Rehabilitation Tracking</div>
           <NavbarBrand tag={Link} onClick={hideNavbar} to="/">
             <img
-              className="img-fluid d-inline-block"
+              className="img-fluid d-inline-block ml-2"
               src={`${process.env.PUBLIC_URL}/images/cart-logo.png`}
               width="64"
               height="44"
@@ -90,6 +90,24 @@ const Header = ({ currentUser }) => {
                   <NavLinkWithMatch hideNavbar={hideNavbar} to={Constants.PATHS.PROJECTS} text="Projects" />
                 </Authorize>
               </React.Fragment>
+              <UncontrolledDropdown nav inNavbar>
+                <Authorize requires={Constants.PERMISSIONS.EXPORT_R}>
+                  <DropdownToggle nav caret>
+                    Reports
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {/* temporary fix requires the actual path  */}
+
+                    <DropdownItem tag={Link} to={'//www.google.com'} target="_blank">
+                      Dashboard
+                    </DropdownItem>
+
+                    <DropdownItem tag={Link} to={'//www.google.com'} target="_blank">
+                      Paginated
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Authorize>
+              </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Admin
