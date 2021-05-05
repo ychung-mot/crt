@@ -91,22 +91,22 @@ const Header = ({ currentUser }) => {
                 </Authorize>
               </React.Fragment>
               <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Reports
-                </DropdownToggle>
-                <DropdownMenu>
-                  {/* temporary fix requires the actual path  */}
-                  <Authorize requires={Constants.PERMISSIONS.EXPORT_R}>
+                <Authorize requires={Constants.PERMISSIONS.EXPORT_R}>
+                  <DropdownToggle nav caret>
+                    Reports
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {/* temporary fix requires the actual path  */}
+
                     <DropdownItem tag={Link} to={'//www.google.com'} target="_blank">
                       Dashboard
                     </DropdownItem>
-                  </Authorize>
-                  <Authorize requires={Constants.PERMISSIONS.EXPORT_R}>
+
                     <DropdownItem tag={Link} to={'//www.google.com'} target="_blank">
                       Paginated
                     </DropdownItem>
-                  </Authorize>
-                </DropdownMenu>
+                  </DropdownMenu>
+                </Authorize>
               </UncontrolledDropdown>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>

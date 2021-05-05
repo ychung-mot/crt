@@ -12,7 +12,8 @@ function ProjectFooterNav({ projectId }) {
   };
 
   return (
-    <div className="d-flex flex-row-reverse sticky-top">
+    //different zIndex needed. Default bootstrap makes it appear over nav items.
+    <div className="sticky-top d-flex justify-content-end" style={{ zIndex: 999 }}>
       <Nav pills>
         <NavItem className="bg-secondary">
           <NavLink
