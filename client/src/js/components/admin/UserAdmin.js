@@ -168,10 +168,17 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
                 </Col>
                 <Col>
                   <div className="float-right">
-                    <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
+                    <SubmitButton
+                      className="mr-2"
+                      disabled={searchData.loading}
+                      submitting={searchData.loading}
+                      title={'Search'}
+                    >
                       Search
                     </SubmitButton>
-                    <Button type="reset">Reset</Button>
+                    <Button type="reset" title={'Reset Search'}>
+                      Reset
+                    </Button>
                   </div>
                 </Col>
               </Row>
@@ -182,7 +189,13 @@ const UserAdmin = ({ userStatuses, showValidationErrorDialog, regions }) => {
       <Authorize requires={Constants.PERMISSIONS.USER_W}>
         <Row>
           <Col>
-            <Button size="sm" color="primary" className="float-right mb-3" onClick={() => setAddUserWizardIsOpen(true)}>
+            <Button
+              size="sm"
+              color="primary"
+              className="float-right mb-3"
+              onClick={() => setAddUserWizardIsOpen(true)}
+              title={'Add User'}
+            >
               Add User
             </Button>
           </Col>

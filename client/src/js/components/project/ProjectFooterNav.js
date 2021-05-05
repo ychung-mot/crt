@@ -15,7 +15,7 @@ function ProjectFooterNav({ projectId }) {
     //different zIndex needed. Default bootstrap makes it appear over nav items.
     <div className="sticky-top d-flex justify-content-end" style={{ zIndex: 999 }}>
       <Nav pills>
-        <NavItem className="bg-secondary">
+        <NavItem className="bg-secondary" title={'Go to Project Details'}>
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}`}
@@ -26,7 +26,7 @@ function ProjectFooterNav({ projectId }) {
             Details
           </NavLink>
         </NavItem>
-        <NavItem className="bg-secondary">
+        <NavItem className="bg-secondary" title={'Go to Project Plan'}>
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}${Constants.PATHS.PROJECT_PLAN}`}
@@ -37,7 +37,7 @@ function ProjectFooterNav({ projectId }) {
             Financial Plan
           </NavLink>
         </NavItem>
-        <NavItem className="bg-secondary">
+        <NavItem className="bg-secondary" title={'Go to Project Tenders'}>
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}${Constants.PATHS.PROJECT_TENDER}`}
@@ -48,7 +48,7 @@ function ProjectFooterNav({ projectId }) {
             Tender
           </NavLink>
         </NavItem>
-        <NavItem className="bg-secondary">
+        <NavItem className="bg-secondary" title={'Go to Project Segments'}>
           <NavLink
             tag={RRNavLink}
             to={`${Constants.PATHS.PROJECTS}/${projectId}${Constants.PATHS.PROJECT_SEGMENT}`}
@@ -59,7 +59,7 @@ function ProjectFooterNav({ projectId }) {
             Segment
           </NavLink>
         </NavItem>
-        <NavItem className="bg-danger ">
+        <NavItem className="bg-danger" title={'Return to Project Search'}>
           <NavLink tag={RRNavLink} className="text-light" to={`${Constants.PATHS.PROJECTS}`} isActive={exactPathMatch}>
             Close
           </NavLink>

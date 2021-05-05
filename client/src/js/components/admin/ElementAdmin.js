@@ -203,10 +203,17 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
                 </Col>
                 <Col>
                   <div className="float-right">
-                    <SubmitButton className="mr-2" disabled={searchData.loading} submitting={searchData.loading}>
+                    <SubmitButton
+                      className="mr-2"
+                      disabled={searchData.loading}
+                      submitting={searchData.loading}
+                      title={'Search'}
+                    >
                       Search
                     </SubmitButton>
-                    <Button type="reset">Reset</Button>
+                    <Button type="reset" title={'Reset Search'}>
+                      Reset
+                    </Button>
                   </div>
                 </Col>
               </Row>
@@ -218,7 +225,13 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
         <Row>
           <Col>
             <Authorize requires={Constants.PERMISSIONS.CODE_W}>
-              <Button size="sm" color="primary" className="float-right mb-3" onClick={onAddClicked}>
+              <Button
+                size="sm"
+                color="primary"
+                className="float-right mb-3"
+                onClick={onAddClicked}
+                title={'Add New Element'}
+              >
                 {`Add New Element`}
               </Button>
             </Authorize>

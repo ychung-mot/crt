@@ -195,7 +195,12 @@ function ProjectSegment({ showValidationErrorDialog, ratioRecordTypes, match }) 
             <Col>
               <Authorize requires={Constants.PERMISSIONS.PROJECT_W}>
                 {data?.segments.length > 0 && (
-                  <Button color="primary" className="float-right" onClick={detSegToggle}>
+                  <Button
+                    color="primary"
+                    className="float-right"
+                    onClick={detSegToggle}
+                    title="Use Segment Information to Determine Ratios"
+                  >
                     Determine Ratios Using Segments
                   </Button>
                 )}
