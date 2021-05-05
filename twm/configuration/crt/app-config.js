@@ -1,6 +1,6 @@
 app.config = {
   title: {
-    desktop: "Captial and Rehabilitation Project Tracking",
+    desktop: "Capital and Rehabilitation Project Tracking",
     mobile: "CRT",
   },
   contact: {

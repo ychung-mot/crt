@@ -69,7 +69,7 @@ const Header = ({ currentUser }) => {
           <div className="navbar-brand">MoTI Capital and Rehabilitation Tracking</div>
           <NavbarBrand tag={Link} onClick={hideNavbar} to="/">
             <img
-              className="img-fluid d-inline-block"
+              className="img-fluid d-inline-block ml-2"
               src={`${process.env.PUBLIC_URL}/images/cart-logo.png`}
               width="64"
               height="44"
