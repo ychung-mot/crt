@@ -171,10 +171,13 @@ namespace Crt.Domain.Services
                 if (ratioGroup.Count > 0)
                 {
                     var totalRatio = Convert.ToDecimal(ratioGroup.Sum(x => x.Ratio));
+                    //adjust the largest of the ratios either, adding or taking away
                     if (ratioGroup.Sum(x => x.Ratio) >= 1.00M)
-                        ratioGroup.First().Ratio -= totalRatio - 1.00M;
+                        ratioGroup.Aggregate((i1, i2) => i1.Ratio > i2.Ratio ? i1 : i2).Ratio -= totalRatio - 1.00M;
+                        //ratioGroup.First().Ratio -= totalRatio - 1.00M;
                     else
-                        ratioGroup.First().Ratio += 1.00M - totalRatio;
+                        ratioGroup.Aggregate((i1, i2) => i1.Ratio > i2.Ratio ? i1 : i2).Ratio += 1.00M - totalRatio;
+                    //ratioGroup.First().Ratio += 1.00M - totalRatio;
 
                     foreach (var ratio in ratioGroup)
                     {
