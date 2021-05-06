@@ -168,15 +168,18 @@ namespace Crt.Domain.Services
             
             foreach (var ratioGroup in newRatios)
             {
-                var totalRatio = Convert.ToDecimal(ratioGroup.Sum(x => x.Ratio));
-                if (ratioGroup.Sum(x => x.Ratio) >= 1.00M)
-                    ratioGroup.First().Ratio -= totalRatio - 1.00M;
-                else
-                    ratioGroup.First().Ratio += 1.00M - totalRatio;
-
-                foreach (var ratio in ratioGroup)
+                if (ratioGroup.Count > 0)
                 {
-                    await _ratioRepo.CreateRatioAsync(ratio);
+                    var totalRatio = Convert.ToDecimal(ratioGroup.Sum(x => x.Ratio));
+                    if (ratioGroup.Sum(x => x.Ratio) >= 1.00M)
+                        ratioGroup.First().Ratio -= totalRatio - 1.00M;
+                    else
+                        ratioGroup.First().Ratio += 1.00M - totalRatio;
+
+                    foreach (var ratio in ratioGroup)
+                    {
+                        await _ratioRepo.CreateRatioAsync(ratio);
+                    }
                 }
             }
 
@@ -198,7 +201,7 @@ namespace Crt.Domain.Services
             var createdRatios = new List<RatioCreateDto>();
 
             _logger.LogInformation($"executing GetPolygonOfInterestForServiceArea for bounding box {segmentBBox}");
-            List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox);
+            List<GeometryLayer> polygons = await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox);
 
             _logger.LogInformation($"GetPolygonOfInterestForServiceArea returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
@@ -239,7 +242,7 @@ namespace Crt.Domain.Services
             var createdRatios = new List<RatioCreateDto>();
 
             _logger.LogInformation($"executing GetPolygonOfInterestForDistrict for bounding box {segmentBBox}");
-            List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForDistrict(segmentBBox);
+            List<GeometryLayer> polygons = await _geoServerApi.GetPolygonOfInterestForDistrict(segmentBBox);
 
             _logger.LogInformation($"GetPolygonOfInterestForDistrict returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
@@ -280,7 +283,7 @@ namespace Crt.Domain.Services
             var createdRatios = new List<RatioCreateDto>();
 
             _logger.LogInformation($"executing GetPolygonOfInterestForElectoralDistrict for bounding box {segmentBBox}");
-            List<PolygonLayer> polygons = await _dataBCApi.GetPolygonOfInterestForElectoralDistrict(segmentBBox);
+            List<GeometryLayer> polygons = await _dataBCApi.GetPolygonOfInterestForElectoralDistrict(segmentBBox);
 
             _logger.LogInformation($"GetPolygonOfInterestForElectoralDistrict returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
@@ -321,7 +324,7 @@ namespace Crt.Domain.Services
             var createdRatios = new List<RatioCreateDto>();
 
             _logger.LogInformation($"executing GetPolygonOfInterestForEconomicRegion for bounding box {segmentBBox}");
-            List<PolygonLayer> polygons = await _dataBCApi.GetPolygonOfInterestForEconomicRegion(segmentBBox);
+            List<GeometryLayer> polygons = await _dataBCApi.GetPolygonOfInterestForEconomicRegion(segmentBBox);
 
             _logger.LogInformation($"GetPolygonOfInterestForEconomicRegion returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
@@ -361,18 +364,34 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
-            _logger.LogInformation($"executing GetPolygonOfInterestForHighways for bounding box {segmentBBox}");
-            List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForHighways(segmentBBox);
+            _logger.LogInformation($"executing GetHighwaysOfInterest for bounding box {segmentBBox}");
+            List<GeometryLayer> highwayLines = await _geoServerApi.GetHighwaysOfInterest(segmentBBox);
 
-            _logger.LogInformation($"GetPolygonOfInterestForHighways returned *{polygons.Count}* total polygons");
-            foreach (var polygon in polygons)
+            _logger.LogInformation($"GetHighwaysOfInterest returned *{highwayLines.Count}* total polygons");
+            foreach (var highwayLine in highwayLines)
             {
-                //get the percentage of the segment
-                var percentInPolygon = await GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
+                var intersectedDistance = 0.0;
+
+                //get the intersecting points of the segment geometry and the highway geometry
+                foreach (var segment in projectSegments)
+                {
+                    //half a meter, i noticed that sometimes the highway data doesn't 
+                    // always show up on the actual highway.. hwy 5 outside merrit for example ;(
+                    var bufferedSegment = segment.Geometry.Buffer(0.00005);
+                    var intersection = bufferedSegment.Intersection(highwayLine.NTSGeometry);
+
+                    if (intersection != null)
+                    {
+                        var distance = SpatialUtils.CalculateDistance(intersection);
+                        intersectedDistance += distance;
+                    }    
+                }
+
+                var percentInPolygon = Math.Round(intersectedDistance / totalLengthOfSegments, 2);
 
                 if (percentInPolygon > 0)
                 {
-                    _logger.LogInformation($"Creating new ratio for Highway {polygon.Number}");
+                    _logger.LogInformation($"Creating new ratio for Highway {highwayLine.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -380,7 +399,7 @@ namespace Crt.Domain.Services
                         Ratio = (decimal)percentInPolygon,
                         RatioRecordTypeLkupId = ratioRecordTypeId,
                         RatioRecordLkupId = _validator.CodeLookup
-                            .Where(x => x.CodeSet == CodeSet.Highway && x.CodeValueText == polygon.Number)
+                            .Where(x => x.CodeSet == CodeSet.Highway && x.CodeValueText == highwayLine.Number)
                             .FirstOrDefault().CodeLookupId
                     };
 
@@ -388,10 +407,28 @@ namespace Crt.Domain.Services
                 }
             }
 
+            //we need to check for duplicate ratios on the same highway
+            var duplicates = createdRatios.GroupBy(x => x.RatioRecordLkupId)
+                .SelectMany(g => g.Skip(1));
+
+            foreach (var duplicate in duplicates)
+            {
+                //now find the parent and join them
+                RatioCreateDto parent = createdRatios
+                    .Where(x => x.RatioRecordLkupId == duplicate.RatioRecordLkupId)
+                    .FirstOrDefault();
+
+                if (parent != null)
+                {
+                    parent.Ratio += duplicate.Ratio;
+                    createdRatios.Remove(duplicate);
+                }
+            }
+
             return createdRatios;
         }
 
-        private async Task<double> GetPercentageOfSegmentWithinPolygon(double totalLengthOfSegments, List<SegmentGeometryListDto> projectSegments, PolygonLayer layerPolygon)
+        private async Task<double> GetPercentageOfSegmentWithinPolygon(double totalLengthOfSegments, List<SegmentGeometryListDto> projectSegments, GeometryLayer layerPolygon)
         {
             var clippedLength = 0.0;
 

@@ -2,7 +2,7 @@
 
 namespace Crt.HttpClients.Models
 {
-    public class PolygonLayer
+    public class GeometryLayer
     {
         public NTSGeometry.Geometry NTSGeometry { get; set; }
         public string Name { get; set; }

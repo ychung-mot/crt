@@ -4,6 +4,8 @@ using NetTopologySuite.Simplify;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using GeoJSON.Net.Feature;
+using System;
+using GJNGeometry = GeoJSON.Net.Geometry;
 
 //kept in HttpClients project as it contains the GeoJSON and NetTopology references
 namespace Crt.HttpClients
@@ -125,6 +127,7 @@ namespace Crt.HttpClients
             }
 
             LineString ls = new LineString(coordinates.ToArray());
+            
             var polygonGeom = ls.Buffer(0.003) as Polygon;
 
             polygonGeom.Normalize();
@@ -136,6 +139,87 @@ namespace Crt.HttpClients
             } while (geometry.Coordinates.Length > 500);
 
             return geometry;
+        }
+
+        public static LineString GenerateLineString(Feature feature)
+        {
+            var lineString = feature.Geometry as GeoJSON.Net.Geometry.LineString;
+            var coordinates = new List<Coordinate>();
+
+            foreach (var coordinate in lineString.Coordinates)
+            {
+                coordinates.Add(new Coordinate(coordinate.Longitude, coordinate.Latitude));
+            }
+
+            //LineString ls = new LineString(coordinates.ToArray());
+
+            return new LineString(coordinates.ToArray());
+        }
+
+        public static MultiLineString GenerateMultiLineString(Feature feature)
+        {
+            var multilineString = feature.Geometry as GeoJSON.Net.Geometry.MultiLineString;
+            var coordinates = new List<Coordinate>();
+            List<LineString> lineStrings = new List<LineString>();
+
+            foreach (var line in multilineString.Coordinates)
+            {
+                foreach (var coordinate in line.Coordinates)
+                {
+                    coordinates.Add(new Coordinate(coordinate.Longitude, coordinate.Latitude));
+                }
+                lineStrings.Add(new LineString(coordinates.ToArray()));
+            }
+
+            return new MultiLineString(lineStrings.ToArray());
+
+            //return mls;
+        }
+
+        public static double CalculateDistance(Geometry coordinates)
+        {
+            const double _m2km = 1.609344;
+
+            var totalDistance = 0.0;
+
+            if (coordinates.Coordinates.Length > 0)
+            {
+                var startCoord = coordinates.Coordinates[0]; //first coordinate
+
+                foreach (var coord in coordinates.Coordinates)
+                {
+                    var p1Lat = startCoord.Y;
+                    var p1Lon = startCoord.X;
+
+                    var p2Lat = coord.Y;
+                    var p2Lon = coord.X;
+
+                    double theta = p1Lon - p2Lon;
+                    double distance = Math.Sin(DegreesToRadians(p1Lat)) * Math.Sin(DegreesToRadians(p2Lat))
+                        + Math.Cos(DegreesToRadians(p1Lat)) * Math.Cos(DegreesToRadians(p2Lat))
+                        * Math.Cos(DegreesToRadians(theta));
+
+                    distance = Math.Acos(distance);
+                    distance = RadiansToDegress(distance);
+                    distance = distance * 60 * 1.1515;
+                    distance = distance * _m2km;
+
+                    totalDistance += distance;
+                    startCoord = coord;
+                }
+            }
+
+            return totalDistance;
+        }
+
+        public static double DegreesToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180.0;
+        }
+
+        public static double RadiansToDegress(double radians)
+        {
+            return radians / Math.PI * 180.0;
         }
 
         public static Geometry GenerateSimplifiedPolygonGeometry(Feature feature, double distanceTolerance = 0.001)

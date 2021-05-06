@@ -10,8 +10,8 @@ namespace Crt.HttpClients
 {
     public interface IDataBCApi
     {
-        Task<List<PolygonLayer>> GetPolygonOfInterestForElectoralDistrict(string boundingBox);
-        Task<List<PolygonLayer>> GetPolygonOfInterestForEconomicRegion(string boundingBox);
+        Task<List<GeometryLayer>> GetPolygonOfInterestForElectoralDistrict(string boundingBox);
+        Task<List<GeometryLayer>> GetPolygonOfInterestForEconomicRegion(string boundingBox);
     }
 
     public class DataBCApi : IDataBCApi
@@ -29,9 +29,9 @@ namespace Crt.HttpClients
             _logger = logger;
         }
 
-        public async Task<List<PolygonLayer>> GetPolygonOfInterestForElectoralDistrict(string boundingBox)
+        public async Task<List<GeometryLayer>> GetPolygonOfInterestForElectoralDistrict(string boundingBox)
         {
-            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
+            List<GeometryLayer> layerPolygons = new List<GeometryLayer>();
             var query = "";
             var content = "";
 
@@ -51,7 +51,7 @@ namespace Crt.HttpClients
                     {
                         var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
 
-                        layerPolygons.Add(new PolygonLayer
+                        layerPolygons.Add(new GeometryLayer
                         {
                             NTSGeometry = simplifiedGeom,
                             Name = (string)feature.Properties["ED_ABBREVIATION"],
@@ -68,9 +68,9 @@ namespace Crt.HttpClients
             return layerPolygons;
         }
 
-        public async Task<List<PolygonLayer>> GetPolygonOfInterestForEconomicRegion(string boundingBox)
+        public async Task<List<GeometryLayer>> GetPolygonOfInterestForEconomicRegion(string boundingBox)
         {
-            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
+            List<GeometryLayer> layerPolygons = new List<GeometryLayer>();
             var query = "";
             var content = "";
 
@@ -92,7 +92,7 @@ namespace Crt.HttpClients
                         // simplify them more
                         var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
 
-                        layerPolygons.Add(new PolygonLayer
+                        layerPolygons.Add(new GeometryLayer
                         {
                             NTSGeometry = simplifiedGeom,
                             Name = (string)feature.Properties["ECONOMIC_REGION_NAME"],
