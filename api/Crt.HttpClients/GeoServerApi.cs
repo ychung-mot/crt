@@ -20,9 +20,9 @@ namespace Crt.HttpClients
         Task<double> GetTotalSegmentLength(NTSGeometry.Geometry geometry);
         Task<(double totalLength, double clippedLength)> GetSegmentLengthWithinPolygon(string lineString, string polygonLineString);
         Task<string> GetProjectExtent(decimal projectId);
-        Task<List<PolygonLayer>> GetPolygonOfInterestForServiceArea(string boundingBox);
-        Task<List<PolygonLayer>> GetPolygonOfInterestForDistrict(string boundingBox);
-        Task<List<PolygonLayer>> GetPolygonOfInterestForHighways(string boundingBox);
+        Task<List<GeometryLayer>> GetPolygonOfInterestForServiceArea(string boundingBox);
+        Task<List<GeometryLayer>> GetPolygonOfInterestForDistrict(string boundingBox);
+        Task<List<GeometryLayer>> GetHighwaysOfInterest(string boundingBox);
         HttpClient Client { get; }
         public string Path { get; }
     }
@@ -107,9 +107,9 @@ namespace Crt.HttpClients
             return (featureCollection != null) ? string.Join(",", featureCollection.BoundingBoxes) : null;
         }
 
-        public async Task<List<PolygonLayer>> GetPolygonOfInterestForHighways(string boundingBox)
+        public async Task<List<GeometryLayer>> GetHighwaysOfInterest(string boundingBox)
         {
-            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
+            List<GeometryLayer> layerLines = new List<GeometryLayer>();
             var query = "";
             var content = "";
             
@@ -126,37 +126,38 @@ namespace Crt.HttpClients
                 {
                     foreach (GJFeature.Feature feature in featureCollection.Features)
                     {
-                        NTSGeometry.Geometry simplifiedGeom = null;
+                        NTSGeometry.Geometry geometry = null;
 
                         if (feature.Geometry.Type == GeoJSON.Net.GeoJSONObjectType.MultiLineString)
                         {
-                            simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometryFromMultilineString(feature);
-                        } else if (feature.Geometry.Type == GeoJSON.Net.GeoJSONObjectType.LineString)
-                        {
-                            simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometryFromLineString(feature);
+                            geometry = SpatialUtils.GenerateMultiLineString(feature);
                         }
-                        
-                        layerPolygons.Add(new PolygonLayer
+                        else if (feature.Geometry.Type == GeoJSON.Net.GeoJSONObjectType.LineString)
                         {
-                            NTSGeometry = simplifiedGeom,
+                            geometry = SpatialUtils.GenerateLineString(feature);
+                        }
+
+                        layerLines.Add(new GeometryLayer
+                        {
+                            NTSGeometry = geometry,
                             Name = (string)feature.Properties["NE_UNIQUE"],
                             Number = feature.Properties["HIGHWAY_NUMBER"].ToString()
                         });
                     }
                 }
 
-                return layerPolygons;
+                return layerLines;
             }
             catch (System.Exception ex)
             {
-                _logger.LogError($"Exception {ex.Message} - GetPolygonOfInterestForHighways({boundingBox}): {query} - {content}");
+                _logger.LogError($"Exception {ex.Message} - GetHighwaysOfInterest({boundingBox}): {query} - {content}");
                 throw;
             }
         }
 
-        public async Task<List<PolygonLayer>> GetPolygonOfInterestForServiceArea(string boundingBox)
+        public async Task<List<GeometryLayer>> GetPolygonOfInterestForServiceArea(string boundingBox)
         {
-            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
+            List<GeometryLayer> layerPolygons = new List<GeometryLayer>();
             var query = "";
             var content = "";
             try
@@ -175,7 +176,7 @@ namespace Crt.HttpClients
                     {
                         var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
 
-                        layerPolygons.Add(new PolygonLayer
+                        layerPolygons.Add(new GeometryLayer
                         {
                             NTSGeometry = simplifiedGeom,
                             Name = (string)feature.Properties["CONTRACT_AREA_NAME"],
@@ -193,9 +194,9 @@ namespace Crt.HttpClients
             }
         }
 
-        public async Task<List<PolygonLayer>> GetPolygonOfInterestForDistrict(string boundingBox)
+        public async Task<List<GeometryLayer>> GetPolygonOfInterestForDistrict(string boundingBox)
         {
-            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
+            List<GeometryLayer> layerPolygons = new List<GeometryLayer>();
             var query = "";
             var content = "";
             try
@@ -213,7 +214,7 @@ namespace Crt.HttpClients
                     {
                         var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
 
-                        layerPolygons.Add(new PolygonLayer
+                        layerPolygons.Add(new GeometryLayer
                         {
                             NTSGeometry = simplifiedGeom,
                             Name = (string)feature.Properties["DISTRICT_NAME"],
