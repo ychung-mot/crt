@@ -20,7 +20,7 @@ const RatioTable = ({
   tableColumns,
   formModalFields,
   projectId,
-  dataList = [],
+  dataList,
   refreshData,
   overflowY,
 }) => {
@@ -137,6 +137,7 @@ RatioTable.propTypes = {
   title: PropTypes.string.isRequired, //title for the dialog
   ratioTypeName: PropTypes.string.isRequired, //used to grab ratioRecordTypeLkupId in the FormFields
   projectId: PropTypes.number.isRequired,
+  dataList: PropTypes.array.isRequired,
   tableColumns: PropTypes.arrayOf(
     PropTypes.shape({
       heading: PropTypes.string.isRequired,
@@ -160,4 +161,8 @@ RatioTable.propTypes = {
   formModalFields: PropTypes.element.isRequired, //these will be displayed when dialog opens
   refreshData: PropTypes.func.isRequired, //used to refresh page when data is changed
   overflowY: PropTypes.string, //sets whether or not to enable Y scroll based on max-height that is set by css max-height string ie. 50vh/500px
+};
+
+RatioTable.defaultProps = {
+  dataList: [],
 };
