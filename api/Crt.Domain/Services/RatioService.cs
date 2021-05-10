@@ -213,14 +213,12 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
-            _logger.LogInformation($"executing GetPolygonOfInterestForServiceArea for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForServiceArea(segmentBBox);
 
-            _logger.LogInformation($"GetPolygonOfInterestForServiceArea returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
-                var percentInPolygon = await GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
+                var percentInPolygon = GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
 
                 if (percentInPolygon > 0)
                 {
@@ -254,14 +252,12 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
-            _logger.LogInformation($"executing GetPolygonOfInterestForDistrict for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _geoServerApi.GetPolygonOfInterestForDistrict(segmentBBox);
 
-            _logger.LogInformation($"GetPolygonOfInterestForDistrict returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
-                var percentInPolygon = await GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
+                var percentInPolygon = GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
 
                 if (percentInPolygon > 0)
                 {
@@ -295,14 +291,12 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
-            _logger.LogInformation($"executing GetPolygonOfInterestForElectoralDistrict for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _dataBCApi.GetPolygonOfInterestForElectoralDistrict(segmentBBox);
 
-            _logger.LogInformation($"GetPolygonOfInterestForElectoralDistrict returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
-                var percentInPolygon = await GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
+                var percentInPolygon = GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
 
                 if (percentInPolygon > 0)
                 {
@@ -336,14 +330,12 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
-            _logger.LogInformation($"executing GetPolygonOfInterestForEconomicRegion for bounding box {segmentBBox}");
             List<PolygonLayer> polygons = await _dataBCApi.GetPolygonOfInterestForEconomicRegion(segmentBBox);
 
-            _logger.LogInformation($"GetPolygonOfInterestForEconomicRegion returned *{polygons.Count}* total polygons");
             foreach (var polygon in polygons)
             {
                 //get the percentage of the segment
-                var percentInPolygon = await GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
+                var percentInPolygon = GetPercentageOfSegmentWithinPolygon(totalLengthOfSegments, projectSegments, polygon);
 
                 if (percentInPolygon > 0)
                 {
@@ -377,10 +369,8 @@ namespace Crt.Domain.Services
 
             var createdRatios = new List<RatioCreateDto>();
 
-            _logger.LogInformation($"executing GetHighwaysOfInterest for bounding box {segmentBBox}");
             List<PolygonLayer> highwayLines = await _geoServerApi.GetHighwaysOfInterest(segmentBBox);
 
-            _logger.LogInformation($"GetHighwaysOfInterest returned *{highwayLines.Count}* total polygons");
             foreach (var highwayLine in highwayLines)
             {
                 var intersectedDistance = 0.0;
@@ -445,7 +435,7 @@ namespace Crt.Domain.Services
             return createdRatios;
         }
 
-        private async Task<double> GetPercentageOfSegmentWithinPolygon(double totalLengthOfSegments, List<SegmentGeometryListDto> projectSegments, PolygonLayer layerPolygon)
+        private double GetPercentageOfSegmentWithinPolygon(double totalLengthOfSegments, List<SegmentGeometryListDto> projectSegments, PolygonLayer layerPolygon)
         {
             var clippedLength = 0.0;
 
@@ -453,15 +443,19 @@ namespace Crt.Domain.Services
             {
                 _logger.LogInformation($"GetSegmentLengthWithinPolygon for Segment Id {segment.SegmentId} against Polygon {layerPolygon.Name}");
 
+                var distanceInPolygon = 0.0;
                 var segmentWithinPolygon = SpatialUtils.LineCordinatesWithinPolygon(layerPolygon.NTSGeometry, segment.Geometry);
-                var distanceInPolygon = SpatialUtils.CalculateDistance(segmentWithinPolygon);
+                if (segmentWithinPolygon != null)
+                {
+                    distanceInPolygon = SpatialUtils.CalculateDistance(segmentWithinPolygon);
 
-                //var result = await _geoServerApi.GetSegmentLengthWithinPolygon(BuildGeometryStringFromCoordinates(segment.Geometry)
-                //    , BuildGeometryStringFromCoordinates(layerPolygon.NTSGeometry));
+                    //var result = await _geoServerApi.GetSegmentLengthWithinPolygon(BuildGeometryStringFromCoordinates(segment.Geometry)
+                    //    , BuildGeometryStringFromCoordinates(layerPolygon.NTSGeometry));
 
-                _logger.LogInformation($"Segment Id {segment.SegmentId} clipped length is {distanceInPolygon}");
-                //get the clipped length, this is how much of this segment exists within the polygon
-                clippedLength += distanceInPolygon;
+                    _logger.LogInformation($"Segment Id {segment.SegmentId} clipped length is {distanceInPolygon}");
+                    //get the clipped length, this is how much of this segment exists within the polygon
+                    clippedLength += distanceInPolygon;
+                }
             }
 
             var percentInPolygon = Math.Round(clippedLength / totalLengthOfSegments, 2);

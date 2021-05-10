@@ -1,6 +1,7 @@
 ﻿using Crt.HttpClients.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -37,10 +38,19 @@ namespace Crt.HttpClients
 
             try
             {
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+                
                 query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" +
                 $"&typeName=pub:WHSE_ADMIN_BOUNDARIES.EBC_PROV_ELECTORAL_DIST_SVW&srsName=EPSG:4326&BBOX={boundingBox},EPSG:4326";
 
                 content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
+                
+                watch.Stop();
+                TimeSpan ts = watch.Elapsed;
+                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10);
+
+                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForElectoralDistrict took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
                 //continue if we have a feature collection
@@ -49,7 +59,7 @@ namespace Crt.HttpClients
                     //iterate the features in the parsed geoJSON collection
                     foreach (GJFeature.Feature feature in featureCollection.Features)
                     {
-                        var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
+                        var simplifiedGeom = SpatialUtils.GenerateNTSPolygonGeometery(feature);
 
                         layerPolygons.Add(new PolygonLayer
                         {
@@ -76,10 +86,19 @@ namespace Crt.HttpClients
 
             try
             {
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+                
                 query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" +
                 $"&typeName=pub:WHSE_HUMAN_CULTURAL_ECONOMIC.CEN_ECONOMIC_REGIONS_SVW&srsName=EPSG:4326&BBOX={boundingBox},EPSG:4326";
 
                 content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
+
+                watch.Stop();
+                TimeSpan ts = watch.Elapsed;
+                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10);
+
+                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForEconomicRegion took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
                 //continue if we have a feature collection
@@ -90,7 +109,7 @@ namespace Crt.HttpClients
                     {
                         //override economic region distance tolerance, the polygons are huge and we need to 
                         // simplify them more
-                        var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
+                        var simplifiedGeom = SpatialUtils.GenerateNTSPolygonGeometery(feature);
 
                         layerPolygons.Add(new PolygonLayer
                         {

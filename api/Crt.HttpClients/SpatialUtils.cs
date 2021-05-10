@@ -239,25 +239,60 @@ namespace Crt.HttpClients
             var coordinates = new List<Coordinate>();
             Geometry geometryWithinPolygon = null;
 
+            //generate a new area locatory using the polygon
             var pointLocator = new IndexedPointInAreaLocator(polygon);
 
+            //check that our linestring actually has coordinates
             if (lineString.Coordinates.Length > 0)
             {
+                //iterate thru the coordinates in the linestring
                 foreach (var coord in lineString.Coordinates)
                 {
+                    //use the point locator to locate our coordinates
                     var location = pointLocator.Locate(coord);
+                    // is the location of the coordinate outside the polygon?
                     var isInside = !location.HasFlag(Location.Exterior);
 
+                    //if coords are inside polygon add to list
                     if (isInside)
-                    {
                         coordinates.Add(coord);
-                    }
                 }
 
-                geometryWithinPolygon = Geometry.DefaultFactory.CreateLineString(coordinates.ToArray());
+                //validate list actually has coordinates
+                if (coordinates.Count > 0)
+                {
+                    //if we have more than one set of coordinates we have a line, otherwise it's a point
+                    geometryWithinPolygon = (coordinates.Count > 1) ? Geometry.DefaultFactory.CreateLineString(coordinates.ToArray())
+                        : Geometry.DefaultFactory.CreatePoint(coordinates[0]);
+                }
             }
 
             return geometryWithinPolygon;
+        }
+
+        public static Geometry GenerateNTSPolygonGeometery(Feature feature)
+        {
+            //  cast the feature geometry as a GeoJSON Polygon
+            var polygon = feature.Geometry as GeoJSON.Net.Geometry.Polygon;
+            var coordinates = new List<Coordinate>();
+
+            foreach (var ring in polygon.Coordinates)
+            {
+                foreach (var coordinate in ring.Coordinates)
+                {
+                    coordinates.Add(new Coordinate(coordinate.Longitude, coordinate.Latitude));
+                }
+            }
+
+            //generate the new NTS polygon & linear ring
+            var polygonGeom = new Polygon(new LinearRing(coordinates.ToArray()));
+
+            //normalize the polygon, converting it to the canonical form and ordering the 
+            // coordinates within, this will help smooth the simplification process creating
+            // less holes/overlap
+            polygonGeom.Normalize();
+
+            return polygonGeom;
         }
 
         public static Geometry GenerateSimplifiedPolygonGeometry(Feature feature, double distanceTolerance = 0.001)
