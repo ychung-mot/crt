@@ -369,8 +369,12 @@ namespace Crt.Domain.Services
                 && x.CodeName == RatioRecordType.Highway).FirstOrDefault().CodeLookupId;
 
             var createdRatios = new List<RatioCreateDto>();
+            var tempProjectSegments = projectSegments;
 
             List<PolygonLayer> highwayLines = await _geoServerApi.GetHighwaysOfInterest(segmentBBox);
+
+            _logger.LogInformation($"Total Number of highways to iterate {highwayLines.Count}");
+            _logger.LogInformation($"Number of segments to iterate {projectSegments.Count}");
 
             foreach (var highwayLine in highwayLines)
             {
@@ -379,6 +383,7 @@ namespace Crt.Domain.Services
                 //get the intersecting points of the segment geometry and the highway geometry
                 foreach (var segment in projectSegments)
                 {
+                    _logger.LogInformation($"Checking segment {segment.SegmentId} against highway {highwayLine.Name}");
                     //half a meter, i noticed that sometimes the highway data doesn't 
                     // always show up on the actual highway.. hwy 5 outside merrit for example ;(
                     var bufferedSegment = segment.Geometry.Buffer(0.00005);
