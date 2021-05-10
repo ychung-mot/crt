@@ -115,9 +115,17 @@ namespace Crt.HttpClients
             
             try
             {
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+                
                 //build the query and get the geoJSON return
                 query = Path + string.Format(_queries.HighwayFeatures, "cwr:V_NM_NLT_DSA_GDSA_SDO_DT", boundingBox);
                 content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
+
+                watch.Stop();
+                TimeSpan ts = watch.Elapsed;
+                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10);
+                _logger.LogInformation($"GeoServer call to GetHighwaysOfInterest took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
 
@@ -162,9 +170,17 @@ namespace Crt.HttpClients
             var content = "";
             try
             {
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+
                 //build the query and get the geoJSON return
                 query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_CONTRACT_AREA", boundingBox);
                 content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
+
+                watch.Stop();
+                TimeSpan ts = watch.Elapsed;
+                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds,ts.Milliseconds / 10);
+                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForServiceArea took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
 
@@ -174,7 +190,7 @@ namespace Crt.HttpClients
                     //iterate the features in the parsed geoJSON collection
                     foreach (GJFeature.Feature feature in featureCollection.Features)
                     {
-                        var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
+                        var simplifiedGeom = SpatialUtils.GenerateNTSPolygonGeometery(feature);
 
                         layerPolygons.Add(new PolygonLayer
                         {
@@ -201,9 +217,17 @@ namespace Crt.HttpClients
             var content = "";
             try
             {
+                var watch = new System.Diagnostics.Stopwatch();
+                watch.Start();
+
                 //build the query and get the geoJSON return
                 query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_DISTRICT_BOUNDARY", boundingBox);
                 content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
+
+                watch.Stop();
+                TimeSpan ts = watch.Elapsed;
+                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10); 
+                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForDistrict took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
 
@@ -212,7 +236,7 @@ namespace Crt.HttpClients
                 {
                     foreach (GJFeature.Feature feature in featureCollection.Features)
                     {
-                        var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
+                        var simplifiedGeom = SpatialUtils.GenerateNTSPolygonGeometery(feature);
 
                         layerPolygons.Add(new PolygonLayer
                         {
