@@ -135,6 +135,8 @@ namespace Crt.Domain.Services
             var totalLengthOfSegments = 0.0;
             var errors = new Dictionary<string, List<string>>();
 
+            _logger.LogInformation($"==== Starting Ratio Determination ====");
+
             serviceAreas = await _serviceAreaRepo.GetAllServiceAreasAsync();
             districts = await _districtRepo.GetAllDistrictsAsync();
 
@@ -174,8 +176,10 @@ namespace Crt.Domain.Services
             Task.WaitAll(taskList.ToArray());
 
             //clear the current ratios
+            _logger.LogInformation($"Clearing out existing ratios");
             await _ratioRepo.DeleteAllRatiosByProjectIdAsync(projectId);
-            
+
+            _logger.LogInformation($"Creating ratios via the RatioRepo");
             foreach (var ratioGroup in newRatios)
             {
                 if (ratioGroup.Count > 0)
@@ -196,16 +200,17 @@ namespace Crt.Domain.Services
                 }
             }
 
+            _logger.LogInformation($"Committing Ratios");
             //save the determined ratios to the database
             _unitOfWork.Commit();
 
+            _logger.LogInformation($"==== Finished Ratio Determination ====");
             return (false, errors);
         }
 
         private async Task<List<RatioCreateDto>> PerformServiceAreaRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox, 
             double totalLengthOfSegments, decimal projectId)
         {
-            _logger.LogInformation($"Staring PerformServiceAreaRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -244,7 +249,6 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformDistrictRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
-            _logger.LogInformation($"Staring PerformDistrictRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -283,7 +287,6 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformElectoralRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
-            _logger.LogInformation($"Staring PerformElectoralRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -322,7 +325,6 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformEconomicRegionRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
-            _logger.LogInformation($"Staring PerformEconomicRegionRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
@@ -361,7 +363,6 @@ namespace Crt.Domain.Services
         private async Task<List<RatioCreateDto>> PerformHighwayRatioDetermination(List<SegmentGeometryListDto> projectSegments, string segmentBBox,
             double totalLengthOfSegments, decimal projectId)
         {
-            _logger.LogInformation($"Staring PerformHighwayRatioDetermination");
             //get the ratio record lookup id
             var ratioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
