@@ -6,6 +6,7 @@ using NetTopologySuite.IO;
 using GeoJSON.Net.Feature;
 using System;
 using GJNGeometry = GeoJSON.Net.Geometry;
+using NetTopologySuite.Algorithm.Locate;
 
 //kept in HttpClients project as it contains the GeoJSON and NetTopology references
 namespace Crt.HttpClients
@@ -194,6 +195,7 @@ namespace Crt.HttpClients
                     var p2Lat = coord.Y;
                     var p2Lon = coord.X;
 
+                    
                     double theta = p1Lon - p2Lon;
                     //determine the distance between the 2 coordinate points using solution of spherical triangles
                     // cos a = sin b * sin c + cos b * cos c * cos A
@@ -213,8 +215,8 @@ namespace Crt.HttpClients
                     distance = distance * 60 * 1.1515;
                     //convert to KM, could convert to nautical miles using 0.8684
                     distance = distance * _m2km;
-
-                    totalDistance += distance;
+                    
+                    totalDistance += (Double.IsNaN(distance)) ? 0 : distance;
                     startCoord = coord;
                 }
             }
@@ -230,6 +232,32 @@ namespace Crt.HttpClients
         public static double RadiansToDegress(double radians)
         {
             return radians / Math.PI * 180.0;
+        }
+
+        public static Geometry LineCordinatesWithinPolygon(Geometry polygon, Geometry lineString)
+        {
+            var coordinates = new List<Coordinate>();
+            Geometry geometryWithinPolygon = null;
+
+            var pointLocator = new IndexedPointInAreaLocator(polygon);
+
+            if (lineString.Coordinates.Length > 0)
+            {
+                foreach (var coord in lineString.Coordinates)
+                {
+                    var location = pointLocator.Locate(coord);
+                    var isInside = !location.HasFlag(Location.Exterior);
+
+                    if (isInside)
+                    {
+                        coordinates.Add(coord);
+                    }
+                }
+
+                geometryWithinPolygon = Geometry.DefaultFactory.CreateLineString(coordinates.ToArray());
+            }
+
+            return geometryWithinPolygon;
         }
 
         public static Geometry GenerateSimplifiedPolygonGeometry(Feature feature, double distanceTolerance = 0.001)
