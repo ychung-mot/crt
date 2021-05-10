@@ -2,7 +2,12 @@
 
 namespace Crt.HttpClients.Models
 {
-    public class GeometryLayer
+    //
+    // Summary:
+    //     Class used to hold polygon geometry and related information 
+    //      for the different polygon layers used in the ratio determinations.
+    //
+    public class PolygonLayer
     {
         public NTSGeometry.Geometry NTSGeometry { get; set; }
         public string Name { get; set; }

@@ -20,9 +20,9 @@ namespace Crt.HttpClients
         Task<double> GetTotalSegmentLength(NTSGeometry.Geometry geometry);
         Task<(double totalLength, double clippedLength)> GetSegmentLengthWithinPolygon(string lineString, string polygonLineString);
         Task<string> GetProjectExtent(decimal projectId);
-        Task<List<GeometryLayer>> GetPolygonOfInterestForServiceArea(string boundingBox);
-        Task<List<GeometryLayer>> GetPolygonOfInterestForDistrict(string boundingBox);
-        Task<List<GeometryLayer>> GetHighwaysOfInterest(string boundingBox);
+        Task<List<PolygonLayer>> GetPolygonOfInterestForServiceArea(string boundingBox);
+        Task<List<PolygonLayer>> GetPolygonOfInterestForDistrict(string boundingBox);
+        Task<List<PolygonLayer>> GetHighwaysOfInterest(string boundingBox);
         HttpClient Client { get; }
         public string Path { get; }
     }
@@ -107,9 +107,9 @@ namespace Crt.HttpClients
             return (featureCollection != null) ? string.Join(",", featureCollection.BoundingBoxes) : null;
         }
 
-        public async Task<List<GeometryLayer>> GetHighwaysOfInterest(string boundingBox)
+        public async Task<List<PolygonLayer>> GetHighwaysOfInterest(string boundingBox)
         {
-            List<GeometryLayer> layerLines = new List<GeometryLayer>();
+            List<PolygonLayer> layerLines = new List<PolygonLayer>();
             var query = "";
             var content = "";
             
@@ -137,7 +137,7 @@ namespace Crt.HttpClients
                             geometry = SpatialUtils.GenerateLineString(feature);
                         }
 
-                        layerLines.Add(new GeometryLayer
+                        layerLines.Add(new PolygonLayer
                         {
                             NTSGeometry = geometry,
                             Name = (string)feature.Properties["NE_UNIQUE"],
@@ -155,9 +155,9 @@ namespace Crt.HttpClients
             }
         }
 
-        public async Task<List<GeometryLayer>> GetPolygonOfInterestForServiceArea(string boundingBox)
+        public async Task<List<PolygonLayer>> GetPolygonOfInterestForServiceArea(string boundingBox)
         {
-            List<GeometryLayer> layerPolygons = new List<GeometryLayer>();
+            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
             var query = "";
             var content = "";
             try
@@ -176,7 +176,7 @@ namespace Crt.HttpClients
                     {
                         var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
 
-                        layerPolygons.Add(new GeometryLayer
+                        layerPolygons.Add(new PolygonLayer
                         {
                             NTSGeometry = simplifiedGeom,
                             Name = (string)feature.Properties["CONTRACT_AREA_NAME"],
@@ -194,9 +194,9 @@ namespace Crt.HttpClients
             }
         }
 
-        public async Task<List<GeometryLayer>> GetPolygonOfInterestForDistrict(string boundingBox)
+        public async Task<List<PolygonLayer>> GetPolygonOfInterestForDistrict(string boundingBox)
         {
-            List<GeometryLayer> layerPolygons = new List<GeometryLayer>();
+            List<PolygonLayer> layerPolygons = new List<PolygonLayer>();
             var query = "";
             var content = "";
             try
@@ -214,7 +214,7 @@ namespace Crt.HttpClients
                     {
                         var simplifiedGeom = SpatialUtils.GenerateSimplifiedPolygonGeometry(feature);
 
-                        layerPolygons.Add(new GeometryLayer
+                        layerPolygons.Add(new PolygonLayer
                         {
                             NTSGeometry = simplifiedGeom,
                             Name = (string)feature.Properties["DISTRICT_NAME"],
