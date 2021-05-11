@@ -13,6 +13,7 @@ const EditCodeSetFormFields = ({
   setValidationSchema,
   formType,
   codeSetId,
+  codeSetName,
   codeValueText,
   defaultDisplayOrder,
   autofocus,
@@ -48,16 +49,17 @@ const EditCodeSetFormFields = ({
 
   return (
     <React.Fragment>
-      <FormRow name="codeSet" label="Code Set">
-        <FormInput type="text" name="codeSet" id={`codeSet`} disabled />
+      {/* codeSetName is for display only. Doesn't get submitted */}
+      <FormRow name="codeSetName" label="Code Set">
+        <FormInput type="text" name="codeSetName" id={'codeSetName'} value={codeSetName} disabled />
       </FormRow>
       <FormRow name="codeValueText" label="Code Value" helper="codeValueText">
-        <FormInput type="text" name="codeValueText" id={`codeValue`} innerRef={autofocus} />
+        <FormInput type="text" name="codeValueText" id={`codeValueText`} innerRef={autofocus} />
       </FormRow>
-      <FormRow name="codeName*" label="Code Name" helper="codeName">
+      <FormRow name="codeName" label="Code Name*" helper="codeName">
         <FormInput type="text" name="codeName" id={`codeName`} />
       </FormRow>
-      <FormRow name="displayOrder*" label="Order Number">
+      <FormRow name="displayOrder" label="Order Number*">
         <FormInput type="number" name="displayOrder" id={`displayOrder`} />
       </FormRow>
     </React.Fragment>

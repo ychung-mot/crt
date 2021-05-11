@@ -78,7 +78,7 @@ const EditElementFormFields = ({
       <FormRow name="serviceLineLkupId" label="Service Line*" helper="serviceLineLkupId">
         <SingleDropDownField items={serviceLines} name="serviceLineLkupId" searchable />
       </FormRow>
-      <FormRow name="displayOrder*" label="Order Number">
+      <FormRow name="displayOrder" label="Order Number*">
         <FormInput type="number" name="displayOrder" id={`displayOrder`} />
       </FormRow>
     </React.Fragment>
