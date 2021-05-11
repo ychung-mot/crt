@@ -98,12 +98,7 @@ const Header = ({ currentUser }) => {
                   <DropdownMenu>
                     {/* temporary fix requires the actual path add to={'/'} target="_blank" to each  */}
 
-                    <DropdownItem
-                      tag={Link}
-                      to={'//www.google.com'}
-                      target="_blank"
-                      onClick={() => alert("I don't work yet")}
-                    >
+                    <DropdownItem tag={Link} to={'/'} target="_blank" onClick={() => alert("I don't work yet")}>
                       Dashboard
                     </DropdownItem>
 
