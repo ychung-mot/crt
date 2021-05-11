@@ -40,6 +40,7 @@ const tableColumns = [
   {
     heading: 'Project',
     key: 'projectNumber',
+    maxWidth: '400px',
     link: { path: `${Constants.PATHS.PROJECTS}/:id`, key: 'projectNumber', title: 'See project details' },
   },
   {
