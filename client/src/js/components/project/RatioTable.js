@@ -70,7 +70,7 @@ const RatioTable = ({
   };
 
   const onEditClicked = (ratioId) => {
-    formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioId, projectId });
+    formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioTypeName: ratioTypeName, ratioId, projectId });
   };
 
   const onDeleteClicked = (ratioId) => {
