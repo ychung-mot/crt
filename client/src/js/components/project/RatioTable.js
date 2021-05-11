@@ -70,7 +70,7 @@ const RatioTable = ({
   };
 
   const onEditClicked = (ratioId) => {
-    formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioId, projectId });
+    formModal.openForm(Constants.FORM_TYPE.EDIT, { ratioTypeName: ratioTypeName, ratioId, projectId });
   };
 
   const onDeleteClicked = (ratioId) => {
@@ -143,6 +143,7 @@ RatioTable.propTypes = {
       heading: PropTypes.string.isRequired,
       key: PropTypes.string.isRequired,
       nosort: PropTypes.bool,
+      maxWidth: PropTypes.string, //restricts size of column. ie. 200px, 2rem etc.
       badge: PropTypes.shape({
         //badge will show active/inactive string based on boolean value
         active: PropTypes.string.isRequired,

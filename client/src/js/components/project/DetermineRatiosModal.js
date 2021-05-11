@@ -61,9 +61,9 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData })
       PROCEED: {
         body: (
           <div className="text-center">
-            <span>This may take up to 30 seconds to complete</span>
+            <span>This process may take a few minutes to complete</span>
             <PageSpinner />
-            <strong>Saving...</strong>
+            <strong>Calculating...</strong>
           </div>
         ),
       },
@@ -72,8 +72,8 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData })
           <Alert color="success">
             <strong>Ratios determined.</strong>
             <hr />
-            These calculated values are suggestions and can be updated manually by the users to make corrections, if
-            required.
+            These calculated values are suggestions determined using segment data. Please verify and, if needed, make
+            updates or add values to the appropriate ratios.
           </Alert>
         ),
       },
@@ -88,7 +88,7 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData })
 
   return (
     <Modal
-      size="sm"
+      size="md"
       isOpen={isOpen}
       toggle={toggle}
       backdrop="static"

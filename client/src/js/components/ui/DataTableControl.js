@@ -117,7 +117,7 @@ const DataTableControl = ({
                 if (column.maxWidth) style.maxWidth = column.maxWidth;
 
                 return (
-                  <th key={column.heading} style={style}>
+                  <th key={column.heading} style={style} className={column.maxWidth ? 'text-overflow-hiden' : ''}>
                     {column.heading}
                     {!column.nosort && (
                       <FontAwesomeButton icon="sort" onClick={() => onHeadingSortClicked(column.key)} />
@@ -212,6 +212,7 @@ DataTableControl.propTypes = {
       heading: PropTypes.string.isRequired,
       key: PropTypes.string.isRequired,
       nosort: PropTypes.bool,
+      maxWidth: PropTypes.string, //restricts size of column. ie. 200px, 2rem etc.
       badge: PropTypes.shape({
         //badge will show active/inactive string based on boolean value
         active: PropTypes.string.isRequired,
