@@ -60,7 +60,7 @@ BEGIN
 				,APP_LAST_UPDATE_TIMESTAMP
 				,APP_LAST_UPDATE_USER_GUID)
 			SELECT mp.CRT_ID AS PROJECT_ID
-				 , CONVERT(varchar, mp.CRT_ID) + '-TEMP-' + CONVERT(varchar, @bidSeq) AS TENDER_NUMBER
+				 , CONVERT(varchar, prj.ProjectNumber) + '-TEMP-' + CONVERT(varchar, @bidSeq) AS TENDER_NUMBER
 				 , prj.[Forecast Tender Date] AS PLANNED_DATE
 				 , prj.[Actual Tender Date] AS ACTUAL_DATE
 				 , (prj.[Tender Estimate] * 1000) AS TENDER_VALUE
