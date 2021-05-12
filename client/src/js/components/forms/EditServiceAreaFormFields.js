@@ -30,6 +30,7 @@ const EditServiceAreaFormFields = ({
 
   const validationSchema = Yup.object({
     ratio: Yup.number()
+      .required(`Ratio Required`)
       .min(0, 'Ratio must between 0 and 1')
       .max(1, 'Ratio must be between 0 and 1')
       .test('2decimals', 'Only 2 decimal places allowed', (value) => /^\d*(\.\d{0,2})?$/.test(value)),
@@ -66,14 +67,7 @@ const EditServiceAreaFormFields = ({
         <SingleDropdownField items={serviceAreas} name="serviceAreaId" searchable />
       </FormRow>
       <FormRow name="ratio" label="Ratio*">
-        <FormInput
-          type="number"
-          name="ratio"
-          placeholder="Value between 0 and 1"
-          id={`ratio`}
-          step={0.1}
-          pattern="^\d*(\.\d{0,2})?$"
-        />
+        <FormInput type="number" name="ratio" placeholder="Value between 0 and 1" id={`ratio`} step={0.1} />
       </FormRow>
     </React.Fragment>
   );
