@@ -31,13 +31,6 @@ pipeline {
                 sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=dev"
             }
         }
-        stage('Deploy (MIG)') {
-            agent { label 'deploy' }
-            steps {
-                echo "Deploying ..."
-                sh "cd .pipeline && ./npmw ci && ./npmw run deploy -- --pr=${CHANGE_ID} --env=mig"
-            }
-        }
         stage('Deploy (TEST)') {
             agent { label 'deploy' }
             when {
