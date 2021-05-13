@@ -2,6 +2,8 @@ export const API_URL = window.RUNTIME_REACT_APP_API_HOST
   ? `${window.location.protocol}//${window.RUNTIME_REACT_APP_API_HOST}/api`
   : process.env.REACT_APP_API_HOST;
 
+export const DWPBI_URL = window.RUNTIME_REACT_APP_DWPBI_URL ?? process.env.REACT_APP_DWPBI_URL;
+
 const CODE_LOOKUP = '/codelookup';
 
 export const API_PATHS = {
