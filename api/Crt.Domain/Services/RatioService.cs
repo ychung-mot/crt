@@ -153,7 +153,7 @@ namespace Crt.Domain.Services
                 //get the full segment length and add to the total
                 if (segment.Geometry.GeometryType == Geometry.TypeNamePoint)
                 {
-                    segmentLength = 0.001;
+                    segmentLength = Constants.SpatialPointSize;
                 }
                 else
                 {
