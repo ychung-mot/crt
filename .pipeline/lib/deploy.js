@@ -54,6 +54,7 @@ module.exports = (settings) => {
           VERSION: phases[phase].tag,
           ENV: phases[phase].phase,
           HOST: phases[phase].host,
+          REACT_APP_DWPBI_URL: phases[phase].dwpbi_url,
           CPU: phases[phase].client_cpu,
           MEMORY: phases[phase].client_memory,
         },

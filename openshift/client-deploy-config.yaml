@@ -65,6 +65,8 @@ objects:
                   value: ${HOST}
                 - name: CRT_DEPLOY_SUFFIX
                   value: ${SUFFIX}
+                - name: REACT_APP_DWPBI_URL
+                  value: ${REACT_APP_DWPBI_URL}
       test: false
       triggers:
         - imageChangeParams:
@@ -139,6 +141,11 @@ parameters:
     name: HOST
     required: true
     value: ""
+  - description: Power BI URL for CRT reports
+    displayName: REACT_APP_DWPBI_URL
+    name: REACT_APP_DWPBI_URL
+    required: true
+    value: "https://dev-dwpbi.th.gov.bc.ca/reports/browse/CRT"
   - description: SOURCE_REPOSITORY_URL
     displayName: SOURCE_REPOSITORY_URL
     name: SOURCE_REPOSITORY_URL
