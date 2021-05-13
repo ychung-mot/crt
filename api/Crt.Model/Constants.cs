@@ -12,6 +12,7 @@ namespace Crt.Model
         public const string VancouverTimeZone = "America/Vancouver";
         public const string PacificTimeZone = "Pacific Standard Time";
         public const string SystemAdmin = "SYSTEM_ADMIN";
+        public const double SpatialPointSize = 0.001;
     }
 
     public static class ExportQuery

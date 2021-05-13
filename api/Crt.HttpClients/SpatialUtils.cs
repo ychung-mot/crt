@@ -5,8 +5,8 @@ using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
 using GeoJSON.Net.Feature;
 using System;
-using GJNGeometry = GeoJSON.Net.Geometry;
 using NetTopologySuite.Algorithm.Locate;
+using Crt.Model;
 
 //kept in HttpClients project as it contains the GeoJSON and NetTopology references
 namespace Crt.HttpClients
@@ -187,7 +187,7 @@ namespace Crt.HttpClients
             {
                 if (coordinates.GeometryType == Geometry.TypeNamePoint)
                 {
-                    totalDistance = 0.0001;
+                    totalDistance = Constants.SpatialPointSize;
                 } else
                 {
                     var startCoord = coordinates.Coordinates[0]; //first coordinate
