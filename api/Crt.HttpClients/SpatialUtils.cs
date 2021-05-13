@@ -185,39 +185,45 @@ namespace Crt.HttpClients
 
             if (coordinates.Coordinates.Length > 0)
             {
-                var startCoord = coordinates.Coordinates[0]; //first coordinate
-
-                foreach (var coord in coordinates.Coordinates)
+                if (coordinates.GeometryType == Geometry.TypeNamePoint)
                 {
-                    var p1Lat = startCoord.Y;
-                    var p1Lon = startCoord.X;
+                    totalDistance = 0.0001;
+                } else
+                {
+                    var startCoord = coordinates.Coordinates[0]; //first coordinate
 
-                    var p2Lat = coord.Y;
-                    var p2Lon = coord.X;
+                    foreach (var coord in coordinates.Coordinates)
+                    {
+                        var p1Lat = startCoord.Y;
+                        var p1Lon = startCoord.X;
 
-                    
-                    double theta = p1Lon - p2Lon;
-                    //determine the distance between the 2 coordinate points using solution of spherical triangles
-                    // cos a = sin b * sin c + cos b * cos c * cos A
-                    // b is latitude (to radians) of point 1
-                    // c is latidude (to radians) of point 2
-                    // A is difference in meridians of the longtitude of both points (to radians)
-                    double _b = DegreesToRadians(p1Lat);
-                    double _c = DegreesToRadians(p2Lat);
-                    double _A = DegreesToRadians(theta);
-                    double _a = Math.Sin(_b) * Math.Sin(_c) + Math.Cos(_b) * Math.Cos(_c) * Math.Cos(_A);
+                        var p2Lat = coord.Y;
+                        var p2Lon = coord.X;
 
-                    //angle of the cosine into radians
-                    double distance = Math.Acos(_a);
-                    //turn the radians back into degrees
-                    distance = RadiansToDegress(distance);
-                    //one minute of degrees equals 1.1515 miles so degrees * 1 hour (60 minutes) * 1 mile (1.1515)
-                    distance = distance * 60 * 1.1515;
-                    //convert to KM, could convert to nautical miles using 0.8684
-                    distance = distance * _m2km;
-                    
-                    totalDistance += (Double.IsNaN(distance)) ? 0 : distance;
-                    startCoord = coord;
+
+                        double theta = p1Lon - p2Lon;
+                        //determine the distance between the 2 coordinate points using solution of spherical triangles
+                        // cos a = sin b * sin c + cos b * cos c * cos A
+                        // b is latitude (to radians) of point 1
+                        // c is latidude (to radians) of point 2
+                        // A is difference in meridians of the longtitude of both points (to radians)
+                        double _b = DegreesToRadians(p1Lat);
+                        double _c = DegreesToRadians(p2Lat);
+                        double _A = DegreesToRadians(theta);
+                        double _a = Math.Sin(_b) * Math.Sin(_c) + Math.Cos(_b) * Math.Cos(_c) * Math.Cos(_A);
+
+                        //angle of the cosine into radians
+                        double distance = Math.Acos(_a);
+                        //turn the radians back into degrees
+                        distance = RadiansToDegress(distance);
+                        //one minute of degrees equals 1.1515 miles so degrees * 1 hour (60 minutes) * 1 mile (1.1515)
+                        distance = distance * 60 * 1.1515;
+                        //convert to KM, could convert to nautical miles using 0.8684
+                        distance = distance * _m2km;
+
+                        totalDistance += (Double.IsNaN(distance)) ? 0 : distance;
+                        startCoord = coord;
+                    }
                 }
             }
 
