@@ -83,9 +83,9 @@ const DataTableControl = ({
       return <ReactMarkdown linkTarget="_blank" plugins={[gfm]} source={label.replace(/\n/g, '  \n')}></ReactMarkdown>;
     }
 
-    if (column.LabelHoverText) {
+    if (column.labelHoverText) {
       return (
-        <span title={item[column.labelHoverText?.key] || column.labelHoverText.heading} style={{ cursor: 'help' }}>
+        <span title={item[column.labelHoverText?.key] || column.labelHoverText?.title} style={{ cursor: 'help' }}>
           {label}
         </span>
       );
