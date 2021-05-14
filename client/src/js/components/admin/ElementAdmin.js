@@ -31,9 +31,9 @@ const isActive = [
 const tableColumns = [
   { heading: 'Element', key: 'code' },
   { heading: 'Description', key: 'description' },
-  { heading: 'Program Category', key: 'programCategory', nosort: true },
-  { heading: 'Program', key: 'program', nosort: true },
-  { heading: 'Service Line', key: 'serviceLine', nosort: true },
+  { heading: 'Program Category', key: 'programCategory', labelHoverText: { key: 'programCategoryName' }, nosort: true },
+  { heading: 'Program', key: 'program', labelHoverText: { key: 'programName' }, nosort: true },
+  { heading: 'Service Line', key: 'serviceLine', labelHoverText: { key: 'serviceLineName' }, nosort: true },
   { heading: 'Order Number', key: 'displayOrder' },
   { heading: 'Status', key: 'isActive', badge: { active: 'Active', inactive: 'Inactive' }, nosort: true },
 ];

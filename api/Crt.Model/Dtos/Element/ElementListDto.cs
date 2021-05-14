@@ -11,9 +11,12 @@ namespace Crt.Model.Dtos.Element
         public string Code { get; set; }
         public string Description { get; set; }
         public string Comment { get; set; }
-        public string Program { get => ProgramLkup?.Description; }
-        public string ProgramCategory { get => ProgramCategoryLkup?.Description; }
-        public string ServiceLine { get => ServiceLineLkup?.Description; }
+        public string Program { get => ProgramLkup?.CodeValueText; }
+        public string ProgramName { get => ProgramLkup?.CodeName; }
+        public string ProgramCategory { get => ProgramCategoryLkup?.CodeValueText; }
+        public string ProgramCategoryName { get => ProgramCategoryLkup?.CodeName; }
+        public string ServiceLine { get => ServiceLineLkup?.CodeValueText; }
+        public string ServiceLineName { get => ServiceLineLkup?.CodeName; }
         public bool? IsActive { get; set; }
         public decimal? DisplayOrder { get; set; }
         public DateTime? EndDate { get; set; }
