@@ -52,12 +52,5 @@ namespace Crt.Api.Controllers
 
             return Ok(versionInfo);
         }
-
-        [HttpGet("test")]
-        public async Task<ActionResult<string>> GetCrtTestString()
-        {
-            await Task.Delay(TimeSpan.FromMinutes(1));
-            return Ok("Test");
-        }
     }
 }
