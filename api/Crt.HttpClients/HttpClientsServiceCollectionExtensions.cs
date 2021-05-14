@@ -22,7 +22,7 @@ namespace Crt.HttpClients
             {
                 var env = config.GetEnvironment();
                 client.BaseAddress = new Uri(config.GetValue<string>($"GeoServer{env}:Url"));
-                client.Timeout = new TimeSpan(0, 0, config.GetValue<int>($"GeoServer{env}:Timeout"));
+                client.Timeout = GetTimeout(config, $"GeoServer{env}:Timeout");
                 client.DefaultRequestHeaders.Clear();
 
                 var userId = config.GetValue<string>("ServiceAccount:User");
@@ -34,11 +34,23 @@ namespace Crt.HttpClients
             services.AddHttpClient<IDataBCApi, DataBCApi>(client =>
             {
                 client.BaseAddress = new Uri(config.GetValue<string>("DataBC:Url"));
-                client.Timeout = new TimeSpan(0, 0, config.GetValue<int>("DataBC:Timeout"));
+                client.Timeout = GetTimeout(config, "DataBC:Timeout");
                 client.DefaultRequestHeaders.Clear();
             });
 
             services.AddScoped<IApi, Api>();
+        }
+
+        private static TimeSpan GetTimeout(IConfiguration config, string section)
+        {
+            var seconds = config.GetValue<int>(section);
+            if (seconds <= 0)
+            {
+                Console.WriteLine($"Config - Invalid {section} value: {seconds}");
+                seconds = 90;
+            }
+
+            return TimeSpan.FromSeconds(seconds);
         }
     }
 }
