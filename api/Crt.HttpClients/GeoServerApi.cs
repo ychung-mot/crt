@@ -138,19 +138,22 @@ namespace Crt.HttpClients
 
                         if (feature.Geometry.Type == GeoJSON.Net.GeoJSONObjectType.MultiLineString)
                         {
-                            geometry = SpatialUtils.GenerateMultiLineString(feature);
+                            geometry = SpatialUtils.GenerateMultiLineString(feature, boundingBox);
                         }
                         else if (feature.Geometry.Type == GeoJSON.Net.GeoJSONObjectType.LineString)
                         {
-                            geometry = SpatialUtils.GenerateLineString(feature);
+                            geometry = SpatialUtils.GenerateLineString(feature, boundingBox);
                         }
 
-                        layerLines.Add(new PolygonLayer
+                        if (!geometry.IsEmpty)
                         {
-                            NTSGeometry = geometry,
-                            Name = (string)feature.Properties["NE_UNIQUE"],
-                            Number = feature.Properties["HIGHWAY_NUMBER"].ToString()
-                        });
+                            layerLines.Add(new PolygonLayer
+                            {
+                                NTSGeometry = geometry,
+                                Name = (string)feature.Properties["NE_UNIQUE"],
+                                Number = feature.Properties["HIGHWAY_NUMBER"].ToString()
+                            });
+                        }
                     }
                 }
 

@@ -157,6 +157,53 @@ namespace Crt.HttpClients
             return new LineString(coordinates.ToArray());
         }
 
+        public static LineString GenerateLineString(Feature feature, String boundingBox)
+        {
+            var lineString = feature.Geometry as GeoJSON.Net.Geometry.LineString;
+            var coordinates = new List<Coordinate>();
+
+            var bbox = boundingBox.Split(",");
+            var env = new Envelope(new Coordinate(Convert.ToDouble(bbox[0]), Convert.ToDouble(bbox[1])), new Coordinate(Convert.ToDouble(bbox[2]), Convert.ToDouble(bbox[3])));
+
+            foreach (var coordinate in lineString.Coordinates)
+            {
+                if (env.Contains(coordinate.Longitude, coordinate.Latitude))
+                {
+                    coordinates.Add(new Coordinate(coordinate.Longitude, coordinate.Latitude));
+                }
+            }
+
+            return new LineString(coordinates.ToArray());
+        }
+
+        public static MultiLineString GenerateMultiLineString(Feature feature, String boundingBox)
+        {
+            var multilineString = feature.Geometry as GeoJSON.Net.Geometry.MultiLineString;
+            var coordinates = new List<Coordinate>();
+            var newLine = new List<Coordinate>();
+            List<LineString> lineStrings = new List<LineString>();
+
+            var bbox = boundingBox.Split(",");
+            var env = new Envelope(new Coordinate(Convert.ToDouble(bbox[0]), Convert.ToDouble(bbox[1])), new Coordinate(Convert.ToDouble(bbox[2]), Convert.ToDouble(bbox[3])));
+            
+            foreach (var line in multilineString.Coordinates)
+            {
+                foreach (var coordinate in line.Coordinates)
+                {
+                    //only add highway points if they are within the bounding box
+                    if (env.Contains(coordinate.Longitude, coordinate.Latitude))
+                    {
+                        coordinates.Add(new Coordinate(coordinate.Longitude, coordinate.Latitude));
+                    }
+                }
+                
+                if (coordinates.Count > 0)
+                    lineStrings.Add(new LineString(coordinates.ToArray()));
+            }
+
+            return new MultiLineString(lineStrings.ToArray());
+        }
+
         public static MultiLineString GenerateMultiLineString(Feature feature)
         {
             var multilineString = feature.Geometry as GeoJSON.Net.Geometry.MultiLineString;
