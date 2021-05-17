@@ -4,6 +4,7 @@ import { showValidationErrorDialog } from '../../redux/actions';
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from 'reactstrap';
 import PageSpinner from '../ui/PageSpinner';
+import CalculatorLoadingIcon from '../ui/CalculatorLoadingIcon';
 
 import * as api from '../../Api';
 
@@ -62,7 +63,8 @@ function DetermineRatiosModal({ isOpen, toggle, dirty, projectId, refreshData })
         body: (
           <div className="text-center">
             <span>This process may take a few minutes to complete</span>
-            <PageSpinner />
+            {/* <PageSpinner /> */}
+            <CalculatorLoadingIcon height={80} width={62} />
             <strong>Calculating...</strong>
           </div>
         ),
