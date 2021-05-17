@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Crt.HttpClients
 {
-    public class GeoServerQueries
+    public class Queries
     {
         private string _lineWithinPolygonQuery;
         public string LineWithinPolygonQuery

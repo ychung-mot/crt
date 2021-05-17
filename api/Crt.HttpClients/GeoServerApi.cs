@@ -31,7 +31,7 @@ namespace Crt.HttpClients
     {
         public HttpClient Client { get; private set; }
         public string Path { get; private set; }
-        private GeoServerQueries _queries;
+        private Queries _queries;
         private IApi _api;
         private ILogger<IGeoServerApi> _logger;
 
@@ -43,7 +43,7 @@ namespace Crt.HttpClients
         public GeoServerApi(HttpClient client, IApi api, IConfiguration config, ILogger<IGeoServerApi> logger)
         {
             Client = client;
-            _queries = new GeoServerQueries();
+            _queries = new Queries();
             _api = api;
 
             var env = config.GetEnvironment();
@@ -115,17 +115,9 @@ namespace Crt.HttpClients
             
             try
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-                
                 //build the query and get the geoJSON return
                 query = Path + string.Format(_queries.HighwayFeatures, "cwr:V_NM_NLT_DSA_GDSA_SDO_DT", boundingBox);
                 content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
-
-                watch.Stop();
-                TimeSpan ts = watch.Elapsed;
-                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10);
-                _logger.LogInformation($"GeoServer call to GetHighwaysOfInterest took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
 
@@ -173,17 +165,9 @@ namespace Crt.HttpClients
             var content = "";
             try
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-
                 //build the query and get the geoJSON return
                 query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_CONTRACT_AREA", boundingBox);
                 content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
-
-                watch.Stop();
-                TimeSpan ts = watch.Elapsed;
-                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds,ts.Milliseconds / 10);
-                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForServiceArea took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
 
@@ -220,17 +204,9 @@ namespace Crt.HttpClients
             var content = "";
             try
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-
                 //build the query and get the geoJSON return
                 query = Path + string.Format(_queries.PolygonOfInterest, "hwy:DSA_DISTRICT_BOUNDARY", boundingBox);
                 content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
-
-                watch.Stop();
-                TimeSpan ts = watch.Elapsed;
-                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10); 
-                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForDistrict took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
 
