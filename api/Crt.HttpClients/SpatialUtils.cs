@@ -180,12 +180,12 @@ namespace Crt.HttpClients
         {
             var multilineString = feature.Geometry as GeoJSON.Net.Geometry.MultiLineString;
             var coordinates = new List<Coordinate>();
-            var newLine = new List<Coordinate>();
             List<LineString> lineStrings = new List<LineString>();
 
             var bbox = boundingBox.Split(",");
             var env = new Envelope(new Coordinate(Convert.ToDouble(bbox[0]), Convert.ToDouble(bbox[1])), new Coordinate(Convert.ToDouble(bbox[2]), Convert.ToDouble(bbox[3])));
-            
+            env.ExpandBy(0.01);       //expand the bounding box
+
             foreach (var line in multilineString.Coordinates)
             {
                 foreach (var coordinate in line.Coordinates)

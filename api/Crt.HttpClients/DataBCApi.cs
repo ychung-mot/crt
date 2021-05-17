@@ -20,12 +20,14 @@ namespace Crt.HttpClients
         private HttpClient _client;
         private IApi _api;
         private string _path;
+        private Queries _queries;
         private ILogger<IDataBCApi> _logger;
 
         public DataBCApi(HttpClient client, IApi api, IConfiguration config, ILogger<IDataBCApi> logger)
         {
             _client = client;
             _api = api;
+            _queries = new Queries();
             _path = config.GetValue<string>("DataBC:Path");
             _logger = logger;
         }
@@ -38,20 +40,9 @@ namespace Crt.HttpClients
 
             try
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-                
-                query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" +
-                $"&typeName=pub:WHSE_ADMIN_BOUNDARIES.EBC_PROV_ELECTORAL_DIST_SVW&srsName=EPSG:4326&BBOX={boundingBox},EPSG:4326";
-
+                query = _path + string.Format(_queries.PolygonOfInterest, "pub:WHSE_ADMIN_BOUNDARIES.EBC_PROV_ELECTORAL_DIST_SVW", boundingBox);
                 content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
                 
-                watch.Stop();
-                TimeSpan ts = watch.Elapsed;
-                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10);
-
-                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForElectoralDistrict took {elapsedTime} secs");
-
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
                 //continue if we have a feature collection
                 if (featureCollection != null)
@@ -86,19 +77,8 @@ namespace Crt.HttpClients
 
             try
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                watch.Start();
-                
-                query = _path + $"service=WFS&version=2.0.0&request=GetFeature&outputFormat=application/json" +
-                $"&typeName=pub:WHSE_HUMAN_CULTURAL_ECONOMIC.CEN_ECONOMIC_REGIONS_SVW&srsName=EPSG:4326&BBOX={boundingBox},EPSG:4326";
-
+                query = _path + string.Format(_queries.PolygonOfInterest, "pub:WHSE_HUMAN_CULTURAL_ECONOMIC.CEN_ECONOMIC_REGIONS_SVW", boundingBox);
                 content = await (await _api.Get(_client, query)).Content.ReadAsStringAsync();
-
-                watch.Stop();
-                TimeSpan ts = watch.Elapsed;
-                string elapsedTime = String.Format("{0:00}.{1:00}", ts.Seconds, ts.Milliseconds / 10);
-
-                _logger.LogInformation($"GeoServer call to GetPolygonOfInterestForEconomicRegion took {elapsedTime} secs");
 
                 var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
                 //continue if we have a feature collection
