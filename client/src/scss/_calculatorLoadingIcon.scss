@@ -1,0 +1,37 @@
+@keyframes loadingWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100;
+  }
+}
+
+.svg__loading-bar {
+  animation-name: loadingWidth;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.1, 0.7, 1, 0.1);
+}
+
+@keyframes buttonPress {
+  from {
+    fill: #383838;
+  }
+  to {
+    fill: #fcba19;
+  }
+}
+
+.svg__button-group {
+  animation-name: buttonPress;
+  animation-iteration-count: infinite;
+  animation-direction: reverse;
+
+  @for $i from 1 through 9 {
+    &:nth-of-type(#{$i}) {
+      animation-delay: random() + s;
+      animation-duration: (random() + 0.5) + s;
+    }
+  }
+}
