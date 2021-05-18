@@ -71,27 +71,27 @@ objects:
           "GeoServerDEV": {
             "Url": "https://devoas4.apps.th.gov.bc.ca",
             "Path": "ogs-geoV06/ows?",
-            "Timeout": 90
+            "Timeout": 60
           },
           "GeoServerTST": {
             "Url": "https://tstoas5.apps.th.gov.bc.ca",
             "Path": "ogs-geoV06/ows?",
-            "Timeout": 90
+            "Timeout": 60
           },
           "GeoServerUAT": {
             "Url": "https://tstoas5.apps.th.gov.bc.ca",
             "Path": "ogs-geoV06/ows?",
-            "Timeout": 90
+            "Timeout": 60
           },
           "GeoServerPRD": {
             "Url": "https://prdoas5.apps.th.gov.bc.ca/ogs-geoV06",
             "Path": "ogs-geoV06/ows?",
-            "Timeout": 90
+            "Timeout": 60
           },
           "DataBC": {
             "Url": "https://openmaps.gov.bc.ca",
             "Path": "geo/ows?",
-            "Timeout": 90
+            "Timeout": 60
           }
         }
     kind: ConfigMap
