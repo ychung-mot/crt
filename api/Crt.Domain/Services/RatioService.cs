@@ -135,6 +135,11 @@ namespace Crt.Domain.Services
             var totalLengthOfSegments = 0.0;
             var errors = new Dictionary<string, List<string>>();
 
+            //get the ratio record lookup id
+            var highwayRatioRecordTypeId = _validator.CodeLookup
+                .Where(x => x.CodeSet == CodeSet.RatioRecordType
+                && x.CodeName == RatioRecordType.Highway).FirstOrDefault().CodeLookupId;
+
             _logger.LogInformation($"==== Starting Ratio Determination ====");
 
             serviceAreas = await _serviceAreaRepo.GetAllServiceAreasAsync();
@@ -187,10 +192,18 @@ namespace Crt.Domain.Services
                     var totalRatio = Convert.ToDecimal(ratioGroup.Sum(x => x.Ratio));
                     //adjust the largest of the ratios either, adding or taking away
                     if (ratioGroup.Sum(x => x.Ratio) >= 1.00M)
+                    {
                         ratioGroup.Aggregate((i1, i2) => i1.Ratio > i2.Ratio ? i1 : i2).Ratio -= totalRatio - 1.00M;
                         //ratioGroup.First().Ratio -= totalRatio - 1.00M;
+                    }
                     else
-                        ratioGroup.Aggregate((i1, i2) => i1.Ratio > i2.Ratio ? i1 : i2).Ratio += 1.00M - totalRatio;
+                    {
+                        //highways don't have to equal 1.00
+                        if (ratioGroup.FirstOrDefault().RatioRecordTypeLkupId != highwayRatioRecordTypeId)
+                        {
+                            ratioGroup.Aggregate((i1, i2) => i1.Ratio > i2.Ratio ? i1 : i2).Ratio += 1.00M - totalRatio;
+                        }
+                    }  
                     //ratioGroup.First().Ratio += 1.00M - totalRatio;
 
                     foreach (var ratio in ratioGroup)
@@ -400,7 +413,15 @@ namespace Crt.Domain.Services
                     }
                 }
 
-                var percentInPolygon = Math.Round(intersectedDistance / totalLengthOfSegments, 2);
+                //var percentInPolygon = Math.Round(intersectedDistance / totalLengthOfSegments, 2);
+                var percentInPolygon = intersectedDistance / totalLengthOfSegments;
+                if (percentInPolygon > 0 && percentInPolygon < 0.01)
+                {
+                    percentInPolygon = 0.01;
+                }
+
+                percentInPolygon = Math.Round(percentInPolygon, 2);
+
 
                 if (percentInPolygon > 0)
                 {
@@ -464,8 +485,14 @@ namespace Crt.Domain.Services
                 }
             }
 
-            var percentInPolygon = Math.Round(clippedLength / totalLengthOfSegments, 2);
-            
+            var percentInPolygon = clippedLength / totalLengthOfSegments;
+            if (percentInPolygon > 0 && percentInPolygon < 0.01)
+            {
+                percentInPolygon = 0.01;
+            }
+
+            percentInPolygon = Math.Round(percentInPolygon, 2);
+
             return percentInPolygon;
         }
 

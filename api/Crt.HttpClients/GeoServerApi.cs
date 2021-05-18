@@ -99,12 +99,23 @@ namespace Crt.HttpClients
 
         public async Task<string> GetProjectExtent(decimal projectId)
         {
-            var query = Path + string.Format(_queries.BoundingBoxForProject, projectId);
-            var content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
+            var query = "";
+            var content = "";
 
-            var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
-            
-            return (featureCollection != null) ? string.Join(",", featureCollection.BoundingBoxes) : null;
+            try
+            {
+                query = Path + string.Format(_queries.BoundingBoxForProject, projectId);
+                content = await (await _api.GetWithRetry(Client, query)).Content.ReadAsStringAsync();
+
+                var featureCollection = SpatialUtils.ParseJSONToFeatureCollection(content);
+
+                return (featureCollection != null) ? string.Join(",", featureCollection.BoundingBoxes) : null;
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError($"Exception: {ex.Message} - GetProjectExtent({projectId}): {query} - {content}");
+                throw;
+            }
         }
 
         public async Task<List<PolygonLayer>> GetHighwaysOfInterest(string boundingBox)
