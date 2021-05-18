@@ -1,5 +1,5 @@
 import React from 'react';
-import { CustomInput, Row, Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
+import { CustomInput, Col, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 import { useField } from 'formik';
 import MouseoverTooltip from '../ui/MouseoverTooltip';
 import NumberFormat from 'react-number-format';
@@ -25,11 +25,11 @@ export const FormRow = ({ name, label, children, helper = '' }) => {
 export const FormMultiRow = ({ children }) => {
   //Takes multiple children and splits them evenly in a row
   return (
-    <Row form>
+    <FormGroup row>
       {React.Children.map(children, (child, i) => (
         <Col>{child}</Col>
       ))}
-    </Row>
+    </FormGroup>
   );
 };
 
