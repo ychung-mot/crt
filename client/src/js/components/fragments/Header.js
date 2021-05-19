@@ -96,14 +96,8 @@ const Header = ({ currentUser }) => {
                     Reports
                   </DropdownToggle>
                   <DropdownMenu>
-                    {/* temporary fix requires the actual path add to={'/'} target="_blank" to each  */}
-
                     <DropdownItem tag={'a'} href={`${Constants.DWPBI_URL}`} target="_blank">
-                      Dashboard
-                    </DropdownItem>
-
-                    <DropdownItem tag={'a'} href={'#'} onClick={() => alert("I don't work yet")}>
-                      Paginated
+                      PowerBI Reports
                     </DropdownItem>
                   </DropdownMenu>
                 </Authorize>
