@@ -144,6 +144,8 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
   };
 
   const handleCodeSetFormSubmit = (values, formType) => {
+    formModal.setSubmitting(true);
+
     if (formType === Constants.FORM_TYPE.ADD) {
       api
         .postElement(values)
@@ -154,7 +156,8 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
         .catch((error) => {
           showValidationErrorDialog(error.response.data);
           console.log(error);
-        });
+        })
+        .finally(() => formModal.setSubmitting(false));
     } else if (formType === Constants.FORM_TYPE.EDIT) {
       api
         .putElement(values.id, values)
@@ -165,7 +168,8 @@ const ElementAdmin = ({ showValidationErrorDialog, elements }) => {
         .catch((error) => {
           showValidationErrorDialog(error.response.data);
           console.log(error);
-        });
+        })
+        .finally(() => formModal.setSubmitting(false));
     }
   };
 

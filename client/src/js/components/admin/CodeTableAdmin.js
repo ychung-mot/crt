@@ -157,6 +157,8 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
   };
 
   const handleCodeSetFormSubmit = (values, formType) => {
+    codeSetFormModal.setSubmitting(true);
+
     if (formType === Constants.FORM_TYPE.ADD) {
       api
         .postCodeTable(values)
@@ -167,7 +169,8 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
         .catch((error) => {
           showValidationErrorDialog(error.response.data);
           console.log(error);
-        });
+        })
+        .finally(() => codeSetFormModal.setSubmitting(false));
     } else if (formType === Constants.FORM_TYPE.EDIT) {
       api
         .putCodeTable(values.id, values)
@@ -178,7 +181,8 @@ const CodeTableAdmin = ({ showValidationErrorDialog, codeSets }) => {
         .catch((error) => {
           showValidationErrorDialog(error.response.data);
           console.log(error);
-        });
+        })
+        .finally(() => codeSetFormModal.setSubmitting(false));
     }
   };
 
