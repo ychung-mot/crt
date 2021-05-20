@@ -135,12 +135,10 @@ namespace Crt.Domain.Services
             var totalLengthOfSegments = 0.0;
             var errors = new Dictionary<string, List<string>>();
 
-            //get the ratio record lookup id
+            //get the ratio record lookup id for highways, we'll need this later to filter the ratios
             var highwayRatioRecordTypeId = _validator.CodeLookup
                 .Where(x => x.CodeSet == CodeSet.RatioRecordType
                 && x.CodeName == RatioRecordType.Highway).FirstOrDefault().CodeLookupId;
-
-            _logger.LogInformation($"==== Starting Ratio Determination ====");
 
             serviceAreas = await _serviceAreaRepo.GetAllServiceAreasAsync();
             districts = await _districtRepo.GetAllDistrictsAsync();
@@ -155,16 +153,9 @@ namespace Crt.Domain.Services
             foreach (var segment in projectSegments)
             {
                 var segmentLength = 0.0;
-                //get the full segment length and add to the total
-                if (segment.Geometry.GeometryType == Geometry.TypeNamePoint)
-                {
-                    segmentLength = Constants.SpatialPointSize;
-                }
-                else
-                {
-                    segmentLength = SpatialUtils.CalculateDistance(segment.Geometry);
-                    //segmentLength = await _geoServerApi.GetTotalSegmentLength(segment.Geometry);
-                }
+                //get the full segment length and add to the total, points are set to a default non-zero value
+                segmentLength = (segment.Geometry.GeometryType == Geometry.TypeNamePoint) 
+                    ? Constants.SpatialPointSize : segmentLength = SpatialUtils.CalculateDistance(segment.Geometry);
                 
                 totalLengthOfSegments += segmentLength;
             }
@@ -181,10 +172,8 @@ namespace Crt.Domain.Services
             Task.WaitAll(taskList.ToArray());
 
             //clear the current ratios
-            _logger.LogInformation($"Clearing out existing ratios");
             await _ratioRepo.DeleteAllRatiosByProjectIdAsync(projectId);
 
-            _logger.LogInformation($"Creating ratios via the RatioRepo");
             foreach (var ratioGroup in newRatios)
             {
                 if (ratioGroup.Count > 0)
@@ -194,17 +183,15 @@ namespace Crt.Domain.Services
                     if (ratioGroup.Sum(x => x.Ratio) >= 1.00M)
                     {
                         ratioGroup.Aggregate((i1, i2) => i1.Ratio > i2.Ratio ? i1 : i2).Ratio -= totalRatio - 1.00M;
-                        //ratioGroup.First().Ratio -= totalRatio - 1.00M;
                     }
                     else
                     {
-                        //highways don't have to equal 1.00
+                        //highways don't have to equal 1.00 so we won't adjust them to up
                         if (ratioGroup.FirstOrDefault().RatioRecordTypeLkupId != highwayRatioRecordTypeId)
                         {
                             ratioGroup.Aggregate((i1, i2) => i1.Ratio > i2.Ratio ? i1 : i2).Ratio += 1.00M - totalRatio;
                         }
-                    }  
-                    //ratioGroup.First().Ratio += 1.00M - totalRatio;
+                    } 
 
                     foreach (var ratio in ratioGroup)
                     {
@@ -213,11 +200,9 @@ namespace Crt.Domain.Services
                 }
             }
 
-            _logger.LogInformation($"Committing Ratios");
             //save the determined ratios to the database
             _unitOfWork.Commit();
 
-            _logger.LogInformation($"==== Finished Ratio Determination ====");
             return (false, errors);
         }
 
@@ -240,7 +225,6 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
-                    _logger.LogInformation($"Creating new ratio for Service Area {polygon.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -278,7 +262,6 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
-                    _logger.LogInformation($"Creating new ratio for District {polygon.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -316,7 +299,6 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
-                    _logger.LogInformation($"Creating new ratio for Electoral District {polygon.Name}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -354,7 +336,6 @@ namespace Crt.Domain.Services
 
                 if (percentInPolygon > 0)
                 {
-                    _logger.LogInformation($"Creating new ratio for Economic Region {polygon.Number}");
                     //generate the new ratio
                     var newRatio = new RatioCreateDto
                     {
@@ -382,12 +363,8 @@ namespace Crt.Domain.Services
                 && x.CodeName == RatioRecordType.Highway).FirstOrDefault().CodeLookupId;
 
             var createdRatios = new List<RatioCreateDto>();
-            var tempProjectSegments = projectSegments;
-
+            
             List<PolygonLayer> highwayLines = await _geoServerApi.GetHighwaysOfInterest(segmentBBox);
-
-            _logger.LogInformation($"Total Number of highways to iterate {highwayLines.Count}");
-            _logger.LogInformation($"Number of segments to iterate {projectSegments.Count}");
 
             foreach (var highwayLine in highwayLines)
             {
@@ -396,8 +373,8 @@ namespace Crt.Domain.Services
                 //get the intersecting points of the segment geometry and the highway geometry
                 foreach (var segment in projectSegments)
                 {
-                    _logger.LogInformation($"Checking segment {segment.SegmentId} against highway {highwayLine.Name}");
-                    //half a meter, i noticed that sometimes the highway data doesn't 
+                    //turn the segment into a polygon, buffered by half a meter
+                    // i noticed that sometimes the highway data doesn't 
                     // always show up on the actual highway.. hwy 5 outside merrit for example ;(
                     var bufferedSegment = segment.Geometry.Buffer(0.00005);
                     var intersection = bufferedSegment.Intersection(highwayLine.NTSGeometry);
@@ -405,23 +382,26 @@ namespace Crt.Domain.Services
                     if (intersection != null)
                     {
                         var distance = SpatialUtils.CalculateDistance(intersection);
+                        //because we turn the segment into a polygon it's possible for points to have
+                        // a non-zero distance, since we defaulted points we'll reset it here
                         if (distance > 0 && segment.Geometry.GeometryType == Geometry.TypeNamePoint)
                         {
-                            distance = 0.001;
+                            distance = Constants.SpatialPointSize;
                         }
                         intersectedDistance += distance;
                     }
                 }
 
-                //var percentInPolygon = Math.Round(intersectedDistance / totalLengthOfSegments, 2);
                 var percentInPolygon = intersectedDistance / totalLengthOfSegments;
                 if (percentInPolygon > 0 && percentInPolygon < 0.01)
                 {
+                    //sometimes the point in comparison to a long line segment will have a perecent 
+                    // below 1%, and then round to 0, we'll avoid this by ensuring a found segment
+                    // never goes below zero.
                     percentInPolygon = 0.01;
                 }
 
                 percentInPolygon = Math.Round(percentInPolygon, 2);
-
 
                 if (percentInPolygon > 0)
                 {
@@ -439,7 +419,7 @@ namespace Crt.Domain.Services
 
                     createdRatios.Add(newRatio);
                 }
-            }
+            } 
 
             //we need to check for duplicate ratios on the same highway
             var duplicates = createdRatios.GroupBy(x => x.RatioRecordLkupId)
@@ -468,24 +448,21 @@ namespace Crt.Domain.Services
 
             foreach (var segment in projectSegments)
             {
-                _logger.LogInformation($"GetSegmentLengthWithinPolygon for Segment Id {segment.SegmentId} against Polygon {layerPolygon.Name}");
-
                 var distanceInPolygon = 0.0;
                 var segmentWithinPolygon = SpatialUtils.LineCordinatesWithinPolygon(layerPolygon.NTSGeometry, segment.Geometry);
                 if (segmentWithinPolygon != null)
                 {
                     distanceInPolygon = SpatialUtils.CalculateDistance(segmentWithinPolygon);
 
-                    //var result = await _geoServerApi.GetSegmentLengthWithinPolygon(BuildGeometryStringFromCoordinates(segment.Geometry)
-                    //    , BuildGeometryStringFromCoordinates(layerPolygon.NTSGeometry));
-
-                    _logger.LogInformation($"Segment Id {segment.SegmentId} clipped length is {distanceInPolygon}");
                     //get the clipped length, this is how much of this segment exists within the polygon
                     clippedLength += distanceInPolygon;
                 }
             }
 
             var percentInPolygon = clippedLength / totalLengthOfSegments;
+            //sometimes the segment in comparison to a very long line segment will have a perecent 
+            // below 1%, and then round to 0, we'll avoid this by ensuring a found segment
+            // never goes below zero.
             if (percentInPolygon > 0 && percentInPolygon < 0.01)
             {
                 percentInPolygon = 0.01;
@@ -494,28 +471,6 @@ namespace Crt.Domain.Services
             percentInPolygon = Math.Round(percentInPolygon, 2);
 
             return percentInPolygon;
-        }
-
-        private string BuildGeometryStringFromCoordinates(NetTopologySuite.Geometries.Geometry geometry)
-        {
-            string geometryString = "";
-            var isPoint = (geometry.Coordinates.Length == 1);
-
-            foreach (Coordinate coordinate in geometry.Coordinates)
-            {
-                geometryString += coordinate.X + "\\," + coordinate.Y;
-                if (coordinate != geometry.Coordinates.Last())
-                {
-                    geometryString += "\\,";
-                }
-            }
-
-            //geometry strings being used in the line within polygon requires 2 points or the query throws an error
-            // so we'll double up the coordinates making the line start and end at the same point
-            if (isPoint)
-                geometryString += "\\," + geometryString;
-
-            return geometryString;
         }
 
         private async Task ValidateRatio(RatioSaveDto ratio, Dictionary<string, List<string>> errors)
