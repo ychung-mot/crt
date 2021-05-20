@@ -122,9 +122,6 @@ namespace Crt.Api.Extensions
                     Description = "CRT System"
                 });
 
-                var filePath = Path.Combine(System.AppContext.BaseDirectory, "Crt.Api.xml");
-                options.IncludeXmlComments(filePath);
-
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",

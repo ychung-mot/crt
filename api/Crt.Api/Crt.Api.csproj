@@ -11,15 +11,6 @@
     <Copyright>Copyright© 2020, Province of British Columbia.</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Work\Crt\git\api\Crt.Api\Crt.Api.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Crt.Api.xml" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.2.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
