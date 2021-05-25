@@ -1,0 +1,292 @@
+/* ---------------------------------------------------------------------- */
+/* Script generated with: DeZign for Databases 12.1.0                     */
+/* Target DBMS:           MS SQL Server 2017                              */
+/* Project file:          S04_01_APP_CRT_V4.dez                           */
+/* Project name:          Capital Rehabilitation Tracking Reporting       */
+/* Author:                Ayodeji Kuponiyi                                */
+/* Script type:           Alter database script                           */
+/* Created on:            2021-03-04 13:28                                */
+/* ---------------------------------------------------------------------- */
+
+/*
+Changes:
+	- Added DESCRIPTION to CRT_SEGMENT and history and managed the triggers
+*/
+
+USE CRT_DEV;
+GO
+
+/* ---------------------------------------------------------------------- */
+/* Drop triggers                                                          */
+/* ---------------------------------------------------------------------- */
+
+DROP TRIGGER [dbo].[CRT_SEGMENT_A_S_IUD_TR]
+GO
+
+
+DROP TRIGGER [dbo].[CRT_SEGMENT_I_S_I_TR]
+GO
+
+
+DROP TRIGGER [dbo].[CRT_SEGMENT_I_S_U_TR]
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Drop foreign key constraints                                           */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_SEGMENT] DROP CONSTRAINT [CRT_PROJECT_CRT_SEGMENT]
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Drop and recreate table "dbo.CRT_SEGMENT"                              */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_SEGMENT] DROP CONSTRAINT [CRT_SEGMENT_PK]
+GO
+
+
+CREATE TABLE [dbo].[CRT_SEGMENT_TMP] (
+    [SEGMENT_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_SEGMENT_ID_SEQ] NOT NULL,
+    [PROJECT_ID] NUMERIC(9) NOT NULL,
+    [DESCRIPTION] VARCHAR(255),
+    [START_LATITUDE] NUMERIC(16,8),
+    [START_LONGITUDE] NUMERIC(16,8),
+    [END_LATITUDE] NUMERIC(16,8),
+    [END_LONGITUDE] NUMERIC(16,8),
+    [GEOMETRY] GEOMETRY,
+    [END_DATE] DATETIME,
+    [CONCURRENCY_CONTROL_NUMBER] BIGINT DEFAULT 1 NOT NULL,
+    [APP_CREATE_USERID] VARCHAR(30) NOT NULL,
+    [APP_CREATE_TIMESTAMP] DATETIME NOT NULL,
+    [APP_CREATE_USER_GUID] UNIQUEIDENTIFIER NOT NULL,
+    [APP_LAST_UPDATE_USERID] VARCHAR(30) NOT NULL,
+    [APP_LAST_UPDATE_TIMESTAMP] DATETIME NOT NULL,
+    [APP_LAST_UPDATE_USER_GUID] UNIQUEIDENTIFIER NOT NULL,
+    [DB_AUDIT_CREATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_CREATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL)
+GO
+
+
+INSERT INTO [dbo].[CRT_SEGMENT_TMP]
+    ([SEGMENT_ID],[PROJECT_ID],[START_LATITUDE],[START_LONGITUDE],[END_LATITUDE],[END_LONGITUDE],[GEOMETRY],[END_DATE],[CONCURRENCY_CONTROL_NUMBER],[APP_CREATE_USERID],[APP_CREATE_TIMESTAMP],[APP_CREATE_USER_GUID],[APP_LAST_UPDATE_USERID],[APP_LAST_UPDATE_TIMESTAMP],[APP_LAST_UPDATE_USER_GUID],[DB_AUDIT_CREATE_USERID],[DB_AUDIT_CREATE_TIMESTAMP],[DB_AUDIT_LAST_UPDATE_USERID],[DB_AUDIT_LAST_UPDATE_TIMESTAMP])
+SELECT
+    [SEGMENT_ID],[PROJECT_ID],[START_LATITUDE],[START_LONGITUDE],[END_LATITUDE],[END_LONGITUDE],[GEOMETRY],[END_DATE],[CONCURRENCY_CONTROL_NUMBER],[APP_CREATE_USERID],[APP_CREATE_TIMESTAMP],[APP_CREATE_USER_GUID],[APP_LAST_UPDATE_USERID],[APP_LAST_UPDATE_TIMESTAMP],[APP_LAST_UPDATE_USER_GUID],[DB_AUDIT_CREATE_USERID],[DB_AUDIT_CREATE_TIMESTAMP],[DB_AUDIT_LAST_UPDATE_USERID],[DB_AUDIT_LAST_UPDATE_TIMESTAMP]
+FROM [dbo].[CRT_SEGMENT]
+GO
+
+
+DROP INDEX [dbo].[CRT_SEGMENT].[CRT_SEGMENT_ELEM_FK_I]
+GO
+
+
+DROP TABLE [dbo].[CRT_SEGMENT]
+GO
+
+
+EXEC sp_rename '[dbo].[CRT_SEGMENT_TMP]', 'CRT_SEGMENT', 'OBJECT'
+GO
+
+
+ALTER TABLE [dbo].[CRT_SEGMENT] ADD CONSTRAINT [CRT_SEGMENT_PK] 
+    PRIMARY KEY CLUSTERED ([SEGMENT_ID])
+GO
+
+
+CREATE NONCLUSTERED INDEX [CRT_SEGMENT_ELEM_FK_I] ON [dbo].[CRT_SEGMENT] ([SEGMENT_ID] ASC,[PROJECT_ID] ASC)
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Segment description field which provides more information to better qualify the segment. It is stored and displayed on the project segment screen alongside the start and end coordinates', 'SCHEMA', N'dbo', 'TABLE', N'CRT_SEGMENT', 'COLUMN', N'DESCRIPTION'
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Drop and recreate table "dbo.CRT_SEGMENT_HIST"                         */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_SEGMENT_HIST] DROP CONSTRAINT [CRT_SEGMENT_HIST_PK]
+GO
+
+
+CREATE TABLE [dbo].[CRT_SEGMENT_HIST_TMP] (
+    [SEGMENT_HIST_ID] NUMERIC(9) DEFAULT NEXT VALUE FOR [CRT_SEGMENT_H_ID_SEQ] NOT NULL,
+    [SEGMENT_ID] NUMERIC(9) NOT NULL,
+    [PROJECT_ID] NUMERIC(9) NOT NULL,
+    [DESCRIPTION] VARCHAR(255),
+    [START_LATITUDE] NUMERIC(16,8),
+    [START_LONGITUDE] NUMERIC(16,8),
+    [END_LATITUDE] NUMERIC(16,8),
+    [END_LONGITUDE] NUMERIC(16,8),
+    [GEOMETRY] GEOMETRY,
+    [END_DATE] DATETIME,
+    [END_DATE_HIST] DATETIME,
+    [EFFECTIVE_DATE_HIST] DATETIME DEFAULT getutcdate() NOT NULL,
+    [CONCURRENCY_CONTROL_NUMBER] BIGINT DEFAULT 1 NOT NULL,
+    [APP_CREATE_USERID] VARCHAR(30) NOT NULL,
+    [APP_CREATE_TIMESTAMP] DATETIME NOT NULL,
+    [APP_CREATE_USER_GUID] UNIQUEIDENTIFIER NOT NULL,
+    [APP_LAST_UPDATE_USERID] VARCHAR(30) NOT NULL,
+    [APP_LAST_UPDATE_TIMESTAMP] DATETIME NOT NULL,
+    [APP_LAST_UPDATE_USER_GUID] UNIQUEIDENTIFIER NOT NULL,
+    [DB_AUDIT_CREATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_CREATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_USERID] VARCHAR(30) DEFAULT user_name() NOT NULL,
+    [DB_AUDIT_LAST_UPDATE_TIMESTAMP] DATETIME DEFAULT getutcdate() NOT NULL)
+GO
+
+
+INSERT INTO [dbo].[CRT_SEGMENT_HIST_TMP]
+    ([SEGMENT_HIST_ID],[SEGMENT_ID],[PROJECT_ID],[START_LATITUDE],[START_LONGITUDE],[END_LATITUDE],[END_LONGITUDE],[GEOMETRY],[END_DATE],[END_DATE_HIST],[EFFECTIVE_DATE_HIST],[CONCURRENCY_CONTROL_NUMBER],[APP_CREATE_USERID],[APP_CREATE_TIMESTAMP],[APP_CREATE_USER_GUID],[APP_LAST_UPDATE_USERID],[APP_LAST_UPDATE_TIMESTAMP],[APP_LAST_UPDATE_USER_GUID],[DB_AUDIT_CREATE_USERID],[DB_AUDIT_CREATE_TIMESTAMP],[DB_AUDIT_LAST_UPDATE_USERID],[DB_AUDIT_LAST_UPDATE_TIMESTAMP])
+SELECT
+    [SEGMENT_HIST_ID],[SEGMENT_ID],[PROJECT_ID],[START_LATITUDE],[START_LONGITUDE],[END_LATITUDE],[END_LONGITUDE],[GEOMETRY],[END_DATE],[END_DATE_HIST],[EFFECTIVE_DATE_HIST],[CONCURRENCY_CONTROL_NUMBER],[APP_CREATE_USERID],[APP_CREATE_TIMESTAMP],[APP_CREATE_USER_GUID],[APP_LAST_UPDATE_USERID],[APP_LAST_UPDATE_TIMESTAMP],[APP_LAST_UPDATE_USER_GUID],[DB_AUDIT_CREATE_USERID],[DB_AUDIT_CREATE_TIMESTAMP],[DB_AUDIT_LAST_UPDATE_USERID],[DB_AUDIT_LAST_UPDATE_TIMESTAMP]
+FROM [dbo].[CRT_SEGMENT_HIST]
+GO
+
+
+DROP TABLE [dbo].[CRT_SEGMENT_HIST]
+GO
+
+
+EXEC sp_rename '[dbo].[CRT_SEGMENT_HIST_TMP]', 'CRT_SEGMENT_HIST', 'OBJECT'
+GO
+
+
+ALTER TABLE [dbo].[CRT_SEGMENT_HIST] ADD CONSTRAINT [CRT_SEGMENT_HIST_PK] 
+    PRIMARY KEY CLUSTERED ([SEGMENT_HIST_ID])
+GO
+
+
+EXECUTE sp_addextendedproperty N'MS_Description', N'Segment description field which provides more information to better qualify the segment. It is stored and displayed on the project segment screen alongside the start and end coordinates', 'SCHEMA', N'dbo', 'TABLE', N'CRT_SEGMENT_HIST', 'COLUMN', N'DESCRIPTION'
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Add foreign key constraints                                            */
+/* ---------------------------------------------------------------------- */
+
+ALTER TABLE [dbo].[CRT_SEGMENT] ADD CONSTRAINT [CRT_PROJECT_CRT_SEGMENT] 
+    FOREIGN KEY ([PROJECT_ID]) REFERENCES [dbo].[CRT_PROJECT] ([PROJECT_ID])
+GO
+
+
+/* ---------------------------------------------------------------------- */
+/* Repair/add triggers                                                    */
+/* ---------------------------------------------------------------------- */
+
+CREATE TRIGGER [dbo].[CRT_SEGMENT_A_S_IUD_TR] ON CRT_SEGMENT FOR INSERT, UPDATE, DELETE AS
+SET NOCOUNT ON
+BEGIN TRY
+DECLARE @curr_date datetime;
+SET @curr_date = getutcdate();
+  IF NOT EXISTS(SELECT * FROM inserted) AND NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+
+  IF EXISTS(SELECT * FROM deleted)
+    update CRT_SEGMENT_HIST set END_DATE_HIST = @curr_date where SEGMENT_ID in (select SEGMENT_ID from deleted) and END_DATE_HIST is null;
+
+
+  IF EXISTS(SELECT * FROM inserted)
+    insert into CRT_SEGMENT_HIST ([SEGMENT_ID], [PROJECT_ID], [DESCRIPTION], [START_LATITUDE], [START_LONGITUDE], [END_LATITUDE], [END_LONGITUDE], [GEOMETRY], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], SEGMENT_HIST_ID, END_DATE_HIST, EFFECTIVE_DATE_HIST)
+      select [SEGMENT_ID], [PROJECT_ID], [DESCRIPTION], [START_LATITUDE], [START_LONGITUDE], [END_LATITUDE], [END_LONGITUDE], [GEOMETRY], [END_DATE], [CONCURRENCY_CONTROL_NUMBER], [APP_CREATE_USERID], [APP_CREATE_TIMESTAMP], [APP_CREATE_USER_GUID], [APP_LAST_UPDATE_USERID], [APP_LAST_UPDATE_TIMESTAMP], [APP_LAST_UPDATE_USER_GUID], [DB_AUDIT_CREATE_USERID], [DB_AUDIT_CREATE_TIMESTAMP], [DB_AUDIT_LAST_UPDATE_USERID], [DB_AUDIT_LAST_UPDATE_TIMESTAMP], (next value for [dbo].[CRT_SEGMENT_H_ID_SEQ]) as [SEGMENT_HIST_ID], null as [END_DATE_HIST], @curr_date as [EFFECTIVE_DATE_HIST] from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_SEGMENT_I_S_I_TR] ON CRT_SEGMENT INSTEAD OF INSERT AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM inserted)
+    RETURN;
+
+  insert into CRT_SEGMENT ("SEGMENT_ID",
+	  "PROJECT_ID",
+	  "DESCRIPTION", 
+	  "START_LATITUDE", 
+	  "START_LONGITUDE", 
+	  "END_LATITUDE", 
+	  "END_LONGITUDE", 
+	  "GEOMETRY",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID")
+    select "SEGMENT_ID",
+	  "PROJECT_ID", 
+	  "DESCRIPTION",
+	  "START_LATITUDE", 
+	  "START_LONGITUDE", 
+	  "END_LATITUDE", 
+	  "END_LONGITUDE", 
+	  "GEOMETRY",
+	  "END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER",
+      "APP_CREATE_USERID",
+      "APP_CREATE_TIMESTAMP",
+      "APP_CREATE_USER_GUID",
+      "APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID"
+    from inserted;
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH
+GO
+
+
+CREATE TRIGGER [dbo].[CRT_SEGMENT_I_S_U_TR] ON CRT_SEGMENT INSTEAD OF UPDATE AS
+SET NOCOUNT ON
+BEGIN TRY
+  IF NOT EXISTS(SELECT * FROM deleted)
+    RETURN;
+
+
+  if exists (select 1 from inserted, deleted where inserted.CONCURRENCY_CONTROL_NUMBER != deleted.CONCURRENCY_CONTROL_NUMBER+1 AND inserted.SEGMENT_ID = deleted.SEGMENT_ID)
+    raiserror('CONCURRENCY FAILURE.',16,1)
+
+
+
+  update CRT_SEGMENT
+    set "SEGMENT_ID" = inserted."SEGMENT_ID", 
+	  "PROJECT_ID" = inserted."PROJECT_ID", 
+	  "DESCRIPTION" = inserted."DESCRIPTION",
+	  "START_LATITUDE" = inserted."START_LATITUDE", 
+	  "START_LONGITUDE" = inserted."START_LONGITUDE", 
+	  "END_LATITUDE" = inserted."END_LATITUDE", 
+	  "END_LONGITUDE" = inserted."END_LONGITUDE", 
+	  "GEOMETRY" = inserted."GEOMETRY",
+	  "END_DATE" = inserted."END_DATE",
+      "CONCURRENCY_CONTROL_NUMBER" = inserted."CONCURRENCY_CONTROL_NUMBER",
+      "APP_LAST_UPDATE_USERID" = inserted."APP_LAST_UPDATE_USERID",
+      "APP_LAST_UPDATE_TIMESTAMP" = inserted."APP_LAST_UPDATE_TIMESTAMP",
+      "APP_LAST_UPDATE_USER_GUID" = inserted."APP_LAST_UPDATE_USER_GUID"
+    , DB_AUDIT_LAST_UPDATE_TIMESTAMP = getutcdate()
+    , DB_AUDIT_LAST_UPDATE_USERID = user_name()
+    from CRT_SEGMENT
+    inner join inserted
+    on (CRT_SEGMENT.SEGMENT_ID = inserted.SEGMENT_ID);
+
+END TRY
+BEGIN CATCH
+   IF @@trancount > 0 ROLLBACK TRANSACTION
+   EXEC crt_error_handling
+END CATCH
+GO
+

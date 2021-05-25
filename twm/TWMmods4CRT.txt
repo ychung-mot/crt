@@ -1,0 +1,130 @@
+This is a list of the modifications made to TWM for CRT
+TWM was taken from the orginal source on March 1, 2021.
+
+
+init.js
+=======
+=======
+
+added 
+=====
+
+var keycloak = new Keycloak();
+
+function initKeycloak() {
+  keycloak
+    .init({
+      onLoad: "login-required",
+      promiseType: "native",
+      checkLoginIframe: false,
+    })
+    .then(function (authenticated) {
+      onLoginSuccess();
+    })
+    .catch(function () {
+      alert("keycloak: failed to initialize");
+    });
+}
+
+function imageLoader(image, src) {
+  var client = new XMLHttpRequest();
+  client.open("GET", src, true);
+  client.setRequestHeader("Access-Control-Allow-Origin", "*");
+  client.setRequestHeader("Pragma", "no-cache");
+  client.setRequestHeader("Authorization", "Bearer " + keycloak.token);
+  client.setRequestHeader( 'Content-Type',   'image/png' );
+  client.setRequestHeader( 'Accept', 'image/png' );
+  client.responseType = 'blob';
+  client.onload = function () {
+  var objectURL = URL.createObjectURL(client.response);
+  image.getImage().onload = function() {
+    URL.revokeObjectURL(objectURL);
+  };
+  image.getImage().src = objectURL;
+  };
+  client.send();
+}
+
+function onLoginSuccess() {
+  console.log("user: " + keycloak.idTokenParsed.preferred_username);
+
+  // Check if Internet Explorer
+  var ua = window.navigator.userAgent;
+  if (/MSIE|Trident/.test(ua)) {
+    // Set title/header to default
+    document.title = "Transportation Web Map";
+    if (isMobile()) {
+      $("#appTitle").text("TWA");
+    } else {
+      $("#appTitle").text("Transportation Web Map");
+    }
+
+    // Display error/suggestion
+    var errorNotice = bootbox.dialog({
+      title: "Compatibility Issue",
+      message:
+        "<p class='text-center'>Your browser is not compatible with this application.<br><br>Please use a modern Browser.<br></p>",
+      closeButton: false,
+    });
+
+    // Bail
+    return;
+  }
+
+  // Load the core application scripts
+  var scripts = [
+    "application/inc/projections.js",
+    "application/inc/definitions.js",
+    "application/inc/extensions.js",
+    "application/inc/classes.js",
+  ];
+  $.each(scripts, function (index, script) {
+    $.ajax({
+      async: false, // required
+      url: script,
+      dataType: "script",
+    })
+      .done(function (response) {
+        logger("INFO", "INIT: Successfully loaded " + script);
+      })
+      .fail(function (jqxhr, settings, exception) {
+        logger("ERROR", "INIT: Error loading " + script);
+        return;
+      });
+  });
+
+  // Determine which app config was called and try to load it
+  // projectId = getUrlParameterByName("project");
+  var configName = getUrlParameterByName("c");
+  // project parameter is CRT specific
+  app.projectId = getUrlParameterByName("project");
+  app.segmentId = getUrlParameterByName("segment");
+
+  loadConfig(configName, 0);
+}
+
+modified
+========
+
+$(document).ready(function () {
+  // Add log entry
+  logger(
+    "INFO",
+    "-------------------------------------------------------------------------------------------------------------"
+  );
+  logger("INFO", "INIT: Beginning TWM Session");
+
+  initKeycloak();
+});
+
+
+common.js
+=========
+=========
+
+modified
+========
+
+ function isValidTwmDomain() {
+	return true;
+   }

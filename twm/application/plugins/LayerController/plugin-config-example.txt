@@ -1,0 +1,23 @@
+{
+	name: "LayerController",			// Plugin Class Name - DO NOT MODIFY [required]
+	tabName: "Layers",					// Tab name [required]
+	enabled: true,						// Whether plugin is enabled [required]
+	layerDownloads: {					// Whether plugin should allow layer download (depends also on source server) [optional]
+		enabled: true,
+		maxFeatures: 500
+	},
+	additionalSources: [				// Additional GetCapabilities resources [optional]
+		{
+			name: "MoTI Public",								// Source name [optional]
+			url: returnEnvironmentUrl("ogs-public") + "/ows"	// Source URL [required] - includes 'environment' helper function for public TWM
+		},
+		{
+			name: "MoTI Internal",
+			url: "../ogs-internal/ows"
+		},
+		{
+			name: "BCGW",
+			url: "https://openmaps.gov.bc.ca/geo/ows"
+		}
+	]
+}
